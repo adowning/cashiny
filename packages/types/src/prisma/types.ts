@@ -437,6 +437,7 @@ export type GameSpin = {
   createdAt: Date;
   grossWinAmount: number | null;
   currencyId: string | null;
+  spinNumber: number;
   gameSessionId: string;
   wagerAmount: number | null;
   sessionId: string;

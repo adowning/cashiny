@@ -338,6 +338,7 @@ exports.Prisma.GameSpinScalarFieldEnum = {
   createdAt: 'createdAt',
   grossWinAmount: 'grossWinAmount',
   currencyId: 'currencyId',
+  spinNumber: 'spinNumber',
   gameSessionId: 'gameSessionId',
   wagerAmount: 'wagerAmount',
   sessionId: 'sessionId',

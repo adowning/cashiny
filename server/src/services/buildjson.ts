@@ -222,13 +222,3 @@ export function buildJsonForSpin2(
   //console.log(jsonBase);
   return JSON.stringify(jsonBase);
 }
-
-export function buildJsonForChoice(jsonBase: any): string {
-  // jsonBase.rtg = jsonBase.result.user.balance.cash
-
-  // jsonBase.result.user.balance.cash = balance
-
-  // jsonBase.result.user.currency.code = 'USD';
-  // jsonBase.result.user.limits.maxGambleStake = 20;
-  return JSON.stringify(jsonBase);
-}

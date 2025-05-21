@@ -1,18 +1,14 @@
 import { basePrisma } from '@cashflow/database';
-// import { Gender, UserStatus } from '@cashflow/types';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-// import type { User } from "shared";
-import { bearer, oneTap } from 'better-auth/plugins';
-import { username } from 'better-auth/plugins';
-import { anonymous } from 'better-auth/plugins';
+import { bearer, oneTap, username, anonymous } from 'better-auth/plugins';
 
 import { resend } from './utils/email';
 
 const { JWT_SECRET, ALLOWED_ORIGINS } = process.env;
 
 export const auth = betterAuth({
-  baseURL: `http://localhost:6589`,
+  baseURL: process.env.AUTH_BASE_URL || `http://localhost:6589`,
   secret: JWT_SECRET || 'a_very_secure_and_random_jwt_secret_for_development_12345!@#$%',
   password: {
     hash: async (password: string) => {
@@ -32,7 +28,7 @@ export const auth = betterAuth({
     minPasswordLength: 6,
     resetPasswordTokenExpiresIn: 10 * 60 * 1000, // 10 minutes
     sendResetPassword: async ({ user, token }, request) => {
-      const url = new URL(request?.headers.get('origin') || '');
+      const url = new URL(process.env.AUTH_BASE_URL || `http://localhost:6589`);
       url.pathname = '/reset-password';
       url.searchParams.append('token', token);
 
@@ -82,64 +78,10 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_SECRET as string,
     },
   },
-  plugins: [
-    bearer(),
-    username(),
-    anonymous(),
-    oneTap(),
-    // oneTapClient({
-    //   clientId:
-    //     "740187878164-qoahkvecq5tu5d8os02pomr7nifcgh8s.apps.googleusercontent.com",
-    //   // Optional client configuration:
-    //   autoSelect: false,
-    //   cancelOnTapOutside: true,
-    //   context: "signin",
-    //   additionalOptions: {
-    //     // Any extra options for the Google initialize method
-    //   },
-    //   // Configure prompt behavior and exponential backoff:
-    //   promptOptions: {
-    //     baseDelay: 1000, // Base delay in ms (default: 1000)
-    //     maxAttempts: 5, // Maximum number of attempts before triggering onPromptNotification (default: 5)
-    //   },
-    // }),
-  ],
+  plugins: [bearer(), username(), anonymous(), oneTap()],
 
   user: {
-    // fields: {
-    //   id: { type: "string" },
-    //   email: { type: "string" },
-    //   name: { type: "string" },
-    //   emailVerified: { type: "boolean" },
-    //   image: { type: "string" },
-    //   createdAt: { type: "date" },
-    //   updatedAt: { type: "date" },
-    //   username: { type: "string" },
-    //   totalXp: { type: "number" },
-    //   balance: { type: "number" },
-    //   isVerified: { type: "boolean" },
-    //   active: { type: "boolean" },
-    //   lastLogin: { type: "date" },
-    //   verificationToken: { type: "string" },
-    //   avatar: { type: "string" },
-    //   activeProfileId: { type: "string" },
-    //   gender: { type: "string" },
-    //   status: { type: "string" },
-    //   cashtag: { type: "string" },
-    //   phpId: { type: "number" },
-    //   accessToken: { type: "string" },
-    //   twoFactorEnabled: { type: "boolean" },
-    //   banned: { type: "boolean" },
-    //   banReason: { type: "string" },
-    //   banExpires: { type: "date" },
-    //   lastDailySpin: { type: "date" },
-    // },
     additionalFields: {
-      // role: {
-      //   type: 'string',
-      //   defaultValue: 'USER',
-      // },
-      // fields: {
       id: { type: 'string' },
       email: { type: 'string' },
       name: { type: 'string' },
@@ -157,8 +99,6 @@ export const auth = betterAuth({
       verificationToken: { type: 'string' },
       avatar: { type: 'string' },
       activeProfileId: { type: 'string' },
-      // gender: { type: Object.values(Gender) },
-      // status: { type: Object.values(UserStatus) },
       cashtag: { type: 'string' },
       phpId: { type: 'number' },
       accessToken: { type: 'string' },
@@ -167,13 +107,6 @@ export const auth = betterAuth({
       banReason: { type: 'string' },
       banExpires: { type: 'date' },
       lastDailySpin: { type: 'date' },
-      // activeProfile: { type: Profile },
-      //   vipInfo: { type: Object.values(VipInfo) },
-      // },
-      //   id: { type: "string" },
-      // },
-      // vipInfo: { type: Object.values(VipInfo) },
-      // },
     },
   },
 
@@ -184,6 +117,7 @@ export const auth = betterAuth({
         attributes: {
           httpOnly: true,
           sameSite: 'none',
+          secure: true,
           path: '/',
         },
       },

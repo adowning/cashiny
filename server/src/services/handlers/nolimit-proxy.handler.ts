@@ -102,7 +102,7 @@ export async function handleOpenProxy(context: OpenHandlerContext) {
     method: 'POST',
   });
   console.log(resp);
-  const body = await resp.json();
+  const body = (await resp.json()) as { key: string; [key: string]: any };
   const url = body.key;
   const key = body.key;
 

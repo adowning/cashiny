@@ -576,6 +576,7 @@ model GameSpin {
   createdAt      DateTime @default(now())
   grossWinAmount Int?     @default(0)
   currencyId     String?
+  spinNumber     Int      @default(0)
 
   gameSessionId String
   wagerAmount   Int?        @default(0)
@@ -601,9 +602,8 @@ model GameSession {
   updatedAt       DateTime   @updatedAt
   totalWagered    Int        @default(0)
   totalWon        Int        @default(0)
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   gameId String
   game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)

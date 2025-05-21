@@ -1,22 +1,21 @@
 import {
   KeyMode, // Role,
   UserStatus,
-  UserWithProfile,
   basePrisma,
   createDbClient,
   db,
-} from '@cashflow/database';
-import { GoogleSignInResponse, User, UserType } from '@cashflow/types';
-import { faker } from '@faker-js/faker';
-import type { User as BetterAuthUser } from 'better-auth';
-import { Context, HonoRequest } from 'hono';
+} from '@cashflow/database'
+import { GoogleSignInResponse, UserWithProfile } from '@cashflow/types'
+import { faker } from '@faker-js/faker'
+import type { User as BetterAuthUser } from 'better-auth'
+import { Context, HonoRequest } from 'hono'
 
 // Google's library
-import { auth } from '../auth';
-import { decodeToken } from '../utils/jwt';
+import { auth } from '../auth'
+import { decodeToken } from '../utils/jwt'
 
-const prisma = basePrisma;
-const kysely = createDbClient();
+const prisma = basePrisma
+const kysely = createDbClient()
 // const getRandomElement = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 const getRandomSubset = <T>(arr: T[], count?: number): T[] =>
   faker.helpers.arrayElements(
@@ -24,51 +23,54 @@ const getRandomSubset = <T>(arr: T[], count?: number): T[] =>
     faker.number.int({
       min: 1,
       max: count !== undefined && count < arr.length ? count : arr.length,
-    }),
-  );
+    })
+  )
 // Define a more complete user type including relations expected by the client
-export type AppUserWithDetails = User & {
-  Balance?: number | null;
+export type AppUserWithDetails = UserWithProfile & {
+  Balance?: number | null
   // VipInfo?: VipInfo | null;
   // UserSettings?: UserSettings | null;
   // Add any other relations your client's User object might need
-};
+}
 
 // Auth utility stubs - TODO: Implement properly
-export const getUserFromBetterAuthUser = async (_user: BetterAuthUser): Promise<User> => {
-  const id = _user.id;
-  // const user = await db.user.findUniqueOrThrow({
-  //   where: { id },
-  //   // include: {   },
-  // });
-  const kuserArr = await kysely.selectFrom('User').where('User.id', '=', id).selectAll().execute();
-  const kuser = kuserArr[0];
-  const kProfileArr = await kysely
-    .selectFrom('Profile')
-    .where('User.activeProfileId', '=', kuser.activeProfileId)
-    .selectAll()
-    .execute();
-  const kprofile = kProfileArr[0];
-  if (!kuser) throw new Error('User not found');
-  kuser.profile = kprofile;
-  return kuser as any;
-};
+export const getUserFromBetterAuthUser = async (
+  _user: BetterAuthUser
+): Promise<UserWithProfile> => {
+  const id = _user.id
+  const user = await db.user.findUniqueOrThrow({
+    where: { id },
+    include: { profile: true },
+  })
+  // const kuserArr = await kysely.selectFrom('User').where('User.id', '=', id).selectAll().execute();
+  // const kuser = kuserArr[0];
+  // const kProfileArr = await kysely
+  //   .selectFrom('Profile')
+  //   .where('User.activeProfileId', '=', kuser.activeProfileId)
+  //   .selectAll()
+  //   .execute();
+  // const kprofile = kProfileArr[0];
+  // if (!kuser) throw new Error('User not found');
+  // kuser.profile = kprofile;
+  // return kuser as any;
+  return user as UserWithProfile
+}
 // async findOrCreateUserByGoogleProfile(
 //   req: Request
 // ): Promise<{ user: AppUserWithDetails; isNewUser: boolean }> {
 export async function findOrCreateUserByGoogleProfile(
-  req: HonoRequest,
+  req: HonoRequest
 ): Promise<GoogleSignInResponse> {
-  console.log(req);
-  const json = await req.json();
-  console.log(json.idToken);
+  console.log(req)
+  const json = await req.json()
+  console.log(json.idToken)
   // if (username === undefined || password === undefined) {
   //   return new Response(
   //     JSON.stringify({ message: "Missing username or password", code: 401 }),
   //     { status: 401 }
   //   );
   // }
-  let signInUsername;
+  let signInUsername
   // const salt = crypto.randomBytes(16).toString('hex')
   try {
     signInUsername = await auth.api.signInSocial({
@@ -79,18 +81,18 @@ export async function findOrCreateUserByGoogleProfile(
           token: json.idToken, // Google Access Token
         },
       },
-    });
+    })
   } catch (e) {
     // console.log(e)
     // const email = `${username}@asdf.com`
     // signInUsername = await auth.api.signInEmail({
     //   body: { password, email },
     // })
-    console.log(e);
+    console.log(e)
   }
-  console.log(signInUsername);
-  const isNewUser = false;
-  let user;
+  console.log(signInUsername)
+  const isNewUser = false
+  let user
   if (signInUsername !== undefined && signInUsername !== null) {
     // No user with this Google ID, try to find by email
     user = await db.user.findUnique({
@@ -98,8 +100,8 @@ export async function findOrCreateUserByGoogleProfile(
       include: {
         profile: true,
       },
-    });
-    console.log(user);
+    })
+    console.log(user)
     if (user) {
       // User found by email, link Google ID and update info
       user = await db.user.update({
@@ -112,20 +114,20 @@ export async function findOrCreateUserByGoogleProfile(
           // emailVerified: (profile.emailVerified && profile.email) ? new Date() : user.emailVerified,
         },
         // include: { Balance: true, VipInfo: true, UserSettings: true },
-      });
+      })
     }
   } else {
-    throw new Error('User find or create operation failed unexpectedly.');
+    throw new Error('User find or create operation failed unexpectedly.')
   }
 
   if (!user) {
     // This case should ideally not be reached if logic is correct
-    throw new Error('User find or create operation failed unexpectedly.');
+    throw new Error('User find or create operation failed unexpectedly.')
   }
 
-  const token = (signInUsername as any)?.token;
-  console.log('returning ', user.id);
-  console.log('isNewUser ', isNewUser);
+  const token = (signInUsername as any)?.token
+  console.log('returning ', user.id)
+  console.log('isNewUser ', isNewUser)
   // const cookieOptions = {
   //   httpOnly: true,
   //   secure: true,
@@ -138,35 +140,35 @@ export async function findOrCreateUserByGoogleProfile(
     accessToken: token,
     refreshToken: token,
     code: 200,
-    user: user as unknown as UserType,
-  };
+    user: user as unknown as UserWithProfile,
+  }
 
-  return resp;
+  return resp
   // return { user: user as AppUserWithDetails, isNewUser };
 }
 export async function createUserWithProfileAndAccount(userData: {
-  email: string;
+  email: string
   // email: string
-  username: string;
-  password: string;
+  username: string
+  password: string
   // name?: string
   // avatar?: string
   /// 800
 }) {
-  console.log(userData);
+  console.log(userData)
   return prisma.$transaction(async () => {
-    console.log('transaction');
-    let defaultOperator: any = await prisma.operatorAccess.findFirst();
-    let defaultOwnerUser: any = null;
-    const defaultBank: any = null;
-    const hashedPassword = await Bun.password.hash(userData.password);
-    console.log(defaultOperator);
-    console.log(hashedPassword);
+    console.log('transaction')
+    let defaultOperator: any = await prisma.operatorAccess.findFirst()
+    let defaultOwnerUser: any = null
+    const defaultBank: any = null
+    const hashedPassword = await Bun.password.hash(userData.password)
+    console.log(defaultOperator)
+    console.log(hashedPassword)
 
     // Check if any operators exist
     if (!defaultOperator) {
-      console.log('No operators found. Creating a default owner, operator, and bank.');
-      const hashedPasswordForOwner = await Bun.password.hash('hashed_password_for_owner');
+      console.log('No operators found. Creating a default owner, operator, and bank.')
+      const hashedPasswordForOwner = await Bun.password.hash('hashed_password_for_owner')
 
       // Create a default owner user
       defaultOwnerUser = await prisma.user.create({
@@ -178,8 +180,8 @@ export async function createUserWithProfileAndAccount(userData: {
           status: 'ACTIVE', // Set a default status
           // Add any other required fields for User
         },
-      });
-      const secret = faker.string.uuid();
+      })
+      const secret = faker.string.uuid()
 
       defaultOperator = await prisma.operatorAccess.create({
         data: {
@@ -194,10 +196,10 @@ export async function createUserWithProfileAndAccount(userData: {
           description: faker.lorem.sentence(),
           last_used_at: faker.datatype.boolean(0.5) ? faker.date.recent({ days: 10 }) : null,
         },
-      });
+      })
       console.log(
-        `Created default operator: ${defaultOperator.name} and owner: ${defaultOwnerUser.username} and bank: ${defaultBank.name}`,
-      );
+        `Created default operator: ${defaultOperator.name} and owner: ${defaultOwnerUser.username} and bank: ${defaultBank.name}`
+      )
     }
     // Create the main user
     // console.log('email ', userData.email);
@@ -250,12 +252,12 @@ export async function createUserWithProfileAndAccount(userData: {
           // banExpires: new Date(),
           // lastDailySpin: new Date(),
         },
-      });
-      console.log('response', response);
-      console.log('headers', headers);
-      const newUser = response.user;
-      const token = response.token;
-      console.log(response);
+      })
+      console.log('response', response)
+      console.log('headers', headers)
+      const newUser = response.user
+      const token = response.token
+      console.log(response)
       // Create the profile linked to the new user and the default operator/bank
       const newProfile = await prisma.profile.create({
         data: {
@@ -273,7 +275,7 @@ export async function createUserWithProfileAndAccount(userData: {
           // phpId: profileData.phpId,
           // Add any other required fields for Profile
         },
-      });
+      })
 
       // Optionally update the user's activeProfileId to the newly created profile's ID
       // await prisma.user.update({
@@ -300,11 +302,11 @@ export async function createUserWithProfileAndAccount(userData: {
           updatedAt: new Date(),
           // Add any other required fields for Account
         },
-      });
+      })
 
       console.log(
-        `Created user: ${newUser.name}, profile: ${newProfile.id}, and account for provider: ${newAccount.id}`,
-      );
+        `Created user: ${newUser.name}, profile: ${newProfile.id}, and account for provider: ${newAccount.id}`
+      )
 
       return {
         user: newUser,
@@ -313,73 +315,74 @@ export async function createUserWithProfileAndAccount(userData: {
         operator: defaultOperator, // Return the operator used
         ownerUser: defaultOwnerUser, // Return the owner user if created
         token,
-      };
+      }
     } catch (e) {
-      console.log(e);
-      return null;
+      console.log(e)
+      return null
     }
-  });
+  })
 }
 
-export const getUserFromHeader = async (req: any): Promise<User | null> => {
-  console.log('getUserFromHeader');
+export const getUserFromHeader = async (req: any): Promise<UserWithProfile | null> => {
+  console.log('getUserFromHeader')
 
-  const authHeader = req.headers.get('Authorization');
+  const authHeader = req.headers.get('Authorization')
 
   if (!authHeader) {
-    return null;
+    return null
   }
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(' ')[1]
   if (!token) {
-    return null;
+    return null
   }
-  const payload = decodeToken(token);
-  if (payload.id === null || payload.id === undefined) return null;
+  const payload = decodeToken(token)
+  if (payload.id === null || payload.id === undefined) return null
   const user: any = await (db as any).user.findUnique({
     where: { id: payload.id },
     include: {
       //vipInfo: true,
       activeProfile: { include: { transactions: true } },
     },
-  });
+  })
 
   if (user === null) {
-    throw new Error('no user found');
+    throw new Error('no user found')
     // return null;
   }
   if (user.activeProfile === null) {
-    return null;
+    return null
   } else {
-    user.activeProfile = user.activeProfile[0];
+    user.activeProfile = user.activeProfile[0]
   }
-  return user;
-};
+  return user
+}
 
 export const getUserFromToken = async (token: string): Promise<UserWithProfile | null> => {
-  console.log('getUserFromHeader');
+  console.log('getUserFromHeader')
   if (!token) {
-    return null;
+    return null
   }
-  const payload = decodeToken(token);
-  if (payload.id === null || payload.id === undefined) return null;
+  const payload = decodeToken(token)
+  if (payload.id === null || payload.id === undefined) return null
   const user = await db.user.findUnique({
     where: { id: payload.id },
     include: { profile: true },
-  });
+  })
 
   if (user === null) {
-    return null;
+    return null
   }
   if (user.profile === null) {
-    return null;
+    return null
   }
 
-  return user;
-};
+  return user as UserWithProfile
+}
 
 export async function google(c: Context, req: HonoRequest): Promise<any> {
-  const json = await req.json();
-  let signInUsername;
+  console.log('in google')
+  const json = await req.json()
+  let signInUsername
   try {
     signInUsername = await auth.api.signInSocial({
       body: {
@@ -389,12 +392,12 @@ export async function google(c: Context, req: HonoRequest): Promise<any> {
           token: json.idToken, // Google Access Token
         },
       },
-    });
+    })
   } catch (e) {
-    console.log(e);
+    console.log(e)
   }
-  console.log(signInUsername);
-  let user;
+  console.log(signInUsername)
+  let user
   if (signInUsername !== undefined && signInUsername !== null) {
     // User found by Google ID, update their info
     // user = await this.db.user.update({
@@ -411,8 +414,8 @@ export async function google(c: Context, req: HonoRequest): Promise<any> {
     // No user with this Google ID, try to find by email
     user = await db.user.findUnique({
       where: { email: (signInUsername as any)?.user.email },
-    });
-    console.log(user);
+    })
+    console.log(user)
     if (user) {
       // User found by email, link Google ID and update info
       user = await db.user.update({
@@ -427,145 +430,90 @@ export async function google(c: Context, req: HonoRequest): Promise<any> {
           // emailVerified: (profile.emailVerified && profile.email) ? new Date() : user.emailVerified,
         },
         // include: { Balance: true, VipInfo: true, UserSettings: true },
-      });
-      const token = (signInUsername as any)?.token;
+      })
+      const token = (signInUsername as any)?.token
 
       const resp: GoogleSignInResponse = {
         authenticated: true,
         accessToken: token,
         refreshToken: token,
         code: 200,
-        user: user as unknown as UserType,
-      };
-      return c.json(resp);
+        user: user as unknown as UserWithProfile,
+      }
+      return c.json(resp)
     } else {
-      throw new Error('User find or create operation failed unexpectedly.');
+      throw new Error('User find or create operation failed unexpectedly.')
     }
   }
 }
 
-export async function me(req: HonoRequest): Promise<Response> {
+type GetSessionResponse = {
+  user?: any
+  access_token?: string
+  code: number
+  status?: number
+  message?: string
+}
+
+export async function getSession(req: HonoRequest): Promise<GetSessionResponse> {
   const session = await auth.api.getSession({
     headers: req.raw.headers,
-  });
-  console.log(session);
+  })
+  console.log(session)
   if (!session || session == null) {
-    return new Response(
-      JSON.stringify({
-        message: 'Not Authorized',
-        code: 401,
-      }),
-      {
-        status: 401,
-      },
-    );
+    return {
+      message: 'Not Authorized',
+      code: 401,
+      status: 401,
+    }
   }
-  const user = await db.user.findUnique({
+  let userWprofile = await db.user.findUnique({
     where: { id: session.user.id },
     include: { profile: true },
-  });
-  if (!user || user == null) {
-    return new Response(
-      JSON.stringify({
-        message: 'Not no found',
-        code: 405,
-      }),
-      {
-        status: 405,
-      },
-    );
+  })
+  if (!userWprofile || userWprofile == null) {
+    return {
+      message: 'User not found',
+      code: 401,
+    }
   }
-  console.log(user);
-  let profile;
-  if (user.profile == undefined || user.profile == null)
-    profile = await db.profile.create({
+  if (userWprofile.profile == undefined || userWprofile.profile == null)
+    userWprofile = await db.user.update({
+      where: { id: user.id },
       data: {
-        balance: 0,
-        totalXpFromOperator: 0,
-        // isActive: true,
-        // lastPlayed: new Date(),
-        // phpId: 0,
-        userId: user.id,
-        // shopId: 'cmaldhvn8000cliybhdhfy2b1',
-        activeCurrencyType: 'USD', // Ensure these match Currency enum
+        isOnline: true,
+        status: UserStatus.ONLINE,
+        profile: {
+          create: {
+            balance: 0,
+            totalXpFromOperator: 0,
+            // isActive: true,
+            // lastPlayed: new Date(),
+            // phpId: 0,
+            // shopId: 'cmaldhvn8000cliybhdhfy2b1',
+            activeCurrencyType: 'USD', // Ensure these match Currency enum
+          },
+        },
       },
-    });
-  // if (
-  //   user.profile == undefined ||
-  //   (user.profile == null && profile !== null && profile !== undefined)
-  // )
-  const userWprofile = await db.user.update({
-    where: { id: user.id },
-    data: {
-      isOnline: true,
-      status: UserStatus.ONLINE,
-      //  profile: {
-      //    create: {
-      //      balance: 0,
-      //      totalXpFromOperator: 0,
-      //      // isActive: true,
-      //      // lastPlayed: new Date(),
-      //      // phpId: 0,
-      //      // shopId: 'cmaldhvn8000cliybhdhfy2b1',
-      //      activeCurrencyType: 'USD', // Ensure these match Currency enum
-      //    },
-      //  },
-    },
-    include: {
-      profile: true,
-    },
-  });
-  // return new Response(
-  //   JSON.stringify({
-  //     code: 405,
-  //     success: false,
-  //     message: "User does not have activeProfileId",
-  //   })
-  // );
+      include: {
+        profile: true,
+      },
+    })
 
-  // profile = user?.profile.id
-  //   ? await prisma.profile.findUnique({
-  //       where: { id: user.activeProfileId },
-  //       include: {},
-  //     })
-  //   : null;
-  // if (!profile) {
-  //   return new Response(
-  //     JSON.stringify({
-  //       code: 405,
-  //       success: false,
-  //       message: 'Profile not found',
-  //     }),
-  //   );
-  // }
-  // return new Response(
-  //   JSON.stringify({
-  //     // token: session?.session.token as string,
-  //     // session: session as unknown as Session,
-  //     user,
-  //     profile,
-  //     code: 200,
-  //   }),
-  // );
-  return new Response(
-    JSON.stringify({
-      user: userWprofile,
-      profile,
-      access_token: session?.session.token as string,
-      code: 200,
-    }),
-    {
-      status: 200,
-    },
-  );
-  // return  session //new Response(JSON.stringify({ user, code: 200 }))
+  return {
+    user: userWprofile,
+    access_token: session?.session.token,
+    code: 200,
+    // }),
+    status: 200,
+  }
 }
 
 // app.post('/auth/register', async (c: Context) => {
 export async function register(req: HonoRequest) {
-  console.log('register');
-  const { password, email } = await req.json();
-  const username = email.split('@')[0];
+  console.log('register')
+  const { password, email } = await req.json()
+  const username = email.split('@')[0]
 
   // const email = `${username}@cashflow.com`;
   //@ts-ignore
@@ -580,20 +528,20 @@ export async function register(req: HonoRequest) {
     email,
     password,
     username,
-  });
-  console.log('response', response);
+  })
+  console.log('response', response)
   // const clientId = randomUUIDv7();
 
   // console.log(headers)
-  console.log(response);
+  console.log(response)
   // const token = await generateAccessToken(user.user.id)
   if (!response || response == null) {
     return new Response(JSON.stringify({ message: 'Registration failed', code: 500 }), {
       status: 500,
-    });
+    })
   }
   // const token = response.token;
-  const user = response.user;
+  const user = response.user
   // cookies.set('cookie', token)
   //@ts-ignore
   // delete user.user.passwordHash
@@ -614,63 +562,73 @@ export async function register(req: HonoRequest) {
     //     .map(([k, v]) => `${k}=${v}`)
     //     .join('; ')}`,
     // },
-  });
+  })
   // }
 }
 
-// app.post('/auth/login', async (c: Context) => {
 export async function login(req: HonoRequest) {
-  console.log('login');
-  let { username, password, email } = await req.json();
-  password = password || '';
+  console.log('login')
+  let { username, password, email } = await req.json()
+  password = password || ''
   if (password === undefined || password === '') {
     return new Response(JSON.stringify({ message: 'Missing password', code: 401 }), {
       status: 401,
-    });
+    })
   }
   if (username === undefined && email === undefined) {
     return new Response(JSON.stringify({ message: 'Missing username or email', code: 401 }), {
       status: 401,
-    });
+    })
   }
   if (username === undefined) {
-    username = email.split('@')[0];
+    username = email.split('@')[0]
   }
   if (email === undefined) {
-    email = `${username}@cashflowcasino.com`;
+    email = `${username}@cashflowcasino.com`
   }
 
-  let signInUsername;
+  let signInUsername
 
   // const salt = crypto.randomBytes(16).toString('hex')
-  console.log(password, username);
+  console.log(password, username)
   try {
     signInUsername = await auth.api.signInUsername({
       body: { password, username },
-    });
-  } catch (e) {
+    })
+  } catch (e: any) {
+    throw new Error(e)
     // console.log(e)
     // const email = `${username}@asdf.com`
     // signInUsername = await auth.api.signInEmail({
     //   body: { password, email },
     // })
-    console.log(e);
+    // console.log(e)
+    return (
+      JSON.stringify(e),
+      {
+        status: 403,
+        statusText: '403',
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    )
   }
-  console.log('signInUsername', signInUsername);
+  console.log('signInUsername', signInUsername)
   // const user = await validateUser(username, password)
-  const user = signInUsername && 'user' in signInUsername ? signInUsername.user : null;
-  const token = signInUsername && 'token' in signInUsername ? signInUsername.token : undefined;
-  console.log(user);
+  const user = signInUsername && 'user' in signInUsername ? signInUsername.user : null
+  const token = signInUsername && 'token' in signInUsername ? signInUsername.token : undefined
+  console.log(user)
   if (user == null) {
     return new Response(JSON.stringify({ message: 'Invalid credentials', code: 401 }), {
       status: 401,
-    });
+    })
   }
   const ruser = await db.user.update({
     where: { id: user.id },
     include: { profile: true },
     data: { lastLogin: new Date(), isOnline: true },
-  });
+  })
   // const token = generateAccessToken(user.id)
 
   const cookieOptions = {
@@ -679,7 +637,7 @@ export async function login(req: HonoRequest) {
     sameSite: 'none',
     maxAge: 60 * 60 * 24 * 7, // 1 week
     path: '/',
-  };
+  }
 
   return new Response(
     JSON.stringify({ authenticated: true, access_token: token, ruser, code: 200 }),
@@ -690,8 +648,8 @@ export async function login(req: HonoRequest) {
           .map(([k, v]) => `${k}=${v}`)
           .join('; ')}`,
       },
-    },
-  );
+    }
+  )
 }
 export async function logout() {
   return new Response(JSON.stringify('ok'), {
@@ -699,6 +657,6 @@ export async function logout() {
     headers: {
       'Set-Cookie': `token=;`,
     },
-  });
+  })
 }
 // export default app

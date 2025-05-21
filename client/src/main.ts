@@ -5,8 +5,6 @@ import { createApp } from 'vue';
 
 // or import 'maz-ui/css/main.css'
 // import '@/css/path_to_your_main_file.css';
-// Example of importing a shared type
-// import type { User } from '@cashflow/types';
 import 'maz-ui/styles';
 import { createI18n } from 'vue-i18n';
 
@@ -27,15 +25,11 @@ import { initializeApiClient } from './sdk/apiClient';
 //   // balance and other fields would come from your actual User type definition
 // }
 // console.log('Example user from shared types:', exampleUser)
-// import { router } from '@/router'
-// import Vue3Marquee from 'vue3-marquee'
 import { resetAllStores, setupStore } from './stores';
 
 // const app = createApp(App)
 var app = createApp(App);
 app.use(i18n);
-// import { posthog } from 'posthog-js'
-// import InlineSvg from 'vue-inline-svg'
 
 // const POSTHOG_API_KEY = import.meta.env.VITE_POSTHOG_API_KEY
 // const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST

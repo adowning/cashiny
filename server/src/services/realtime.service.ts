@@ -43,7 +43,7 @@ export class RealtimeService {
       });
     } else {
       console.warn(
-        '[RealtimeService] Cannot register subscriber error handler - subscriber not ready.',
+        '[RealtimeService] Cannot register subscriber error handler - subscriber not ready.'
       );
     }
     if (this.pgClient?.pool) {
@@ -64,7 +64,7 @@ export class RealtimeService {
     if (!this.isServerSet) {
       console.error('[RealtimeService] Cannot start listening: Server instance not set.');
       throw new Error(
-        'RealtimeService requires the server instance to be set before starting listeners.',
+        'RealtimeService requires the server instance to be set before starting listeners.'
       );
     }
     try {
@@ -72,7 +72,7 @@ export class RealtimeService {
       this._setupTableListeners(); // Define listeners
       await this.pgClient.listen(); // Connect and listen to channel
       console.log(
-        `[RealtimeService] Listening for DB changes on channel: ${this.pgClient.channel}`,
+        `[RealtimeService] Listening for DB changes on channel: ${this.pgClient.channel}`
       );
     } catch (error) {
       console.error('[RealtimeService] Failed to start listening:', error);
@@ -122,7 +122,6 @@ export class RealtimeService {
       console.warn(`[RealtimeService] Could not determine userId for event:`, event);
       return;
     }
-    console.log(event);
     const columnNamesChanged = event?.columnNamesChanged?.filter(function (item) {
       return item !== 'updatedAt';
     });
@@ -142,18 +141,17 @@ export class RealtimeService {
 
   private publishDbUpdate(
     userId: string,
-    payload: any, //z.infer<typeof DatabaseUpdate.shape>
+    payload: any //z.infer<typeof DatabaseUpdate.shape>
   ): void {
     if (!this.isServerSet) {
       console.error(
-        `[RealtimeService] Cannot publish update for user ${userId}: Server instance not set.`,
+        `[RealtimeService] Cannot publish update for user ${userId}: Server instance not set.`
       );
       return;
     }
 
     const userTopic = `user_${userId}_updates`;
     try {
-      // console.log(DatabaseUpdate);
       const messageType = 'DATABASE_UPDATE';
       validateAndPublish(this.server, userTopic, DatabaseUpdate, messageType, payload, {
         timestamp: Date.now(),

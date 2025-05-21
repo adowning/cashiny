@@ -11,36 +11,32 @@
       role="switch"
       aria-label="Toggle Sign Up Mode"
     >
-      <span class="lab login-label" :class="{ active: !isSignUpMode }"
-        >Log In</span
-      >
+      <span class="lab login-label" :class="{ active: !isSignUpMode }">Log In</span>
       <div class="switch-visual-container">
         <div class="switch-track"></div>
         <div class="switch-knob"></div>
       </div>
-      <span class="lab signup-label" :class="{ active: isSignUpMode }"
-        >Sign Up</span
-      >
+      <span class="lab signup-label" :class="{ active: isSignUpMode }">Sign Up</span>
     </div>
 
-    <div v-if="authError" class="auth-error-message">
+    <!-- <div v-if="authError" class="auth-error-message">
       <p>{{ authError.message }}</p>
     </div>
-    <div v-else style="min-height: 30px" class="my-4"></div>
+    <div v-else style="min-height: 30px" class="my-4"></div> -->
 
-    <div class="mt-14 flex flex-col justify-center items-center pt-16">
+    <div v-if="!isAuthLoading" class="mt-14 flex flex-col justify-center items-center pt-16">
       <label class="switch mt-4">
         <div class="flip-card__inner" ref="flipCardInner">
-          <div class="flip-card__front">
+          <div class="flip-card__front flex-col flex">
             <div class="title">Log In</div>
             <form @submit.prevent="handleSignIn" class="flip-card__form">
               <input
-                v-model="formData.email"
-                type="email"
-                placeholder="Email"
+                v-model="formData.username"
+                type="username"
+                placeholder="username"
                 required
                 class="flip-card__input"
-                :disabled="isAuthLoading"
+                :disabled="isAuthLoading || showError"
               />
               <input
                 v-model="formData.password"
@@ -49,28 +45,27 @@
                 required
                 autocomplete="current-password"
                 class="flip-card__input"
-                :disabled="isAuthLoading"
+                :disabled="isAuthLoading || showError"
               />
-              <button
-                type="submit"
-                class="flip-card__btn"
-                :disabled="isAuthLoading"
-              >
+              <button type="submit" class="flip-card__btn" :disabled="isAuthLoading || showError">
                 Let's Go!
               </button>
             </form>
             <div class="social-login-divider">OR</div>
-            <div
-              id="googleSignInButtonContainer"
-              class="google-signin-container"
-            >
-              <button
+            <div class="flex items-center justify-center m-auto">
+              <div
                 id="googleSignInButtonContainer"
-                class="google-signin-button"
-                ref="googleLoginBtn"
-                googleSignInButtonContainer
-                @click="handleGoogleSignIn"
-              />
+                class="google-signin-container flex grow-1 w-full m-auto"
+              >
+                <button
+                  :disabled="isAuthLoading || showError"
+                  id="googleSignInButtonContainer"
+                  class="google-signin-button"
+                  ref="googleLoginBtn"
+                  googleSignInButtonContainer
+                  @click="handleGoogleSignIn"
+                />
+              </div>
             </div>
             <!-- <button
               id="googleSignInButtonContainer"
@@ -118,11 +113,7 @@
                 class="flip-card__input"
                 :disabled="isAuthLoading"
               />
-              <button
-                type="submit"
-                class="flip-card__btn"
-                :disabled="isAuthLoading"
-              >
+              <button type="submit" class="flip-card__btn" :disabled="isAuthLoading">
                 Confirm!
               </button>
             </form>
@@ -130,27 +121,26 @@
         </div>
       </label>
     </div>
-
-    <div v-if="isAuthLoading" class="loading-indicator">
-      <GlobalLoading />
+    <div v-else class="loading-indicator">
+      <Loading />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, computed, onMounted, onUnmounted, watch } from "vue"; // Import necessary Vue 3 APIs
-  import { storeToRefs } from "pinia"; // Import storeToRefs
-  import { useRouter } from "vue-router"; // For navigation (though handled elsewhere now)
+  import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue' // Import necessary Vue 3 APIs
+  import { storeToRefs } from 'pinia' // Import storeToRefs
+  import { useRouter } from 'vue-router' // For navigation (though handled elsewhere now)
 
-  import { useAuthStore } from "@/stores/auth";
-  import { useUserStore } from "@/stores/user"; // Keep if needed for user data display (unlikely in LoginView)
-  import { useNotificationStore } from "@/stores/notifications";
-  import { useGlobalStore } from "@/stores/global"; // Keep if needed for global loading toggle (unlikely here now)
+  import { useAuthStore } from '@/stores/auth'
+  import { useUserStore } from '@/stores/user' // Keep if needed for user data display (unlikely in LoginView)
+  import { useNotificationStore } from '@/stores/notifications'
+  import { useGlobalStore } from '@/stores/global' // Keep if needed for global loading toggle (unlikely here now)
 
   // Assuming you have these components/utilities
   // import Logo from "@/components/icons/Logo.vue";
   // import GlobalLoading from '@/components/GlobalLoading.vue';
-  import { loadingFadeOut } from "virtual:app-loading"; // Assuming this utility exists
+  import { loadingFadeOut } from 'virtual:app-loading' // Assuming this utility exists
 
   // --- Google Identity Services (GSI) ---
   // Note: You can choose to use the 'better-auth' library OR the direct GSI script.
@@ -160,35 +150,34 @@
   // import { oneTapClient } from "better-auth/client/plugins";
 
   // --- Composables & Stores ---
-  const router = useRouter(); // Router might still be needed for direct push in specific cases, but main auth nav is in App.vue
-  const authStore = useAuthStore();
-  const userStore = useUserStore(); // Keep if you need to access user details AFTER login but BEFORE redirect
-  const notificationStore = useNotificationStore();
-  const globalStore = useGlobalStore(); // Keep if used
+  const router = useRouter() // Router might still be needed for direct push in specific cases, but main auth nav is in App.vue
+  const authStore = useAuthStore()
+  const userStore = useUserStore() // Keep if you need to access user details AFTER login but BEFORE redirect
+  const notificationStore = useNotificationStore()
+  const globalStore = useGlobalStore() // Keep if used
 
   // Use storeToRefs for reactive state from stores
   const {
+    currentUser,
     isLoading: isAuthLoading, // Auth store's loading state
     error: authError, // Auth store's error state
     isAuthenticated, // Auth store's authentication status
-  } = storeToRefs(authStore);
-
+  } = storeToRefs(authStore)
+  // const {
+  // currentUser
+  // } = storeToRefs(userStore)
+  const showError = ref<boolean>(false)
   // Destructure actions directly (they are not reactive)
-  const {
-    signInWithPassword,
-    signUpNewUser,
-    signInWithGoogleIdToken,
-    clearAuthError,
-  } = authStore;
+  const { signInWithPassword, signUpNewUser, signInWithGoogleIdToken, clearAuthError } = authStore
 
   // --- Component State ---
-  const uiMode = ref<"signIn" | "signUp">("signIn"); // To toggle between sign-in and sign-up forms
+  const uiMode = ref<'signIn' | 'signUp'>('signIn') // To toggle between sign-in and sign-up forms
   const formData = reactive({
-    email: "",
-    password: "",
-    confirmPassword: "", // For sign-up
-    username: "", // For sign-up
-  });
+    email: '',
+    password: '',
+    confirmPassword: '', // For sign-up
+    username: '', // For sign-up
+  })
 
   // Removed componentLoading as isAuthLoading from store should suffice
   // const componentLoading = ref(false);
@@ -198,20 +187,19 @@
 
   // --- Methods ---
   const handleSignIn = async () => {
-    if (!formData.email || !formData.password) {
-      notificationStore.addNotification(
-        "error",
-        "Please enter both email and password."
-      );
-      return;
+    if (!formData.username || !formData.password) {
+      console.log('error in')
+      notificationStore.addNotification('error', 'Please enter both email and password.')
+
+      return
     }
 
     // Use the store's loading state
     // componentLoading.value = true; // Removed
     const { success, error } = await signInWithPassword({
-      email: formData.email,
+      username: formData.username,
       password: formData.password,
-    });
+    })
     // componentLoading.value = false; // Removed
 
     // Notifications based on action result and store state
@@ -221,23 +209,25 @@
       // notificationStore.addNotification("success", "Successfully signed in!");
       // Navigation is handled elsewhere (App.vue or Navigation Guard)
     } else if (error) {
+      showError.value = true
       // Error state is already set in the store and displayed in template or App.vue
       // Optionally add a notification here as well if needed
-      // notificationStore.addNotification("error", error.message || "Sign in failed.");
+      notificationStore.addNotification('error', error.message || 'Sign in failed.')
+      setTimeout(() => {
+        showError.value = false
+        window.location.reload()
+      }, 3000)
     }
-  };
+  }
 
   const handleSignUp = async () => {
     if (!formData.email || !formData.password || !formData.username) {
-      notificationStore.addNotification(
-        "error",
-        "Please fill in all required fields for sign up."
-      );
-      return;
+      notificationStore.addNotification('error', 'Please fill in all required fields for sign up.')
+      return
     }
     if (formData.password !== formData.confirmPassword) {
-      notificationStore.addNotification("error", "Passwords do not match.");
-      return;
+      notificationStore.addNotification('error', 'Passwords do not match.')
+      return
     }
 
     // Use the store's loading state
@@ -246,7 +236,7 @@
       email: formData.email,
       password: formData.password,
       username: formData.username,
-    });
+    })
     // componentLoading.value = false; // Removed
 
     if (success) {
@@ -257,59 +247,61 @@
       // Error state set in store
       // notificationStore.addNotification("error", error.message || "Sign up failed.");
     }
-  };
+  }
 
   // Google Sign-In Handler (called by Google Identity Services callback)
   const handleGoogleSignIn = async (response: any) => {
     // Prevent multiple requests if already loading
-    console.log("sign in google");
+    console.log('sign in google')
     if (isAuthLoading.value) {
       // Use store's loading state
-      console.warn(
-        "Google Credential Response received while already loading. Ignoring."
-      );
-      notificationStore.addNotification(
-        "warning",
-        "Processing a previous request, please wait."
-      );
-      return;
+      console.warn('Google Credential Response received while already loading. Ignoring.')
+      notificationStore.addNotification('warning', 'Processing a previous request, please wait.')
+      return
     }
 
-    console.log("Google credential response:", response);
+    console.log('Google credential response:', response)
 
     if (response.credential) {
       // Loading state managed by authStore.signInWithGoogleIdToken
       // componentLoading.value = true; // Removed
-      const { success, error } = await signInWithGoogleIdToken(
-        response.credential
-      );
+      const { success, error } = await signInWithGoogleIdToken(response.credential)
       // componentLoading.value = false; // Removed
 
       if (success) {
-        console.log("Google sign-in action dispatched successfully.");
+        console.log('Google sign-in action dispatched successfully.')
         // Notification and navigation handled by watchers/guards elsewhere
         // notificationStore.addNotification("success", "Successfully signed in with Google!");
         // router.push("/home"); // Removed - handled by App.vue/Guard
       } else if (error) {
-        console.error("Google sign-in action failed:", error);
+        console.error('Google sign-in action failed:', error)
         // Error state set in store and displayed in template or App.vue
         // notificationStore.addNotification(
         //   "error",
         //   error.message || "Google sign-in failed."
         // );
+        showError.value = true
+        notificationStore.addNotification('error', error.message)
+        setTimeout(() => {
+          showError.value = false
+          window.location.reload()
+        }, 3000)
       }
     } else {
+      console.log('errror')
+      showError.value = true
       notificationStore.addNotification(
-        "error",
-        "Google Sign-In credential not received. Please try again."
-      );
-      console.error(
-        "Google Sign-In failed or no credential received:",
-        response
-      );
-      authStore.setError({ message: "Google Sign-In failed.", code: 400 }); // Set auth store error
+        'error',
+        'Google Sign-In credential not received. Please try again.'
+      )
+      console.error('Google Sign-In failed or no credential received:', response)
+      authStore.setError({ message: 'Google Sign-In failed.', code: 400 }) // Set auth store error
+      setTimeout(() => {
+        showError.value = false
+        window.location.reload()
+      }, 3000)
     }
-  };
+  }
 
   // --- Google Identity Services (GSI) Initialization ---
   // This function loads the GSI script and initializes the client/button
@@ -320,95 +312,78 @@
       !(window as any).google.accounts ||
       !(window as any).google.accounts.id
     ) {
-      console.log("Loading Google GSI script...");
-      const script = document.createElement("script");
-      script.src = "https://accounts.google.com/gsi/client";
-      script.async = true;
-      script.defer = true;
+      console.log('Loading Google GSI script...')
+      const script = document.createElement('script')
+      script.src = 'https://accounts.google.com/gsi/client'
+      script.async = true
+      script.defer = true
       script.onload = () => {
-        console.log("Google GSI script loaded.");
+        console.log('Google GSI script loaded.')
         // Once script is loaded, initialize and render the button
         if (
           (window as any).google &&
           (window as any).google.accounts &&
           (window as any).google.accounts.id
         ) {
-          (window as any).google.accounts.id.initialize({
+          ;(window as any).google.accounts.id.initialize({
             client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID, // Ensure this is correct
             callback: handleGoogleSignIn, // Link GSI callback to your method
-          });
+          })
 
           // Render the button inside the specified container
-          const googleButtonContainer = document.getElementById(
-            "googleSignInButtonContainer"
-          );
+          const googleButtonContainer = document.getElementById('googleSignInButtonContainer')
           if (googleButtonContainer) {
-            (window as any).google.accounts.id.renderButton(
-              googleButtonContainer,
-              {
-                theme: "outline",
-                size: "large",
-                type: "standard",
-                text: "signin_with",
-                width: 300, // Set a width to prevent button resizing issues
-              }
-            );
-            console.log("Google Sign-In button rendered.");
+            ;(window as any).google.accounts.id.renderButton(googleButtonContainer, {
+              theme: 'outline',
+              size: 'large',
+              type: 'standard',
+              text: 'signin_with',
+              width: 300, // Set a width to prevent button resizing issues
+            })
+            console.log('Google Sign-In button rendered.')
           } else {
-            console.warn("Google Sign-In button container not found.");
+            console.warn('Google Sign-In button container not found.')
           }
 
           // Optional: Trigger One Tap prompt if desired, but be mindful of UX
           // (window as any).google.accounts.id.prompt();
         } else {
-          console.error(
-            "Google GSI library not fully available after script load."
-          );
-          notificationStore.addNotification(
-            "error",
-            "Could not initialize Google Sign-In."
-          );
+          console.error('Google GSI library not fully available after script load.')
+          notificationStore.addNotification('error', 'Could not initialize Google Sign-In.')
           authStore.setError({
-            message: "Could not initialize Google Sign-In.",
+            message: 'Could not initialize Google Sign-In.',
             code: 500,
-          });
+          })
         }
-      };
+      }
       script.onerror = () => {
-        console.error("Failed to load Google GSI script.");
-        notificationStore.addNotification(
-          "error",
-          "Failed to load Google Sign-In script."
-        );
+        console.error('Failed to load Google GSI script.')
+        notificationStore.addNotification('error', 'Failed to load Google Sign-In script.')
         authStore.setError({
-          message: "Failed to load Google Sign-In script.",
+          message: 'Failed to load Google Sign-In script.',
           code: 500,
-        });
-      };
-      document.head.appendChild(script);
+        })
+      }
+      document.head.appendChild(script)
     } else {
       // Script is already loaded, just initialize and render button
-      console.log("Google GSI script already loaded, initializing...");
-      (window as any).google.accounts.id.initialize({
+      console.log('Google GSI script already loaded, initializing...')
+      ;(window as any).google.accounts.id.initialize({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: handleGoogleSignIn,
-      });
-      const googleButtonContainer = document.getElementById(
-        "googleSignInButtonContainer"
-      );
+      })
+      const googleButtonContainer = document.getElementById('googleSignInButtonContainer')
       if (googleButtonContainer) {
-        (window as any).google.accounts.id.renderButton(googleButtonContainer, {
-          theme: "outline",
-          size: "large",
-          type: "standard",
-          text: "signin_with",
+        ;(window as any).google.accounts.id.renderButton(googleButtonContainer, {
+          theme: 'outline',
+          size: 'large',
+          type: 'standard',
+          text: 'signin_with',
           width: 300, // Set a width
-        });
-        console.log("Google Sign-In button re-rendered.");
+        })
+        console.log('Google Sign-In button re-rendered.')
       } else {
-        console.warn(
-          "Google Sign-In button container not found on re-initialization."
-        );
+        console.warn('Google Sign-In button container not found on re-initialization.')
       }
       // (window as any).google.accounts.id.prompt(); // Optional: Auto prompt
     }
@@ -416,36 +391,36 @@
 
   // --- Component Lifecycle Hooks ---
   onMounted(() => {
-    console.log("LoginView mounted.");
+    console.log('LoginView mounted.')
 
     // Clear any previous authentication errors when the login view is accessed
-    authStore.clearAuthError();
+    authStore.clearAuthError()
 
     // Initialize Google Sign-In
-    initializeGoogleSignIn();
+    initializeGoogleSignIn()
 
     // If already authenticated when reaching LoginView, redirect immediately
     // This handles cases like browser back button or direct access while logged in
     // Use the single source of truth from authStore
     if (isAuthenticated.value) {
-      console.log("Already authenticated, redirecting from LoginView.");
-      router.push({ name: "Home" }); // Assuming 'Home' is your main app route
+      console.log('Already authenticated, redirecting from LoginView.')
+      router.push({ name: 'Home' }) // Assuming 'Home' is your main app route
     }
 
     // Remove the initial app loading overlay if it's still present
     // This might be redundant if App.vue already calls loadingFadeOut after its initial check
-    loadingFadeOut();
-  });
+    loadingFadeOut()
+  })
 
   onUnmounted(() => {
-    console.log("LoginView unmounted.");
+    console.log('LoginView unmounted.')
     // Clean up Google One Tap/GSI prompts if active
     if (
       (window as any).google &&
       (window as any).google.accounts &&
       (window as any).google.accounts.id
     ) {
-      (window as any).google.accounts.id.cancel();
+      ;(window as any).google.accounts.id.cancel()
       // Disconnect any listeners if necessary (though callback should handle this)
     }
     // Clear form data on unmount? Depends on UX preference.
@@ -453,48 +428,46 @@
     // formData.password = "";
     // formData.confirmPassword = "";
     // formData.username = "";
-  });
+  })
 
   // --- Watchers ---
   // Watch for authentication state change to navigate *away* from the login page
   // This watcher is crucial for reacting to successful logins (form or Google)
   watch(isAuthenticated, (isNowAuthenticated) => {
-    console.log(
-      "LoginView reacting to isAuthenticated change:",
-      isNowAuthenticated
-    );
+    console.log('LoginView reacting to isAuthenticated change:', isNowAuthenticated)
     // If the user becomes authenticated while on the LoginView, navigate away
     if (isNowAuthenticated) {
-      console.log("Authenticated successfully, navigating to home.");
-      notificationStore.addNotification(
-        "success",
-        `Welcome, ${userStore.currentUser?.username || userStore.currentUser?.email || "user"}!` // Use userStore to get user info
-      );
-      router.push({ name: "Home" }); // Navigate to your main app route
+      console.log('Authenticated successfully, navigating to home.')
+      if (currentUser.value !== null)
+        notificationStore.addNotification(
+          'success',
+          `Welcome, ${currentUser.value.username || currentUser.value.email || 'user'}!` // Use userStore to get user info
+        )
+      router.push({ name: 'Home' }) // Navigate to your main app route
     }
     // No else block here - navigating TO login is handled by App.vue/Guard
-  });
+  })
 
   // --- UI Toggle Logic ---
-  const isSignUpMode = ref(false); // false = login, true = signup
-  const flipCardInner = ref<HTMLElement | null>(null);
+  const isSignUpMode = ref(false) // false = login, true = signup
+  const flipCardInner = ref<HTMLElement | null>(null)
 
   function toggleMode() {
-    isSignUpMode.value = !isSignUpMode.value;
+    isSignUpMode.value = !isSignUpMode.value
     if (flipCardInner.value) {
       if (isSignUpMode.value) {
-        flipCardInner.value.style.transform = "rotateY(180deg)";
+        flipCardInner.value.style.transform = 'rotateY(180deg)'
       } else {
-        flipCardInner.value.style.transform = "rotateY(0deg)";
+        flipCardInner.value.style.transform = 'rotateY(0deg)'
       }
     }
     // Clear form and errors when toggling mode for a clean start
-    formData.email = "";
-    formData.password = "";
-    formData.confirmPassword = "";
-    formData.username = "";
-    authStore.clearAuthError(); // Clear auth errors
-    userStore.setError(null); // Clear user store errors
+    formData.email = ''
+    formData.password = ''
+    formData.confirmPassword = ''
+    formData.username = ''
+    authStore.clearAuthError() // Clear auth errors
+    // userStore.setError(null) // Clear user store errors
   }
 </script>
 
@@ -573,8 +546,7 @@
     height: 100%;
     background-color: var(--track-bg-login);
     border-radius: calc(var(--toggle-track-height) / 2); /* Pill shape */
-    transition: background-color var(--transition-duration)
-      var(--transition-timing-function);
+    transition: background-color var(--transition-duration) var(--transition-timing-function);
   }
 
   /* Change track background when sign up is active */
@@ -591,17 +563,13 @@
     background-color: var(--knob-bg-color);
     border-radius: 50%; /* Circular knob */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    transition: transform var(--transition-duration)
-      var(--transition-timing-function);
+    transition: transform var(--transition-duration) var(--transition-timing-function);
   }
 
   /* Move knob to the right when sign up is active */
   .auth-mode-toggle.is-signup-active .switch-knob {
     transform: translateX(
-      calc(
-        var(--toggle-track-width) - var(--knob-size) -
-          (2 * var(--track-internal-padding))
-      )
+      calc(var(--toggle-track-width) - var(--knob-size) - (2 * var(--track-internal-padding)))
     );
   }
   /* Scoped styles specific to LoginView */
@@ -618,7 +586,7 @@
     background-position: center; /* Center the background */
     background-repeat: no-repeat;
     background-color: #021130;
-    background-image: url("/images/starsbg.png");
+    background-image: url('/images/starsbg.png');
     background-size: 120% 120%;
     background-origin: border-box;
     background-position: center;
@@ -665,9 +633,7 @@
 
   /* Flip card styles from the original component */
   .switch {
-    transform: translateY(
-      0
-    ); /* Adjusted from -200px, let flexbox handle positioning */
+    transform: translateY(0); /* Adjusted from -200px, let flexbox handle positioning */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -682,7 +648,7 @@
 
   .card-side::before {
     position: absolute;
-    content: "Log in";
+    content: 'Log in';
     left: -70px;
     top: 0;
     width: 200px;
@@ -695,7 +661,7 @@
 
   .card-side::after {
     position: absolute;
-    content: "Sign up";
+    content: 'Sign up';
     left: 70px;
     top: 0;
     width: 200px;
@@ -734,7 +700,7 @@
   .slider:before {
     box-sizing: border-box;
     position: absolute;
-    content: "";
+    content: '';
     height: 20px;
     width: 20px;
     border: 2px solid var(--main-color);
@@ -787,6 +753,9 @@
   .flip-card__back {
     box-sizing: border-box; /* Added for better padding control */
     width: 100%;
+
+    justify-content: center;
+    align-items: center;
     /* max-width: 420px; /* Let parent control max-width */
     padding: 20px; /* Unified padding */
     position: absolute;
@@ -825,7 +794,7 @@
 
   .flip-card__input {
     width: 100%; /* Full width inputs */
-    max-width: 300px; /* Max width for inputs */
+    /* max-width: 300px;  */
     height: 45px; /* Slightly taller */
     border-radius: 5px;
     border: 2px solid var(--main-color, #b954f3);
@@ -868,10 +837,7 @@
       transform 0.1s;
   }
   .flip-card__btn:hover {
-    background-color: darken(
-      var(--main-color, #b954f3),
-      10%
-    ); /* Darken on hover */
+    background-color: darken(var(--main-color, #b954f3), 10%); /* Darken on hover */
   }
   .flip-card__btn:active {
     box-shadow: 0px 0px var(--main-color, #b954f3);
@@ -893,11 +859,14 @@
     width: 100%;
   }
   .google-signin-container {
-    display: flex;
+    /* display: flex;
+    min-width: 100%;
+    min-height: 60px;
     justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-top: 10px;
+    align-items: center; */
+    /* width: 100%;
+    height: 40%; */
+    /* margin-top: 10px; */
     z-index: 999999;
   }
 

@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "strict": true,
@@ -10,16 +12,29 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "../",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@cashflow/types": ["../packages/types/src"],
-      "@cashflow/database": ["../packages/database/src"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@cashflow/types": [
+        "../packages/types/src"
+      ],
+      "@cashflow/database": [
+        "../packages/database/src"
+      ]
     },
     "jsx": "react-jsx", // Required for Hono JSX middleware
     "jsxImportSource": "hono/jsx" // Required for Hono JSX middleware
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*.ts",
+    "../packages/database/src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".eslintrc.cjs"
+  ]
 }

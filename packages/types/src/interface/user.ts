@@ -15,7 +15,8 @@ import type {
 export type Email = string;
 export type Username = string;
 export type UserWithProfile = User & {
-  profile: Profile; // Or PrismaProfile if a profile is always expected
+  profile: Profile;
+  avatar?: string; // Add optional avatar property
 };
 // --- Canonical UserWithProfile ---
 /**

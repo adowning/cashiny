@@ -24,12 +24,12 @@
 // });
 // type userWithProfile = Prisma.UserGetPayload<typeof userWithProfile>;
 // export interface UserWithProfile extends userWithProfile {}
-import { PrismaClient } from '../client';
-import { User as PrismaUser } from './prisma';
+import { PrismaClient } from '../client'
+import { User as PrismaUser } from './prisma'
 
 // import {IUser} from './generated/prisma/interfaces';
 
-export * from '../client';
+export * from '../client'
 // export * from './interfaces';
 // export type Prisma = PrismaClient;
 // import { PrismaClient } from '../generated/prisma';
@@ -43,43 +43,43 @@ export * from '../client';
 // export * from './schema';
 // export * from './generated/prisma/index';
 
-export { createDbClient } from './create-db-client';
+export { createDbClient } from './create-db-client'
 
 declare global {
   // eslint-disable-next-line no-var
-  var db: PrismaClient | undefined;
-  var basePrisma: PrismaClient;
+  var db: PrismaClient | undefined
+  var basePrisma: PrismaClient
   // eslint-disable-next-line no-var
   // var createDbClient: Kysely<DB> | undefined;
   // eslint-disable-next-line no-var
 }
 
 export const basePrisma = new PrismaClient({
-  log: [
-    {
-      emit: 'event',
-      level: 'query',
-    },
-    {
-      emit: 'stdout',
-      level: 'error',
-    },
-    {
-      emit: 'stdout',
-      level: 'info',
-    },
-    {
-      emit: 'stdout',
-      level: 'warn',
-    },
-  ],
-});
-export const db = basePrisma;
-basePrisma.$on('query', (e) => {
-  console.log('Query: ' + e.query);
-  console.log('Params: ' + e.params);
-  console.log('Duration: ' + e.duration + 'ms');
-});
+  // log: [
+  //   {
+  //     emit: 'event',
+  //     level: 'query',
+  //   },
+  //   {
+  //     emit: 'stdout',
+  //     level: 'error',
+  //   },
+  //   {
+  //     emit: 'stdout',
+  //     level: 'info',
+  //   },
+  //   {
+  //     emit: 'stdout',
+  //     level: 'warn',
+  //   },
+  // ],
+})
+export const db = basePrisma
+// basePrisma.$on('query', (e) => {
+//   console.log('Query: ' + e.query);
+//   console.log('Params: ' + e.params);
+//   console.log('Duration: ' + e.duration + 'ms');
+// });
 
 // export const db = basePrisma.$extends(
 //   kyselyExtension({
@@ -101,7 +101,7 @@ basePrisma.$on('query', (e) => {
 //   prisma: PrismaClient;
 // };
 
-export type User = PrismaUser; //{
+export type User = PrismaUser //{
 //   profile: Profile | null;
 // }
 // export type User = UserWithProfile;

@@ -14,8 +14,6 @@ import {
   GameEnterResponse,
   GameHistoryItem,
   GameHistoryResponse,
-  GameListResponse,
-  GameRound,
   GameSearchResponse,
   GameUserBody,
   GetGameBigWinResponse,
@@ -26,7 +24,6 @@ import {
   GetGameSearchResponse,
   RawGameSpinBody,
   Search,
-  User,
   UserWithProfile,
 } from '@cashflow/types';
 import { faker } from '@faker-js/faker';
@@ -988,7 +985,7 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
       init
     );
     let gameSession = await db.gameSession.findFirst({
-      where: { profileId: currentUser.profile.id, isActive: true },
+      where: { profileId: currentUser.profile.id, isActive: true, user: user, game: game },
     });
     //console.log(response);
     const previousSpins = await db.gameSpin.findMany({

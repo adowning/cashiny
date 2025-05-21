@@ -5,16 +5,16 @@ import {
   // type ComputedRef,
   // RendererElement,
   // RendererNode,
-} from 'vue';
+} from 'vue'
 
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
 
 // Define the structure of a notification (Your existing interface - unchanged)
 export interface Notification {
-  id: number;
-  message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-  duration: number;
+  id: number
+  message: string
+  type: 'info' | 'success' | 'warning' | 'error'
+  duration: number
 }
 
 // --- Interface for the Notification Store INSTANCE ---
@@ -26,20 +26,20 @@ export interface INotificationStore {
   addComplexNotification: (
     type: Notification['type'] | undefined,
     message: any,
-    duration?: number,
-  ) => void;
+    duration?: number
+  ) => void
   /**
    * State: An array holding all currently active notification objects.
    * This is the automatically unwrapped value of the internal 'notifications' ref.
    * To maintain reactivity in components when destructuring, use `storeToRefs`.
    */
-  notifications: Notification[]; // <<<< CORRECTED: Unwrapped type
+  notifications: Notification[] // <<<< CORRECTED: Unwrapped type
 
   /**
    * Getter: A reactive array of the currently active notifications.
    * This is the automatically unwrapped value of the internal 'activeNotifications' computed property.
    */
-  activeNotifications: Notification[]; // <<<< CORRECTED: Unwrapped type
+  activeNotifications: Notification[] // <<<< CORRECTED: Unwrapped type
 
   /**
    * Adds a new notification to the store.
@@ -48,14 +48,14 @@ export interface INotificationStore {
   addNotification: (
     type: Notification['type'] | undefined,
     message: string,
-    duration?: number,
-  ) => void;
+    duration?: number
+  ) => void
 
   /**
    * Removes a notification from the store based on its unique ID.
    * (Action signature remains the same)
    */
-  removeNotification: (id: number) => void;
+  removeNotification: (id: number) => void
 }
 
 // --- Store Definition ---
@@ -63,46 +63,47 @@ export interface INotificationStore {
 // Then we type the exported store hook to ensure it returns our INotificationStore instance type.
 export const useNotificationStore: () => INotificationStore = defineStore('notifications', () => {
   // Inside the setup function, we work with actual Refs and ComputedRefs
-  const notifications_ref = ref<Notification[]>([]); // Internal ref
-  const activeNotifications_computed = computed(() => notifications_ref.value); // Internal computed
+  const notifications_ref = ref<Notification[]>([]) // Internal ref
+  const activeNotifications_computed = computed(() => notifications_ref.value) // Internal computed
 
   function addNotification(
     type: Notification['type'] = 'info',
     message: string,
-    duration: number = 5000,
+    duration: number = 3000
   ) {
     const newNotification: Notification = {
       id: Date.now(),
       message,
       type,
       duration,
-    };
-    notifications_ref.value.push(newNotification);
+    }
+    notifications_ref.value.push(newNotification)
     setTimeout(() => {
-      removeNotification(newNotification.id);
-    }, duration);
+      removeNotification(newNotification.id)
+    }, duration)
   }
   function addComplexNotification(
     type: Notification['type'] = 'info',
     message: any,
-    duration: number = 5000,
+    duration = 3000
   ) {
-    const m = message.toString();
+    const m = message.toString()
     const newNotification: Notification = {
       id: Date.now(),
       message: m,
       type,
       duration,
-    };
-    notifications_ref.value.push(newNotification);
+    }
+    notifications_ref.value.push(newNotification)
     setTimeout(() => {
-      removeNotification(newNotification.id);
-    }, duration);
+      removeNotification(newNotification.id)
+    }, duration)
   }
   function removeNotification(id: number) {
+    console.log('removing notificatino')
     notifications_ref.value = notifications_ref.value.filter(
-      (notification) => notification.id !== id,
-    );
+      (notification) => notification.id !== id
+    )
   }
 
   // The setup function returns an object with Refs, ComputedRefs, and functions
@@ -112,5 +113,5 @@ export const useNotificationStore: () => INotificationStore = defineStore('notif
     addNotification,
     removeNotification,
     addComplexNotification,
-  };
-});
+  }
+})

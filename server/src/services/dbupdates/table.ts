@@ -6,13 +6,13 @@ import {
   EventCallback,
   StringKeyMap,
   TableOperationSubs,
-} from "./types";
-import config from "./config";
-import debounce from "./utils/debounce";
-import uid from "short-uuid";
-import logger from "./logger";
-import { formatRelation, formatTablePath } from "./utils/formatters";
-import { Pool } from "pg";
+} from './types';
+import config from './config';
+import debounce from './utils/debounce';
+import uid from 'short-uuid';
+import logger from './logger';
+import { formatRelation, formatTablePath } from './utils/formatters';
+import { Pool } from 'pg';
 
 const DEFAULT_OPTIONS = {
   schema: config.defaults.TABLE_SCHEMA,
@@ -62,14 +62,10 @@ export default class Table {
     this.options = { ...DEFAULT_OPTIONS, ...(options || {}) };
     this.subs = {};
     this.buffer = [];
-    this.processBuffer = debounce(
-      () => this._processBuffer(),
-      this.bufferInterval
-    );
+    this.processBuffer = debounce(() => this._processBuffer(), this.bufferInterval);
   }
 
   on(operation: Operation | string, cb: EventCallback): string | null {
-    console.log("on");
     if (!cb) return null;
     switch (operation) {
       case Operation.INSERT:
@@ -118,7 +114,6 @@ export default class Table {
   }
 
   _newSub(operation: Operation, cb: EventCallback): string {
-    console.log(operation);
     this.subs[operation] = this.subs[operation] || {};
     const subscriptionId = uid.generate();
     this.subs[operation][subscriptionId] = cb;
@@ -127,7 +122,6 @@ export default class Table {
 
   _newPendingEvent(event: PendingEvent) {
     // If debouncing isn't configured, handle event immediately.
-    console.log("pending event --- ");
     if (!this.bufferInterval) {
       this._processPendingEvents([event]);
       return;
@@ -173,9 +167,7 @@ export default class Table {
 
     // Resolve records for the events that only provided primary keys.
     if (eventsNeedingResolution.length) {
-      const resolvedEvents = await this._resolveEventRecords(
-        eventsNeedingResolution
-      );
+      const resolvedEvents = await this._resolveEventRecords(eventsNeedingResolution);
       resolvedEvents.length && events.push(...resolvedEvents);
     }
 
@@ -220,9 +212,6 @@ export default class Table {
     const eventsNeedingResolution = [];
     let i = 0;
     for (const pendingEvent of pendingEvents) {
-      console.log(processUpdates);
-      console.log(processInserts);
-      console.log(processDeletes);
       // Filter events based on which operations actually have subscriptions.
       if (
         (pendingEvent.operation === Operation.INSERT && !processInserts) ||
@@ -233,10 +222,8 @@ export default class Table {
 
       // Split events into those already fully resolved and those that need resolution.
       if (pendingEvent.data) {
-        console.log("1");
         events.push({ i, ...pendingEvent });
       } else if (pendingEvent.primaryKeyData) {
-        console.log("2");
         eventsNeedingResolution.push({ i, ...pendingEvent });
       }
       i++;
@@ -244,13 +231,9 @@ export default class Table {
     return [events, eventsNeedingResolution];
   }
 
-  async _resolveEventRecords(
-    eventsNeedingResolution: StringKeyMap[]
-  ): Promise<StringKeyMap[]> {
+  async _resolveEventRecords(eventsNeedingResolution: StringKeyMap[]): Promise<StringKeyMap[]> {
     // Sort primary key column names.
-    const sortedPrimaryKeyColNames = Object.keys(
-      eventsNeedingResolution[0].primaryKeyData
-    ).sort();
+    const sortedPrimaryKeyColNames = Object.keys(eventsNeedingResolution[0].primaryKeyData).sort();
 
     const eventsByPrimaryKeys: StringKeyMap = {};
     const eventPrimaryKeyData = [];
@@ -259,21 +242,15 @@ export default class Table {
       eventPrimaryKeyData.push(primaryKeyData);
 
       // Map events by their sorted primary key values.
-      const uniqueRecordKey = sortedPrimaryKeyColNames
-        .map((k) => primaryKeyData[k])
-        .join(":");
-      eventsByPrimaryKeys[uniqueRecordKey] =
-        eventsByPrimaryKeys[uniqueRecordKey] || [];
+      const uniqueRecordKey = sortedPrimaryKeyColNames.map((k) => primaryKeyData[k]).join(':');
+      eventsByPrimaryKeys[uniqueRecordKey] = eventsByPrimaryKeys[uniqueRecordKey] || [];
       eventsByPrimaryKeys[uniqueRecordKey].push(event);
     }
 
     // Resolve records by primary keys.
     let records;
     try {
-      records = await this._getRecordsWhere(
-        this.tablePath,
-        eventPrimaryKeyData
-      );
+      records = await this._getRecordsWhere(this.tablePath, eventPrimaryKeyData);
     } catch (err) {
       logger.error(
         `Error resolving records for realtime events in table ${this.tablePath}: ${err}`
@@ -284,11 +261,8 @@ export default class Table {
 
     // Map the found records back to their associated events.
     for (const record of records) {
-      const uniqueRecordKey = sortedPrimaryKeyColNames
-        .map((k) => record[k])
-        .join(":");
-      const eventsAssociatedWithRecord =
-        eventsByPrimaryKeys[uniqueRecordKey] || [];
+      const uniqueRecordKey = sortedPrimaryKeyColNames.map((k) => record[k]).join(':');
+      const eventsAssociatedWithRecord = eventsByPrimaryKeys[uniqueRecordKey] || [];
       if (!eventsAssociatedWithRecord.length) continue;
       for (let i = 0; i < eventsAssociatedWithRecord.length; i++) {
         eventsByPrimaryKeys[uniqueRecordKey][i].data = record;
@@ -299,10 +273,7 @@ export default class Table {
     return Object.values(eventsByPrimaryKeys).flat();
   }
 
-  async _getRecordsWhere(
-    tablePath: string,
-    whereGroups: StringKeyMap[]
-  ): Promise<StringKeyMap[]> {
+  async _getRecordsWhere(tablePath: string, whereGroups: StringKeyMap[]): Promise<StringKeyMap[]> {
     const bindings = [];
     const orStatements = [];
     let i = 1;
@@ -316,9 +287,9 @@ export default class Table {
         bindings.push(params[colName]);
         i++;
       }
-      orStatements.push(andStatements.join(" and "));
+      orStatements.push(andStatements.join(' and '));
     }
-    const conditions = orStatements.map((s) => `(${s})`).join(" or ");
+    const conditions = orStatements.map((s) => `(${s})`).join(' or ');
     const query = `select * from ${formatRelation(tablePath)} where ${conditions}`;
 
     // Acquire a connection from the pool.

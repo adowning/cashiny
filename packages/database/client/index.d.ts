@@ -21127,11 +21127,13 @@ export namespace Prisma {
 
   export type GameSpinAvgAggregateOutputType = {
     grossWinAmount: number | null
+    spinNumber: number | null
     wagerAmount: number | null
   }
 
   export type GameSpinSumAggregateOutputType = {
     grossWinAmount: number | null
+    spinNumber: number | null
     wagerAmount: number | null
   }
 
@@ -21140,6 +21142,7 @@ export namespace Prisma {
     createdAt: Date | null
     grossWinAmount: number | null
     currencyId: string | null
+    spinNumber: number | null
     gameSessionId: string | null
     wagerAmount: number | null
     sessionId: string | null
@@ -21151,6 +21154,7 @@ export namespace Prisma {
     createdAt: Date | null
     grossWinAmount: number | null
     currencyId: string | null
+    spinNumber: number | null
     gameSessionId: string | null
     wagerAmount: number | null
     sessionId: string | null
@@ -21163,6 +21167,7 @@ export namespace Prisma {
     createdAt: number
     grossWinAmount: number
     currencyId: number
+    spinNumber: number
     gameSessionId: number
     wagerAmount: number
     sessionId: number
@@ -21173,11 +21178,13 @@ export namespace Prisma {
 
   export type GameSpinAvgAggregateInputType = {
     grossWinAmount?: true
+    spinNumber?: true
     wagerAmount?: true
   }
 
   export type GameSpinSumAggregateInputType = {
     grossWinAmount?: true
+    spinNumber?: true
     wagerAmount?: true
   }
 
@@ -21186,6 +21193,7 @@ export namespace Prisma {
     createdAt?: true
     grossWinAmount?: true
     currencyId?: true
+    spinNumber?: true
     gameSessionId?: true
     wagerAmount?: true
     sessionId?: true
@@ -21197,6 +21205,7 @@ export namespace Prisma {
     createdAt?: true
     grossWinAmount?: true
     currencyId?: true
+    spinNumber?: true
     gameSessionId?: true
     wagerAmount?: true
     sessionId?: true
@@ -21209,6 +21218,7 @@ export namespace Prisma {
     createdAt?: true
     grossWinAmount?: true
     currencyId?: true
+    spinNumber?: true
     gameSessionId?: true
     wagerAmount?: true
     sessionId?: true
@@ -21308,6 +21318,7 @@ export namespace Prisma {
     createdAt: Date
     grossWinAmount: number | null
     currencyId: string | null
+    spinNumber: number
     gameSessionId: string
     wagerAmount: number | null
     sessionId: string
@@ -21339,6 +21350,7 @@ export namespace Prisma {
     createdAt?: boolean
     grossWinAmount?: boolean
     currencyId?: boolean
+    spinNumber?: boolean
     gameSessionId?: boolean
     wagerAmount?: boolean
     sessionId?: boolean
@@ -21352,6 +21364,7 @@ export namespace Prisma {
     createdAt?: boolean
     grossWinAmount?: boolean
     currencyId?: boolean
+    spinNumber?: boolean
     gameSessionId?: boolean
     wagerAmount?: boolean
     sessionId?: boolean
@@ -21365,6 +21378,7 @@ export namespace Prisma {
     createdAt?: boolean
     grossWinAmount?: boolean
     currencyId?: boolean
+    spinNumber?: boolean
     gameSessionId?: boolean
     wagerAmount?: boolean
     sessionId?: boolean
@@ -21378,13 +21392,14 @@ export namespace Prisma {
     createdAt?: boolean
     grossWinAmount?: boolean
     currencyId?: boolean
+    spinNumber?: boolean
     gameSessionId?: boolean
     wagerAmount?: boolean
     sessionId?: boolean
     timeStamp?: boolean
   }
 
-  export type GameSpinOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spinData" | "createdAt" | "grossWinAmount" | "currencyId" | "gameSessionId" | "wagerAmount" | "sessionId" | "timeStamp", ExtArgs["result"]["gameSpin"]>
+  export type GameSpinOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spinData" | "createdAt" | "grossWinAmount" | "currencyId" | "spinNumber" | "gameSessionId" | "wagerAmount" | "sessionId" | "timeStamp", ExtArgs["result"]["gameSpin"]>
   export type GameSpinInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gameSession?: boolean | GameSessionDefaultArgs<ExtArgs>
   }
@@ -21406,6 +21421,7 @@ export namespace Prisma {
       createdAt: Date
       grossWinAmount: number | null
       currencyId: string | null
+      spinNumber: number
       gameSessionId: string
       wagerAmount: number | null
       sessionId: string
@@ -21839,6 +21855,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"GameSpin", 'DateTime'>
     readonly grossWinAmount: FieldRef<"GameSpin", 'Int'>
     readonly currencyId: FieldRef<"GameSpin", 'String'>
+    readonly spinNumber: FieldRef<"GameSpin", 'Int'>
     readonly gameSessionId: FieldRef<"GameSpin", 'String'>
     readonly wagerAmount: FieldRef<"GameSpin", 'Int'>
     readonly sessionId: FieldRef<"GameSpin", 'String'>
@@ -41923,6 +41940,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     grossWinAmount: 'grossWinAmount',
     currencyId: 'currencyId',
+    spinNumber: 'spinNumber',
     gameSessionId: 'gameSessionId',
     wagerAmount: 'wagerAmount',
     sessionId: 'sessionId',
@@ -43970,6 +43988,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"GameSpin"> | Date | string
     grossWinAmount?: IntNullableFilter<"GameSpin"> | number | null
     currencyId?: StringNullableFilter<"GameSpin"> | string | null
+    spinNumber?: IntFilter<"GameSpin"> | number
     gameSessionId?: StringFilter<"GameSpin"> | string
     wagerAmount?: IntNullableFilter<"GameSpin"> | number | null
     sessionId?: StringFilter<"GameSpin"> | string
@@ -43983,6 +44002,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     grossWinAmount?: SortOrderInput | SortOrder
     currencyId?: SortOrderInput | SortOrder
+    spinNumber?: SortOrder
     gameSessionId?: SortOrder
     wagerAmount?: SortOrderInput | SortOrder
     sessionId?: SortOrder
@@ -43999,6 +44019,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"GameSpin"> | Date | string
     grossWinAmount?: IntNullableFilter<"GameSpin"> | number | null
     currencyId?: StringNullableFilter<"GameSpin"> | string | null
+    spinNumber?: IntFilter<"GameSpin"> | number
     gameSessionId?: StringFilter<"GameSpin"> | string
     wagerAmount?: IntNullableFilter<"GameSpin"> | number | null
     sessionId?: StringFilter<"GameSpin"> | string
@@ -44012,6 +44033,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     grossWinAmount?: SortOrderInput | SortOrder
     currencyId?: SortOrderInput | SortOrder
+    spinNumber?: SortOrder
     gameSessionId?: SortOrder
     wagerAmount?: SortOrderInput | SortOrder
     sessionId?: SortOrder
@@ -44032,6 +44054,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"GameSpin"> | Date | string
     grossWinAmount?: IntNullableWithAggregatesFilter<"GameSpin"> | number | null
     currencyId?: StringNullableWithAggregatesFilter<"GameSpin"> | string | null
+    spinNumber?: IntWithAggregatesFilter<"GameSpin"> | number
     gameSessionId?: StringWithAggregatesFilter<"GameSpin"> | string
     wagerAmount?: IntNullableWithAggregatesFilter<"GameSpin"> | number | null
     sessionId?: StringWithAggregatesFilter<"GameSpin"> | string
@@ -47284,6 +47307,7 @@ export namespace Prisma {
     createdAt?: Date | string
     grossWinAmount?: number | null
     currencyId?: string | null
+    spinNumber?: number
     wagerAmount?: number | null
     sessionId: string
     timeStamp: Date | string
@@ -47296,6 +47320,7 @@ export namespace Prisma {
     createdAt?: Date | string
     grossWinAmount?: number | null
     currencyId?: string | null
+    spinNumber?: number
     gameSessionId: string
     wagerAmount?: number | null
     sessionId: string
@@ -47308,6 +47333,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     grossWinAmount?: NullableIntFieldUpdateOperationsInput | number | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    spinNumber?: IntFieldUpdateOperationsInput | number
     wagerAmount?: NullableIntFieldUpdateOperationsInput | number | null
     sessionId?: StringFieldUpdateOperationsInput | string
     timeStamp?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47320,6 +47346,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     grossWinAmount?: NullableIntFieldUpdateOperationsInput | number | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    spinNumber?: IntFieldUpdateOperationsInput | number
     gameSessionId?: StringFieldUpdateOperationsInput | string
     wagerAmount?: NullableIntFieldUpdateOperationsInput | number | null
     sessionId?: StringFieldUpdateOperationsInput | string
@@ -47332,6 +47359,7 @@ export namespace Prisma {
     createdAt?: Date | string
     grossWinAmount?: number | null
     currencyId?: string | null
+    spinNumber?: number
     gameSessionId: string
     wagerAmount?: number | null
     sessionId: string
@@ -47344,6 +47372,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     grossWinAmount?: NullableIntFieldUpdateOperationsInput | number | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    spinNumber?: IntFieldUpdateOperationsInput | number
     wagerAmount?: NullableIntFieldUpdateOperationsInput | number | null
     sessionId?: StringFieldUpdateOperationsInput | string
     timeStamp?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47355,6 +47384,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     grossWinAmount?: NullableIntFieldUpdateOperationsInput | number | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    spinNumber?: IntFieldUpdateOperationsInput | number
     gameSessionId?: StringFieldUpdateOperationsInput | string
     wagerAmount?: NullableIntFieldUpdateOperationsInput | number | null
     sessionId?: StringFieldUpdateOperationsInput | string
@@ -50560,6 +50590,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     grossWinAmount?: SortOrder
     currencyId?: SortOrder
+    spinNumber?: SortOrder
     gameSessionId?: SortOrder
     wagerAmount?: SortOrder
     sessionId?: SortOrder
@@ -50568,6 +50599,7 @@ export namespace Prisma {
 
   export type GameSpinAvgOrderByAggregateInput = {
     grossWinAmount?: SortOrder
+    spinNumber?: SortOrder
     wagerAmount?: SortOrder
   }
 
@@ -50576,6 +50608,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     grossWinAmount?: SortOrder
     currencyId?: SortOrder
+    spinNumber?: SortOrder
     gameSessionId?: SortOrder
     wagerAmount?: SortOrder
     sessionId?: SortOrder
@@ -50587,6 +50620,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     grossWinAmount?: SortOrder
     currencyId?: SortOrder
+    spinNumber?: SortOrder
     gameSessionId?: SortOrder
     wagerAmount?: SortOrder
     sessionId?: SortOrder
@@ -50595,6 +50629,7 @@ export namespace Prisma {
 
   export type GameSpinSumOrderByAggregateInput = {
     grossWinAmount?: SortOrder
+    spinNumber?: SortOrder
     wagerAmount?: SortOrder
   }
 
@@ -61722,6 +61757,7 @@ export namespace Prisma {
     createdAt?: Date | string
     grossWinAmount?: number | null
     currencyId?: string | null
+    spinNumber?: number
     wagerAmount?: number | null
     sessionId: string
     timeStamp: Date | string
@@ -61733,6 +61769,7 @@ export namespace Prisma {
     createdAt?: Date | string
     grossWinAmount?: number | null
     currencyId?: string | null
+    spinNumber?: number
     wagerAmount?: number | null
     sessionId: string
     timeStamp: Date | string
@@ -61995,6 +62032,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"GameSpin"> | Date | string
     grossWinAmount?: IntNullableFilter<"GameSpin"> | number | null
     currencyId?: StringNullableFilter<"GameSpin"> | string | null
+    spinNumber?: IntFilter<"GameSpin"> | number
     gameSessionId?: StringFilter<"GameSpin"> | string
     wagerAmount?: IntNullableFilter<"GameSpin"> | number | null
     sessionId?: StringFilter<"GameSpin"> | string
@@ -71250,6 +71288,7 @@ export namespace Prisma {
     createdAt?: Date | string
     grossWinAmount?: number | null
     currencyId?: string | null
+    spinNumber?: number
     wagerAmount?: number | null
     sessionId: string
     timeStamp: Date | string
@@ -71274,6 +71313,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     grossWinAmount?: NullableIntFieldUpdateOperationsInput | number | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    spinNumber?: IntFieldUpdateOperationsInput | number
     wagerAmount?: NullableIntFieldUpdateOperationsInput | number | null
     sessionId?: StringFieldUpdateOperationsInput | string
     timeStamp?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71285,6 +71325,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     grossWinAmount?: NullableIntFieldUpdateOperationsInput | number | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    spinNumber?: IntFieldUpdateOperationsInput | number
     wagerAmount?: NullableIntFieldUpdateOperationsInput | number | null
     sessionId?: StringFieldUpdateOperationsInput | string
     timeStamp?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71296,6 +71337,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     grossWinAmount?: NullableIntFieldUpdateOperationsInput | number | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    spinNumber?: IntFieldUpdateOperationsInput | number
     wagerAmount?: NullableIntFieldUpdateOperationsInput | number | null
     sessionId?: StringFieldUpdateOperationsInput | string
     timeStamp?: DateTimeFieldUpdateOperationsInput | Date | string

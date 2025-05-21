@@ -16,7 +16,7 @@ import {
 
 const router = createRouter();
 router.get(NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_AMOUNT, async (c) => {
-  return await getUserAmount(c.req, c.get('user_with_profile')!);
+  return await getUserAmount(c.req, c.get('user_with_profile'));
 });
 // router.get(NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_INFO, async (c) => {
 //   return await getUserInfo(c.req, c.get("user")!);
