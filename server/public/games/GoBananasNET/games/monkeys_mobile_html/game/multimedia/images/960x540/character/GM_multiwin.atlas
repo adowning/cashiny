@@ -1,0 +1,97 @@
+
+GM_multiwin.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BM_shadow
+  rotate: false
+  xy: 232, 50
+  size: 304, 34
+  orig: 309, 36
+  offset: 1, 2
+  index: -1
+GM_arm1
+  rotate: true
+  xy: 232, 86
+  size: 149, 279
+  orig: 149, 280
+  offset: 0, 1
+  index: -1
+GM_arm2
+  rotate: true
+  xy: 513, 130
+  size: 105, 255
+  orig: 105, 256
+  offset: 0, 1
+  index: -1
+GM_body
+  rotate: false
+  xy: 2, 31
+  size: 228, 204
+  orig: 229, 204
+  offset: 0, 0
+  index: -1
+GM_crown
+  rotate: false
+  xy: 842, 29
+  size: 52, 36
+  orig: 52, 36
+  offset: 0, 0
+  index: -1
+GM_head
+  rotate: false
+  xy: 665, 4
+  size: 100, 124
+  orig: 101, 125
+  offset: 0, 0
+  index: -1
+GM_head_01
+  rotate: false
+  xy: 912, 110
+  size: 103, 125
+  orig: 119, 139
+  offset: 2, 6
+  index: -1
+GM_head_02
+  rotate: true
+  xy: 538, 25
+  size: 103, 125
+  orig: 119, 139
+  offset: 3, 6
+  index: -1
+GM_leg2
+  rotate: true
+  xy: 770, 67
+  size: 75, 128
+  orig: 75, 128
+  offset: 0, 0
+  index: -1
+GM_mouth
+  rotate: false
+  xy: 2, 2
+  size: 72, 27
+  orig: 74, 56
+  offset: 0, 21
+  index: -1
+GM_mouth_01
+  rotate: false
+  xy: 76, 2
+  size: 72, 27
+  orig: 74, 56
+  offset: 0, 21
+  index: -1
+GM_mouth_02
+  rotate: false
+  xy: 767, 9
+  size: 73, 56
+  orig: 74, 56
+  offset: 0, 0
+  index: -1
+GM_neckless
+  rotate: true
+  xy: 770, 144
+  size: 91, 140
+  orig: 92, 140
+  offset: 0, 0
+  index: -1

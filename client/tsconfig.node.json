@@ -1,0 +1,22 @@
+// apps/client/tsconfig.node.json
+{
+    "compilerOptions": {
+        "composite": true, // Required for project references
+        "skipLibCheck": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler", // Or "NodeNext", "Node16"
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        // "noEmit": true, // REMOVED: Conflicts with composite: true
+        "declaration": true, // ADDED: Required by composite: true
+        "declarationMap": true, // Optional: For better source mapping of declaration files
+        "emitDeclarationOnly": true, // ADDED: We only need .d.ts files, not .js files from this config
+        "outDir": "dist-node", // ADDED: Specify an output directory for declaration files (add to .gitignore)
+        "types": [
+            "bun-types"
+        ] // Or "node" if not using Bun-specific types for config
+    },
+    "include": [
+        // "vite.config.ts"
+    ] // Specify files that run in Node.js context
+}

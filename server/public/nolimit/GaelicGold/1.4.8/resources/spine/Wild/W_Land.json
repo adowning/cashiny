@@ -1,0 +1,113 @@
+{
+  "skeleton": {
+    "hash": "htuFR/g5a4KdBZJsPgjVPSiJMJ4",
+    "spine": "3.7.93",
+    "width": 196,
+    "height": 437.03
+  },
+  "bones": [
+    { "name": "root" },
+    { "name": "bone", "parent": "root", "x": -1.53, "y": -190 }
+  ],
+  "slots": [
+    { "name": "W_Character", "bone": "root", "attachment": "symbols/W/W" },
+    {
+      "name": "sources/symbols/W/W_eyesclosed",
+      "bone": "bone",
+      "attachment": "symbols/W/W_eyesclosed"
+    },
+    {
+      "name": "sources/symbols/W/W_MouthClosed",
+      "bone": "bone",
+      "attachment": "symbols/W/W_MouthClosed"
+    }
+  ],
+  "skins": {
+    "default": {
+      "W_Character": {
+        "symbols/W/W": {
+          "type": "mesh",
+          "uvs": [
+            0.23123, 0.94594, 0.48473, 0.94808, 0.63476, 0.8946, 1, 0.82187, 1,
+            0.70849, 0.85722, 0.71277, 0.82618, 0.64431, 1, 0.58441, 0.78997,
+            0.48601, 1, 0.40686, 0.95035, 0.2186, 0.77962, 0.13089, 0.80032,
+            0.0603, 0.47956, 0.02607, 0.15363, 0.07313, 0.04499, 0.24, 0,
+            0.46462, 0, 0.56302, 0.06568, 0.70849, 0.4245, 0.30246, 0.30098,
+            0.75302, 0.5233, 0.64833, 0.19518, 0.52373
+          ],
+          "triangles": [
+            21, 2, 1, 1, 0, 20, 0, 18, 20, 2, 5, 3, 1, 20, 21, 2, 6, 5, 2, 21,
+            6, 5, 4, 3, 18, 22, 20, 20, 22, 21, 18, 17, 22, 22, 19, 21, 21, 8,
+            6, 21, 19, 8, 6, 8, 7, 17, 16, 22, 16, 15, 22, 22, 15, 19, 19, 11,
+            8, 8, 10, 9, 8, 11, 10, 15, 14, 19, 19, 13, 11, 19, 14, 13, 11, 13,
+            12
+          ],
+          "vertices": [
+            1, 1, -52.86, -21.18, 1, 1, 1, -3.17, -22.2, 1, 1, 1, 26.23, 3.15,
+            1, 1, 1, 97.82, 37.63, 1, 1, 1, 97.82, 91.37, 1, 1, 1, 69.84, 89.34,
+            1, 1, 1, 63.75, 121.79, 1, 1, 1, 97.82, 150.18, 1, 1, 1, 56.66,
+            196.83, 1, 1, 1, 97.82, 234.34, 1, 1, 1, 88.09, 323.58, 1, 1, 1,
+            54.63, 365.15, 1, 1, 1, 58.68, 398.61, 1, 1, 1, -4.18, 414.84, 1, 1,
+            1, -68.07, 392.53, 1, 1, 1, -89.36, 313.44, 1, 1, 1, -98.18, 206.97,
+            1, 1, 1, -98.18, 160.32, 1, 1, 1, -85.3, 91.37, 1, 1, 1, -14.98,
+            283.83, 1, 1, 1, -39.19, 70.26, 1, 1, 1, 4.39, 119.88, 1, 1, 1,
+            -59.92, 178.95, 1
+          ],
+          "hull": 19
+        }
+      },
+      "sources/symbols/W/W_MouthClosed": {
+        "symbols/W/W_MouthClosed": {
+          "x": -7.62,
+          "y": 260.87,
+          "width": 100,
+          "height": 75
+        }
+      },
+      "sources/symbols/W/W_eyesclosed": {
+        "symbols/W/W_eyesclosed": {
+          "x": -3.34,
+          "y": 306.03,
+          "width": 97,
+          "height": 55
+        }
+      }
+    }
+  },
+  "animations": {
+    "animation": {
+      "slots": {
+        "sources/symbols/W/W_MouthClosed": {
+          "color": [
+            { "time": 0, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.3333, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.4, "color": "ffffffff", "curve": "stepped" },
+            { "time": 0.6, "color": "ffffff00" }
+          ]
+        },
+        "sources/symbols/W/W_eyesclosed": {
+          "color": [
+            { "time": 0, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.3333, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.4, "color": "ffffffff", "curve": "stepped" },
+            { "time": 0.5667, "color": "ffffff00" }
+          ]
+        }
+      },
+      "bones": {
+        "bone": {
+          "translate": [{ "time": 0.5333, "x": 0, "y": 0 }],
+          "scale": [
+            { "time": 0.3333, "x": 1, "y": 1 },
+            { "time": 0.4, "x": 1, "y": 0.95 },
+            { "time": 0.5667, "x": 1, "y": 1.02 },
+            { "time": 0.7, "x": 1, "y": 1 }
+          ]
+        },
+        "root": {
+          "translate": [{ "time": 0.3333, "x": -0.81, "y": 0.81 }]
+        }
+      }
+    }
+  }
+}

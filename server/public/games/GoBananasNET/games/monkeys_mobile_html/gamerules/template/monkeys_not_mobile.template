@@ -1,0 +1,236 @@
+<link rel="stylesheet" href="../../../gamerules/styles/desktopstyle.css" type="text/css"/>
+<h1><#RTmonkeysRulesHeading#/></h1>
+	<!-- Go Bananas!™ Game Rules -->
+
+<ul>
+	<li><#RTmonkeys#/></li>
+		<!-- Go Bananas!™ is a 5-reel, 3-row, 20-bet line video slot. The game features 5 different Spreading Wild Monkeys.  -->
+	<li><#RT20fixedLines5levelsRev#/></li>
+		<!-- The game is played with 20 bet lines (fixed), 1-10 bet levels and different coin values. -->
+	<li><#RTautoPlays#/></li>
+		<!-- AUTOPLAY automatically plays the game for the selected number of rounds. -->
+	<li><#RTbetLevelInstruction#/></li>	
+	<!-- The bet level is set using the LEVEL selector. -->
+	<li><#RTcoinValueInstruction#/></li>	
+	<!-- The coin value is set using the COIN VALUE selector. -->
+	<li><#RTcoinsDisplayValues#/></li>	
+	<!-- COINS displays the number of coins the player has available to wager.-->
+	<li><#RTmaxbetPlaysClusterRev#/></li>
+	<!-- MAX BET plays the game at the highest bet level and the current coin value. When playing at any lower bet level, MAX BET must be clicked twice to play the round with the selected coin value. -->
+	<li><#RTwinCombinationPaytablenoBold#/></li>
+	<!-- Winning combinations and payouts are made according to the Paytable. -->
+	<li><#RTCalcBetLineCoinNoMultiplierTransNew#/></li>
+	<!-- A bet line win in coins is equal to the value shown in the Paytable multiplied by the bet level. -->
+	<li><#RTbetLevel#/></li>
+	<!-- Bet level is the number of coins bet per bet line. -->
+	<li><#RTwinCalculationBetLinesCurrency#/></li>
+		<!-- A bet line win in currency is equal to the win in coins multiplied by the coin value. -->	
+	<li><#RTpaytableHighestNoActive#/></li>
+		<!-- Only the highest win per bet line is paid. -->
+	<li><#paytableBetlineInSucLeftToRight#/></li>
+	<!-- Bet line wins pay if in succession from leftmost to right. -->
+	<li><#betlineWinsMultiplied#/></li>
+	<!-- Bet line wins are multiplied by the number of coins bet per bet line. -->
+	<li><#RTsimultaneousWinsAdded#/></li>
+		<!-- Simultaneous wins on different bet lines are added. -->
+				
+</ul>
+
+<p><b><#RTwildSymbol#/></b></p>
+ <!-- Wild Symbol -->
+<ul>
+	<li><#RTallWildSubstituteAll#/></li>
+		<!-- All Wild symbols substitute for all symbols. -->
+	<li><#RTbetlinesWildSubHighestTransNew#/></li>
+		<!-- Wild symbol substitution pays the highest possible winning combination on a bet line according to the PAYTABLE.  -->
+	<li><#RTWildMonkeysActivate#/></li>
+		<!-- Wild symbols are only visible when activated by Wild Monkey symbols. -->
+</ul>
+		
+<p><b><#RTwildMonkeys#/></b></p>
+	<!-- Wild Monkey Symbols -->
+<ul>
+	<li><#RTDifferentMonkeys#/></li>
+		<!--The game has 5 different Wild Monkey symbols: Wild Gorilla, Wild Orangutan, Wild  Baboon, Wild Langur, Wild Tarsier. -->
+	<li><#RTspreadingWildMonkeysDesc#/></li>
+		<!-- When any of the 5 different Wild Monkey symbols appear on a reel, they turn adjacent symbols into Wild symbols in their own individual pattern. -->
+	<li><#RTMonkeyPattRandom#/></li>
+		<!-- It is randomly decided in which direction the patterns turn on the reels, but the entire patterns are always visible on the reel area so that all Wild symbols are shown.  -->
+	<li><#RTMonkeyPattOverlay#/></li>
+		<!-- A Wild symbol can be part of several different Wild Monkey patterns if they overlap.  -->
+	<li><#RTWildMonkeyExcept#/></li>
+		<!-- Wild Monkey symbols appear on any reel except for Wild Gorilla, that only appears on reel 2,3 and 4.  -->
+	<li><#RTspreadingWildGorDesc#/></li>
+		<!-- Wild Gorilla. The Wild Gorilla turns 5 symbols into Wild symbols following this pattern: -->
+		<img src="../gamerules/images/monkeys_WildGorillaExample.png"  align="top" />
+	<li><#RTspreadingWildOranDesc#/></li>
+		<!-- Wild Orangutan turns 4 symbols into Wild symbols following this pattern:  -->
+	<img src="../gamerules/images/monkeys_WildOrangutanExample.png"  align="top" />	
+	<li><#RTspreadingWildBabDesc#/></li>			
+		<!-- Wild Baboon vertically turns 3 symbols into Wild symbols following this pattern:  -->
+		<img src="../gamerules/images/monkeys_WildBaboonExample.png"  align="top" />
+		<li><#RTspreadingWildLanDesc#/></li>	
+		<!-- Wild Langur horizontally turns 3 symbols into Wild symbols following this pattern:  -->
+		<img src="../gamerules/images/monkeys_WildLangurExample.png"  align="top" />	
+	<li><#RTspreadingWildTarDesc#/></li>
+		<!-- Wild Tarsier turns 2 symbols into Wild symbols either vertically or horizontally following these two patterns:-->
+		<img src="../gamerules/images/monkeys_WildTarsierExampleH.png"  align="top" />
+</ul>
+
+<h2><#RTgameFunctionsHeading#/></h2>
+
+<ul>
+	<li><#RTtableDescribes#/></li>
+</ul>
+
+<table border="" cellpadding="3" style="margin-left:55px;" width="95%" >
+    <tr bgcolor="rgb(118, 173, 28)">
+        <th align="left"><font color="white"><#RTbuttonTableHead#/></font></th>
+        <th align="left"><font color="white"><#RTfunctionTableHead#/></font></th>
+</tr>
+    <tr>
+       <td align="center"><img src="../gamerules/images/spin_button_up.png" /></td>
+	   <td align="left"><#RTstartGameRound#/></td>
+   </tr>
+   <tr>
+       <td align="center"><img src="../gamerules/images/spanner_button.png" /></td>
+	   <td align="left"><#RTopenSettingsMenu#/></td>
+   </tr>
+   <tr>
+       <td align="center"><img src="../gamerules/images/speaker_button.png" /></td>
+	   <td align="left"><#RTmuteSoundSliderRev#/></td>
+   </tr>
+   <tr>
+       <td align="center"><img src="../gamerules/images/questionmark_button.png" /></td>
+	   <td align="left"><#RTopenGameRules#/></td>
+   </tr>
+   <tr>
+       <td align="center"><img src="../gamerules/images/auto_button.png" /></td>
+	   <td align="left"><#RTopenAutoplayMenu#/> <#RTautoplaySelectSpins#/></td>
+   </tr>
+   <tr>
+       <td align="center"><img src="../gamerules/images/paytable_nav_button.png" /></td>
+	   <td align="left"><#RTpaytableNavDescr#/></td>
+   </tr>
+   <tr>
+       <td align="center"><img src="../gamerules/images/information_button.png" /></td>
+	   <td align="left"><#RTinformationIconButtonNoBold#/></td>
+	   </tr>
+	<tr>
+	<td align="center"><img src="../gamerules/images/Button_Close.png" /></td>
+	<td><#RTclickCross#/></td>
+	</tr>	
+</table>
+
+<h2><#gameSettingOptionsHeading#/></h2>
+
+<ul>
+	<li><#gameSettingIntro#/></li>
+		<!-- To access game settings, click the spanner icon in the game panel. -->
+	<li><b><#RTsettingListQuickSpin#/></b>. <#RTquickSpinDescRev#/> <#RTquickSpinDisclaimer#/></li>
+		<!-- Quick spin. Turns the quick spin option on or off. (Not available in all casinos.) -->
+	<li><b><#RTsettingListIntroScreen#/></b>. <#RTintroOffRev#/></li>
+		<!-- Intro screen. Turns the intro screen on or off. -->
+	<li><b><#introGameSetting#/></b>. <#RTintroOff#/></li>
+		<!-- Intro movie. Turn the intro film on or off. -->
+	<li><b><#spaceSpin#/></b>. <#RTspacebarspin#/></li>
+		<!-- Spacebar to spin. Turns the spacebar function on or off.-->
+	<li><b><#gameHistory#/></b>. <#RTgameHistoryDesc#/> <#RTGameHistNoPlayForFun#/></li>
+		<!-- Game history. Click to view your latest game history. (Not available when PLAYING FOR FUN.) -->	
+</ul>
+
+<h2><#advancedAutoplayOptionsHeading#/></h2>
+
+    <!-- Advanced Autoplay Options -->
+<ul>
+	<li><#RTadvancedAutoplayButton#/></li>
+		<!-- To set advanced autoplay options click AUTOPLAY, and then click Advanced settings. -->
+	<li><b><#onAnyWin#/></b>. <#anyWinDesc#/></li>
+		<!-- On any win. Stop Autoplay when you win in a round. -->
+	
+	<li><b><#ifWinExeeds#/></b>. <#RTsingleWinDescRev#/></li>
+		<!-- If single win exceeds. Stops Autoplay when the amount you win exceeds or equals the amount you specify. -->
+	<li><b><#ifCashIncreasesBy#/></b>. <#RTcashIncreasesDescRev#/></li>
+		<!-- If cash increases by. Stops Autoplay if cash increases by the amount you specify. -->
+	<li><b><#ifCashDecreasesBy#/></b>. <#RTcashDecreasesDescRev#/></li>
+		<!-- If cash decreases by. Stops Autoplay if cash decreases by the amount you specify. -->	
+	<li><#RTclickResetToClear#/></li>
+		<!-- Click Reset to clear all selected Stop Autoplay options. -->
+</ul>
+<ul>
+	<li><#RTautoplayDuringGameRev#/></li>
+		<!-- Note: When changing Autoplay settings during a game round, all settings will take effect once the game round or feature is completed. -->
+</ul>
+<ul>
+	<li><#RTAutoplayDisconnect#/></li>
+		<!-- Note: If you are disconnected while playing, all Autoplay settings will return to default when you reload the game. -->
+</ul>
+<ul>
+	<li><#RTautoplayNote#/></li>
+		<!-- Note: If you are disconnected while playing, all Autoplay settings will return to default when you reload the game. -->
+</ul>
+
+
+<h2><#RTreturnToPlayer#/></h2>
+	<!-- Return to Player -->	
+<ul>
+	<li><#RTtheoreticalReturn#/> 96.91%</li>
+		<!-- The theoretical return to player for this game is xx% -->
+</ul>
+<h2><#RTadditionalInformation#/></h2>
+    <!-- Additional information -->	
+<ul>
+	<li><#RTreferWebSite#/></li>
+		<!-- The following game features and settings may be subject to the terms and conditions of the gaming site. For more information on the following, refer to the gaming website: -->	
+	<ul>
+		<li><#RTunfinishedGameSession2#/></li>
+			<!-- The procedures used to manage unfinished game rounds. -->
+		<li><#RTgameSessions2#/></li>
+			<!-- The time after which inactive game sessions automatically end. -->
+	</ul>
+	<li><#RTmalfunction#/></li>
+		<!-- In the event of malfunction of the gaming hardware/software, all affected game bets and payouts are rendered void and all affected bets refunded. -->
+</ul>
+
+
+<h2><#RTtransGameTerms#/></h2>
+<p><#RTtablePlayLangThnEng#/></p>
+<!-- Note: The following table is only applicable if you are playing in a language other than English.  -->
+<table border="" cellpadding="3" style="margin-left:55px;" >
+    <tr bgcolor="rgb(118, 173, 28)">
+        <th align="left"><font color="white"><#termEnglish#/></font></th>
+		<th align="left"><font color="white"><#termTranslatedTerm#/></font></th>
+    </tr>
+	       
+    <tr>
+    	<td>Wild</td>
+    	<td><#termWild#/></td>
+    </tr>
+	<tr>
+    	<td>Wild Monkeys</td>
+    	<td><#termWildMonkeys#/></td>
+    </tr>
+	<tr>
+    	<td>Wild Gorilla</td>
+    	<td><#termWildGor#/></td>
+    </tr>
+	<tr>
+    	<td>Wild Baboon</td>
+    	<td><#termWildBab#/></td>
+    </tr>
+	<tr>
+    	<td>Wild Orangutan</td>
+    	<td><#termWildOran#/></td>
+    </tr>
+	<tr>
+    	<td>Wild Langur</td>
+    	<td><#termWildLan#/></td>
+    </tr>
+	<tr>
+    	<td>Wild Tarsier</td>
+    	<td><#termWildTar#/></td>
+    </tr>
+    		
+ </table>
+
+<p><b><#RTrulesGenerated#/></b></p>

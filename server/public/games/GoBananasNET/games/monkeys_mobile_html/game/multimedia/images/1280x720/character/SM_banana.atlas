@@ -1,0 +1,495 @@
+
+SM_banana.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+banana/SM_animation_banana_0001
+  rotate: true
+  xy: 155, 2
+  size: 58, 120
+  orig: 97, 208
+  offset: 22, 80
+  index: -1
+banana/SM_animation_banana_0002
+  rotate: false
+  xy: 790, 845
+  size: 49, 176
+  orig: 97, 208
+  offset: 24, 24
+  index: -1
+banana/SM_animation_banana_0003
+  rotate: false
+  xy: 787, 664
+  size: 60, 176
+  orig: 97, 208
+  offset: 20, 24
+  index: -1
+banana/SM_animation_banana_0004
+  rotate: false
+  xy: 2, 823
+  size: 75, 198
+  orig: 97, 208
+  offset: 15, 2
+  index: -1
+banana/SM_animation_banana_0005
+  rotate: false
+  xy: 2, 623
+  size: 72, 198
+  orig: 97, 208
+  offset: 15, 2
+  index: -1
+banana/SM_animation_banana_0006
+  rotate: true
+  xy: 502, 22
+  size: 92, 172
+  orig: 97, 208
+  offset: 3, 28
+  index: -1
+banana/SM_animation_banana_0007
+  rotate: true
+  xy: 676, 25
+  size: 91, 171
+  orig: 97, 208
+  offset: 4, 29
+  index: -1
+banana/SM_animation_banana_0010
+  rotate: false
+  xy: 93, 244
+  size: 83, 184
+  orig: 97, 208
+  offset: 8, 16
+  index: -1
+banana/SM_animation_banana_0011
+  rotate: false
+  xy: 69, 51
+  size: 84, 184
+  orig: 97, 208
+  offset: 7, 16
+  index: -1
+banana/SM_animation_banana_0012
+  rotate: false
+  xy: 97, 445
+  size: 86, 183
+  orig: 97, 208
+  offset: 5, 17
+  index: -1
+banana/SM_animation_banana_0013
+  rotate: false
+  xy: 169, 646
+  size: 87, 182
+  orig: 97, 208
+  offset: 5, 18
+  index: -1
+banana/SM_animation_banana_0014
+  rotate: false
+  xy: 172, 840
+  size: 87, 181
+  orig: 97, 208
+  offset: 5, 19
+  index: -1
+banana/SM_animation_banana_0015
+  rotate: false
+  xy: 155, 62
+  size: 87, 180
+  orig: 97, 208
+  offset: 5, 20
+  index: -1
+banana/SM_animation_banana_0016
+  rotate: false
+  xy: 178, 264
+  size: 87, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0017
+  rotate: false
+  xy: 244, 83
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0018
+  rotate: false
+  xy: 267, 284
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0019
+  rotate: false
+  xy: 185, 465
+  size: 87, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0020
+  rotate: false
+  xy: 258, 659
+  size: 87, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0021
+  rotate: false
+  xy: 261, 842
+  size: 87, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0022
+  rotate: false
+  xy: 274, 478
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0023
+  rotate: false
+  xy: 347, 661
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0024
+  rotate: false
+  xy: 350, 842
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0025
+  rotate: false
+  xy: 332, 103
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0026
+  rotate: false
+  xy: 355, 297
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0027
+  rotate: false
+  xy: 362, 480
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0028
+  rotate: false
+  xy: 435, 661
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0029
+  rotate: false
+  xy: 438, 842
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0030
+  rotate: false
+  xy: 420, 116
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0031
+  rotate: false
+  xy: 443, 299
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0032
+  rotate: false
+  xy: 450, 480
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0033
+  rotate: false
+  xy: 523, 661
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0034
+  rotate: false
+  xy: 526, 842
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0035
+  rotate: false
+  xy: 508, 118
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0036
+  rotate: false
+  xy: 531, 299
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0037
+  rotate: false
+  xy: 538, 480
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0038
+  rotate: false
+  xy: 611, 661
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0039
+  rotate: false
+  xy: 614, 842
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0040
+  rotate: false
+  xy: 596, 118
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0041
+  rotate: false
+  xy: 619, 299
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0042
+  rotate: false
+  xy: 626, 480
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0043
+  rotate: false
+  xy: 699, 661
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0044
+  rotate: false
+  xy: 702, 842
+  size: 86, 179
+  orig: 97, 208
+  offset: 5, 21
+  index: -1
+banana/SM_animation_banana_0045
+  rotate: true
+  xy: 849, 935
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0046
+  rotate: true
+  xy: 849, 847
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0047
+  rotate: true
+  xy: 849, 759
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0048
+  rotate: true
+  xy: 849, 671
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0049
+  rotate: true
+  xy: 849, 583
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0050
+  rotate: true
+  xy: 849, 495
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0051
+  rotate: true
+  xy: 849, 407
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0052
+  rotate: true
+  xy: 849, 319
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0053
+  rotate: true
+  xy: 849, 231
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0054
+  rotate: true
+  xy: 849, 143
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0055
+  rotate: true
+  xy: 849, 55
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0056
+  rotate: false
+  xy: 684, 124
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0057
+  rotate: false
+  xy: 707, 305
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0058
+  rotate: false
+  xy: 714, 486
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0062
+  rotate: false
+  xy: 2, 237
+  size: 89, 191
+  orig: 97, 208
+  offset: 2, 9
+  index: -1
+banana/SM_animation_banana_0063
+  rotate: false
+  xy: 76, 630
+  size: 91, 191
+  orig: 97, 208
+  offset: 1, 9
+  index: -1
+banana/SM_animation_banana_0064
+  rotate: false
+  xy: 2, 430
+  size: 93, 191
+  orig: 97, 208
+  offset: 0, 9
+  index: -1
+banana/SM_animation_banana_0065
+  rotate: false
+  xy: 79, 830
+  size: 91, 191
+  orig: 97, 208
+  offset: 0, 9
+  index: -1
+banana/SM_animation_banana_0066
+  rotate: false
+  xy: 2, 44
+  size: 65, 191
+  orig: 97, 208
+  offset: 13, 9
+  index: -1
+banana/SM_animation_banana_0067
+  rotate: true
+  xy: 277, 18
+  size: 63, 166
+  orig: 97, 208
+  offset: 15, 34
+  index: -1
+banana/SM_animation_banana_0068
+  rotate: false
+  xy: 445, 9
+  size: 55, 105
+  orig: 97, 208
+  offset: 17, 79
+  index: -1
+banana/SM_animation_banana_0069
+  rotate: false
+  xy: 445, 9
+  size: 55, 105
+  orig: 97, 208
+  offset: 17, 79
+  index: -1
+
+SM_banana2.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+banana/SM_animation_banana_0008
+  rotate: false
+  xy: 2, 6
+  size: 91, 170
+  orig: 97, 208
+  offset: 4, 30
+  index: -1
+banana/SM_animation_banana_0009
+  rotate: false
+  xy: 95, 6
+  size: 91, 170
+  orig: 97, 208
+  offset: 4, 30
+  index: -1
+banana/SM_animation_banana_0059
+  rotate: true
+  xy: 188, 90
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0060
+  rotate: true
+  xy: 188, 2
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1
+banana/SM_animation_banana_0061
+  rotate: false
+  xy: 363, 3
+  size: 86, 173
+  orig: 97, 208
+  offset: 5, 27
+  index: -1

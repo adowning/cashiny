@@ -1,0 +1,524 @@
+
+SM_cymbal.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cymbals/cymbal_0049
+  rotate: true
+  xy: 840, 24
+  size: 132, 113
+  orig: 162, 585
+  offset: 11, 437
+  index: -1
+cymbals/cymbal_0050
+  rotate: false
+  xy: 1841, 747
+  size: 136, 121
+  orig: 162, 585
+  offset: 7, 431
+  index: -1
+cymbals/cymbal_0051
+  rotate: false
+  xy: 1700, 738
+  size: 139, 130
+  orig: 162, 585
+  offset: 4, 425
+  index: -1
+cymbals/cymbal_0052
+  rotate: true
+  xy: 1183, 447
+  size: 142, 138
+  orig: 162, 585
+  offset: 2, 420
+  index: -1
+cymbals/cymbal_0053
+  rotate: true
+  xy: 1387, 530
+  size: 143, 144
+  orig: 162, 585
+  offset: 1, 416
+  index: -1
+cymbals/cymbal_0054
+  rotate: true
+  xy: 1393, 675
+  size: 142, 150
+  orig: 162, 585
+  offset: 2, 413
+  index: -1
+cymbals/cymbal_0055
+  rotate: false
+  xy: 1087, 591
+  size: 140, 154
+  orig: 162, 585
+  offset: 4, 411
+  index: -1
+cymbals/cymbal_0056
+  rotate: true
+  xy: 1229, 606
+  size: 137, 156
+  orig: 162, 585
+  offset: 7, 411
+  index: -1
+cymbals/cymbal_0057
+  rotate: false
+  xy: 1533, 557
+  size: 101, 109
+  orig: 162, 585
+  offset: 43, 461
+  index: -1
+cymbals/cymbal_0058
+  rotate: true
+  xy: 1636, 555
+  size: 100, 107
+  orig: 162, 585
+  offset: 44, 465
+  index: -1
+cymbals/cymbal_0059
+  rotate: true
+  xy: 1233, 745
+  size: 98, 158
+  orig: 162, 585
+  offset: 47, 416
+  index: -1
+cymbals/cymbal_0060
+  rotate: true
+  xy: 628, 59
+  size: 96, 210
+  orig: 162, 585
+  offset: 49, 367
+  index: -1
+cymbals/cymbal_0061
+  rotate: true
+  xy: 1019, 747
+  size: 96, 212
+  orig: 162, 585
+  offset: 49, 367
+  index: -1
+cymbals/cymbal_0062
+  rotate: false
+  xy: 955, 92
+  size: 93, 338
+  orig: 162, 585
+  offset: 53, 243
+  index: -1
+cymbals/cymbal_0063
+  rotate: false
+  xy: 1050, 108
+  size: 83, 322
+  orig: 162, 585
+  offset: 53, 243
+  index: -1
+cymbals/cymbal_0064
+  rotate: true
+  xy: 1019, 845
+  size: 74, 383
+  orig: 162, 585
+  offset: 54, 167
+  index: -1
+cymbals/cymbal_0065
+  rotate: true
+  xy: 1569, 946
+  size: 76, 464
+  orig: 162, 585
+  offset: 52, 86
+  index: -1
+cymbals/cymbal_0066
+  rotate: true
+  xy: 1569, 870
+  size: 74, 430
+  orig: 162, 585
+  offset: 50, 7
+  index: -1
+cymbals/cymbal_0067
+  rotate: false
+  xy: 1135, 262
+  size: 34, 168
+  orig: 162, 585
+  offset: 90, 269
+  index: -1
+cymbals/cymbal_0068
+  rotate: true
+  xy: 110, 19
+  size: 32, 214
+  orig: 162, 585
+  offset: 91, 193
+  index: -1
+hand/hand_banana_0036
+  rotate: false
+  xy: 1087, 432
+  size: 94, 157
+  orig: 1028, 326
+  offset: 893, 150
+  index: -1
+hand/hand_banana_0037
+  rotate: true
+  xy: 1404, 819
+  size: 100, 151
+  orig: 1028, 326
+  offset: 885, 150
+  index: -1
+hand/hand_banana_0038
+  rotate: true
+  xy: 1050, 2
+  size: 104, 147
+  orig: 1028, 326
+  offset: 879, 149
+  index: -1
+hand/hand_banana_0039
+  rotate: true
+  xy: 1557, 753
+  size: 115, 141
+  orig: 1028, 326
+  offset: 867, 149
+  index: -1
+hand/hand_banana_0040
+  rotate: false
+  xy: 652, 157
+  size: 171, 269
+  orig: 1028, 326
+  offset: 824, 27
+  index: -1
+hand/hand_banana_0041
+  rotate: true
+  xy: 381, 217
+  size: 209, 269
+  orig: 1028, 326
+  offset: 786, 27
+  index: -1
+hand/hand_banana_0042
+  rotate: true
+  xy: 811, 432
+  size: 282, 274
+  orig: 1028, 326
+  offset: 713, 27
+  index: -1
+hand/hand_banana_0043
+  rotate: false
+  xy: 460, 428
+  size: 349, 286
+  orig: 1028, 326
+  offset: 650, 18
+  index: -1
+hand/hand_banana_0044
+  rotate: false
+  xy: 2, 171
+  size: 377, 291
+  orig: 1028, 326
+  offset: 625, 12
+  index: -1
+hand/hand_banana_0045
+  rotate: false
+  xy: 2, 464
+  size: 456, 283
+  orig: 1028, 326
+  offset: 550, 7
+  index: -1
+hand/hand_banana_0046
+  rotate: false
+  xy: 2, 749
+  size: 533, 273
+  orig: 1028, 326
+  offset: 476, 5
+  index: -1
+hand/hand_banana_0047
+  rotate: false
+  xy: 955, 46
+  size: 80, 44
+  orig: 1028, 326
+  offset: 402, 221
+  index: -1
+hand/hand_banana_0048
+  rotate: false
+  xy: 542, 30
+  size: 81, 47
+  orig: 1028, 326
+  offset: 329, 211
+  index: -1
+hand/hand_banana_0049
+  rotate: false
+  xy: 326, 2
+  size: 82, 49
+  orig: 1028, 326
+  offset: 256, 202
+  index: -1
+hand/hand_banana_0050
+  rotate: false
+  xy: 2, 2
+  size: 106, 49
+  orig: 1028, 326
+  offset: 230, 208
+  index: -1
+hand/hand_banana_0051
+  rotate: false
+  xy: 625, 7
+  size: 102, 50
+  orig: 1028, 326
+  offset: 136, 199
+  index: -1
+hand/hand_banana_0052
+  rotate: false
+  xy: 1533, 499
+  size: 98, 56
+  orig: 1028, 326
+  offset: 108, 190
+  index: -1
+hand/hand_banana_0054
+  rotate: true
+  xy: 1323, 506
+  size: 98, 62
+  orig: 1028, 326
+  offset: 1, 177
+  index: -1
+hand/hand_banana_0053
+  rotate: true
+  xy: 1323, 506
+  size: 98, 62
+  orig: 1028, 326
+  offset: 1, 177
+  index: -1
+out/SM_animation_cymbal_0049
+  rotate: false
+  xy: 424, 79
+  size: 202, 136
+  orig: 893, 150
+  offset: 686, 5
+  index: -1
+out/SM_animation_cymbal_0050
+  rotate: false
+  xy: 424, 79
+  size: 202, 136
+  orig: 893, 150
+  offset: 686, 5
+  index: -1
+out/SM_animation_cymbal_0051
+  rotate: true
+  xy: 825, 158
+  size: 272, 128
+  orig: 893, 150
+  offset: 591, 5
+  index: -1
+out/SM_animation_cymbal_0052
+  rotate: true
+  xy: 825, 158
+  size: 272, 128
+  orig: 893, 150
+  offset: 591, 5
+  index: -1
+out/SM_animation_cymbal_0053
+  rotate: false
+  xy: 2, 53
+  size: 420, 116
+  orig: 893, 150
+  offset: 438, 8
+  index: -1
+out/SM_animation_cymbal_0054
+  rotate: false
+  xy: 2, 53
+  size: 420, 116
+  orig: 893, 150
+  offset: 438, 8
+  index: -1
+out/SM_animation_cymbal_0055
+  rotate: false
+  xy: 537, 924
+  size: 555, 98
+  orig: 893, 150
+  offset: 240, 8
+  index: -1
+out/SM_animation_cymbal_0056
+  rotate: false
+  xy: 1094, 921
+  size: 473, 101
+  orig: 893, 150
+  offset: 227, 8
+  index: -1
+out/SM_animation_cymbal_0057
+  rotate: false
+  xy: 537, 716
+  size: 432, 102
+  orig: 893, 150
+  offset: 156, 8
+  index: -1
+out/SM_animation_cymbal_0058
+  rotate: false
+  xy: 537, 716
+  size: 432, 102
+  orig: 893, 150
+  offset: 156, 8
+  index: -1
+out/SM_animation_cymbal_0059
+  rotate: false
+  xy: 537, 820
+  size: 480, 102
+  orig: 893, 150
+  offset: 12, 8
+  index: -1
+walk/walk_tarsier2_0001
+  rotate: true
+  xy: 1745, 546
+  size: 109, 80
+  orig: 140, 88
+  offset: 4, 6
+  index: -1
+walk/walk_tarsier2_0002
+  rotate: false
+  xy: 1745, 464
+  size: 109, 80
+  orig: 140, 88
+  offset: 4, 6
+  index: -1
+walk/walk_tarsier2_0003
+  rotate: true
+  xy: 1921, 637
+  size: 108, 80
+  orig: 140, 88
+  offset: 4, 6
+  index: -1
+walk/walk_tarsier2_0004
+  rotate: false
+  xy: 1909, 554
+  size: 108, 81
+  orig: 140, 88
+  offset: 4, 6
+  index: -1
+walk/walk_tarsier2_0005
+  rotate: true
+  xy: 1827, 546
+  size: 109, 80
+  orig: 140, 88
+  offset: 4, 6
+  index: -1
+walk/walk_tarsier2_0006
+  rotate: false
+  xy: 1743, 382
+  size: 113, 80
+  orig: 140, 88
+  offset: 4, 6
+  index: -1
+walk/walk_tarsier2_0007
+  rotate: true
+  xy: 1216, 181
+  size: 116, 74
+  orig: 140, 88
+  offset: 4, 6
+  index: -1
+walk/walk_tarsier2_0008
+  rotate: false
+  xy: 1183, 375
+  size: 121, 70
+  orig: 140, 88
+  offset: 4, 5
+  index: -1
+walk/walk_tarsier2_0009
+  rotate: true
+  xy: 1135, 134
+  size: 126, 79
+  orig: 140, 88
+  offset: 4, 7
+  index: -1
+walk/walk_tarsier2_0010
+  rotate: false
+  xy: 1545, 668
+  size: 131, 83
+  orig: 140, 88
+  offset: 4, 4
+  index: -1
+walk/walk_tarsier2_0011
+  rotate: false
+  xy: 1811, 657
+  size: 108, 79
+  orig: 140, 88
+  offset: 4, 7
+  index: -1
+walk/walk_tarsier2_0012
+  rotate: false
+  xy: 1856, 464
+  size: 108, 80
+  orig: 140, 88
+  offset: 3, 7
+  index: -1
+walk/walk_tarsier2_0013
+  rotate: true
+  xy: 1858, 354
+  size: 108, 79
+  orig: 140, 88
+  offset: 3, 7
+  index: -1
+walk/walk_tarsier2_0014
+  rotate: false
+  xy: 1939, 362
+  size: 107, 78
+  orig: 140, 88
+  offset: 4, 7
+  index: -1
+walk/walk_tarsier2_0015
+  rotate: false
+  xy: 1939, 283
+  size: 107, 77
+  orig: 140, 88
+  offset: 4, 7
+  index: -1
+walk/walk_tarsier2_0016
+  rotate: false
+  xy: 1633, 477
+  size: 110, 76
+  orig: 140, 88
+  offset: 3, 7
+  index: -1
+walk/walk_tarsier2_0017
+  rotate: false
+  xy: 1515, 423
+  size: 114, 74
+  orig: 140, 88
+  offset: 3, 7
+  index: -1
+walk/walk_tarsier2_0018
+  rotate: false
+  xy: 424, 2
+  size: 116, 75
+  orig: 140, 88
+  offset: 4, 5
+  index: -1
+walk/walk_tarsier2_0019
+  rotate: false
+  xy: 1171, 299
+  size: 121, 74
+  orig: 140, 88
+  offset: 4, 5
+  index: -1
+walk/walk_tarsier2_0020
+  rotate: false
+  xy: 1387, 454
+  size: 126, 74
+  orig: 140, 88
+  offset: 4, 5
+  index: -1
+walk/walk_tarsier2_0021
+  rotate: false
+  xy: 1678, 657
+  size: 131, 79
+  orig: 140, 88
+  offset: 4, 4
+  index: -1
+walk/walk_tarsier2_0022
+  rotate: false
+  xy: 1216, 102
+  size: 109, 77
+  orig: 140, 88
+  offset: 4, 5
+  index: -1
+walk/walk_tarsier2_0023
+  rotate: false
+  xy: 1631, 396
+  size: 110, 79
+  orig: 140, 88
+  offset: 3, 5
+  index: -1
+walk/walk_tarsier2_0024
+  rotate: true
+  xy: 1966, 442
+  size: 110, 80
+  orig: 140, 88
+  offset: 3, 6
+  index: -1

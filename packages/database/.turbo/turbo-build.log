@@ -1,0 +1,13 @@
+
+[0m[2m[35m$[0m [2m[1mtsc && bun prisma generate[0m
+[2mEnvironment variables loaded from .env[22m
+[2mPrisma schema loaded from prisma[22m
+
+✔ Generated [1mPrisma Client[22m (v5.22.0)[2m to ./client[22m in 1.13s
+
+✔ Generated [1mTypescript Interfaces[22m[2m to ./../types/src/prisma/types.ts[22m in 412ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Curious about the SQL queries Prisma ORM generates? Optimize helps you enhance your visibility: https://pris.ly/tip-2-optimize
+

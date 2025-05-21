@@ -1,0 +1,184 @@
+{
+  "frames": {
+    "coinGold/CoinGold_00000": {
+      "frame": { "x": 0, "y": 668, "w": 152, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 152, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00001": {
+      "frame": { "x": 744, "y": 160, "w": 148, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 4, "y": 0, "w": 148, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00002": {
+      "frame": { "x": 744, "y": 480, "w": 140, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 12, "y": 0, "w": 140, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00003": {
+      "frame": { "x": 904, "y": 0, "w": 120, "h": 148 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 24, "y": 0, "w": 120, "h": 148 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00004": {
+      "frame": { "x": 896, "y": 800, "w": 88, "h": 144 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 36, "y": 0, "w": 88, "h": 144 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00005": {
+      "frame": { "x": 892, "y": 480, "w": 64, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 44, "y": 0, "w": 64, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00006": {
+      "frame": { "x": 0, "y": 828, "w": 72, "h": 132 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 32, "y": 8, "w": 72, "h": 132 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00007": {
+      "frame": { "x": 776, "y": 800, "w": 112, "h": 148 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 16, "y": 0, "w": 112, "h": 148 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00008": {
+      "frame": { "x": 628, "y": 668, "w": 140, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 140, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00009": {
+      "frame": { "x": 320, "y": 668, "w": 148, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 148, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00010": {
+      "frame": { "x": 744, "y": 0, "w": 152, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 152, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00011": {
+      "frame": { "x": 160, "y": 668, "w": 152, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 152, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00012": {
+      "frame": { "x": 476, "y": 668, "w": 144, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 8, "y": 0, "w": 144, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00013": {
+      "frame": { "x": 900, "y": 160, "w": 124, "h": 148 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 20, "y": 0, "w": 124, "h": 148 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00014": {
+      "frame": { "x": 924, "y": 640, "w": 92, "h": 144 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 36, "y": 0, "w": 92, "h": 144 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00015": {
+      "frame": { "x": 964, "y": 472, "w": 60, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 44, "y": 0, "w": 60, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00016": {
+      "frame": { "x": 80, "y": 828, "w": 72, "h": 132 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 32, "y": 8, "w": 72, "h": 132 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00017": {
+      "frame": { "x": 900, "y": 316, "w": 120, "h": 148 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 8, "y": 0, "w": 120, "h": 148 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00018": {
+      "frame": { "x": 776, "y": 640, "w": 140, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 140, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "coinGold/CoinGold_00019": {
+      "frame": { "x": 744, "y": 320, "w": 148, "h": 152 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 148, "h": 152 },
+      "sourceSize": { "w": 150, "h": 150 }
+    },
+    "Reel_frame": {
+      "frame": { "x": 0, "y": 0, "w": 736, "h": 660 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 28, "y": 12, "w": 736, "h": 660 },
+      "sourceSize": { "w": 800, "h": 672 }
+    }
+  },
+  "animations": {
+    "coinGold/CoinGold": [
+      "coinGold/CoinGold_00000",
+      "coinGold/CoinGold_00001",
+      "coinGold/CoinGold_00002",
+      "coinGold/CoinGold_00003",
+      "coinGold/CoinGold_00004",
+      "coinGold/CoinGold_00005",
+      "coinGold/CoinGold_00006",
+      "coinGold/CoinGold_00007",
+      "coinGold/CoinGold_00008",
+      "coinGold/CoinGold_00009",
+      "coinGold/CoinGold_00010",
+      "coinGold/CoinGold_00011",
+      "coinGold/CoinGold_00012",
+      "coinGold/CoinGold_00013",
+      "coinGold/CoinGold_00014",
+      "coinGold/CoinGold_00015",
+      "coinGold/CoinGold_00016",
+      "coinGold/CoinGold_00017",
+      "coinGold/CoinGold_00018",
+      "coinGold/CoinGold_00019"
+    ]
+  },
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "mainYellow0.png",
+    "format": "RGBA8888",
+    "size": { "w": 1024, "h": 960 },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:5968d8deb7a9ce4f179a97d517f8402f:04b04999df0668401f813ca044eabe63:20899c930aa8820b8d5909511ef4d164$"
+  }
+}

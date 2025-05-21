@@ -1,0 +1,686 @@
+{
+  "skeleton": {
+    "hash": "inlfMsgb+6i4/vZye3fZkx0O1QI",
+    "spine": "3.7.93",
+    "width": 197.2,
+    "height": 447.16
+  },
+  "bones": [
+    { "name": "root", "rotation": 0.21 },
+    { "name": "bone", "parent": "root", "x": -1.53, "y": -190 },
+    {
+      "name": "bone6",
+      "parent": "bone",
+      "rotation": -35.87,
+      "x": -20.07,
+      "y": 170.63
+    },
+    {
+      "name": "bone2",
+      "parent": "bone6",
+      "length": 65.21,
+      "x": 11.52,
+      "y": -7.45
+    },
+    {
+      "name": "bone3",
+      "parent": "bone2",
+      "length": 78.87,
+      "rotation": -39,
+      "x": 65.39,
+      "y": 1.14
+    },
+    {
+      "name": "bone4",
+      "parent": "bone6",
+      "length": 63.6,
+      "rotation": -58.53,
+      "x": 8.1,
+      "y": -36.01
+    },
+    {
+      "name": "bone5",
+      "parent": "bone4",
+      "length": 81.16,
+      "rotation": 15.37,
+      "x": 62.48,
+      "y": 3.99
+    },
+    { "name": "bone7", "parent": "bone3", "x": -24.57, "y": -16.3 },
+    { "name": "bone8", "parent": "bone7", "x": -15.61, "y": -8.61 },
+    {
+      "name": "bone9",
+      "parent": "root",
+      "x": 26.66,
+      "y": -69.93,
+      "scaleX": 0.4,
+      "scaleY": 0.4
+    },
+    { "name": "CoinBone", "parent": "bone6", "x": -13.32, "y": 20.57 },
+    { "name": "sparkle", "parent": "root", "x": -14.91, "y": 45.78 }
+  ],
+  "slots": [
+    { "name": "W_Character", "bone": "bone", "attachment": "symbols/W/W" },
+    {
+      "name": "sources/symbols/W/W_eyesclosed",
+      "bone": "bone6",
+      "attachment": "symbols/W/W_eyesclosed"
+    },
+    {
+      "name": "symbols/W/W_MouthClosed",
+      "bone": "bone6",
+      "attachment": "symbols/W/W_MouthClosed"
+    },
+    {
+      "name": "Coin",
+      "bone": "CoinBone",
+      "attachment": "pncHighQuality/StartCoin"
+    },
+    {
+      "name": "SelectRing",
+      "bone": "bone9",
+      "attachment": "pickandclickJpeg/SelectRing/selectring_00030",
+      "blend": "additive"
+    },
+    {
+      "name": "Sparkles",
+      "bone": "sparkle",
+      "attachment": "pickandclickJpeg/sparkleburst/sparkleburst_00025",
+      "blend": "additive"
+    }
+  ],
+  "skins": {
+    "default": {
+      "Coin": {
+        "pncHighQuality/StartCoin": {
+          "x": 7.86,
+          "y": -2.18,
+          "scaleX": 0.7,
+          "scaleY": 0.7,
+          "rotation": 35.87,
+          "width": 200,
+          "height": 200
+        }
+      },
+      "SelectRing": {
+        "pickandclickJpeg/SelectRing/selectring_00000": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00002": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00004": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00006": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00008": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00010": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00012": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00014": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00016": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00018": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00019": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00020": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00021": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00022": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00023": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00024": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00025": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00026": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00027": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00028": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00029": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00030": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        },
+        "pickandclickJpeg/SelectRing/selectring_00031": {
+          "x": 26.66,
+          "y": -7.81,
+          "width": 274,
+          "height": 284
+        }
+      },
+      "Sparkles": {
+        "pickandclickJpeg/sparkleburst/sparkleburst_00004": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00005": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00006": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00007": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00008": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00009": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00010": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00011": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00012": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00013": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00014": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00015": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00016": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00017": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00018": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00019": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00020": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00021": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00022": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00023": {
+          "width": 150,
+          "height": 150
+        },
+        "pickandclickJpeg/sparkleburst/sparkleburst_00025": {
+          "width": 150,
+          "height": 150
+        }
+      },
+      "W_Character": {
+        "symbols/W/W": {
+          "type": "mesh",
+          "uvs": [
+            0.7802, 0.09848, 0.73457, 0.15336, 0.84242, 0.18423, 0.971, 0.25284,
+            0.9876, 0.3609, 0.94197, 0.41235, 0.73457, 0.45695, 0.73042,
+            0.51527, 0.79264, 0.54957, 0.93367, 0.58902, 0.91708, 0.62332,
+            0.78849, 0.64391, 0.83412, 0.7108, 0.89219, 0.75025, 0.9793,
+            0.72109, 1, 0.77254, 1, 0.82743, 0.79264, 0.86688, 0.70139, 0.81885,
+            0.70139, 0.78284, 0.63502, 0.72966, 0.62258, 0.68507, 0.52717,
+            0.67821, 0.41933, 0.7108, 0.44836, 0.82228, 0.51473, 0.85659,
+            0.51058, 0.93206, 0.35296, 0.95607, 0.22022, 0.92691, 0.29489,
+            0.82915, 0.20778, 0.7331, 0.09579, 0.71594, 0.0626, 0.63361,
+            0.09579, 0.57873, 0, 0.48096, 0.02112, 0.41407, 0.12482, 0.32831,
+            0.158, 0.27514, 0.05431, 0.23569, 0.09993, 0.18423, 0.19119,
+            0.16022, 0.13312, 0.07961, 0.46495, 0.01272
+          ],
+          "triangles": [
+            23, 33, 36, 33, 35, 36, 42, 6, 37, 5, 2, 3, 6, 1, 2, 1, 42, 0, 42,
+            37, 40, 37, 39, 40, 40, 41, 42, 42, 1, 6, 38, 39, 37, 23, 36, 37, 5,
+            3, 4, 6, 2, 5, 6, 22, 37, 34, 35, 33, 7, 22, 6, 11, 7, 8, 29, 23,
+            24, 27, 24, 26, 26, 24, 25, 27, 29, 24, 28, 29, 27, 30, 31, 33, 32,
+            33, 31, 23, 30, 33, 29, 30, 23, 37, 22, 23, 20, 21, 11, 19, 11, 12,
+            17, 13, 16, 17, 12, 13, 12, 17, 19, 16, 13, 15, 13, 14, 15, 17, 18,
+            19, 19, 20, 11, 21, 22, 7, 11, 8, 10, 11, 21, 7, 10, 8, 9
+          ],
+          "vertices": [
+            1, 2, -62.36, 213.92, 1, 1, 2, -54.37, 187.6, 1, 1, 2, -28.66,
+            188.12, 1, 1, 2, 10.82, 176.54, 1, 1, 2, 43.46, 136.94, 1, 1, 2,
+            50.51, 111.93, 1, 1, 2, 29.95, 70.98, 1, 2, 3, 33.97, 55.56, 0.088,
+            2, 45.49, 48.11, 0.912, 2, 3, 53.38, 49.53, 0.384, 2, 64.9, 42.08,
+            0.616, 2, 3, 86.73, 50.57, 0.704, 2, 98.26, 43.12, 0.296, 2, 3,
+            93.62, 35.49, 0.616, 2, 105.15, 28.04, 0.384, 3, 3, 78.92, 12.82,
+            0.44115, 4, 2.91, 17.63, 0.46285, 2, 90.44, 5.37, 0.096, 1, 4,
+            35.84, 18.45, 1, 1, 4, 56.78, 24.86, 1, 1, 4, 47.61, 44.82, 1, 1, 4,
+            72.24, 42.71, 1, 1, 4, 97.45, 36.28, 1, 1, 4, 105.51, -7.73, 1, 1,
+            4, 79.03, -19.42, 1, 1, 4, 62.49, -15.2, 1, 1, 4, 34.85, -21.57, 1,
+            2, 3, 64, -22.05, 0.496, 4, 13.77, -18.7, 0.504, 2, 3, 46.94,
+            -30.37, 0.992, 5, 27.84, 42.01, 0.008, 1, 5, 44.86, 22.12, 1, 1, 6,
+            40.78, 17.68, 1, 2, 4, 87.31, -59.3, 0.152, 6, 59.22, 27.36, 0.848,
+            1, 6, 94.18, 19.75, 1, 2, 4, 125.16, -101.68, 0.008, 6, 99.47,
+            -12.74, 0.992, 1, 6, 80.95, -35.65, 1, 2, 4, 64.05, -97.83, 0.032,
+            6, 38.25, -12.47, 0.968, 3, 4, 15.71, -103.11, 0.0119, 5, 58.58,
+            -18.41, 0.7321, 6, -9.7, -20.56, 0.256, 1, 5, 52.15, -40.92, 1, 3,
+            4, -37.01, -119.01, 0.00742, 5, 13.74, -50.4, 0.992, 6, -61.41,
+            -39.52, 5.8e-4, 2, 5, -12.69, -45.91, 0.43788, 2, -37.68, -49.15,
+            0.56212, 1, 2, -80.05, -22.6, 1, 1, 2, -95.27, 5.52, 1, 1, 2,
+            -102.62, 50.37, 1, 1, 2, -112.12, 74.6, 1, 1, 2, -139.55, 77.85, 1,
+            1, 2, -146.59, 102.85, 1, 1, 2, -138.76, 122.56, 1, 1, 2, -170.38,
+            146.85, 1, 1, 2, -136.25, 210.65, 1
+          ],
+          "hull": 43
+        }
+      },
+      "sources/symbols/W/W_eyesclosed": {
+        "symbols/W/W_eyesclosed": {
+          "x": -65.78,
+          "y": 119.52,
+          "rotation": 35.87,
+          "width": 97,
+          "height": 55
+        }
+      },
+      "symbols/W/W_MouthClosed": {
+        "symbols/W/W_MouthClosed": {
+          "x": -43.36,
+          "y": 81.01,
+          "rotation": 35.87,
+          "width": 100,
+          "height": 75
+        }
+      }
+    }
+  },
+  "animations": {
+    "animation": {
+      "slots": {
+        "SelectRing": {
+          "color": [{ "time": 0, "color": "ffffffce" }],
+          "attachment": [
+            {
+              "time": 0.2667,
+              "name": "pickandclickJpeg/SelectRing/selectring_00002"
+            },
+            {
+              "time": 0.3,
+              "name": "pickandclickJpeg/SelectRing/selectring_00004"
+            },
+            {
+              "time": 0.3333,
+              "name": "pickandclickJpeg/SelectRing/selectring_00006"
+            },
+            {
+              "time": 0.3667,
+              "name": "pickandclickJpeg/SelectRing/selectring_00008"
+            },
+            {
+              "time": 0.4,
+              "name": "pickandclickJpeg/SelectRing/selectring_00010"
+            },
+            {
+              "time": 0.4333,
+              "name": "pickandclickJpeg/SelectRing/selectring_00012"
+            },
+            {
+              "time": 0.4667,
+              "name": "pickandclickJpeg/SelectRing/selectring_00014"
+            },
+            {
+              "time": 0.5,
+              "name": "pickandclickJpeg/SelectRing/selectring_00016"
+            },
+            {
+              "time": 0.5333,
+              "name": "pickandclickJpeg/SelectRing/selectring_00018"
+            },
+            {
+              "time": 0.5667,
+              "name": "pickandclickJpeg/SelectRing/selectring_00019"
+            },
+            {
+              "time": 0.6,
+              "name": "pickandclickJpeg/SelectRing/selectring_00020"
+            },
+            {
+              "time": 0.6333,
+              "name": "pickandclickJpeg/SelectRing/selectring_00021"
+            },
+            {
+              "time": 0.6667,
+              "name": "pickandclickJpeg/SelectRing/selectring_00022"
+            },
+            {
+              "time": 0.7,
+              "name": "pickandclickJpeg/SelectRing/selectring_00023"
+            },
+            {
+              "time": 0.7333,
+              "name": "pickandclickJpeg/SelectRing/selectring_00024"
+            },
+            {
+              "time": 0.7667,
+              "name": "pickandclickJpeg/SelectRing/selectring_00025"
+            },
+            {
+              "time": 0.8,
+              "name": "pickandclickJpeg/SelectRing/selectring_00026"
+            },
+            {
+              "time": 0.8333,
+              "name": "pickandclickJpeg/SelectRing/selectring_00027"
+            },
+            {
+              "time": 0.8667,
+              "name": "pickandclickJpeg/SelectRing/selectring_00028"
+            },
+            {
+              "time": 0.9,
+              "name": "pickandclickJpeg/SelectRing/selectring_00029"
+            },
+            {
+              "time": 0.9333,
+              "name": "pickandclickJpeg/SelectRing/selectring_00030"
+            },
+            {
+              "time": 0.9667,
+              "name": "pickandclickJpeg/SelectRing/selectring_00031"
+            }
+          ]
+        },
+        "Sparkles": {
+          "attachment": [
+            {
+              "time": 0.1667,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00004"
+            },
+            {
+              "time": 0.2,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00005"
+            },
+            {
+              "time": 0.2333,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00006"
+            },
+            {
+              "time": 0.2667,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00007"
+            },
+            {
+              "time": 0.3,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00008"
+            },
+            {
+              "time": 0.3333,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00009"
+            },
+            {
+              "time": 0.3667,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00010"
+            },
+            {
+              "time": 0.4,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00011"
+            },
+            {
+              "time": 0.4333,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00012"
+            },
+            {
+              "time": 0.4667,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00013"
+            },
+            {
+              "time": 0.5,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00014"
+            },
+            {
+              "time": 0.5333,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00015"
+            },
+            {
+              "time": 0.5667,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00016"
+            },
+            {
+              "time": 0.6,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00017"
+            },
+            {
+              "time": 0.6333,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00018"
+            },
+            {
+              "time": 0.6667,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00019"
+            },
+            {
+              "time": 0.7,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00020"
+            },
+            {
+              "time": 0.7333,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00021"
+            },
+            {
+              "time": 0.7667,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00022"
+            },
+            {
+              "time": 0.8,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00023"
+            },
+            {
+              "time": 0.8333,
+              "name": "pickandclickJpeg/sparkleburst/sparkleburst_00025"
+            }
+          ]
+        },
+        "sources/symbols/W/W_eyesclosed": {
+          "color": [
+            { "time": 0, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.3, "color": "ffffffff", "curve": "stepped" },
+            { "time": 0.3667, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.4333, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.5, "color": "ffffffff", "curve": "stepped" },
+            { "time": 0.6, "color": "ffffff00", "curve": "stepped" },
+            { "time": 1.4667, "color": "ffffff00" }
+          ]
+        },
+        "symbols/W/W_MouthClosed": {
+          "color": [
+            { "time": 0.2, "color": "ffffffff" },
+            { "time": 0.2667, "color": "ffffff00", "curve": "stepped" },
+            { "time": 0.8, "color": "ffffff00" }
+          ]
+        }
+      },
+      "bones": {
+        "bone": {
+          "translate": [
+            { "time": 0.0667, "x": 0, "y": 0 },
+            { "time": 0.1667, "x": 0, "y": 48.73 },
+            { "time": 0.6667, "x": 0, "y": 46.69 },
+            { "time": 0.7667, "x": 0, "y": 0 }
+          ],
+          "scale": [
+            { "time": 0, "x": 1.081, "y": 0.744 },
+            { "time": 0.1, "x": 1, "y": 1.024 },
+            { "time": 0.2667, "x": 1, "y": 1 },
+            { "time": 0.5667, "x": 1, "y": 1.024 },
+            { "time": 0.6667, "x": 0.952, "y": 1.133 },
+            { "time": 0.7333, "x": 1, "y": 0.98 },
+            { "time": 0.7667, "x": 1.082, "y": 0.861 },
+            { "time": 0.9333, "x": 1, "y": 1 }
+          ]
+        },
+        "bone5": {
+          "rotate": [
+            { "time": 0.1, "angle": 0 },
+            { "time": 0.2333, "angle": 55.65 },
+            { "time": 0.2667, "angle": 68.84, "curve": "stepped" },
+            { "time": 0.6667, "angle": 68.84 },
+            { "time": 0.7667, "angle": 0 }
+          ]
+        },
+        "bone3": {
+          "rotate": [
+            { "time": 0.0333, "angle": 0 },
+            { "time": 0.1, "angle": 32.46 },
+            { "time": 0.2, "angle": -44.65, "curve": "stepped" },
+            { "time": 0.6, "angle": -44.65 },
+            { "time": 0.7, "angle": 27.73 },
+            { "time": 0.8, "angle": 0 }
+          ]
+        },
+        "bone2": {
+          "rotate": [
+            { "time": 0, "angle": -45.26 },
+            { "time": 0.1333, "angle": 0 },
+            { "time": 0.2, "angle": 17.11, "curve": "stepped" },
+            { "time": 0.6, "angle": 17.11 },
+            { "time": 0.7333, "angle": 0 }
+          ]
+        },
+        "bone4": {
+          "rotate": [
+            { "time": 0.1, "angle": 0 },
+            { "time": 0.2333, "angle": -5.48 },
+            { "time": 0.3667, "angle": -6.06, "curve": "stepped" },
+            { "time": 0.6333, "angle": -6.06 },
+            { "time": 0.7333, "angle": 0 }
+          ]
+        },
+        "bone6": {
+          "translate": [{ "time": 0.4, "x": -0.06, "y": 0.81 }]
+        },
+        "bone9": {
+          "translate": [{ "time": 0, "x": -5.42, "y": -21.7 }],
+          "scale": [
+            { "time": 0, "x": 1.25, "y": 1.25 },
+            { "time": 0.9667, "x": 0.5, "y": 0.5 }
+          ]
+        },
+        "CoinBone": {
+          "scale": [
+            { "time": 0.1667, "x": 0.9, "y": 0.9 },
+            { "time": 0.2333, "x": 1.409, "y": 1.409, "curve": "stepped" },
+            { "time": 0.6, "x": 1.409, "y": 1.409 },
+            { "time": 0.7333, "x": 0.996, "y": 0.996 }
+          ]
+        }
+      }
+    }
+  }
+}

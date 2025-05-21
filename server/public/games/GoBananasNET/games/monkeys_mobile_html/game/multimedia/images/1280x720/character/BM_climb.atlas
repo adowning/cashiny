@@ -1,0 +1,90 @@
+
+BM_climb.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BM_arm_bent
+  rotate: false
+  xy: 742, 22
+  size: 87, 105
+  orig: 118, 116
+  offset: 23, 1
+  index: -1
+BM_banana
+  rotate: false
+  xy: 229, 93
+  size: 68, 34
+  orig: 68, 34
+  offset: 0, 0
+  index: -1
+BM_blur0001
+  rotate: false
+  xy: 229, 129
+  size: 585, 381
+  orig: 612, 418
+  offset: 1, 16
+  index: -1
+BM_body2
+  rotate: true
+  xy: 905, 45
+  size: 165, 103
+  orig: 188, 116
+  offset: 5, 10
+  index: -1
+BM_branch_gfx
+  rotate: true
+  xy: 2, 92
+  size: 418, 225
+  orig: 418, 225
+  offset: 0, 0
+  index: -1
+BM_branch_leaf
+  rotate: false
+  xy: 2, 3
+  size: 298, 87
+  orig: 298, 107
+  offset: 0, 6
+  index: -1
+BM_branch_leaf02
+  rotate: false
+  xy: 302, 2
+  size: 164, 125
+  orig: 203, 161
+  offset: 0, 3
+  index: -1
+BM_leg_bent
+  rotate: false
+  xy: 816, 154
+  size: 87, 56
+  orig: 87, 56
+  offset: 0, 0
+  index: -1
+BM_mane
+  rotate: true
+  xy: 816, 365
+  size: 145, 199
+  orig: 174, 208
+  offset: 17, 6
+  index: -1
+BM_reach
+  rotate: true
+  xy: 567, 14
+  size: 113, 173
+  orig: 117, 183
+  offset: 2, 10
+  index: -1
+BM_tail
+  rotate: false
+  xy: 468, 8
+  size: 97, 119
+  orig: 114, 119
+  offset: 7, 0
+  index: -1
+MB_bananas0001
+  rotate: true
+  xy: 831, 212
+  size: 151, 176
+  orig: 151, 176
+  offset: 0, 0
+  index: -1

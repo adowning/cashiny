@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTMX Game Host (No-Build)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-qbtR4rS9RrUMECUWDEM2eshP44KctKvJsVSrGkAhtzHoIQkaiJ2RXq99Dz_ZHDWO" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/html5-script-external.js"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: #111827; /* Tailwind gray-900 */
+            color: #d1d5db; /* Tailwind gray-300 */
+            margin: 0;
+            line-height: 1.5;
+        }
+        #app-container { /* Renamed from #app */
+            padding: 1rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .logotype-wheel {
+            border: 5px solid #4b5563; /* gray-600 */
+            border-top: 5px solid #3b82f6; /* blue-500 */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        .logotype {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .message-box {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: rgba(31, 41, 55, 0.9);
+            color: #f3f4f6;
+            padding: 20px; border-radius: 8px; text-align: center;
+            z-index: 10000; display: none;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .progress-bar {
+            width: 80%; background-color: #374151; border-radius: 0.25rem;
+            margin: 10px auto; height: 10px; overflow: hidden;
+        }
+        .progress-value {
+            height: 100%; background-color: #3b82f6; width: 0%;
+            transition: width 0.3s ease-in-out;
+        }
+        #DeferredLoadingText { font-size: 0.875rem; color: #9ca3af; }
+    </style>
+</head>
+<body class="CLIENT EXTERNAL HTML5" hx-target="#app-container"> <div class="pageOverlap"></div>
+    <div class="message-box browser-unsupported-message">
+        <div class="message-title" style="color: #fff;">You are using an unsupported browser.</div>
+        <div class="message-text" style="color: #fff;">Please use Google Chrome.</div>
+    </div>
+    <div id="wheelofpatience"></div>
+    <div class="scale-holder" id="PauseRoot">
+        <div class="scale-root" id="ScaleRoot">
+            <div id="pauseindicator">
+                <div class="pause-content">
+                    <div class="pause-wheel logotype-wheel"></div>
+                    <div id="progressbar" class="progress-bar">
+                        <div class="progress-value" id="progressvalue"></div>
+                    </div>
+                    <div id="DeferredLoadingText"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-container" class="p-4 rounded-lg shadow-xl bg-gray-800 border border-gray-700 min-h-[calc(100vh-2rem)] flex flex-col">
+        <h1 id="pageTitle" class="text-3xl font-bold mb-6 text-center text-sky-400">Pragmatic Game Host (HTMX)</h1>
+
+        <div id="config-loader" class="flex-grow flex flex-col items-center justify-center text-center p-8">
+            <div class="logotype-wheel !border-t-sky-400 !w-16 !h-16 mx-auto mb-4"></div>
+            <p class="text-xl text-gray-400">Loading Game Configuration...</p>
+        </div>
+
+        <div id="main-content" class="hidden flex-grow flex flex-col"> <div class="mb-6 p-4 bg-gray-700 rounded shadow-md">
+                <h2 class="text-xl font-semibold text-sky-500 mb-3">Game Configuration</h2>
+                <form id="gameConfigForm" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+                    <div><label for="gcToken" class="font-medium text-gray-400 block mb-1">Token:</label> <input id="gcToken" name="token" type="text" class="p-2 w-full rounded bg-gray-600 text-gray-200 border border-gray-500 focus:ring-2 focus:ring-sky-500 focus:border-sky-500" /></div>
+                    <div><label for="gcGameName" class="font-medium text-gray-400 block mb-1">Game Name:</label> <input id="gcGameName" name="gameName" type="text" class="p-2 w-full rounded bg-gray-600 text-gray-200 border border-gray-500 focus:ring-2 focus:ring-sky-500 focus:border-sky-500" /></div>
+                    <div><label for="gcLang" class="font-medium text-gray-400 block mb-1">Language:</label> <input id="gcLang" name="lang" type="text" class="p-2 w-full rounded bg-gray-600 text-gray-200 border border-gray-500 focus:ring-2 focus:ring-sky-500 focus:border-sky-500" /></div>
+                    <div><label for="gcCurrency" class="font-medium text-gray-400 block mb-1">Currency:</label> <input id="gcCurrency" name="currency" type="text" class="p-2 w-full rounded bg-gray-600 text-gray-200 border border-gray-500 focus:ring-2 focus:ring-sky-500 focus:border-sky-500" /></div>
+                    <div><label for="gcBaseDatapath" class="font-medium text-gray-400 block mb-1">Datapath Base:</label> <input id="gcBaseDatapath" name="baseDatapath" type="text" placeholder="/gs2c/common/games-html5/games/vs/" class="p-2 w-full rounded bg-gray-600 text-gray-200 border border-gray-500 focus:ring-2 focus:ring-sky-500 focus:border-sky-500" /></div>
+                    <div><label for="gcResourceName" class="font-medium text-gray-400 block mb-1">Resource Name:</label> <input id="gcResourceName" name="resourceName" type="text" placeholder="vsw" class="p-2 w-full rounded bg-gray-600 text-gray-200 border border-gray-500 focus:ring-2 focus:ring-sky-500 focus:border-sky-500" /></div>
+                    </form>
+                <button id="initGameButton" class="mt-4 px-6 py-2 bg-sky-500 text-white rounded hover:bg-sky-600 active:bg-sky-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
+                    Initialize Game & Connect WS
+                </button>
+            </div>
+
+            <div class="mb-6 p-4 bg-gray-700 rounded shadow-md">
+                <h2 class="text-xl font-semibold text-teal-400 mb-3">WebSocket (Standard)</h2>
+                <p class="text-sm mb-2">Status:
+                    <span id="wsStatusDisplay" class="font-semibold text-red-400">Disconnected</span>
+                </p>
+                <div class="flex space-x-2 mb-2">
+                    <button id="wsConnectButton" class="px-4 py-1 bg-teal-500 text-white rounded hover:bg-teal-600 text-sm disabled:opacity-50">Connect</button>
+                    <button id="wsDisconnectButton" class="px-4 py-1 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm disabled:opacity-50" disabled>Disconnect</button>
+                </div>
+                <div id="wsMessagesDisplay" class="mt-1 p-2 h-32 overflow-y-auto bg-gray-900 rounded border border-gray-600 text-xs">
+                    <p class="text-gray-500 italic">No WebSocket messages yet.</p>
+                </div>
+            </div>
+
+            <div class="flex-grow p-4 bg-gray-700 rounded shadow-md">
+                 <h2 class="text-xl font-semibold text-purple-400 mb-3">Legacy Script Monitor</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                    <p>Loading Step: <strong id="loadingStepDisplay" class="text-purple-300">0</strong></p>
+                    <p>Logo Visible: <strong id="logoVisibleDisplay" class="text-purple-300">false</strong></p>
+                    <p class="md:col-span-2">UA Info: <span id="uaInfoDisplay" class="text-xs text-gray-400 block max-h-24 overflow-y-auto bg-gray-800 p-1 rounded">UA will be populated after game init.</span></p>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Legacy Scripts (GA, UAParser, Loader, UHTLogotype, initLegacyScripts) ---
+        // This block is the same as in the Vue version.
+        // It should be loaded and initLegacyScripts should be callable.
+        // UAParser2 is assumed to be loaded by html5-script-external.js or another script tag.
+        var gaQueue = [], ga = function (...args) { gaQueue.push(args) };
+        var URLGameSymbol = "_unknown_game_symbol_from_url_";
+        var LoadingStep = 0;
+        var UHT_SEND_ERRORS = true;
+        var UHT_HAD_ERRORS = false;
+        var GA_timer_load_start;
+
+        window.onerror = function (messageOrEvent, source, lineno, colno, error) {
+            if (!UHT_SEND_ERRORS) return true; UHT_HAD_ERRORS = true; var args;
+            if (messageOrEvent instanceof Event && error === undefined) { args = [messageOrEvent.message, messageOrEvent.filename, messageOrEvent.lineno, messageOrEvent.colno, messageOrEvent.error]; }
+            else { args = [messageOrEvent, source, lineno, colno, error]; }
+            if (args[1]) { args[1] = String(args[1]).split("?").shift().split("/").pop(); } else { args[1] = "unknown_source"; }
+            var msg = `${args[0]} at ${args[1]}:${args[2] || 'N/A'}:${args[3] || 'N/A'}`;
+            if (ga && typeof ga === 'function') { ga('BehaviourTracker.send', 'event', "uht_errors", msg, URLGameSymbol, 1); }
+            else { console.warn("GA not available to send UHT error:", msg); }
+        };
+        window.onbeforeunload = function () { /* ... same as before ... */ };
+        function getGameSymbolFromUrl() { /* ... same as before ... */
+            var params = {}; var urlSplitted = location.href.split("?");
+            if (urlSplitted.length > 1) { var paramsSplitted = urlSplitted[1].split("&");
+                for (var i = 0; i < paramsSplitted.length; ++i) { var paramSplitted = paramsSplitted[i].split("=");
+                    params[paramSplitted[0]] = (paramSplitted.length > 1) ? decodeURIComponent(paramSplitted[1].replace(/\+/g, ' ')) : null; } }
+            return params["symbol"];
+        }
+        function setupGoogleAnalytics() { /* ... same as before ... */ }
+        function sendGAQueued() { /* ... same as before ... */ }
+        if(typeof UAParser2 === 'undefined') { console.warn("UAParser2 not defined..."); window.UAParser2 = function() { this.getResult = function() { return { ua:"", browser: {}, engine:{}, os:{}, device:{}, cpu:{} }; }; }; }
+        var UHT_ALL = true; /* ... UHT_CONFIG, UHT_DEVICE_TYPE etc. same as before ... */
+        var UHT_CONFIG = { GAME_URL: "", GAME_URL_ALTERNATIVE: "", LANGUAGE: "en", SYMBOL: "symbol", MINI_MODE: false, LOBBY_LAUNCHED: false, STYLENAME: "default" };
+        var UHT_DEVICE_TYPE = { MOBILE: false, DESKTOP: false }; var UHT_FRAME = false; var UHT_LOW_END_DEVICE = false;
+        var currentDatapathRetries = 0; var retriesBeforeAlternativeDatapath = 5;
+        var LowEndDeviceIdentifiers = ["S III", "GT-I9300", "iPhone 5", "iPhone 5C", "iPhone 5S", "iPhone 6", "iPhone 6 Plus"];
+        var UHT_UA_INFO;
+        var UHTConsole = { /* ... same as before ... */ allowToWrite: false, messages: [], _log: function(type, ...args) { this.messages.push({type, args}); if(this.allowToWrite && console && typeof console[type] === 'function') console[type](...args); else if (this.allowToWrite) console.log(type, ...args); }, log: function(...args) { this._log('log', ...args); }, info: function(...args) { this._log('info', ...args); }, warn: function(...args) { this._log('warn', ...args); }, error: function(...args) { this._log('error', ...args); }, AllowToWrite: function(allow) { this.allowToWrite = allow; if(allow) { this.messages.forEach(m => this[m.type](...m.args)); this.messages = [];}} };
+        var Loader = { /* ... same as before, ensure LoadGame, Start, etc. are present ... */ WURFLProcessed: false, statisticsURL: null, statistics: null, PLATFORM_APPENDED: false, LoadScript: function (url, loadCallback, errorCallback) { var script = document.createElement("script"); script.type = "text/javascript"; script.src = url; if (loadCallback) script.onload = loadCallback; if (errorCallback) { script.onabort = errorCallback; script.onerror = errorCallback; } document.getElementsByTagName("HEAD")[0].appendChild(script); return script; }, WURFLErrorHandler: function () { if (this.WURFLProcessed) return; this.WURFLProcessed = true; console.log("Using UAParser2 for device detection."); var device = UHT_UA_INFO.device || {}; var mobile = device.type == "mobile" || device.type == "tablet"; UHT_DEVICE_TYPE = { MOBILE: mobile, DESKTOP: !mobile }; this.SetExtraInfo(); this.SendStatistics(JSON.stringify({wurfl_skipped: true})); }, SetExtraInfo: function () { try { UHT_FRAME = window.top != window } catch (e) { UHT_FRAME = true } var osName = (UHT_UA_INFO.os && UHT_UA_INFO.os.name) ? UHT_UA_INFO.os.name.replace(/\s/g, "") : "UnknownOS"; var deviceModel = (UHT_UA_INFO.device && UHT_UA_INFO.device.model) ? UHT_UA_INFO.device.model.replace(/\s/g,"") : "UnknownDevice"; var browserName = (UHT_UA_INFO.browser && UHT_UA_INFO.browser.name) ? UHT_UA_INFO.browser.name.replace(/\s/g, "") : "UnknownBrowser"; if (UHT_UA_INFO.device && UHT_UA_INFO.device.model) { for (var id in LowEndDeviceIdentifiers) { if (UHT_UA_INFO.device.model.indexOf(LowEndDeviceIdentifiers[id]) >= 0) { UHT_LOW_END_DEVICE = true; break; } } } var classNames = [document.documentElement.className || "", osName, deviceModel, browserName, UHT_CONFIG.MINI_MODE ? "MiniMode" : "StandardMode", UHT_FRAME ? "InFrame" : "MainWindow"]; document.documentElement.className = classNames.filter(Boolean).join(" "); document.documentElement.id = UHT_DEVICE_TYPE.MOBILE ? "Mobile" : "Desktop"; }, LoadGame: function (gameConfigFromApp) { /* ... same as before ... ensure it uses gameConfigFromApp.datapath ... */ if (!this.WURFLProcessed) { setTimeout(() => this.LoadGame(gameConfigFromApp), 50); return; } UHT_CONFIG.GAME_URL = gameConfigFromApp.datapath; UHT_CONFIG.GAME_URL_ALTERNATIVE = gameConfigFromApp.datapath_alternative || gameConfigFromApp.datapath; /* ... rest of UHT_CONFIG population ... */ let finalGameUrl = UHT_CONFIG.GAME_URL; var script = this.LoadScript(finalGameUrl + "bootstrap.js", this.LoadGameCallback, () => { if(script.parentNode) script.parentNode.removeChild(script); currentDatapathRetries++; if (currentDatapathRetries >= retriesBeforeAlternativeDatapath) { UHT_CONFIG.GAME_URL = UHT_CONFIG.GAME_URL_ALTERNATIVE; finalGameUrl = UHT_CONFIG.GAME_URL; if (ga && typeof ga === 'function') ga("LoadingTracker.send", "event", "uht_loading", "_USED_ALTERNATIVE_DATA_PATH", URLGameSymbol, 1); } setTimeout(() => this.LoadGame(gameConfigFromApp), 250); }); }, LoadGameCallback: function () { console.log("Bootstrap.js loaded successfully."); if(window.UHTLogotype && typeof window.UHTLogotype.GameLoadingStarted === 'function'){ window.UHTLogotype.GameLoadingStarted(); } }, Start: function (gameConfigFromApp) { UHTConsole.AllowToWrite(true); this.LoadGame(gameConfigFromApp); if (window.UHTLogotype && typeof window.UHTLogotype.LoadLogoInfo === 'function' && UHT_CONFIG.STYLENAME) { UHTLogotype.LoadLogoInfo(UHT_CONFIG.STYLENAME); } }, SendStatistics: function (params) { if (!this.statisticsURL) { this.statistics = params; return; } console.log("Mock SendStatistics:", { url: this.statisticsURL, params: params }); }};
+        var UHTLogotype = { /* ... same as before ... */ name: null, path: null, data: null, logoEl: null, logoImg: null, timer: -1, duration: 2000, gameLoadingStarted: false, hideLogoTimeout: null, isVisible: false, LoadLogoInfo: function(styleName) { if (!UHT_CONFIG.GAME_URL || UHT_CONFIG.GAME_URL.length === 0 || !this) return; this.name = styleName; let basePath = UHT_CONFIG.GAME_URL; const gameSymbolPattern = /\/vs\/[^/]+\/?$/; basePath = basePath.replace(gameSymbolPattern, '/'); if (!basePath.endsWith('/')) basePath += '/'; this.path = basePath + "../operator_logos/"; Loader.LoadScript(this.path + "logo_info.js", () => this.OnLogoInfoLoaded(), () => { console.warn("logo_info.js failed/not found."); this.data = null; this.OnLogoInfoLoaded(); }); }, OnLogoInfoLoaded: function() { if (!this) return; const info = window["UHTLogotypeInfo"]; if (info && this.name) this.data = info[this.name] || null; if (this.data && this.data.src) { this.logoImg = new Image(); this.logoImg.onload = () => this.OnLogoLoaded(); this.logoImg.onerror = () => { console.error("Failed to load logo image."); this.UpdateStyle("logoOff", "logoOn"); this.isVisible = false; UHTLogoIsVisible = false;}; this.logoImg.src = this.path + this.data.src; } else { this.UpdateStyle("logoOff", "logoOn"); this.isVisible = false; UHTLogoIsVisible = false; } }, OnLogoLoaded: function() { if (!this || !this.data || !this.logoImg) return; if (this.logoEl && this.logoEl.parentNode) this.logoEl.parentNode.removeChild(this.logoEl); var wheel = document.createElement("div"); wheel.className = "logotype-wheel"; var el = document.createElement("div"); el.className = "logotype"; el.style.backgroundColor = this.data["bg"] || "#000000"; el.style.backgroundImage = "url('" + this.logoImg.src + "')"; el.appendChild(wheel); document.body.appendChild(el); this.logoEl = el; this.UpdateStyle("logoOn", "logoOff"); this.timer = Date.now(); this.isVisible = true; UHTLogoIsVisible = true; this.HandleResize(); window.addEventListener("resize", this.HandleResize.bind(this), false); if (this.gameLoadingStarted) this.DelayHideLogo(this.duration); }, HandleResize: function() { if (!this.logoEl || !this.data || !this.logoImg || !this.logoImg.width || !this.logoImg.height) return; var w = this.logoImg.width; var h = this.logoImg.height; var sw = "auto"; var sh = "auto"; var r1 = window.innerWidth / window.innerHeight; var r2 = w / h; var fit = this.data["fit"] || "contain"; if (fit === "shrink") { if (r2 < r1) sh = "100%"; else sw = "100%"; } else if (fit === "cover") { if (r2 < r1) sw = "100%"; else sh = "100%"; } else { this.logoEl.style.backgroundSize = "contain"; return; } this.logoEl.style.backgroundSize = sw + " " + sh; }, GameLoadingStarted: function() { this.gameLoadingStarted = true; if (!this.isVisible && !this.data) { this.HideLogo(); return; } if (this.timer > 0 && this.isVisible) { var dt = this.duration - (Date.now() - this.timer); (dt <= 0) ? this.HideLogo() : this.DelayHideLogo(dt); } else if (this.isVisible) { this.DelayHideLogo(this.duration); } }, DelayHideLogo: function(delay) { if (this.hideLogoTimeout) clearTimeout(this.hideLogoTimeout); this.hideLogoTimeout = setTimeout(() => this.HideLogo(), delay); }, HideLogo: function() { if (this.logoEl && this.logoEl.parentNode) { this.logoEl.parentNode.removeChild(this.logoEl); this.logoEl = null; } window.removeEventListener("resize", this.HandleResize.bind(this), false); this.UpdateStyle("logoOff", "logoOn"); this.isVisible = false; UHTLogoIsVisible = false; }, UpdateStyle: function(add, remove) { var currentClasses = (document.documentElement.className || "").split(" ").filter(c => c && c !== remove && c !== "logoOn" && c !== "logoOff"); if (!currentClasses.includes(add)) currentClasses.push(add); document.documentElement.className = currentClasses.join(" "); }};
+        var UHTLogoIsVisible = false; // Init to false
+
+        function initLegacyScripts(gameConfigForLegacy) {
+            console.log("Initializing legacy scripts with HTMX config:", gameConfigForLegacy);
+            if (typeof UAParser2 !== 'function') { console.error("UAParser2 is not loaded!"); return; }
+            UHT_UA_INFO = (new UAParser2()).getResult();
+            GA_timer_load_start = new Date().getTime();
+            URLGameSymbol = gameConfigForLegacy.gameName || "_unknown_";
+            UHT_CONFIG.SYMBOL = URLGameSymbol;
+            UHT_CONFIG.MINI_MODE = gameConfigForLegacy.miniLobby === true || String(gameConfigForLegacy.miniLobby).toLowerCase() === "true";
+            UHT_CONFIG.LOBBY_LAUNCHED = gameConfigForLegacy.lobbyLaunched === true;
+            UHT_CONFIG.GAME_URL = gameConfigForLegacy.datapath; // For UHTLogotype
+            UHT_CONFIG.STYLENAME = gameConfigForLegacy.styleName;
+
+
+            setupGoogleAnalytics();
+            Loader.WURFLErrorHandler(); // Uses UAParser2 path
+        }
+    </script>
+
+    <script>
+        // --- HTMX/Client-Side Application Logic ---
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const pageTitleEl = document.getElementById('pageTitle');
+            const configLoaderEl = document.getElementById('config-loader');
+            const mainContentEl = document.getElementById('main-content');
+            const gameConfigForm = document.getElementById('gameConfigForm');
+            const initGameButton = document.getElementById('initGameButton');
+            const wsConnectButton = document.getElementById('wsConnectButton');
+            const wsDisconnectButton = document.getElementById('wsDisconnectButton');
+            const wsStatusDisplay = document.getElementById('wsStatusDisplay');
+            const wsMessagesDisplay = document.getElementById('wsMessagesDisplay');
+            const loadingStepDisplay = document.getElementById('loadingStepDisplay');
+            const logoVisibleDisplay = document.getElementById('logoVisibleDisplay');
+            const uaInfoDisplay = document.getElementById('uaInfoDisplay');
+
+            let isGameInitializing = false;
+            let ws = null; // WebSocket instance
+
+            // Default Game Configuration (mirroring Vue's initial reactive state)
+            const gameConfig = {
+                resourceName: "vsw", token: "test-token-htmx-123", gameName: "vs20olympgate",
+                lang: "en", currency: "USD", baseDatapath: "/gs2c/common/games-html5/games/vs/",
+                replayHost: window.location.origin, lobbyLaunched: false, miniLobby: true,
+                jurisdiction:"99", openHistoryInWindow:false, RELOAD_JACKPOT:"/gs2c/jackpot/reload.do",
+                styleName:"agst2_agst2", SETTINGS:"/gs2c/saveSettings.do", openHistoryInTab:true,
+                replaySystemUrl:"/ReplayService", ingameLobbyApiURL:"/gs2c/minilobby/games",
+                environmentId:"13", historyType:"internal", vendor:"T", amountType:"COIN",
+                LOGOUT:"/gs2c/logout.do", REGULATION:"/gs2c/regulation/process.do",
+                replaySystemContextPath: "/ReplayService", showRealCash:"1", statisticsURL:"/gs2c/stats.do",
+                accountType:"R", clock:"0", gameVerificationURL: "/gs2c/session/verify",
+                RELOAD_BALANCE:"/gs2c/reloadBalance.do", currencyOriginal:"KRW", extend_events:"1",
+                sessionTimeout:"30", CLOSE_GAME:"/gs2c/closeGame.do", region:"Asia",
+                contextPath: "/gs2c", cashierUrl: "", lobbyUrl: "js://window.close();",
+                mobileCashierUrl: "", mobileLobbyUrl: "", extendSessionUrl: "", extendSessionInterval: null,
+                jurisdictionMsg: ""
+            };
+
+            function populateConfigForm() {
+                document.getElementById('gcToken').value = gameConfig.token;
+                document.getElementById('gcGameName').value = gameConfig.gameName;
+                document.getElementById('gcLang').value = gameConfig.lang;
+                document.getElementById('gcCurrency').value = gameConfig.currency;
+                document.getElementById('gcBaseDatapath').value = gameConfig.baseDatapath;
+                document.getElementById('gcResourceName').value = gameConfig.resourceName;
+                // Populate other fields if you add them to the form
+            }
+
+            function readConfigFromForm() {
+                gameConfig.token = document.getElementById('gcToken').value;
+                gameConfig.gameName = document.getElementById('gcGameName').value;
+                gameConfig.lang = document.getElementById('gcLang').value;
+                gameConfig.currency = document.getElementById('gcCurrency').value;
+                gameConfig.baseDatapath = document.getElementById('gcBaseDatapath').value;
+                gameConfig.resourceName = document.getElementById('gcResourceName').value;
+                // Read other fields
+                updatePageOnGameNameChange(); // Update global URLGameSymbol
+            }
+            
+            function updatePageOnGameNameChange() {
+                 if (typeof URLGameSymbol !== 'undefined') { // Update global for legacy scripts
+                    URLGameSymbol = gameConfig.gameName || "_unknown_game_symbol_from_url_";
+                }
+                pageTitleEl.textContent = `Game: ${gameConfig.gameName || "Host (HTMX)"}`;
+            }
+
+
+            function constructGameConfigForLegacy() {
+                readConfigFromForm(); // Ensure current form values are used
+                const fullDatapath = `${gameConfig.baseDatapath}${gameConfig.gameName}/`;
+                const fullDatapathAlternative = `${gameConfig.baseDatapath.replace(/\/vs\//, '/alt/vs/')}${gameConfig.gameName}/`;
+
+                const gameConfigStringPart = { /* ... same as in Vue's constructGameConfigForHtml5Manager ... */
+                    lobbyLaunched: gameConfig.lobbyLaunched, miniLobby: gameConfig.miniLobby, jurisdiction: gameConfig.jurisdiction,
+                    openHistoryInWindow:gameConfig.openHistoryInWindow, RELOAD_JACKPOT:gameConfig.RELOAD_JACKPOT,
+                    styleName:gameConfig.styleName, SETTINGS:gameConfig.SETTINGS, openHistoryInTab:gameConfig.openHistoryInTab,
+                    replaySystemUrl: (gameConfig.replayHost || '') + (gameConfig.replaySystemUrl || '/ReplayService'),
+                    ingameLobbyApiURL:gameConfig.ingameLobbyApiURL, environmentId:gameConfig.environmentId,
+                    historyType:gameConfig.historyType, vendor:gameConfig.vendor, currency:gameConfig.currency, lang:gameConfig.lang,
+                    datapath: fullDatapath, amountType:gameConfig.amountType, LOGOUT:gameConfig.LOGOUT,
+                    REGULATION:`${gameConfig.REGULATION}?symbol=${gameConfig.gameName}`,
+                    replaySystemContextPath: gameConfig.replaySystemContextPath, showRealCash:gameConfig.showRealCash,
+                    statisticsURL:gameConfig.statisticsURL, accountType:gameConfig.accountType, clock:gameConfig.clock,
+                    mgckey:gameConfig.token,
+                    gameService: (gameConfig.gameHost || window.location.origin) + (gameConfig.serviceApi || "/game-service-api"),
+                    gameVerificationURL: gameConfig.gameVerificationURL, gameHost: gameConfig.gameHost || window.location.origin,
+                    RELOAD_BALANCE:gameConfig.RELOAD_BALANCE, currencyOriginal:gameConfig.currencyOriginal,
+                    extend_events:gameConfig.extend_events, sessionTimeout:gameConfig.sessionTimeout,
+                    CLOSE_GAME:`${gameConfig.CLOSE_GAME}?symbol=${gameConfig.gameName}`, region:gameConfig.region
+                };
+                return {
+                    contextPath: gameConfig.contextPath, cashierUrl: gameConfig.cashierUrl, lobbyUrl: gameConfig.lobbyUrl,
+                    mobileCashierUrl: gameConfig.mobileCashierUrl, mobileLobbyUrl: gameConfig.mobileLobbyUrl,
+                    gameConfig: JSON.stringify(gameConfigStringPart), mgckey: gameConfig.token,
+                    jurisdictionMsg: gameConfig.jurisdictionMsg, extendSessionUrl: gameConfig.extendSessionUrl,
+                    extendSessionInterval: gameConfig.extendSessionInterval,
+                    // Extras for Loader.js/initLegacyScripts
+                    datapath: gameConfigStringPart.datapath, datapath_alternative: fullDatapathAlternative,
+                    styleName: gameConfigStringPart.styleName, lang: gameConfigStringPart.lang,
+                    gameName: gameConfig.gameName, miniLobby: gameConfigStringPart.miniLobby,
+                    lobbyLaunched: gameConfigStringPart.lobbyLaunched, statisticsURL: gameConfigStringPart.statisticsURL,
+                    resourceName: gameConfig.resourceName
+                };
+            }
+
+            function addWsMessage(text, type = 'info') {
+                const time = new Date().toLocaleTimeString();
+                const p = document.createElement('p');
+                p.className = 'font-mono whitespace-pre-wrap break-all py-0.5 border-b border-gray-800 last:border-b-0';
+                if (type === 'error') p.classList.add('text-red-400');
+                if (type === 'success') p.classList.add('text-green-400');
+                p.innerHTML = `${text} <span class="text-gray-500 text-xxs float-right">${time}</span>`;
+
+                if (wsMessagesDisplay.firstChild && wsMessagesDisplay.firstChild.textContent === "No WebSocket messages yet.") {
+                    wsMessagesDisplay.innerHTML = ''; // Clear placeholder
+                }
+                wsMessagesDisplay.insertBefore(p, wsMessagesDisplay.firstChild);
+                if (wsMessagesDisplay.children.length > 50) {
+                    wsMessagesDisplay.removeChild(wsMessagesDisplay.lastChild);
+                }
+            }
+
+            function handleInitializeGame() {
+                if (isGameInitializing) return;
+                isGameInitializing = true;
+                initGameButton.disabled = true;
+                initGameButton.textContent = 'Initializing...';
+                addWsMessage("Starting game initialization...");
+
+                const managerConfig = constructGameConfigForLegacy();
+                addWsMessage(`Prepared Manager Config for ${managerConfig.gameName}`);
+                console.log("HTMX App: Full Config for Html5GameManager.init & Loader:", managerConfig);
+
+                if (typeof initLegacyScripts === 'function') {
+                    initLegacyScripts(managerConfig);
+                    addWsMessage("Legacy scripts initialized.");
+                } else {
+                    console.error("initLegacyScripts function not found!");
+                    addWsMessage("Error: initLegacyScripts not found.", "error");
+                    isGameInitializing = false; initGameButton.disabled = false; initGameButton.textContent = 'Initialize Game & Connect WS'; return;
+                }
+
+                if (typeof Loader !== 'undefined' && typeof Loader.Start === 'function') {
+                     Loader.Start(managerConfig);
+                     addWsMessage("Game asset loading process started via Loader.Start().");
+                } else {
+                    console.error("Loader.Start function not found!");
+                    addWsMessage("Error: Loader.Start not found.", "error");
+                    isGameInitializing = false; initGameButton.disabled = false; initGameButton.textContent = 'Initialize Game & Connect WS'; return;
+                }
+                if (typeof Html5GameManager !== 'undefined' && typeof Html5GameManager.init === 'function') {
+                    Html5GameManager.init(managerConfig);
+                    addWsMessage("Html5GameManager.init called.");
+                } else {
+                    console.error("Html5GameManager.init function not found!");
+                    addWsMessage("Error: Html5GameManager.init not found.", "error");
+                }
+                // connectWebSocket(); // Connect after init
+                setTimeout(() => {
+                    isGameInitializing = false; initGameButton.disabled = false; initGameButton.textContent = 'Initialize Game & Connect WS';
+                }, 5000); // Re-enable button after a delay
+            }
+
+            function handleConnectWebSocket() {
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    addWsMessage("WS: Already connected."); return;
+                }
+                readConfigFromForm(); // Get latest config
+                if (!gameConfig.token || !gameConfig.gameName) {
+                    addWsMessage("WS Error: Token or Game Name missing in form.", "error"); return;
+                }
+
+                const wsProtocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+                const wsPort = window.location.port || (wsProtocol === "wss://" ? "443" : "80");
+                const wsUrl = `${wsProtocol}${window.location.hostname}:${wsPort}`;
+                addWsMessage(`WS: Connecting to ${wsUrl}...`);
+                wsStatusDisplay.textContent = 'Connecting...';
+                wsStatusDisplay.className = 'font-semibold text-yellow-400';
+                wsConnectButton.disabled = true;
+
+                try {
+                    ws = new WebSocket(wsUrl);
+                    ws.onopen = () => {
+                        wsStatusDisplay.textContent = 'Connected'; wsStatusDisplay.className = 'font-semibold text-green-400';
+                        wsConnectButton.disabled = true; wsDisconnectButton.disabled = false;
+                        addWsMessage("WS: Connection established.", "success");
+                        const joinMessage = { type: "join", payload: { token: gameConfig.token, gameCode: gameConfig.gameName } };
+                        ws.send(JSON.stringify(joinMessage));
+                        addWsMessage(`WS: Sent join - T: ${gameConfig.token.substring(0,6)} G: ${gameConfig.gameName}`);
+                    };
+                    ws.onmessage = (event) => { addWsMessage(`WS RCV: ${event.data}`); };
+                    ws.onerror = (event) => {
+                        wsStatusDisplay.textContent = 'Error'; wsStatusDisplay.className = 'font-semibold text-red-400';
+                        wsConnectButton.disabled = false; wsDisconnectButton.disabled = true;
+                        addWsMessage(`WS Error: Connection failed or error occurred.`, "error"); console.error("HTMX WebSocket: Error:", event);
+                    };
+                    ws.onclose = (event) => {
+                        wsStatusDisplay.textContent = 'Disconnected'; wsStatusDisplay.className = 'font-semibold text-red-400';
+                        wsConnectButton.disabled = false; wsDisconnectButton.disabled = true;
+                        addWsMessage(`WS: Closed. Code: ${event.code}, Reason: ${event.reason || 'N/A'}`);
+                        ws = null;
+                    };
+                } catch (error) {
+                    wsStatusDisplay.textContent = 'Exception'; wsStatusDisplay.className = 'font-semibold text-red-400';
+                    wsConnectButton.disabled = false;
+                    addWsMessage(`WS Ex: ${error.message}`, "error"); console.error("HTMX WebSocket Ex:", error);
+                }
+            }
+            function handleDisconnectWebSocket() { if (ws) { ws.close(); addWsMessage("WS: Disconnect initiated."); }}
+
+            // Initial Page Setup
+            const urlSymbol = getGameSymbolFromUrl();
+            if (urlSymbol) { gameConfig.gameName = urlSymbol; }
+            if (window.location.href.includes("replayGame.do")) {
+                document.title = "Pragmatic Replay (HTMX)"; pageTitleEl.textContent = "Pragmatic Replay (HTMX)";
+            } else {
+                updatePageOnGameNameChange();
+            }
+            populateConfigForm(); // Populate form with default/URL values
+            configLoaderEl.classList.add('hidden'); // Hide loader
+            mainContentEl.classList.remove('hidden'); // Show main content
+            addWsMessage("HTMX Game Host ready. Configure & Initialize.");
+
+            // Event Listeners for buttons
+            initGameButton.addEventListener('click', handleInitializeGame);
+            wsConnectButton.addEventListener('click', handleConnectWebSocket);
+            wsDisconnectButton.addEventListener('click', handleDisconnectWebSocket);
+            document.getElementById('gcGameName').addEventListener('input', updatePageOnGameNameChange);
+
+
+            // Monitor global legacy variables
+            setInterval(() => {
+                if (typeof LoadingStep !== 'undefined') loadingStepDisplay.textContent = LoadingStep;
+                if (typeof UHTLogoIsVisible !== 'undefined') logoVisibleDisplay.textContent = UHTLogoIsVisible;
+                if (typeof UHT_UA_INFO !== 'undefined') {
+                     const uaJSON = JSON.stringify(UHT_UA_INFO, null, 2);
+                     if (uaInfoDisplay.textContent !== uaJSON) uaInfoDisplay.textContent = uaJSON;
+                }
+            }, 1000);
+        });
+    </script>
+
+</body>
+</html>

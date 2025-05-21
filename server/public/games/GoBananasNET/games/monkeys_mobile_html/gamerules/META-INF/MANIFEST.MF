@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Implementation-Title: gamerules
+Implementation-Version: 2.2.0
+Maven-ArtifactId: monkeys-gamerules
+Archiver-Version: Plexus Archiver
+Built-By: jenkins-slave
+Jenkins-BuildNumber: 2
+Implementation-Vendor-Id: com.netent.casino-software.games.videoslots.
+ monkeys
+Jenkins-BuildId: 2
+Git-Hash: 61033c97fe496c67559d543ef48aaf54f18c66ec (with local modific
+ ations)
+Implementation-Vendor: Net Entertainment
+Maven-Classifier: 
+Maven-GroupId: com.netent.casino-software.games.videoslots.monkeys
+Jenkins-BuildUrl: https://gdp-del-01.netent.com/job/monkeys-go-bananas
+ -gamerules-master/2/
+Git-CommitTime: 2019-05-21T09:32:15.000Z
+Git-Url: https://git.netent.com/scm/monkeys/go-bananas-gamerules.git
+Maven-Name: gamerules
+Maven-Version: 2.2.0
+Jenkins-JobName: monkeys-go-bananas-gamerules-master
+Created-By: Apache Maven 3.0.4
+Build-Jdk: 1.8.0_151
+

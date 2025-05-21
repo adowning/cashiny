@@ -1,0 +1,13 @@
+{
+  "screens": {
+    "rules": "screens/game-rules.mustache",
+    "information": "screens/game-information.mustache"
+  },
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "audio": "resources/sounds/audio.json",
+  "css": ["css/leprechaun.css"],
+  "translations": "translations.json"
+}

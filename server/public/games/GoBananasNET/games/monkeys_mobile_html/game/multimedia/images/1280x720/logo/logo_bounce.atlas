@@ -1,0 +1,13 @@
+
+logo_bounce.png
+size: 277,54
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+logo
+  rotate: false
+  xy: 1, 1
+  size: 275, 52
+  orig: 275, 52
+  offset: 0, 0
+  index: -1

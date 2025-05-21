@@ -1,0 +1,111 @@
+/*PAYTABLE TEXT*/
+.paytable-text {
+    width: 66%;
+    margin: 3px auto;
+    font-family: "NetentMyriadProRegularUI";
+    text-shadow: 3px 2px 7px black;
+    font-size: 18px;
+    color: #f1f795;
+    line-height: 23px;
+    letter-spacing: 1px;
+}
+
+.paytable-text2 {
+    width: 40%;
+    margin: 3px 175px;
+    font-family: "NetentMyriadProRegularUI";
+    text-shadow: 3px 2px 7px black;
+    font-size: 18px;
+    color: #f1f795;
+    line-height: 23px;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+.paytable-text-disclaimer {
+    width: 68%;
+    margin: 2px auto;
+    font-family: "NetentMyriadProRegularUI";
+    text-shadow: 3px 1px 5px black;
+    font-size: 15px;
+    color: #e9f06c;
+    line-height: 15px;
+    letter-spacing: 1px;
+}
+
+.mobile-version .paytable-text {
+    font-family: "NetentMyriadProRegularUI";
+    color: white;
+    font-size: 24px;
+    letter-spacing: 0px;
+    line-height: 0px;
+}
+
+.mobile-version .paytable-text2-monkeys {
+    font-family: "NetentMyriadProRegularUI";
+    color: #ffffff;
+    text-align: left;
+    font-size: 24px;
+}
+
+.interface-paytable_portrait .mobile-version .paytable-text {
+    font-size: 17px;
+}
+
+.interface-paytable_portrait .mobile-version .paytable-text2-monkeys {
+    font-size: 17px;
+}
+
+.mobile-version .paytable-text-disclaimer {
+    font-family: "NetentMyriadProRegularUI";
+    font-size: 21px;
+    color: #ffffff;
+    line-height: 21px;
+    width: 100%;
+    letter-spacing: 0px;
+}
+
+.set-min-width-wild-style {
+    min-height: 135px;
+}
+
+.set-display {
+    display: inline-block;
+}
+
+/*****/
+.paytable-header {
+    text-transform: uppercase;
+}
+
+.paytable-wild-text {
+   position: absolute;
+    width: 100%;
+}
+
+.paytable-wild-text-style {
+    font-family: "NetentMyriadProBoldUI";
+    color: #d3fe64;
+    font-size: 25px;
+    text-shadow:
+            -3px -2px 3px #003300,
+            3px -2px 3px #003300,
+            -3px 3px 3px #000000,
+            3px 3px 3px #000000;
+}
+.mobile-version .paytable-header {
+    color: white;
+    margin: 20px 0;
+}
+
+.interface-paytableDesktop_base .interface-settingsWindow_base {
+    color: #573C32;
+}
+
+.mobile-version .paytable-header,
+.mobile-version .paytable-scatter-title,
+.mobile-version .symbolCount,
+.mobile-version .symbolPayout {
+    font-family: "Cinzel-Bold", NetentStandardUI, Tahoma, sans-serif;
+}
+/*PAYTABLE TEXT*/

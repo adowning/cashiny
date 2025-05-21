@@ -1,0 +1,1069 @@
+{
+  "data": {
+    "isGuest": false,
+    "login": "5401084",
+    "phone": null,
+    "nickname": null,
+    "emailConfirmed": true,
+    "phoneConfirmed": false,
+    "confirmed": false,
+    "primaryContact": "email",
+    "preferredCountryCode": "us",
+    "websocket": "wss:wss.funrize.com:",
+    "activeBonusId": null,
+    "firstBettingBonusId": null,
+    "hasActiveSportBettingBonus": false,
+    "activeBonus": null,
+    "birthdayBonus": null,
+    "isMobile": true,
+    "isMobileApp": false,
+    "documents": {
+      "max_documents": 10,
+      "max_file_size": 15
+    },
+    "onesignalAppId": null,
+    "depositsTracker": false,
+    "labelBonusNumber": null,
+    "bonusLabel": null,
+    "TournamentsSubscriptions": [],
+    "Registration": {
+      "isAvailable": true,
+      "complete": {
+        "id": 3,
+        "iso": "USD",
+        "title": "$ - USD",
+        "rate": "1",
+        "enabled": true,
+        "sort": 5,
+        "title_i18n": "USD",
+        "default": true,
+        "preset": "10,25,50,100,300",
+        "rate_gp": "1",
+        "hidden": false,
+        "allowed_site": "all",
+        "default_amount": null
+      },
+      "selectedBonusId": null,
+      "depositSelected": false,
+      "noDepositSelected": false,
+      "noDepositAvailable": false,
+      "noDepositApplied": false,
+      "bonusType": null,
+      "registrationFunnel": {
+        "title": "Default",
+        "isShowConfirmPopup": false,
+        "isShowGratitudePopup": false,
+        "isNeedConfirmAllContacts": false,
+        "popupTimeout": 0,
+        "funnelType": "conditionally_closed_funnel",
+        "version": null,
+        "trafficSource": null,
+        "isPasswordSet": true,
+        "labelBonusNumber": null,
+        "bonusLabel": null
+      },
+      "Bonuses": [null],
+      "referrerInfo": null,
+      "optionsAB": [],
+      "isBonusPopupAfterVerificationEnabled": false
+    },
+    "countries": [
+      {
+        "id": 440,
+        "iso": "us",
+        "title": "United States of America",
+        "title_i18n": "USA",
+        "dialCode": "+1"
+      }
+    ],
+    "currency": "USD",
+    "currencySymbol": "$",
+    "captcha": {
+      "isEnabled": true,
+      "isInternalEnabled": false,
+      "url": "https:www.google.comrecaptchaapi.js?render=6Lc4J28qAAAAAPb0am55LI0co0MU8EBO64u5OBv9",
+      "key": "6Lc4J28qAAAAAPb0am55LI0co0MU8EBO64u5OBv9",
+      "internalKey": "6pt5ukbtwp4x2pbk"
+    },
+    "bonusPromoData": {
+      "show": false,
+      "bonusType": "",
+      "bonusData": []
+    },
+    "manager": null,
+    "profile": "NTQwMTA4NA==",
+    "appName": "Funrize",
+    "confirmEmailByType": "link",
+    "confirmPhoneByType": "code",
+    "isVipTournamentAvailable": false,
+    "fingerprint": {
+      "isEnabled": true,
+      "url": "https:cdnjs.cloudflare.comajaxlibsfingerprintjs22.1.0fingerprint2.js"
+    },
+    "charset": "UTF-8",
+    "activeSocialAccounts": ["google"],
+    "closePopups": null,
+    "currencies": {
+      "cis": false,
+      "currencies": [
+        {
+          "id": 3,
+          "iso": "USD",
+          "symbol": "$"
+        }
+      ]
+    },
+    "agreementUrl": "agreement",
+    "agreementCPUrl": "agreement#cp",
+    "agreementWithdrawalUrl": "agreements#withdrawal",
+    "agreementCodesUrl": "codes",
+    "isModal": false,
+    "modalCommandClose": "#ng-command:{\"close\":\"true\"}",
+    "language": "en",
+    "token": "92e70625408d3696fbc31ba5890475d3",
+    "remarketingBannerSettings": null,
+    "header": {
+      "logo2x": "",
+      "logo": "",
+      "menu": {
+        "main": [],
+        "simple": [],
+        "additional": [],
+        "promo": []
+      },
+      "menuBanner": null
+    },
+    "footer": {},
+    "license": null,
+    "authImages": [],
+    "alternateDomains": [],
+    "analyticsData": {
+      "analytics": "<!-- Analytic metric -->\n<!-- End Analytic metric -->",
+      "tagManagerScript": "\n<script>dataLayer = [{\"Player_ID\": \"5401084\"}];<script>\n\n<!-- Google Tag Manager -->\n<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\n            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\n        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n        'https:www.googletagmanager.comgtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n    })(window,document,'script','dataLayer','');<script>\n<!-- End Google Tag Manager -->\n",
+      "tagManagerNoscript": "\n<!-- Google Tag Manager (noscript) -->\n<noscript>\n    <iframe src=\"https:www.googletagmanager.comns.html?id=\"\n            height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"><iframe>\n<noscript>\n<!-- End Google Tag Manager (noscript) -->\n"
+    },
+    "chat": "\n  <script>\n      var playerInfo = {\n          name: \"ash\",\n          email: \"ashdowning@gmail.com\",\n          custom: {\n              idpolzovatelya: \"5401084\"\n          }\n      }\n  <script>\n\n<script>\n    var newScript = document.createElement('script');newScript.src = 'https:static.zdassets.comekrsnippet.js?key=e96ff61c-e356-4154-b2bf-0baf255d7997';newScript.id = 'ze-snippet';document.head.appendChild(newScript);const data = {   name: window.__INITIAL_STATE__.player.profile.data.name,   login: window.__INITIAL_STATE__.player.profile.data.login,   email: window.__INITIAL_STATE__.player.profile.data.email,}const zIndex = { value: 0 };window.supportAPI = {   id: 'zendesk',   open: function(){       zE('messenger', 'open');       zIndex.value = 999999;       zE(\"messenger:set\", \"zIndex\", 999999);       return;   },};const queryParams = new URLSearchParams(document.location.search);newScript.addEventListener('load', () => {    if(!window.__INITIAL_STATE__.player.profile.data.isGuest) {       fetch('chatauth', {         method: 'POST',         headers: {           'Accept': 'applicationjson',           'Content-Type': 'applicationjson',         },         body: JSON.stringify(data)       })         .then((response) => response.text())         .then((responseData) => {            setTimeout(()=>{             zE(\"messenger\", \"loginUser\", (callback) => {               callback( responseData);             } )            },500)         })   };     zE(\"messenger:set\", \"zIndex\", 2000)   zIndex.value = 2000;   zE(\"messenger:on\", \"open\", () => {       if (zIndex.value !== 999999) {           zIndex.value = 999999;           zE(\"messenger:set\", \"zIndex\", 999999);           zE(\"messenger\", 'show');           document.getElementById(\"support\").style.display = \"none\";       }   });   zE(\"messenger:on\", \"close\", () => {       if (zIndex.value !== 2000) {           zIndex.value = 2000;           zE(\"messenger:set\", \"zIndex\", 2000)           zE(\"messenger\", 'hide');           setTimeout(()=> {               document.getElementById(\"support\").style.display = \"block\";           },1000);       }   })   if (queryParams.get(\"openSupport\")) {       zE('messenger', 'open');   }   if (window.location.pathname === 'referral-info' || window.location.pathname === 'affiliates') {       zE('messenger', 'hide');   } else {       zE('messenger', 'show');   }})<script>\n",
+    "cpaCallbacks": "",
+    "isSocialEnabled": false,
+    "isFullRegistration": false,
+    "isSubscribedEnabled": false,
+    "welcomeGift": 0,
+    "cis": false,
+    "autoLock": null,
+    "emailNotify": true,
+    "smsNotify": false,
+    "email": "ashdowning@gmail.com",
+    "name": "ash",
+    "surname": "downing",
+    "birthMonth": "3",
+    "birthYear": "1975",
+    "birthDay": "6",
+    "countryId": 440,
+    "countryCode": "us",
+    "city": null,
+    "address": null,
+    "hasPassword": true,
+    "hasAutoPassword": true,
+    "isPasswordEnabled": true,
+    "location": "all",
+    "isQuestAvailableForPlayer": false,
+    "currentDate": "2025-05-02T01:47:26+0300",
+    "showUserFillBar": null,
+    "isAllowFreespinNoDep": null,
+    "availableBonuses": null,
+    "freeSpinRandGame": null,
+    "freeSpinRandGameTitle": null,
+    "isFreeSpinActive": false,
+    "showDailyFreeSpin": null,
+    "uuid": "2c40269ebed2bdd59149963d7b13f3cd",
+    "isTournamentSubscribed": null,
+    "hasDeposits": false,
+    "depositsCount": 0,
+    "depositsSum": "0.00",
+    "firstDepositedAt": null,
+    "trustpilot": {
+      "rate": 0,
+      "reviewsCount": 0
+    },
+    "playerSocLogin": {
+      "enabled": true,
+      "credentials": {
+        "google": {
+          "enabled": true,
+          "callback": "https:funrize.comauthgoogle",
+          "keys": {
+            "id": "847362386754-ic5p3rek2ad81a4l4fg3fmjqclt58e59.apps.googleusercontent.com"
+          },
+          "scope": "https:www.googleapis.comauthuserinfo.profile https:www.googleapis.comauthuserinfo.email"
+        },
+        "facebook": {
+          "enabled": true,
+          "callback": "https:funrize.comauthfacebook",
+          "keys": {
+            "id": "664476325771526"
+          },
+          "scope": "email, public_profile"
+        },
+        "apple": {
+          "enabled": true,
+          "callback": "https:funrize.comauthapple",
+          "keys": {
+            "id": "authweb.funrize.com"
+          },
+          "scope": "name email"
+        },
+        "telegram": {
+          "enabled": false,
+          "callback": null,
+          "keys": {
+            "id": null,
+            "name": null
+          },
+          "scope": null
+        }
+      }
+    },
+    "gameMode": "SweepStakes",
+    "playersLastActionData": [
+      {
+        "id": "6813f9fe43871",
+        "nickname": "6919***",
+        "login": "6919544",
+        "type": "win",
+        "data": {
+          "id": 2848,
+          "title": "Fire Stampede",
+          "slug": "fire-stampede",
+          "logo": "uploadsgames_itemsFire-Stampede-320x400.png",
+          "winAmount": 2300,
+          "betAmount": 4600,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": "uploadsgames_itemsFire-Stampede-700x394.png",
+          "maxWin": {
+            "entries": "24795000",
+            "coins": "42750000"
+          },
+          "minBet": {
+            "entries": "20",
+            "coins": "100"
+          },
+          "maxBet": {
+            "entries": "5800",
+            "coins": "10000"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 4275,
+          "isBonusFeature": true
+        },
+        "city": "Hobart",
+        "state": "IN",
+        "surname": "S",
+        "name": "Tammy",
+        "gameMode": "TournamentPoints"
+      },
+      {
+        "id": "6813f9fe07930",
+        "nickname": "6144***",
+        "login": "6144102",
+        "type": "win",
+        "data": {
+          "id": 2205,
+          "title": "Shark Frenzy",
+          "slug": "shark-frenzy",
+          "logo": "uploadsgames_itemsShark-Frenzy-min.jpg",
+          "winAmount": 4620,
+          "betAmount": 1050,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": "uploadsgames_itemsscreen_Shark-Frenzy-min.jpg",
+          "maxWin": {
+            "entries": "2333100",
+            "coins": "29163750"
+          },
+          "minBet": {
+            "entries": "15",
+            "coins": "150"
+          },
+          "maxBet": {
+            "entries": "300",
+            "coins": "3750"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 7777,
+          "isBonusFeature": true
+        },
+        "city": "Fresno",
+        "state": "CA",
+        "surname": "V",
+        "name": "Aaron",
+        "gameMode": "TournamentPoints"
+      },
+      {
+        "id": "6813f9fda3208",
+        "nickname": "4789***",
+        "login": "4789291",
+        "type": "win",
+        "data": {
+          "id": 2308,
+          "title": "Rich Piggies 2 <span>Bonus Combo<span>",
+          "slug": "rich-piggies-2-bonus-combo",
+          "logo": "uploadsgames_itemsRich-Piggies-2_-Bonus-Combo.png",
+          "winAmount": 4600,
+          "betAmount": 200,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": "uploadsgames_itemsskrin_Rich-Piggies-2_-Bonus-Combo.png",
+          "maxWin": {
+            "entries": "6500000",
+            "coins": "13000000"
+          },
+          "minBet": {
+            "entries": "20",
+            "coins": "100"
+          },
+          "maxBet": {
+            "entries": "5000",
+            "coins": "10000"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 1300,
+          "isBonusFeature": true
+        },
+        "city": "Huntsville",
+        "state": "AL",
+        "surname": "J",
+        "name": "Latoya",
+        "gameMode": "SweepStakes"
+      },
+      {
+        "id": "6813f9fd5e046",
+        "nickname": "5315***",
+        "login": "5315039",
+        "type": "win",
+        "data": {
+          "id": 3186,
+          "title": "3 Coin Treasure 2",
+          "slug": "3-coin-treasure-2",
+          "logo": "uploadsgames_items3-Coin-Treasure-2_320_400.png",
+          "winAmount": 3600,
+          "betAmount": 3000,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": null,
+          "maxWin": {
+            "entries": "20800000",
+            "coins": "104000000"
+          },
+          "minBet": {
+            "entries": "10",
+            "coins": "100"
+          },
+          "maxBet": {
+            "entries": "2000",
+            "coins": "10000"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 10400,
+          "isBonusFeature": true
+        },
+        "city": "",
+        "state": "",
+        "surname": "W",
+        "name": "Dacha",
+        "gameMode": "TournamentPoints"
+      }
+    ],
+    "playersLastActionDataLimited": [
+      {
+        "id": "6813f9fe43871",
+        "nickname": "6919***",
+        "login": "6919544",
+        "type": "win",
+        "data": {
+          "id": 2848,
+          "title": "Fire Stampede",
+          "slug": "fire-stampede",
+          "logo": "uploadsgames_itemsFire-Stampede-320x400.png",
+          "winAmount": 2300,
+          "betAmount": 4600,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": "uploadsgames_itemsFire-Stampede-700x394.png",
+          "maxWin": {
+            "entries": "24795000",
+            "coins": "42750000"
+          },
+          "minBet": {
+            "entries": "20",
+            "coins": "100"
+          },
+          "maxBet": {
+            "entries": "5800",
+            "coins": "10000"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 4275,
+          "isBonusFeature": true
+        },
+        "city": "Hobart",
+        "state": "IN",
+        "surname": "S",
+        "name": "Tammy",
+        "gameMode": "TournamentPoints"
+      },
+      {
+        "id": "6813f9fe07930",
+        "nickname": "6144***",
+        "login": "6144102",
+        "type": "win",
+        "data": {
+          "id": 2205,
+          "title": "Shark Frenzy",
+          "slug": "shark-frenzy",
+          "logo": "uploadsgames_itemsShark-Frenzy-min.jpg",
+          "winAmount": 4620,
+          "betAmount": 1050,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": "uploadsgames_itemsscreen_Shark-Frenzy-min.jpg",
+          "maxWin": {
+            "entries": "2333100",
+            "coins": "29163750"
+          },
+          "minBet": {
+            "entries": "15",
+            "coins": "150"
+          },
+          "maxBet": {
+            "entries": "300",
+            "coins": "3750"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 7777,
+          "isBonusFeature": true
+        },
+        "city": "Fresno",
+        "state": "CA",
+        "surname": "V",
+        "name": "Aaron",
+        "gameMode": "TournamentPoints"
+      },
+      {
+        "id": "6813f9fda3208",
+        "nickname": "4789***",
+        "login": "4789291",
+        "type": "win",
+        "data": {
+          "id": 2308,
+          "title": "Rich Piggies 2 <span>Bonus Combo<span>",
+          "slug": "rich-piggies-2-bonus-combo",
+          "logo": "uploadsgames_itemsRich-Piggies-2_-Bonus-Combo.png",
+          "winAmount": 4600,
+          "betAmount": 200,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": "uploadsgames_itemsskrin_Rich-Piggies-2_-Bonus-Combo.png",
+          "maxWin": {
+            "entries": "6500000",
+            "coins": "13000000"
+          },
+          "minBet": {
+            "entries": "20",
+            "coins": "100"
+          },
+          "maxBet": {
+            "entries": "5000",
+            "coins": "10000"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 1300,
+          "isBonusFeature": true
+        },
+        "city": "Huntsville",
+        "state": "AL",
+        "surname": "J",
+        "name": "Latoya",
+        "gameMode": "SweepStakes"
+      },
+      {
+        "id": "6813f9fd5e046",
+        "nickname": "5315***",
+        "login": "5315039",
+        "type": "win",
+        "data": {
+          "id": 3186,
+          "title": "3 Coin Treasure 2",
+          "slug": "3-coin-treasure-2",
+          "logo": "uploadsgames_items3-Coin-Treasure-2_320_400.png",
+          "winAmount": 3600,
+          "betAmount": 3000,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": null,
+          "maxWin": {
+            "entries": "20800000",
+            "coins": "104000000"
+          },
+          "minBet": {
+            "entries": "10",
+            "coins": "100"
+          },
+          "maxBet": {
+            "entries": "2000",
+            "coins": "10000"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 10400,
+          "isBonusFeature": true
+        },
+        "city": "",
+        "state": "",
+        "surname": "W",
+        "name": "Dacha",
+        "gameMode": "TournamentPoints"
+      },
+      {
+        "id": "6813f9fd5cb5b",
+        "nickname": "7204***",
+        "login": "7204190",
+        "type": "win",
+        "data": {
+          "id": 3219,
+          "title": "Fortune Pig",
+          "slug": "fortune-pig",
+          "logo": "uploadsgames_itemsFR_Fortune-Pig-2x-min.png",
+          "winAmount": 1000,
+          "betAmount": 200,
+          "isOnlyForApp": false,
+          "gamePlayInfo": true,
+          "gameExclusiveData": [],
+          "cover": "uploadsgames_itemsFR_Fortune-Pig-700x394-2x-min.png",
+          "maxWin": {
+            "entries": "2000000",
+            "coins": "10000000"
+          },
+          "minBet": {
+            "entries": "10",
+            "coins": "100"
+          },
+          "maxBet": {
+            "entries": "2000",
+            "coins": "10000"
+          },
+          "volatility": 3,
+          "rtp": "",
+          "maxMultiplier": 1000,
+          "isBonusFeature": true
+        },
+        "city": "Pryor",
+        "state": "OK",
+        "surname": "T",
+        "name": "Brandon",
+        "gameMode": "SweepStakes"
+      }
+    ],
+    "userBarCount": 4,
+    "isBonusPopup": null,
+    "showBonusPopup": null,
+    "defaultSettings": "",
+    "verificationDone": false,
+    "startChain": null,
+    "isRegFinished": null,
+    "preferredCurrency": null,
+    "isLotteryActive": false,
+    "lotteryType": null,
+    "lotterySlug": null,
+    "favoriteGames": [],
+    "isShowNodepFreeSpin": null,
+    "lastGames": [
+      2070, 1845, 1997, 2191, 3079, 3094, 1720, 2091, 1737, 1735, 2028, 3041, 2854, 2847, 3078, 2335, 3051
+    ],
+    "zip": "75701",
+    "noContact": false,
+    "isGameFiltersPromoDisplayed": false,
+    "lotteryPromoTicketData": null,
+    "vipTournamentType": null,
+    "hideNoDepOnBonusPage": false,
+    "isAutoCashRegister": false,
+    "isPushNotificationAvailable": null,
+    "webPushAlertAllowed": null,
+    "webPushBlockedDefault": null,
+    "webPushAlertNotificationShow": null,
+    "webPushAlertProposed": null,
+    "webPushProposed": null,
+    "webPushAccepted": null,
+    "webPushDeclined": null,
+    "webPushAlertIgnored": null,
+    "webPushAlertIgnoredCount": null,
+    "bonusPromoOffersSettings": {
+      "enabled": false
+    },
+    "wheelOfFortune": null,
+    "siteNotifications": "",
+    "lotteryAmountTickets": 0,
+    "showVersionLink": false,
+    "welcomePackage": {
+      "fsAmount": 0,
+      "moneyAmount": ["na"]
+    },
+    "isDebug": false,
+    "socialNetworks": [],
+    "showInsuranceBonusInfo": false,
+    "showInsuranceBonusPopup": false,
+    "isDesignL": false,
+    "ludomanCheckEnabled": false,
+    "appleAppId": "1618212717",
+    "ssn": false,
+    "profileCompleted": true,
+    "state": "",
+    "address2": "",
+    "signUpBonus": {
+      "available": false
+    },
+    "isBonusesEnabled": true,
+    "androidAppId": "com.funrize.game.client",
+    "showDownloadAppPopup": true,
+    "showAppFeaturesForGuest": false,
+    "bannerPresetPackage": {
+      "preset": {
+        "id": 18,
+        "coins": 50000,
+        "entries": 500,
+        "additionalData": null,
+        "moneyBoxAmount": null,
+        "accumulatedMoneyBoxAmount": null,
+        "availableTill": null
+      },
+      "promoOfferPreset": {
+        "imageBanner": "uploadspromo_offers_presetsreactivation-10.png",
+        "imageBannerMobile": "uploadspromo_offers_presetsreactivation_mob-4.png",
+        "imagePopup": "uploadspromo_offers_presetsreactivation-4.png",
+        "imagePopupMobile": null,
+        "imageMenu": "uploadspromo_offers_presets4-1731441779.png",
+        "availableTill": null,
+        "title": "YOUR PERSONAL OFFER",
+        "subTitle": "",
+        "labelText": "<h1 class=\"banner-title text-uppercase\">Your Personal offer<h1>",
+        "isPeriodic": false,
+        "forCompleteProfile": false,
+        "dayOfWeek": [],
+        "isLimitPerDayReason": false,
+        "activeInHours": null,
+        "additionalData": [],
+        "image": null,
+        "image2x": null,
+        "imageMobile": null,
+        "imageMobile2x": null,
+        "secondImage": null,
+        "secondImage2x": null,
+        "secondImageMobile": null,
+        "secondImageMobile2x": null,
+        "bannerTextColor": "",
+        "freeSpin": false,
+        "moneyBoxAmount": null,
+        "id": 731,
+        "coins": 225000,
+        "entries": 2000,
+        "bestDeal": true,
+        "mostPopular": false,
+        "rankLeague": false,
+        "imageBadge": "uploadspromo_offers_presets3-1731441779.png",
+        "usualPrice": 0,
+        "badgeLabel": "{\"percent\": \"350%\", \"text\": \"EXTRA COINS\"}",
+        "savingsPercent": "",
+        "subType": "",
+        "levelUpSectionId": null,
+        "accumulatedMoneyBoxAmount": null
+      },
+      "money": 4.99,
+      "usualPrice": 0,
+      "imageCash": "uploadspromo_offers_presets2-1731441779.png",
+      "isWelcomeOffer": false,
+      "text": "",
+      "additionalData": []
+    },
+    "popupPresetPackages": [
+      {
+        "preset": {
+          "id": 18,
+          "coins": 50000,
+          "entries": 500,
+          "additionalData": null,
+          "moneyBoxAmount": null,
+          "accumulatedMoneyBoxAmount": null,
+          "availableTill": null
+        },
+        "promoOfferPreset": {
+          "imageBanner": "uploadspromo_offers_presetsreactivation-10.png",
+          "imageBannerMobile": "uploadspromo_offers_presetsreactivation_mob-4.png",
+          "imagePopup": "uploadspromo_offers_presetsreactivation-4.png",
+          "imagePopupMobile": null,
+          "imageMenu": "uploadspromo_offers_presets4-1731441779.png",
+          "availableTill": null,
+          "title": "YOUR PERSONAL OFFER",
+          "subTitle": "",
+          "labelText": "<h1 class=\"banner-title text-uppercase\">Your Personal offer<h1>",
+          "isPeriodic": false,
+          "forCompleteProfile": false,
+          "dayOfWeek": [],
+          "isLimitPerDayReason": false,
+          "activeInHours": null,
+          "additionalData": [],
+          "image": null,
+          "image2x": null,
+          "imageMobile": null,
+          "imageMobile2x": null,
+          "secondImage": null,
+          "secondImage2x": null,
+          "secondImageMobile": null,
+          "secondImageMobile2x": null,
+          "bannerTextColor": "",
+          "freeSpin": false,
+          "moneyBoxAmount": null,
+          "id": 731,
+          "coins": 225000,
+          "entries": 2000,
+          "bestDeal": true,
+          "mostPopular": false,
+          "rankLeague": false,
+          "imageBadge": "uploadspromo_offers_presets3-1731441779.png",
+          "usualPrice": 0,
+          "badgeLabel": "{\"percent\": \"350%\", \"text\": \"EXTRA COINS\"}",
+          "savingsPercent": "",
+          "subType": "",
+          "levelUpSectionId": null,
+          "accumulatedMoneyBoxAmount": null
+        },
+        "money": 4.99,
+        "usualPrice": 0,
+        "imageCash": "uploadspromo_offers_presets2-1731441779.png",
+        "isWelcomeOffer": false,
+        "text": "",
+        "additionalData": []
+      },
+      {
+        "preset": {
+          "id": 23,
+          "coins": 250000,
+          "entries": 2500,
+          "additionalData": null,
+          "moneyBoxAmount": null,
+          "accumulatedMoneyBoxAmount": null,
+          "availableTill": null
+        },
+        "promoOfferPreset": {
+          "imageBanner": "uploadspromo_offers_presetswelcome-pack_most-popular.png",
+          "imageBannerMobile": "uploadspromo_offers_presetswelcome-pack_most-popular_mob.png",
+          "imagePopup": "uploadspromo_offers_presetsmostpopular.png",
+          "imagePopupMobile": null,
+          "imageMenu": "uploadspromo_offers_presets678698585acc8.jpg",
+          "availableTill": null,
+          "title": "YOUR PERSONAL OFFER",
+          "subTitle": "OFFER ONLY AVAILABLE ONCE",
+          "labelText": "",
+          "isPeriodic": false,
+          "forCompleteProfile": false,
+          "dayOfWeek": [],
+          "isLimitPerDayReason": false,
+          "activeInHours": null,
+          "additionalData": [],
+          "image": null,
+          "image2x": null,
+          "imageMobile": null,
+          "imageMobile2x": null,
+          "secondImage": null,
+          "secondImage2x": null,
+          "secondImageMobile": null,
+          "secondImageMobile2x": null,
+          "bannerTextColor": "",
+          "freeSpin": false,
+          "moneyBoxAmount": null,
+          "id": 647,
+          "coins": 875000,
+          "entries": 5000,
+          "bestDeal": false,
+          "mostPopular": true,
+          "rankLeague": false,
+          "imageBadge": "uploadspromo_offers_presetscircle_final-33496-87357-11351.png",
+          "usualPrice": 0,
+          "badgeLabel": "{\"percent\": \"250%\", \"text\": \"EXTRA COINS\"}",
+          "savingsPercent": "",
+          "subType": "",
+          "levelUpSectionId": null,
+          "accumulatedMoneyBoxAmount": null
+        },
+        "money": 24.99,
+        "usualPrice": 0,
+        "imageCash": "uploadspromo_offers_presets67869858560cb.png",
+        "isWelcomeOffer": false,
+        "text": "",
+        "additionalData": []
+      }
+    ],
+    "isShowVerificationPromo": false,
+    "needConfirmPhone": false,
+    "isShowDailyWheelForGuest": true,
+    "fraudDetector": {
+      "enabled": true,
+      "verificationCompleted": false
+    },
+    "isShowReferralsInfo": true,
+    "facebookJoinLink": "https:urlgeni.usfacebookNwJq",
+    "showPopupRtpGamesIfLessAmount": 50,
+    "showRtpGamesPopupAfter": 900,
+    "twitterJoinLink": "https:twitter.comfunrize",
+    "confirmContactsReward": {
+      "isAvailable": true,
+      "amount": 2,
+      "freeSpinAmount": null,
+      "conditions": ["allContactsConfirm"],
+      "prizeTitle": ""
+    },
+    "registrationTournamentPointsReward": 75000,
+    "registrationFormData": {
+      "emailEnabled": true,
+      "phoneEnabled": true,
+      "facebookAuthEnabled": true,
+      "googleAuthEnabled": true,
+      "contactsOrder": ["email", "phone"]
+    },
+    "enabledOneClickRegistration": false,
+    "cashback": null,
+    "visitedSections": ["popUpHowItWorks"],
+    "notificationCenter": {
+      "onPage": 20,
+      "messages": [
+        {
+          "systemAlias": "offer",
+          "ncMessageId": 17465449,
+          "isReaded": false,
+          "type": "offer",
+          "title": "Act fast! Tap Here to Get 15 FP!",
+          "message": "We9ll send an email with your Free Plays on Three Piglets to ashdowning@gmail.com",
+          "link": "https:ams-new.bonuses.emailv1redirect?player_message=2504704761&hash=ed8d8168d65ea85d6a5e85b62aee1dd0&url=https%253A%252F%252Ffunrize.com",
+          "image": "https:ams-new.bonuses.emailuploadsimagesFunrizeNotificationsdailyloginicon4.png",
+          "buttonLabel": "TAP",
+          "dateBegin": "Thu, 01 May 2025 17:22:57 -0500",
+          "dateEnd": "Thu, 01 May 2025 18:22:57 -0500",
+          "createdAt": "Fri, 02 May 2025 01:22:58 +0300"
+        }
+      ],
+      "countPages": 1,
+      "unreadMessagesCount": 1
+    },
+    "externalScripts": [
+      {
+        "code": "<script>       (function(w,d,s,r,n){w.TrustpilotObject=n;w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};           a=d.createElement(s);a.async=1;a.src=r;a.type='textjava'+s;f=d.getElementsByTagName(s)[0];           f.parentNode.insertBefore(a,f)})(window,document,'script', 'https:invitejs.trustpilot.comtp.min.js', 'tp');           tp('register', 'XXADEdDfKD7Wz8ok');<script>",
+        "location": "head"
+      },
+      {
+        "code": "<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https:www.googletagmanager.comgtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KTMC5RZ');<script><!-- End Google Tag Manager -->",
+        "location": "head"
+      },
+      {
+        "code": "<!-- Google Tag Manager (noscript) --><noscript><iframe src=\"https:www.googletagmanager.comns.html?id=GTM-KTMC5RZ\"height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"><iframe><noscript><!-- End Google Tag Manager (noscript) -->",
+        "location": "body"
+      },
+      {
+        "code": "<!-- Google tag (gtag.js) --><script async src=\"https:www.googletagmanager.comgtagjs?id=AW-977517696\"><script><script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-977517696', {'allow_enhanced_conversions':true});<script>",
+        "location": "head"
+      }
+    ],
+    "canBeTransferred": false,
+    "rankLeague": {
+      "enabled": false,
+      "progressData": null,
+      "activeBooster": null,
+      "availableSectionsBoosters": null,
+      "playerWheels": null,
+      "playerWheelsAvailable": null
+    },
+    "wsConnectionData": {
+      "centrifugo": {
+        "url": "wss:wss.funrize.comconnectionwebsocket",
+        "connectionToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1NDAxMDg0In0.iS9WRP5Eomx5KxXaZJ7oUJZgLBRhhyt4aij6EbnYnFg",
+        "connections": [
+          {
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjaGFubmVsIjoiZmFub3V0Iiwic3ViIjoiNTQwMTA4NCJ9.DR6zIAInkcl1ZX3D3S6QP1Lwc0JDoVsyTkZ6uF9L248",
+            "channelName": "fanout"
+          },
+          {
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjaGFubmVsIjoiJDU0MDEwODQiLCJzdWIiOiI1NDAxMDg0In0.3jJ0McwAbt575f44LBXB5vZPymhSMD0NSrxUaV3aceQ",
+            "channelName": "$5401084"
+          }
+        ]
+      }
+    },
+    "uncollectedQuestPrize": null,
+    "accountStatus": "ACTIVE",
+    "isTokenizeCash": false,
+    "isEntriesTournamentAvailable": true,
+    "visitedRaces": [],
+    "isAffiliate": false,
+    "isAffiliateAgreements": false,
+    "season": {
+      "isEnabled": false,
+      "isActive": false,
+      "isAvailable": false,
+      "isEnabledAvailabilityByDeposit": false,
+      "slug": "",
+      "totalProgressPercents": 0,
+      "currentLevel": 0,
+      "prize": 0
+    },
+    "depositStreak": {
+      "isActive": true,
+      "startedAt": "",
+      "finishedAt": "",
+      "percentEnabled": true,
+      "balanceLimit": 0,
+      "skin": "neutral_wheel_of_wins",
+      "popUpSoundPath": ""
+    },
+    "redeem": {
+      "show": false,
+      "isEntries": false,
+      "isCoins": false
+    },
+    "historyTransaction": {
+      "show": false,
+      "isEntries": false,
+      "isCoins": false
+    },
+    "adventureWheel": {
+      "isActive": false,
+      "isEnabledBannerForGuest": false
+    },
+    "prizeDrops": {
+      "isActive": false
+    },
+    "freeCoins": {
+      "isActive": true,
+      "minSum": 2000,
+      "freeSum": 800
+    },
+    "popUpAds": {
+      "isActive": true
+    },
+    "scratchCardLottery": {
+      "isActive": false
+    },
+    "moneyBox": {
+      "isActive": false
+    },
+    "magicBox": {
+      "isActive": false
+    },
+    "bingo": {
+      "isActive": false
+    },
+    "vipProgram": {
+      "isActive": false
+    },
+    "rally": null,
+    "dailyLogin": {
+      "isActive": true,
+      "isUnlimited": false
+    },
+    "isBannerSliderEnabled": false,
+    "isCookiesNoticeEnabled": true,
+    "isDailyActivitiesEnabled": false,
+    "featuresPriority": {
+      "offerComponents": [""],
+      "bannerInTheCashDesk": [""],
+      "cardsInMainMenu": [""],
+      "widgetInGamePopup": ["tournament", "fpChallenge", "cashback", "funmeter"],
+      "onMainPage": [""]
+    },
+    "favLast": [
+      2070, 1845, 1997, 2191, 3079, 3094, 1720, 2091, 1737, 1735, 2028, 3041, 2854, 2847, 3078, 2335, 3051
+    ],
+    "playerInfo": {
+      "playerDashboard": {
+        "registerDate": "27.03.2024",
+        "settings": {
+          "sms_notify": false,
+          "push_msg": true,
+          "email_notify": true
+        },
+        "playerStatus": {
+          "cashbackInfo": {
+            "startFromTitle": "",
+            "minRate": "1",
+            "maxRate": "7"
+          },
+          "current": {
+            "id": 0,
+            "title": "",
+            "minCp": "0",
+            "rate": 0,
+            "cashback": "0",
+            "number": 0,
+            "achieved": true,
+            "currency": "",
+            "currentCp": 0,
+            "totalCp": 0,
+            "code": "level_1"
+          },
+          "next": {
+            "id": 0,
+            "title": "",
+            "minCp": "0",
+            "rate": 0,
+            "cashback": "0",
+            "number": 0,
+            "achieved": true,
+            "currency": "",
+            "currentCp": 0,
+            "totalCp": 0,
+            "code": "level_1"
+          }
+        }
+      },
+      "playerBalance": {
+        "balance": "0",
+        "currency": "$",
+        "main": "0.00",
+        "bonus": [],
+        "entries": 0,
+        "winnings": "0.00",
+        "tourPoints": 78770
+      }
+    },
+    "payPal": {
+      "paymentsIn": {
+        "keys": {
+          "api_key": null
+        }
+      }
+    },
+    "funMeter": {
+      "is_active": true
+    },
+    "playerRestrictionIdsHash": "default",
+    "wheelForGuest": {
+      "isActive": false,
+      "timeToAppear": null
+    },
+    "nextTemperatureUpdateTime": null,
+    "jackpotSevens": [],
+    "starDrops": []
+  }
+}

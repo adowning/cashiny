@@ -1,0 +1,2110 @@
+// // --------------- ENUMS ---------------
+
+// enum Role {
+//   USER
+//   ADMIN
+//   OPERATOR
+//   SUPPORT_AGENT
+//   SYSTEM // For automated system actions
+// }
+
+// enum UserStatus {
+//   ACTIVE
+//   PENDING_VERIFICATION // Email or other verification needed
+//   SUSPENDED            // Temporarily suspended
+//   DEACTIVATED          // User chose to deactivate, or permanently banned
+//   BANNED
+// }
+
+// enum Gender {
+//   MALE
+//   FEMALE
+//   OTHER
+//   PREFER_NOT_TO_SAY
+// }
+
+// enum TransactionType {
+//   DEPOSIT
+//   WITHDRAWAL
+//   BET_PLACE          // Placing a bet
+//   BET_WIN            // Winning a bet
+//   BET_LOSE           // Losing a bet (optional, if you record losses explicitly)
+//   BET_REFUND         // Bet refunded
+//   BONUS_AWARD        // Bonus funds credited (e.g., deposit bonus, VIP reward)
+//   BONUS_WAGER        // Wagering bonus funds
+//   BONUS_CONVERT      // Bonus funds converted to real money after wagering
+//   BONUS_EXPIRE       // Bonus funds expired
+//   XP_AWARD           // XP granted
+//   FEE                // Transaction fee (e.g., for withdrawal)
+//   REFUND             // General refund (e.g., for a failed service)
+//   ADJUSTMENT_ADD     // Manual credit adjustment by admin
+//   ADJUSTMENT_SUB     // Manual debit adjustment by admin
+//   INTERNAL_TRANSFER  // Transfer between user's own accounts (e.g., main to betting wallet if separate)
+//   PRODUCT_PURCHASE   // Purchase of a virtual item or package
+//   REBATE_PAYOUT      // Cashback/rebate paid out
+// }
+
+// enum TransactionStatus {
+//   PENDING         // Initial status, awaiting confirmation or processing
+//   PROCESSING      // Actively being processed (e.g., withdrawal under review)
+//   COMPLETED       // Successfully completed
+//   FAILED          // Failed due to an error or rejection
+//   CANCELLED       // Cancelled by user or system before completion
+//   EXPIRED         // e.g., a pending deposit that was not paid in time
+//   REQUIRES_ACTION // User needs to perform an action (e.g., 3DS for deposit)
+//   REVIEW          // Under manual review by admin
+// }
+
+// enum RewardType {
+//   DAILY_SIGN_IN
+//   WEEKLY_CYCLE
+//   MONTHLY_CYCLE
+//   LEVEL_UP
+//   VIP_TASK_COMPLETION
+//   ACHIEVEMENT_UNLOCKED
+//   PROMO_CODE
+//   DEPOSIT_BONUS
+//   REGISTRATION_BONUS
+//   BET_REBATE
+//   FREE_SPINS
+//   TOURNAMENT_PRIZE
+//   OTHER
+// }
+
+// enum RewardStatus {
+//   AVAILABLE // User can claim this reward
+//   CLAIMED   // User has successfully claimed this reward
+//   EXPIRED   // Reward was available but expired before being claimed
+//   PENDING   // Reward is pending, e.g., needs verification or processing before becoming available/claimed
+//   VOIDED    // Reward was voided by an admin or system rule
+// }
+
+// enum VipTaskType {
+//   DEPOSIT_STREAK      // Make N deposits in X days
+//   WAGER_AMOUNT        // Wager X amount in Y period
+//   LOGIN_STREAK        // Log in for N consecutive days
+//   PROFILE_COMPLETION  // Complete user profile details
+//   PLAY_SPECIFIC_GAME  // Play N rounds on a specific game
+//   VERIFY_EMAIL
+//   PLACE_BETS          // Place N number of bets
+//   WIN_STREAK          // Achieve N wins in a row on a specific game type
+// }
+
+// enum NotificationType {
+//   GENERAL_INFO
+//   PROMOTION
+//   SECURITY_ALERT
+//   TRANSACTION_UPDATE
+//   REWARD_UNLOCKED
+//   LEVEL_UP
+//   NEW_MESSAGE // For chat or support
+//   MAINTENANCE
+// }
+
+// enum ProductType {
+//   DEPOSIT_PACKAGE // Bundles for deposits, possibly with bonus value
+//   VIRTUAL_CURRENCY
+//   ITEM            // In-game items, cosmetics, etc.
+//   SUBSCRIPTION
+//   FEATURE_UNLOCK
+// }
+
+// // --------------- MODELS ---------------
+
+// model User {
+//   id        String  @id @default(cuid())
+//   email     String  @unique
+//   username  String? @unique // Optional, if you allow username login or display
+//   cashtag   String? @unique // For platforms like CashApp or internal use
+
+//   hashedPassword String?
+//   role      Role     @default(USER)
+//   status    UserStatus @default(PENDING_VERIFICATION)
+
+//   firstName String?
+//   lastName  String?
+//   avatarUrl String? // URL to profile picture
+//   dob       DateTime? // Date of birth for KYC/age verification
+//   gender    Gender?
+
+//   emailVerified        Boolean   @default(false)
+//   emailVerificationToken String? @unique
+//   emailVerificationTokenExpiresAt DateTime?
+
+//   passwordResetToken          String?   @unique
+//   passwordResetTokenExpiresAt DateTime?
+
+//   lastLoginAt         DateTime?
+//   lastIpAddress       String?
+//   failedLoginAttempts Int       @default(0)
+//   lockedUntil         DateTime?
+
+//   // Preferences
+//   preferredCurrencyId String?
+//   preferredCurrency   Currency? @relation(fields: [preferredCurrencyId], references: [id])
+//   timezone            String?   @default("UTC")
+//   locale              String?   @default("en-US") // For language and regional formats
+
+//   // MFA
+//   mfaEnabled Boolean @default(false)
+//   mfaSecret  String? // Encrypted
+//   // mfaBackupCodes Json? // Store hashed backup codes
+
+//   // Relationships
+//   profile     Profile?
+//   vipInfo     VipInfo?
+//   wallets     Wallet[]
+//   transactions Transaction[]
+//   xpEvents    XpEvent[]
+//   userRewards UserReward[]
+//   userVipTaskProgress UserVipTaskProgress[]
+//   notifications       Notification[] @relation("UserNotification") // Notifications sent to this user
+//   sentNotifications   Notification[] @relation("AdminNotification") // Notifications created by this user (if admin/system)
+//   // achievements UserAchievement[] // If you have an achievements system
+
+//   // Audit
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([email])
+//   @@index([username])
+//   @@index([cashtag])
+// }
+
+// model Profile {
+//   id     String @id @default(cuid())
+//   userId String @unique
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   bio             String? @db.Text
+//   countryCode     String? // ISO 3166-1 alpha-2 country code
+//   phoneNumber     String? @unique
+//   phoneVerified   Boolean @default(false)
+//   addressLine1    String?
+//   addressLine2    String?
+//   city            String?
+//   stateOrProvince String?
+//   postalCode      String?
+
+//   // KYC Status (more complex KYC would be its own model)
+//   kycLevel Int     @default(0) // 0: None, 1: Basic, 2: Full
+//   kycDocs  Json?   // Store paths or references to KYC documents
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model Currency {
+//   id        String   @id @default(cuid()) // e.g., "USD", "EUR", "BTC", "ETH", "USD_FUN" (virtual currency)
+//   name      String   @unique             // e.g., "US Dollar", "Euro", "Bitcoin", "Fun Bucks"
+//   symbol    String                      // e.g., "$", "€", "₿", "FB"
+//   type      String   @default("FIAT")    // e.g., "FIAT", "CRYPTO", "VIRTUAL"
+//   precision Int      @default(2)         // Number of decimal places for display and calculations. For crypto, could be 8 or more.
+//   isActive  Boolean  @default(true)
+//   isDefault Boolean  @default(false)     // Is this the default currency for new users? (Ensure only one is true)
+
+//   // For crypto
+//   contractAddress String?
+//   blockchain      String? // e.g., "Ethereum", "Bitcoin", "TRON"
+
+//   // Relations
+//   preferredForUsers User[]
+//   wallets           Wallet[]
+//   // transactions      Transaction[] // If linking Transaction.currencyId directly
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([type])
+// }
+
+// model Wallet {
+//   id     String @id @default(cuid())
+//   userId String
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   currencyId String
+//   currency   Currency @relation(fields: [currencyId], references: [id])
+
+//   balance         Decimal @default(0) @db.Decimal(18, 8) // Real money balance (e.g., 18 total digits, 8 decimal places)
+//   bonusBalance    Decimal @default(0) @db.Decimal(18, 8) // Bonus money balance
+//   lockedBalance   Decimal @default(0) @db.Decimal(18, 8) // Balance locked in active bets or pending withdrawals
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([userId, currencyId]) // A user has one wallet per currency
+//   @@index([userId])
+//   @@index([currencyId])
+// }
+
+// model Transaction {
+//   id        String   @id @default(cuid())
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id], onDelete:Restrict) // Don't delete user if they have transactions, or use SetNull if user can be anonymized
+//   walletId  String?  // The specific wallet this transaction affected
+//   // wallet    Wallet?  @relation(fields: [walletId], references: [id]) // If you want direct relation here
+
+//   type          TransactionType
+//   status        TransactionStatus @default(PENDING)
+//   amount        Decimal           @db.Decimal(18, 8) // Gross amount. Positive for credits (deposit, win), can be positive for debits (bet, withdrawal) where context defines flow.
+//   netAmount     Decimal?          @db.Decimal(18, 8) // Amount after fees, or actual change to balance.
+//   feeAmount     Decimal?          @db.Decimal(18, 8) // Fee associated with this transaction.
+
+//   currencyId String // The currency of the transaction. Consistent with Wallet's currency if walletId is present.
+//   // currency   Currency @relation(fields: [currencyId], references: [id])
+
+//   // Balances for audit trail (recorded at the time of completion)
+//   balanceBefore      Decimal? @db.Decimal(18, 8) // User's real balance before this transaction completed
+//   balanceAfter       Decimal? @db.Decimal(18, 8) // User's real balance after this transaction completed
+//   bonusBalanceBefore Decimal? @db.Decimal(18, 8)
+//   bonusBalanceAfter  Decimal? @db.Decimal(18, 8)
+
+//   // For bonus transactions
+//   wageringRequirement   Decimal? @db.Decimal(18, 8) // If this bonus award has a wagering requirement
+//   wageringProgress      Decimal? @db.Decimal(18, 8) // Progress made towards this specific bonus's wagering
+
+//   // Details & Metadata
+//   description   String?           @db.Text
+//   provider      String?           // e.g., "Stripe", "CashApp", "System", "PragmaticPlay"
+//   providerTxId  String?           // Transaction ID from the external provider (should be unique per provider if possible)
+//   relatedGameId String?           // If related to a game session or bet
+//   relatedRoundId String?          // Game round ID
+//   metadata      Json?             // e.g., { ipAddress: "...", device: "...", webhookPayload: {..}, recipientDetails: "...", note: "TX123" }
+
+//   processedAt DateTime?         // Timestamp when the transaction moved to a final state (COMPLETED, FAILED, CANCELLED)
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+
+//   // For rebate calculations
+//   rebateGenerated RebateTransaction?
+
+//   @@index([userId, status, type])
+//   @@index([provider, providerTxId]) // Good for webhook lookups if providerTxId is reliably unique
+//   @@index([currencyId])
+//   @@index([createdAt])
+// }
+
+// model XpEvent {
+//   id     String @id @default(cuid())
+//   userId String
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   points Int     // XP points awarded for this event
+//   source String  // e.g., "GAME_WIN", "DAILY_CHALLENGE", "ACHIEVEMENT_UNLOCKED", "DEPOSIT"
+//   sourceId String? // Optional ID related to the source (e.g., gameId, achievementId, transactionId)
+//   meta   Json?   // Additional metadata, e.g., { achievementName: "First Win", gameName: "Slots Bonanza" }
+
+//   createdAt DateTime @default(now())
+
+//   @@index([userId])
+//   @@index([source])
+// }
+
+// model VipInfo {
+//   id     String @id @default(cuid())
+//   userId String @unique
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   level                 Int     @default(1)
+//   currentLevelXp        Decimal @default(0) @db.Decimal(18, 2) // XP within the current level, using Decimal for potential fractional XP systems
+//   totalXp               Decimal @default(0) @db.Decimal(18, 2) // Total XP ever earned
+//   nextLevelXpRequired   Decimal             @db.Decimal(18, 2) // XP bar length for the current level
+
+//   cashbackPercentage    Decimal @default(0.01) @db.Decimal(5, 4) // e.g., 0.0100 for 1%
+//   prioritySupport       Boolean @default(false)
+//   specialBonusesAvailable Int   @default(0)
+
+//   dailyBonusClaimedAt   DateTime?
+//   weeklyBonusClaimedAt  DateTime?
+//   monthlyBonusClaimedAt DateTime?
+
+//   // Last time specific cycle reward definitions were checked/generated for the user
+//   lastDailyCycleRewardGeneratedAt DateTime?
+//   lastWeeklyCycleRewardGeneratedAt DateTime?
+//   lastMonthlyCycleRewardGeneratedAt DateTime?
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model UserReward {
+//   id          String   @id @default(cuid())
+//   userId      String
+//   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   rewardType  RewardType
+//   description String   @db.Text
+//   status      RewardStatus @default(AVAILABLE)
+//   amount      Decimal? @db.Decimal(18, 8) // e.g., bonus currency amount, free spins count as a number
+//   currencyId  String?  // If the reward is monetary
+//   // currency    Currency? @relation(fields: [currencyId], references: [id]) // Optional relation
+
+//   // If it's an item reward
+//   // itemId      String?
+//   // item        Item?    @relation(fields: [itemId], references: [id])
+//   // itemQuantity Int?
+
+//   metaData    Json?    // e.g., { "level": 5, "bonusCode": "VIPSPECIAL", "wageringMultiplier": 30, "gameRestrictions": ["gameId1"] }
+
+//   claimedAt   DateTime?
+//   expiresAt   DateTime? // Some rewards might expire if not claimed or used
+//   availableFrom DateTime @default(now())
+
+//   // For tracking origin if needed
+//   sourceTransactionId String? // If this reward was granted due to a specific transaction
+//   // sourceTransaction   Transaction? @relation(fields: [sourceTransactionId], references: [id], name: "RewardSourceTransaction")
+//   sourceAchievementId String?
+//   // sourceAchievement Achievement? @relation...
+
+//   vipLevelRequirement Int? // Optional: if this reward is tied to being a certain VIP level
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([userId, status])
+//   @@index([userId, rewardType, status])
+// }
+
+// model Product {
+//   id          String  @id @default(cuid())
+//   name        String
+//   description String? @db.Text
+//   type        ProductType @default(DEPOSIT_PACKAGE)
+//   category    String?     // e.g., "Gold Package", "Starter Pack", "VIP Special"
+
+//   price       Decimal @db.Decimal(18, 8)
+//   currencyId  String  // Currency for this product's price
+//   // currency    Currency @relation(fields: [currencyId], references: [id])
+
+//   // What this product grants
+//   valueAmount       Decimal? @db.Decimal(18, 8) // e.g., amount of virtual currency granted
+//   valueCurrencyId   String?                     // Currency of the valueAmount
+//   bonusAmount       Decimal? @db.Decimal(18, 8)
+//   bonusCurrencyId   String?
+//   xpGranted         Int?
+//   // itemsGranted      Json? // e.g., [{ itemId: "key_silver", quantity: 1 }]
+
+//   iconUrl     String?
+//   isActive    Boolean @default(true)
+//   sortOrder   Int     @default(0)
+//   availability Json? // e.g., { vipLevelMin: 3, firstTimeUserOnly: true, purchaseLimitPerUser: 1 }
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([type])
+//   @@index([isActive, category])
+// }
+
+// model VipTask {
+//   id                 String      @id @default(cuid())
+//   taskType           VipTaskType
+//   title              String
+//   description        String      @db.Text
+//   xpReward           Decimal?    @db.Decimal(18, 2)
+//   // itemRewardId       String?
+//   // itemReward         Item?    @relation(fields: [itemRewardId], references: [id])
+//   bonusRewardAmount  Decimal?    @db.Decimal(18, 8)
+//   bonusCurrencyId    String?
+//   // bonusCurrency      Currency? @relation(fields: [bonusCurrencyId], references: [id])
+
+//   targetValue        Decimal?    @db.Decimal(18, 2) // e.g., wager 1000.00 USD, deposit 3 times
+//   targetCurrencyId   String?     // If targetValue is monetary
+//   durationDays       Int?        // For streak tasks or tasks with a time limit from start
+//   resetCycle         String?     // e.g., "DAILY", "WEEKLY", "MONTHLY", "NEVER" (for one-time tasks)
+//   isActive           Boolean     @default(true)
+//   requiredVipLevel   Int         @default(1)
+//   sortOrder          Int         @default(0)
+
+//   userTaskProgress UserVipTaskProgress[]
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([isActive, requiredVipLevel])
+// }
+
+// model UserVipTaskProgress {
+//   id        String  @id @default(cuid())
+//   userId    String
+//   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   taskId    String
+//   task      VipTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+//   progress        Decimal  @default(0) @db.Decimal(18, 2) // Current progress towards targetValue
+//   isCompleted   Boolean  @default(false) // Task logic met, reward might still need claiming
+//   rewardClaimedAt DateTime? // When the reward for completing this task instance was claimed
+
+//   // For streak tasks or cycle-based tasks
+//   currentStreak    Int?
+//   lastProgressAt   DateTime? // Timestamp of the last action contributing to progress or streak
+//   cycleStartedAt   DateTime? // When the current cycle for this task/user started
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([userId, taskId]) // A user has one progress record per task definition
+//   @@index([userId, isCompleted, rewardClaimedAt])
+// }
+
+// model RebateTransaction {
+//   id            String   @id @default(cuid())
+//   userId        String
+//   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   transactionId String   @unique // Original game/bet transaction that generated the rebate
+//   originalTransaction Transaction @relation(fields: [transactionId], references: [id])
+
+//   rebateAmount  Decimal  @db.Decimal(18, 8)
+//   currencyId    String
+//   // currency      Currency @relation(fields: [currencyId], references: [id])
+//   vipLevel      Int      // User's VIP level at the time of the original transaction
+//   rebatePercentage Decimal @db.Decimal(5,4) // Cashback percentage applied for this rebate
+
+//   status        RewardStatus @default(PENDING) // PENDING until aggregated and paid out, then CLAIMED/COMPLETED
+//   paidOutAt     DateTime?    // When this specific rebate amount was paid
+//   payoutTransactionId String?  // ID of the Transaction record that paid this rebate out
+//   // payoutTransaction Transaction? @relation("RebatePayoutTransaction", fields: [payoutTransactionId], references: [id]) // if linking
+
+//   createdAt     DateTime @default(now())
+//   updatedAt     DateTime @updatedAt
+
+//   @@index([userId, status])
+// }
+
+// model Notification {
+//   id      String @id @default(cuid())
+//   userId  String // The recipient user
+//   user    User   @relation("UserNotification", fields: [userId], references: [id], onDelete: Cascade)
+
+//   type    NotificationType
+//   title   String
+//   message String @db.Text
+//   isRead  Boolean @default(false)
+//   readAt  DateTime?
+
+//   actionUrl String? // Optional URL for the user to click (e.g., to view the reward)
+//   imageUrl  String? // Optional image for the notification
+//   metadata  Json?   // e.g., { relatedEntityId: "...", relatedEntityType: "..." }
+
+//   createdBy String? // Optional: userId of admin/system if applicable
+//   // createdByAdmin User? @relation("AdminNotification", fields: [createdBy], references: [id], onDelete:SetNull)
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([userId, isRead, createdAt])
+// }
+
+// // You would also have models for Games, GameProviders, GameSessions, Bets,
+// // Achievements, UserAchievements, Promotions, PromoCodes, UserPromoCodes, etc.
+// // For brevity, I'm focusing on the core ones impacting the services discussed.
+
+generator prismaClient {
+  provider      = "prisma-client-js"
+  output        = "../client"
+  // previewFeatures = ["prismaSchemaFolder"]
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"] // Example, adjust as needed
+}
+
+// generator kyselyClient {
+//   // provider = "prisma-kysely"
+//   output   = "../src/kysely"
+//   fileName = "types.ts"
+// }
+
+generator typescriptInterfaces {
+  provider          = "ts-node /home/ash/Documents/cf/node_modules/.bin/prisma-generator-typescript-interfaces"
+  output            = "../../types/src/prisma/types.ts"
+  optionalRelations = "true"
+  client            = "../src/prisma"
+  prettier          = "true"
+  // modelPrefix       = "I"
+  enumPrefix        = "Enum"
+  // typePrefix        = "Type"
+  modelType         = "type"
+}
+
+// generator prismaClassGenerator {
+//   provider = "prisma-class-generator"
+//   client   = "../src/generated/prisma"
+//   output   = "../src/generated/classes"
+// }
+// generator typescriptInterfaces {
+//   provider = "prisma-generator-typescript-interfaces"
+// }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  VIP
+  MODERATOR
+  SYSTEM
+  OWNER
+  MEMBER
+  OPERATOR
+  SUPPORT_AGENT // Added based on schema.zmodel.txt, not explicitly in seed but good to keep
+}
+
+enum ProductType {
+  DEPOSIT_PACKAGE // Bundles for deposits, possibly with bonus value
+  VIRTUAL_CURRENCY
+  ITEM // In-game items, cosmetics, etc.
+  SUBSCRIPTION
+  FEATURE_UNLOCK
+}
+
+enum UserStatus {
+  ACTIVE
+  DEACTIVATED
+  ONLINE // Added based on schema.zmodel.txt
+  OFFLINE // Added based on schema.zmodel.txt
+  SUSPENDED // Added based on schema.zmodel.txt
+  BANNED // Added based on schema.zmodel.txt
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum GameCategory {
+  FISH
+  POKER
+  SLOTS
+  TABLE_GAMES
+  LIVE_CASINO
+  SPORTSBOOK
+  VIRTUAL_SPORTS
+  LOTTERY
+  CRASH
+  OTHER
+}
+
+enum GameProvider {
+  PRAGMATICPLAY
+  EVOPLAY
+  NETENT
+  PLAYNGO
+  RELAXGAMING
+  HACKSAW
+  BGAMING
+  SPRIBE
+  INTERNAL
+  REDTIGER
+  NETGAME
+  BIGFISHGAMES
+  CQNINE
+  NOLIMIT
+  KICKASS
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  BET
+  WIN
+  TRANSFER_SENT
+  TRANSFER_RECEIVED
+  SYSTEM_ADJUSTMENT_CREDIT // Added from schema.zmodel.txt
+  SYSTEM_ADJUSTMENT_DEBIT // Added from schema.zmodel.txt
+  TOURNAMENT_BUYIN // Added from schema.zmodel.txt
+  TOURNAMENT_PRIZE // Added from schema.zmodel.txt
+  AFFILIATE_COMMISSION // Added from schema.zmodel.txt
+  REFUND // Added from schema.zmodel.txt
+  FEE // Added from schema.zmodel.txt
+  BONUS_AWARD
+  BET_PLACE // Placing a bet
+  BET_WIN // Winning a bet
+  BET_LOSE // Losing a bet (optional, if you record losses explicitly)
+  BET_REFUND // Bet refunded
+  BONUS_WAGER // Wagering bonus funds
+  BONUS_CONVERT // Bonus funds converted to real money after wagering
+  BONUS_EXPIRED // Bonus funds expired
+  XP_AWARD // XP granted
+  ADJUSTMENT_ADD // Manual credit adjustment by admin
+  ADJUSTMENT_SUB // Manual debit adjustment by admin
+  INTERNAL_TRANSFER // Transfer between user's own accounts (e.g., main to betting wallet if separate)
+  PRODUCT_PURCHASE // Purchase of a virtual item or package
+  REBATE_PAYOUT // Cashback/rebate paid out
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING // Added from schema.zmodel.txt
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
+  EXPIRED // Added from schema.zmodel.txt
+  REJECTED // Added from schema.zmodel.txt
+  REQUIRES_ACTION
+  ON_HOLD // Added from schema.zmodel.txt
+}
+
+enum NotificationType {
+  SYSTEM_MESSAGE
+  FRIEND_REQUEST_RECEIVED
+  FRIEND_REQUEST_ACCEPTED
+  ACHIEVEMENT_UNLOCKED
+  BALANCE_UPDATE
+  PROMOTIONAL_OFFER
+  TOURNAMENT_INVITE // Added from schema.zmodel.txt
+  TOURNAMENT_RESULT // Added from schema.zmodel.txt
+  SECURITY_ALERT // Added from schema.zmodel.txt
+  GAME_EVENT // Added from schema.zmodel.txt
+  NEW_MESSAGE // Added from schema.zmodel.txt
+  LEVEL_UP // Added from schema.zmodel.txt
+  GENERAL_INFO
+  PROMOTION
+  SECUITY_ALERT
+  TRANSACTION_UPDATE
+  REWARD_UNLOCKED
+  MAINTENANCE
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}
+
+enum KeyMode {
+  read
+  write
+  upload
+  manage_users
+  manage_settings
+  launch_game
+}
+
+// Models
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  INACTIVE
+}
+
+enum PaymentMethod {
+  INSTORE_CASH
+  INSTORE_CARD
+  CASH_APP
+}
+
+enum CurrencyType {
+  FIAT
+  CRYPTO
+  VIRTUAL
+}
+
+model Currency {
+  id     String @id @default(cuid()) // e.g., "USD", "EUR", "BTC", "ETH", "USD_FUN" (your virtual/game currency)
+  name   String @unique // e.g., "US Dollar", "Euro", "Bitcoin", "Fun Bucks"
+  symbol String // e.g., "$", "€", "₿", "FB"
+  type   String @default("FIAT") // Type of currency: e.g., "FIAT", "CRYPTO", "VIRTUAL"
+  // Consider using an enum for this: CurrencyType @default(FIAT)
+
+  // CRUCIAL for UI formatting when storing amounts as integers (cents/smallest unit)
+  // For USD, precision = 2 (means amounts are in cents)
+  // For JPY, precision = 0 (means amounts are in Yen directly)
+  // For BTC, precision = 8 (means amounts are in Satoshis)
+  precision Int @default(2)
+
+  isActive  Boolean @default(true) // Whether this currency is currently active and usable in the system
+  isDefault Boolean @default(false) // Is this the default currency for new users? (Ensure only one is true)
+
+  // Optional fields for cryptocurrency specifics
+  contractAddress      String? @unique // For ERC20 tokens or similar
+  blockchain           String? // e.g., "Ethereum", "Bitcoin", "TRON", "Solana"
+  withdrawalFeeFixed   Int? // Fixed withdrawal fee in smallest unit (cents/satoshi) for this currency
+  withdrawalFeePercent Float? // Percentage withdrawal fee (e.g., 0.01 for 1%)
+
+  // Exchange rate against a base currency (e.g., USD) if you need to display approximate values
+  // This would need a separate system to update regularly
+  // rateToBaseCurrency Float?
+
+  // Relations to other models
+  usersPreferringThisCurrency User[]        @relation("PreferredCurrency") // Users who prefer this currency
+  wallets                     Wallet[] // Wallets holding this currency
+  transactions                Transaction[] // Transactions made in this currency
+  products                    Product[] // Products priced in this currency (if Product.currencyId links here)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type])
+  @@index([isActive])
+  @@map("currency")
+}
+
+model User {
+  id                     String               @id @default(cuid())
+  username               String?              @unique
+  name                   String               @unique
+  email                  String               @unique
+  emailVerified          Boolean?
+  displayUsername        String?
+  phone                  String?              @unique
+  cashtag                String?              @unique
+  phoneVerified          DateTime?
+  isVerified             Boolean              @default(false)
+  passwordHash           String?
+  role                   Role                 @default(USER)
+  status                 UserStatus           @default(ACTIVE)
+  totalXp                Int                  @default(0)
+  currentLevel           Int                  @default(0)
+  referralCode           String?              @unique @default(cuid())
+  commissionRate         Float?               @default(0.05)
+  twoFactorEnabled       Boolean?             @default(false)
+  isOnline               Boolean?             @default(false)
+  twoFactorSecret        String?
+  image                  String?
+  twoFactorRecoveryCodes String[]
+  lastLogin              DateTime?
+  lastIp                 String?
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+  profile                Profile?             @relation("PrimaryProfile")
+  otherProfiles          Profile[]            @relation("OtherProfiles")
+  settings               Settings?
+  activeWalletId         String?
+  wallets                Wallet[]
+  // operatorAccessOwned    OperatorAccess[]  @relation("OperatorOwner")
+  posts                  Post[]
+  comments               Comment[]
+  gameSessions           GameSession[]
+  xpEvents               XpEvent[]
+  userAchievements       UserAchievement[]
+  // notifications          Notification[]
+  sentMessages           ChatMessage[]        @relation("SentMessages")
+  friendshipsSent        Friendship[]         @relation("SentFriendRequests")
+  friendshipsReceived    Friendship[]         @relation("ReceivedFriendRequests")
+  // targetedTransactions   Transaction[]        @relation("TargetUserTransactions")
+  gameLaunchLinks        GameLaunchLink[]     @relation("UserGameLaunchLinks")
+  eventLogsAsActor       EventLog[]           @relation("ActorEvents")
+  // gameTransactions       Transaction[]    @relation("UserGameTransactions")
+  // operators UserOperator[] // User's memberships in operators
+  createdOperators       OperatorAccess[]     @relation("OperatorOwner")
+  invitationsSent        OperatorInvitation[] @relation("SentInvitations")
+  invitationsReceived    OperatorInvitation[] @relation("ReceivedInvitations") // If linking invitation directly to an existing user
+  // vipProgress            UserVipProgress?     @relation("UserToVipProgress", fields: [userVipProgressId], references: [id])
+  // vipRewardClaims        VipRewardClaim[]     @relation("UserToVipRewardClaims")
+  // vipTaskProgress        UserVipTaskProgress[]
+  // vip                    UserVipProgress?      @relation("UserToVipProgress", fields: [userVipProgressId], references: [id])
+  referrerId             String?
+  referrer               User?                @relation("Referrals", fields: [referrerId], references: [id], onDelete: SetNull)
+  referrals              User[]               @relation("Referrals")
+  Account                Account[]
+  Session                Session[]
+  vipInfo                VipInfo?
+  // UserVipTaskProgress UserVipTaskProgress[]
+  // userVipProgressId   String?
+  // // userVipProgressId      String?
+  // // UserVipProgress        UserVipProgress?
+  // // VipRewardClaim         VipRewardClaim[]
+  // UserVipProgress     UserVipProgress?
+  // VipRewardClaim      VipRewardClaim[]
+  RebateTransaction      RebateTransaction[]
+
+  firstName String?
+  lastName  String?
+  avatarUrl String? // URL to profile picture
+  dob       DateTime? // Date of birth for KYC/age verification
+  gender    Gender?
+
+  // Preferences
+  preferredCurrencyId String?
+  preferredCurrency   Currency? @relation("PreferredCurrency", fields: [preferredCurrencyId], references: [id])
+  timezone            String?   @default("UTC")
+  locale              String?   @default("en-US") // For language and regional formats
+
+  // MFA
+  mfaEnabled Boolean @default(false)
+  mfaSecret  String? // Encrypted
+  // mfaBackupCodes Json? // Store hashed backup codes
+
+  // Relationships
+  userRewards            UserReward[]
+  userVipTaskProgress    UserVipTaskProgress[]
+  // sentNotifications   Notification[]        @relation("SentNotifications") // Notifications created by this user (if admin/system)
+  // achievements UserAchievement[] // If you have an achievements system
+  // Notification Notification[] @relation("NotificationUser")
+  // allNotification Notification[] @relation("AllNotifications")
+  sentNotifications      Notification[]        @relation("Sender")
+  receivedNotifications  Notification[]        @relation("Originator")
+  originatedTransactions Transaction[]         @relation("OriginatedTransactions")
+  receivedTransactions   Transaction[]         @relation("ReceivedTransactions")
+
+  @@index([email])
+  @@index([username])
+  @@index([cashtag])
+  @@map("users")
+}
+
+model Session {
+  id             String    @id @default(cuid())
+  userId         String
+  username       String?
+  name           String?
+  activeGameId   String?
+  ipAddress      String?
+  startTime      DateTime  @default(now())
+  endTime        DateTime?
+  lastActivityAt DateTime?
+  userAgent      String?
+  expiresAt      DateTime
+  createdAt      DateTime  @default(now())
+  refreshToken   String?   @unique
+  active         Boolean   @default(false)
+  token          String    @unique
+  updatedAt      DateTime? @updatedAt
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([refreshToken])
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id        String @id @default(cuid())
+  accountId String
+
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime? @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@map("verifications")
+}
+
+model Profile {
+  id                   String          @id @default(cuid())
+  balance              Int             @default(0)
+  totalXpFromOperator  Int             @default(0)
+  activeCurrencyType   String          @default("USD")
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  currentGameSession   GameSession?    @relation(fields: [currentGameSessionid], references: [id])
+  currentGameSessionid String?
+  userId               String          @unique
+  user                 User            @relation("PrimaryProfile", fields: [userId], references: [id], onDelete: Cascade)
+  otherUser            User?           @relation("OtherProfiles", fields: [otherUserid], references: [id])
+  otherUserid          String?
+  // gameSessionId        String?         @unique
+  role                 Role?           @default(USER)
+  operatorAccessId     String? // Ensure @unique is removed
+  operator             OperatorAccess? @relation(fields: [operatorAccessId], references: [id])
+
+  @@map("profiles")
+}
+
+model Settings {
+  id                 String   @id @default(cuid())
+  theme              String?  @default("dark")
+  language           String?  @default("en") // ISO 639-1 codes
+  emailNotifications Boolean  @default(true)
+  smsNotifications   Boolean  @default(false)
+  pushNotifications  Boolean  @default(true)
+  meta               Json? // For user-specific arbitrary settings
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  balance   Float    @default(0.0)
+  isActive  Boolean  @default(true)
+  address   String?  @unique // For crypto wallets
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  currencyId String
+  currency   Currency @relation(fields: [currencyId], references: [id]) // This is the relation
+
+  transactions Transaction[]
+
+  bonusBalance  Int @default(0) // Bonus money balance
+  lockedBalance Int @default(0) // Balance locked in active bets or pending withdrawals
+
+  @@unique([userId, currencyId])
+  @@map("wallets")
+}
+
+model OperatorAccess {
+  id               String               @id @default(cuid())
+  name             String               @unique
+  operator_secret  String // Hashed secret
+  operator_access  String // e.g., 'ip_whitelist', 'internal_services'
+  callback_url     String
+  active           Boolean              @default(true)
+  permissions      KeyMode[] // Array of permissions using the KeyMode enum
+  ips              String[] // List of allowed IP addresses
+  description      String?              @db.Text
+  last_used_at     DateTime?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  ownerId          String? // ID of the User who created/owns the operator
+  // ... other operator fields
+  acceptedPayments PaymentMethod[]
+  // owner       User      @relation("OperatorOwner", fields: [ownerId], references: [id])
+  // members     UserOperator[]
+  invitations      OperatorInvitation[]
+  ownedById        String? // Renamed from ownedBy for Prisma relation convention
+  owner            User?                @relation("OperatorOwner", fields: [ownedById], references: [id], onDelete: SetNull)
+
+  gameLaunchLinks GameLaunchLink[]
+  products        Product[]
+  games           Game[]
+  profiles        Profile[]
+
+  @@map("operator_access_keys")
+}
+
+model Achievement {
+  id               String            @id @default(cuid())
+  name             String            @unique
+  description      String            @db.Text
+  xpReward         Int
+  iconUrl          String?
+  secret           Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  blur             Int
+  userAchievements UserAchievement[]
+
+  @@map("achievements")
+}
+
+model Game {
+  id              String           @id @default(cuid())
+  name            String
+  title           String
+  goldsvetData    Json?
+  // slug            String           @unique
+  description     String?          @db.Text
+  provider        GameProvider
+  category        GameCategory
+  tags            String[]
+  isActive        Boolean          @default(true)
+  thumbnailUrl    String?
+  bannerUrl       String?
+  meta            Json? // For RTP, volatility, features, releaseDate etc.
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  featured        Boolean          @default(false)
+  gameSessions    GameSession[]
+  gameLaunchLinks GameLaunchLink[]
+  operatorId      String?
+  operator        OperatorAccess?  @relation(fields: [operatorId], references: [id])
+
+  @@map("games")
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  published Boolean  @default(false)
+  tags      String[]
+  viewCount Int      @default(0)
+  meta      Json? // e.g., readingTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  comments Comment[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade) // Or SetNull if comments should remain if author is deleted
+
+  @@map("comments")
+}
+
+model GameSpin {
+  id             String   @id @default(cuid())
+  spinData       Json? // e.g., betAmount, winAmount
+  createdAt      DateTime @default(now())
+  grossWinAmount Int?     @default(0)
+  currencyId     String?
+
+  gameSessionId String
+  wagerAmount   Int?        @default(0)
+  sessionId     String
+  timeStamp     DateTime
+  gameSession   GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
+}
+
+model GameSession {
+  id              String     @id @default(cuid())
+  isActive        Boolean    @default(false) // Typically false once ended
+  sessionData     Json? // e.g., betHistory, lastSpin
+  spins           GameSpin[]
+  sessionId       String?
+  currencyId      String?
+  startedAt       DateTime   @default(now())
+  endTime         DateTime?
+  startTime       DateTime?
+  ipAddress       String?
+  startingBalance Int?       @default(0)
+  userAgent       String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  totalWagered    Int        @default(0)
+  totalWon        Int        @default(0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  // gameTransactions Transaction[]
+  profileId String?
+
+  // profileId String
+  // profile   Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  Profile Profile[]
+
+  @@map("game_sessions")
+}
+
+// model UserOperator {
+//   userId     String
+//   user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   operatorId String
+//   operator   OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+//   role       Role           @default(MEMBER)
+//   isActive   Boolean        @default(true)
+//   createdAt  DateTime       @default(now())
+//   updatedAt  DateTime       @updatedAt
+
+//   @@id([userId, operatorId])
+//   @@map("user_operators")
+// }
+
+// model currencyCode{
+//   id                 String          @id @default(cuid())
+//   type               TransactionType // Subset: BET, WIN
+//   amount             Int // Integer amount, smallest unit of currency if applicable
+//   currency           String // e.g., "CREDITS" or a real currency code
+//   transactionDetails Json? // e.g., roundId, action
+//   createdAt          DateTime        @default(now())
+//   updatedAt          DateTime        @updatedAt
+
+//   sessionId String
+//   session   GameSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+//   userId String
+//   user   User   @relation("UserGameTransactions", fields: [userId], references: [id], onDelete: Cascade) // Denormalized for easier querying
+
+//   parentFinancialTransactionId String?      @unique // Link to a master financial transaction if this game tx resulted in one
+//   parentFinancialTransaction   Transaction? @relation("GameToFinancialTx", fields: [parentFinancialTransactionId], references: [id], onDelete: SetNull)
+
+//   @@map("game_transactions")
+// }
+
+model UserAchievement {
+  id         String   @id @default(cuid())
+  unlockedAt DateTime @default(now())
+  metaData   Json? // e.g., source of achievement
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+model XpEvent {
+  id        String   @id @default(cuid())
+  points    Int
+  source    String // e.g., "POST_CREATED", "GAME_WIN", "ACHIEVEMENT_UNLOCKED"
+  sourceId  String? // ID of the entity that triggered the XP event
+  meta      Json? // Additional context
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("xp_events")
+}
+
+model Notification {
+  id     String @id @default(cuid())
+  userId String // The recipient user
+  // user   User   @relation("UserNotification", fields: [userId], references: [id], onDelete: Cascade)
+
+  type    NotificationType
+  title   String
+  message String           @db.Text
+  isRead  Boolean          @default(false)
+  readAt  DateTime?
+
+  actionUrl String? // Optional URL for the user to click (e.g., to view the reward)
+  imageUrl  String? // Optional image for the notification
+  metadata  Json? // e.g., { relatedEntityId: "...", relatedEntityType: "..." }
+
+  createdBy String? // Optional: userId of admin/system if applicable
+  // createdByAdmin User? @relation("AdminNotification", fields: [createdBy], references: [id], onDelete:SetNull)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  // User       User     @relation(fields: [userId], references: [id])
+  sender     User     @relation("Sender", fields: [userId], references: [id], map: "notifications_senderId_fkey")
+  originator User     @relation("Originator", fields: [userId], references: [id])
+
+  @@index([userId, isRead, createdAt])
+  @@map("notifications")
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  channel   String // e.g., "global", "support", "game-slug", "userA_userB"
+  content   String   @db.Text
+  mediaUrl  String?
+  // readBy    User[] @relation("MessageReadBy") // For group chats, if needed, requires many-to-many
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId String
+  author   User   @relation("SentMessages", fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+model Friendship {
+  id        String           @id @default(cuid())
+  status    FriendshipStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  requesterId String
+  requester   User   @relation("SentFriendRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+
+  receiverId String
+  receiver   User   @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique(name: "userId_friendId", [requesterId, receiverId])
+  @@map("friendships")
+}
+
+model Transaction {
+  id String @id @default(cuid())
+
+  // Relationships for originator and receiver (as per your service code)
+  // Assuming 'originatorUserId' and 'receiverUserId' are the foreign key fields
+  originatorUserId String
+  originator       User   @relation("OriginatedTransactions", fields: [originatorUserId], references: [id], onDelete: Restrict)
+
+  receiverUserId String? // Optional: for P2P, commissions, or system-to-user transfers
+  receiver       User?   @relation("ReceivedTransactions", fields: [receiverUserId], references: [id], onDelete: SetNull)
+
+  // Wallet relation (optional, but good for direct link if a specific wallet is always involved)
+  // If a transaction can occur without directly hitting one specific user wallet (e.g. system fee not tied to user wallet)
+  // then this can be optional. But for user deposits/withdrawals/bets, it's usually tied to their wallet.
+  // Your service code for initializeDeposit uses walletId.
+  walletId String? // The ID of the primary user's (originator's) wallet involved.
+  wallet   Wallet? @relation(fields: [walletId], references: [id], onDelete: SetNull)
+
+  type       TransactionType
+  status     TransactionStatus @default(PENDING)
+  amount     Int // Gross amount in CENTS (or smallest unit of the currency)
+  netAmount  Int? // Net amount in CENTS after fees (if applicable)
+  feeAmount  Int? // Fee amount in CENTS (if applicable)
+  productId  String? // Optional: Link to a product if this transaction is for a product purchase/deposit package
+  product    Product?          @relation("TransactionProduct", fields: [productId], references: [id], onDelete: SetNull) // onDelete: SetNull means if product is deleted, transaction still exists but productId is nullified. Use Restrict if transaction should prevent product deletion.
+  currencyId String
+  currency   Currency          @relation(fields: [currencyId], references: [id]) // This is the relation
+
+  // Balances for audit trail (recorded at the time of completion, in CENTS)
+  balanceBefore      Int? // User's real balance (cents) before this transaction completed
+  balanceAfter       Int? // User's real balance (cents) after this transaction completed
+  bonusBalanceBefore Int? // User's bonus balance (cents) before
+  bonusBalanceAfter  Int? // User's bonus balance (cents) after
+
+  // For bonus-specific transactions or if a transaction awards/uses bonus funds
+  bonusAmount         Int? // Amount of bonus funds involved in this transaction (cents)
+  wageringRequirement Int? // If this bonus award has a wagering requirement (in cents)
+  wageringProgress    Int? // Progress made towards this specific bonus's wagering (in cents)
+
+  // Details & Metadata
+  description    String? @db.Text
+  provider       String? // e.g., "Stripe", "CashApp", "System", "PragmaticPlay", "AdminPanel"
+  providerTxId   String? // Transaction ID from the external provider (can be @unique if truly unique per provider)
+  relatedGameId  String? // If related to a game session or bet
+  relatedRoundId String? // Game round ID
+  metadata       Json? // For any other relevant data:
+  // {
+  //   ipAddress: "...",
+  //   deviceInfo: { ... },
+  //   webhookPayload: { ... },
+  //   recipientDetails: { ... }, // For withdrawals
+  //   noteForPayment: "TX123", // For matching CashApp deposits
+  //   productId: "...", // If deposit was for a product
+  //   paymentMethodId: "...",
+  //   discrepancy: true/false, // For deposits with mismatched amounts
+  //   failureReason: "...", // For failed transactions
+  //   adminNotes: "...",
+  //   systemActionDetails: "..."
+  // }
+
+  processedAt DateTime? // Timestamp when the transaction moved to a final state (COMPLETED, FAILED, CANCELLED, EXPIRED)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // For linking to rebate if this transaction generated one
+  rebateGenerated RebateTransaction?
+  Product         Product[]
+
+  @@index([originatorUserId, status, type])
+  @@index([receiverUserId])
+  @@index([provider, providerTxId]) // Useful for webhook lookups
+  @@index([currencyId])
+  @@index([createdAt])
+  @@index([walletId])
+  @@map("transactions")
+}
+
+model GameLaunchLink {
+  id                 String    @id @default(cuid())
+  token_internal     String    @unique @default(cuid()) // Primary internal token for launching
+  currency           String // Currency context for the game session (e.g., "USD", "CREDITS")
+  player_operator_id String? // Player's ID as known by the external operator system
+  mode               String // e.g., "real" money, "demo" play
+  meta               Json? // e.g., "real" money, "demo" play
+  request_ip         String?
+  user_agent         String?   @db.Text
+  session_url        String?   @unique // The fully formed URL given to the player
+  state              String    @default("SESSION_INIT") // e.g., INIT, STARTED, EXPIRED, COMPLETED
+  active             Boolean   @default(true)
+  expires_at         DateTime?
+  extra_meta         Json? // Provider options, language, specific entry points
+  token_original     String? // If the launch involves an upstream provider's token
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  userId String
+  user   User   @relation("UserGameLaunchLinks", fields: [userId], references: [id], onDelete: NoAction)
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: NoAction)
+
+  operatorId String
+  operator   OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: NoAction)
+
+  @@map("game_launch_links")
+}
+
+model Product {
+  id                  String   @id @default(cuid())
+  title               String   @default("default")
+  description         String   @default("default")
+  url                 String   @default("default")
+  iconUrl             String?  @default("default")
+  productType         String   @default("bundle")
+  bonusCode           String?  @default("")
+  bonusTotalInCredits Int      @default(0)
+  isActive            Boolean?
+  currencyId          String
+  currency            Currency @relation(fields: [currencyId], references: [id]) // This is the relation
+
+  priceInCents             Int             @default(0)
+  amountToReceiveInCredits Int             @default(0)
+  bestValue                Int             @default(0)
+  discountInCents          Int             @default(0)
+  bonusSpins               Int             @default(0)
+  isPromo                  Boolean?        @default(false)
+  totalDiscountInCents     Int             @default(0)
+  shopId                   String?
+  createdAt                DateTime        @default(now())
+  updatedAt                DateTime?       @updatedAt
+  operator                 OperatorAccess? @relation(fields: [shopId], references: [id])
+  transactions             Transaction[]   @relation("TransactionProduct") // Explicit relation name
+  Transaction              Transaction?    @relation(fields: [transactionId], references: [id])
+  transactionId            String?
+
+  @@map("products")
+}
+
+model EventLog {
+  id         String   @id @default(cuid())
+  action     String // e.g., "USER_LOGIN", "GAME_BET", "PROFILE_UPDATE"
+  targetType String? // Optional type of the entity affected (e.g., "User", "Game")
+  targetId   String? // Optional ID of the entity affected
+  data       Json? // Additional context or payload of the event
+  ipAddress  String?
+  userAgent  String?  @db.Text
+  timestamp  DateTime @default(now()) // Precise timestamp of when the event occurred
+  createdAt  DateTime @default(now()) // Standard audit field
+  updatedAt  DateTime @updatedAt // Standard audit field
+
+  actorId String?
+  actor   User?   @relation("ActorEvents", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@map("event_logs")
+}
+
+// model UserOperator {
+//   userId      String
+//   operatorId  String
+//   role        Role     // Enum: ADMIN, MEMBER, etc.
+//   joinedAt    DateTime @default(now())
+//   isActive    Boolean  @default(true) // For soft deactivation of membership
+
+//   // user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   operator    OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+//   @@id([userId, operatorId])
+//   @@index([operatorId])
+//   @@index([userId])
+// }
+
+// enum Role {
+//   OWNER
+//   ADMIN
+//   MEMBER
+//   // Add other roles as needed
+// }
+
+model OperatorInvitation {
+  id          String    @id @default(cuid())
+  operatorId  String
+  email       String // Email of the invited user
+  role        Role      @default(USER)
+  token       String    @unique @default(uuid())
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  invitedById String // ID of the User who sent the invitation
+
+  operator  OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  invitedBy User           @relation("SentInvitations", fields: [invitedById], references: [id])
+  // invitedUser User?     @relation("ReceivedInvitations", fields: [email], references: [email]) // Optional: if you want to link to existing user by email
+  User      User[]         @relation("ReceivedInvitations")
+
+  @@index([operatorId])
+  @@index([email])
+  @@index([token])
+}
+
+model VipInfo {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  level               Int   @default(1) // Current VIP level
+  currentLevelXp      Float @default(0) // XP accumulated *within* the current level towards the next
+  totalXp             Float @default(0) // Total XP ever earned by the user
+  nextLevelXpRequired Float // The total XP required to complete the current level's XP bar (i.e., the "length" of this level's bar)
+  // This should be set based on your leveling.config.ts for the current 'level'
+
+  // Benefits based on VIP level (can be denormalized here or dynamically calculated)
+  cashbackPercentage      Float   @default(0.01) // e.g., 0.01 for 1%
+  prioritySupport         Boolean @default(false)
+  specialBonusesAvailable Int     @default(0) // Count of special, perhaps one-time, bonuses available
+
+  // Timestamps for last claimed periodic bonuses
+  dailyBonusClaimedAt   DateTime?
+  weeklyBonusClaimedAt  DateTime?
+  monthlyBonusClaimedAt DateTime?
+
+  // Other potential VIP-specific fields
+  // Example: dedicatedAccountManager Boolean @default(false)
+  // Example: higherWithdrawalLimits Boolean @default(false)
+  // Example: exclusiveAccessToEvents Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId]) // Ensure efficient lookups by userId
+  @@map("vipinfos")
+}
+
+enum RewardType {
+  DAILY_SIGN_IN
+  WEEKLY_CYCLE
+  MONTHLY_CYCLE
+  LEVEL_UP
+  VIP_TASK_COMPLETION
+  BET_REBATE // Cashback from wagers
+  // ... other specific reward types
+  ACHIEVEMENT_UNLOCKED
+  PROMO_CODE
+  DEPOSIT_BONUS
+  REGISTRATION_BONUS
+  FREE_SPINS
+  TOURNAMENT_PRIZE
+  OTHER
+}
+
+enum RewardStatus {
+  AVAILABLE // User can claim this reward
+  CLAIMED // User has successfully claimed this reward
+  EXPIRED // Reward was available but expired before being claimed
+  PENDING // Reward is pending, e.g., needs verification or processing before becoming available/claimed
+  VOIDED // Reward was voided by an admin or system rule
+}
+
+// Tracks specific instances of rewards available to or claimed by a user
+model UserReward {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  rewardType  RewardType
+  description String // e.g., "Daily Sign-in Bonus - Day 3", "Level 5 Reached!", "Weekly Cashback"
+  status      RewardStatus @default(AVAILABLE)
+  amount      Float? // e.g., bonus currency amount, number of free spins
+  currencyId  String? // If the reward is monetary
+  // currency    Currency? @relation(fields: [currencyId], references: [id]) // If monetary
+  metaData    Json? // e.g., { "level": 5, "bonusCode": "VIPSPECIAL" }
+
+  claimedAt     DateTime?
+  expiresAt     DateTime? // Some rewards might expire
+  availableFrom DateTime  @default(now()) // When the reward becomes available
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vipLevelRequirement Int? // Optional: if this reward is tied to being a certain VIP level
+
+  @@index([userId, status])
+  @@index([userId, rewardType])
+}
+
+enum VipTaskType {
+  DEPOSIT_STREAK // Make N deposits in X days
+  WAGER_AMOUNT // Wager X amount in Y period
+  LOGIN_STREAK // Log in for N consecutive days
+  PROFILE_COMPLETION // Complete user profile details
+  PLAY_SPECIFIC_GAME // Play N rounds on a specific game
+  VERIFY_EMAIL
+  PLACE_BETS // Place N number of bets
+  WIN_STREAK // Achieve N wins in a row on a specific game type
+}
+
+model VipTask {
+  id                String                @id @default(cuid())
+  taskType          VipTaskType
+  title             String?
+  description       String
+  xpReward          Int?
+  itemRewardId      String? // Could link to an Item model if you have virtual items
+  // itemReward         Item?    @relation(fields: [itemRewardId], references: [id])
+  bonusRewardAmount Int?
+  bonusCurrencyId   String?
+  // bonusCurrency      Currency? @relation(fields: [bonusCurrencyId], references: [id])
+  targetValue       Int? // e.g., wager 1000 USD, deposit 3 days in a row
+  durationDays      Int? // For streak tasks
+  isActive          Boolean               @default(true)
+  requiredVipLevel  Int                   @default(1) // Minimum VIP level to see/participate in this task
+  resetCycle        String?
+  userTaskProgress  UserVipTaskProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserVipTaskProgress {
+  id     String  @id @default(cuid())
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taskId String
+  task   VipTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  progress        Float     @default(0) // Current progress towards targetValue
+  isCompleted     Boolean   @default(false)
+  rewardClaimedAt DateTime? // When the reward for this task fwas claimed
+
+  lastProgressAt DateTime @updatedAt // To track streaks or daily progress
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, taskId]) // User has one progress record per task
+}
+
+// For rebate history, a specific model might be useful or it could be part of Transactions
+model RebateTransaction {
+  id                  String      @id @default(cuid())
+  userId              String
+  user                User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactionId       String      @unique // Original transaction that generated the rebate
+  originalTransaction Transaction @relation(fields: [transactionId], references: [id])
+
+  rebateAmount     Float
+  currencyId       String
+  // currency      Currency @relation(fields: [currencyId], references: [id])
+  vipLevel         Int // VIP level at the time of the original transaction
+  rebatePercentage Float // Cashback percentage applied
+
+  status    RewardStatus @default(PENDING) // PENDING until paid out, then CLAIMED/COMPLETED
+  paidOutAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+}
+
+// // === prisma/schema.prisma (or your ps.txt) ===
+
+// // Add to existing User model or ensure these fields are considered:
+// // model User {
+// //   ...
+// //   vip UserVipProgress?
+// // }
+
+// // Defines each VIP level
+// model VipLevel {
+//   id          String  @id @default(cuid())
+//   level       Int     @unique // Numeric level (e.g., 0, 1, 2...)
+//   name        String // Display name (e.g., "Bronze", "Silver", "VIP1")
+//   rankName    String? // If you have a separate "rank" name from the level name
+//   iconUrl     String? // URL for the level's badge/icon
+//   description String? // Description of the level
+
+//   // Requirements to reach this level
+//   xpRequired         Int     @default(0) // Total XP points (if you use a unified XP system)
+//   depositExpRequired Decimal @default(0) @db.Decimal(18, 2) // Cumulative deposit amount or deposit-derived XP
+//   betExpRequired     Decimal @default(0) @db.Decimal(18, 2) // Cumulative betting turnover or bet-derived XP
+
+//   // Rewards for achieving this level
+//   levelUpBonusAmount Decimal? @db.Decimal(18, 2) // One-time bonus upon reaching this level
+//   // rankUpBonusAmount   Decimal?  @db.Decimal(18, 2) // If rank up is distinct from level up
+
+//   // Cyclical reward configurations for this level
+//   weeklyBonusAmount  Decimal? @db.Decimal(18, 2)
+//   monthlyBonusAmount Decimal? @db.Decimal(18, 2)
+
+//   // Benefit multipliers/rates
+//   dailySignInMultiplier Decimal? @default(1.0) @db.Decimal(5, 2) // e.g., 1.0, 1.2, 1.5
+//   cashbackRate          Decimal? @default(0) @db.Decimal(5, 4) // e.g., 0.05 for 5%
+//   rebateRate            Decimal? @default(0) @db.Decimal(5, 4) // If distinct from cashback
+
+//   // Switches from VipInfo (can be per-level or global app settings)
+//   // For per-level control:
+//   cycleAwardSwitch  Boolean @default(true) // Weekly/Monthly bonus active
+//   levelAwardSwitch  Boolean @default(true) // Level up bonus active
+//   signInAwardSwitch Boolean @default(true) // Sign-in bonus active (or multiplier)
+//   betAwardSwitch    Boolean @default(true) // Bet/Turnover based rewards active
+
+//   // Relegation protection settings
+//   protectionDays Int?   @default(0) // Days of protection before potential demotion
+//   keepRate       Float? @default(0) // e.g. 0.8 means 80% of exp needed to maintain level
+
+//   // JSON field for flexible/additional benefits not easily modeled otherwise
+//   // This aligns with `PrismaVipBenefit` from your vip_interface.ts
+//   additionalBenefits Json? // Store as array of { name: string, description: string, value: string, type: string }
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   // Relations
+//   userVipProgresses UserVipProgress[] // Users who are at this VIP level
+//   // If you want a more structured approach for benefits instead of JSON:
+//   // specificBenefits    VipSpecificBenefit[]
+// }
+
+// // Tracks a user's specific VIP progress and status
+// model UserVipProgress {
+//   id     String @id @default(cuid())
+//   userId String @unique
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   currentVipLevelId     String
+//   currentVipLevel       VipLevel @relation(fields: [currentVipLevelId], references: [id])
+//   currentVipLevelNumber Int // Denormalized for querying convenience; matches currentVipLevel.level
+
+//   // Current cycle accumulation (for weekly/monthly rewards/maintenance)
+//   currentCycleDepositExp Decimal  @default(0) @db.Decimal(18, 2)
+//   currentCycleBetExp     Decimal  @default(0) @db.Decimal(18, 2)
+//   cycleStartDate         DateTime @default(now()) // Start of the current weekly/monthly cycle
+
+//   // Lifetime accumulation for level progression
+//   lifetimeDepositExp Decimal @default(0) @db.Decimal(18, 2)
+//   lifetimeBetExp     Decimal @default(0) @db.Decimal(18, 2)
+//   totalXp            BigInt  @default(0) // If you have a separate VIP XP system
+
+//   // Relegation Protection
+//   isRelegationProtected       Boolean   @default(false)
+//   relegationProtectionEndDate DateTime?
+
+//   // Timestamps for last claimed rewards
+//   lastLevelUpRewardClaimedForLevel Int? // Which level's reward was claimed
+//   lastWeeklyBonusClaimedAt         DateTime?
+//   lastMonthlyBonusClaimedAt        DateTime?
+//   lastDailySignInDate              DateTime? // Date of last successful daily sign-in for VIP
+//   lastBetRewardClaimedAt           DateTime? // For turnover/bet based rewards
+
+//   // User-specific overrides or notes
+//   telegramHandle String? // User's telegram handle, if provided
+
+//   // Matches exp_switch_type in VipInfo from your interface.
+//   // This might indicate how user's XP is calculated (e.g., 1 for deposit, 2 for bet, 3 for both)
+//   // Could also be a global setting or derived.
+//   expSwitchType Int? @default(3) // Example: 1=deposit, 2=bet, 3=both
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   User      User[]   @relation("UserToVipProgress")
+
+//   @@index([userId])
+//   @@index([currentVipLevelId])
+// }
+
+// // Records claimed VIP rewards (for audit and preventing double claims)
+// model VipRewardClaim {
+//   id     String @id @default(cuid())
+//   userId String
+//   user   User   @relation(fields: [userId], references: [id])
+
+//   rewardType        String // e.g., "LEVEL_UP", "WEEKLY_BONUS", "DAILY_SIGN_IN", "BET_REBATE"
+//   vipLevelAtClaim   Int // VIP level when the reward was claimed
+//   claimedAmount     Decimal? @db.Decimal(18, 2) // Amount of the bonus/reward
+//   currency          String? // Currency of the reward, if applicable
+//   description       String? // e.g., "Level 5 Upgrade Bonus"
+//   relatedResourceId String? // e.g., ID of the VipLevel for level up, or a specific weekly cycle ID
+
+//   claimedAt DateTime @default(now())
+//   User      User[]   @relation("UserToVipRewardClaims")
+
+//   @@index([userId, rewardType])
+// }
+
+// // For VIP Tasks if you implement them
+// model VipTask {
+//   id               String   @id @default(cuid())
+//   title            String
+//   description      String?
+//   xpReward         Int      @default(0)
+//   bonusReward      Decimal? @db.Decimal(18, 2)
+//   currencyForBonus String?
+//   type             String // e.g., 'DEPOSIT_X_AMOUNT', 'BET_Y_TIMES', 'COMPLETE_PROFILE'
+//   targetValue      Decimal? // e.g., deposit amount, number of bets
+//   isActive         Boolean  @default(true)
+//   resetFrequency   String? // e.g., 'DAILY', 'WEEKLY', 'NONE' (for one-time tasks)
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   userTaskProgress UserVipTaskProgress[]
+// }
+
+// model UserVipTaskProgress {
+//   id        String  @id @default(cuid())
+//   userId    String
+//   user      User    @relation(fields: [userId], references: [id])
+//   vipTaskId String
+//   vipTask   VipTask @relation(fields: [vipTaskId], references: [id])
+
+//   progress    Decimal   @default(0) // Current progress towards targetValue
+//   isCompleted Boolean   @default(false)
+//   completedAt DateTime?
+//   lastResetAt DateTime? // If the task resets
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([userId, vipTaskId]) // A user has one progress entry per task
+//   @@index([userId])
+//   @@index([vipTaskId])
+// }
+
+// // Make sure to add the 'vip' relation to your User model:
+// // model User {
+// //   ... existing fields ...
+// //   vipProgress UserVipProgress?
+// //   vipRewardClaims VipRewardClaim[]
+// //   vipTaskProgress UserVipTaskProgress[]
+// //   ... other relations ...
+// // }
+
+// model VipInfo {
+//   id     String @id @default(cuid())
+//   userId String @unique
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   level               Int   @default(1) // Current VIP level
+//   currentLevelXp      Float @default(0) // XP accumulated *within* the current level towards the next
+//   totalXp             Float @default(0) // Total XP ever earned by the user
+//   nextLevelXpRequired Float // The total XP required to complete the current level's XP bar (i.e., the "length" of this level's bar)
+//   // This should be set based on your leveling.config.ts for the current 'level'
+
+//   // Benefits based on VIP level (can be denormalized here or dynamically calculated)
+//   cashbackPercentage      Float   @default(0.01) // e.g., 0.01 for 1%
+//   prioritySupport         Boolean @default(false)
+//   specialBonusesAvailable Int     @default(0) // Count of special, perhaps one-time, bonuses available
+
+//   // Timestamps for last claimed periodic bonuses
+//   dailyBonusClaimedAt   DateTime?
+//   weeklyBonusClaimedAt  DateTime?
+//   monthlyBonusClaimedAt DateTime?
+
+//   // Other potential VIP-specific fields
+//   // Example: dedicatedAccountManager Boolean @default(false)
+//   // Example: higherWithdrawalLimits Boolean @default(false)
+//   // Example: exclusiveAccessToEvents Boolean @default(false)
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([userId]) // Ensure efficient lookups by userId
+//   @@map("vipinfos")
+// }
+
+// enum RewardType {
+//   DAILY_SIGN_IN
+//   WEEKLY_CYCLE
+//   MONTHLY_CYCLE
+//   LEVEL_UP
+//   VIP_TASK_COMPLETION
+//   BET_REBATE // Cashback from wagers
+//   // ... other specific reward types
+//   ACHIEVEMENT_UNLOCKED
+//   PROMO_CODE
+//   DEPOSIT_BONUS
+//   REGISTRATION_BONUS
+//   FREE_SPINS
+//   TOURNAMENT_PRIZE
+//   OTHER
+// }
+
+// enum RewardStatus {
+//   AVAILABLE // User can claim this reward
+//   CLAIMED // User has successfully claimed this reward
+//   EXPIRED // Reward was available but expired before being claimed
+//   PENDING // Reward is pending, e.g., needs verification or processing before becoming available/claimed
+//   VOIDED // Reward was voided by an admin or system rule
+// }
+
+// // Tracks specific instances of rewards available to or claimed by a user
+// model UserReward {
+//   id     String @id @default(cuid())
+//   userId String
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   rewardType  RewardType
+//   description String // e.g., "Daily Sign-in Bonus - Day 3", "Level 5 Reached!", "Weekly Cashback"
+//   status      RewardStatus @default(AVAILABLE)
+//   amount      Float? // e.g., bonus currency amount, number of free spins
+//   currencyId  String? // If the reward is monetary
+//   // currency    Currency? @relation(fields: [currencyId], references: [id]) // If monetary
+//   metaData    Json? // e.g., { "level": 5, "bonusCode": "VIPSPECIAL" }
+
+//   claimedAt     DateTime?
+//   expiresAt     DateTime? // Some rewards might expire
+//   availableFrom DateTime  @default(now()) // When the reward becomes available
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   vipLevelRequirement Int? // Optional: if this reward is tied to being a certain VIP level
+
+//   @@index([userId, status])
+//   @@index([userId, rewardType])
+// }
+
+// enum VipTaskType {
+//   DEPOSIT_STREAK // Make N deposits in X days
+//   WAGER_AMOUNT // Wager X amount in Y period
+//   LOGIN_STREAK // Log in for N consecutive days
+//   PROFILE_COMPLETION // Complete user profile details
+//   PLAY_SPECIFIC_GAME // Play N rounds on a specific game
+//   VERIFY_EMAIL
+//   PLACE_BETS // Place N number of bets
+//   WIN_STREAK // Achieve N wins in a row on a specific game type
+// }
+
+// model VipTask {
+//   id                String      @id @default(cuid())
+//   taskType          VipTaskType
+//   description       String
+//   xpReward          Float?
+//   itemRewardId      String? // Could link to an Item model if you have virtual items
+//   // itemReward         Item?    @relation(fields: [itemRewardId], references: [id])
+//   bonusRewardAmount Float?
+//   bonusCurrencyId   String?
+//   // bonusCurrency      Currency? @relation(fields: [bonusCurrencyId], references: [id])
+//   targetValue       Float? // e.g., wager 1000 USD, deposit 3 days in a row
+//   durationDays      Int? // For streak tasks
+//   isActive          Boolean     @default(true)
+//   requiredVipLevel  Int         @default(1) // Minimum VIP level to see/participate in this task
+
+//   userTaskProgress UserVipTaskProgress[]
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model UserVipTaskProgress {
+//   id     String  @id @default(cuid())
+//   userId String
+//   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   taskId String
+//   task   VipTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+//   progress  Float     @default(0) // Current progress towards targetValue
+//   completed Boolean   @default(false)
+//   claimedAt DateTime? // When the reward for this task was claimed
+
+//   lastProgressAt DateTime @updatedAt // To track streaks or daily progress
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([userId, taskId]) // User has one progress record per task
+// }
+
+// // For rebate history, a specific model might be useful or it could be part of Transactions
+// model RebateTransaction {
+//   id                  String      @id @default(cuid())
+//   userId              String
+//   user                User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   transactionId       String      @unique // Original transaction that generated the rebate
+//   originalTransaction Transaction @relation(fields: [transactionId], references: [id])
+
+//   rebateAmount     Float
+//   currencyId       String
+//   // currency      Currency @relation(fields: [currencyId], references: [id])
+//   vipLevel         Int // VIP level at the time of the original transaction
+//   rebatePercentage Float // Cashback percentage applied
+
+//   status    RewardStatus @default(PENDING) // PENDING until paid out, then CLAIMED/COMPLETED
+//   paidOutAt DateTime?
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([userId, status])
+// }
+
+// // // === prisma/schema.prisma (or your ps.txt) ===
+
+// // // Add to existing User model or ensure these fields are considered:
+// // // model User {
+// // //   ...
+// // //   vip UserVipProgress?
+// // // }
+
+// // // Defines each VIP level
+// // model VipLevel {
+// //   id          String  @id @default(cuid())
+// //   level       Int     @unique // Numeric level (e.g., 0, 1, 2...)
+// //   name        String // Display name (e.g., "Bronze", "Silver", "VIP1")
+// //   rankName    String? // If you have a separate "rank" name from the level name
+// //   iconUrl     String? // URL for the level's badge/icon
+// //   description String? // Description of the level
+
+// //   // Requirements to reach this level
+// //   xpRequired         Int     @default(0) // Total XP points (if you use a unified XP system)
+// //   depositExpRequired Decimal @default(0) @db.Decimal(18, 2) // Cumulative deposit amount or deposit-derived XP
+// //   betExpRequired     Decimal @default(0) @db.Decimal(18, 2) // Cumulative betting turnover or bet-derived XP
+
+// //   // Rewards for achieving this level
+// //   levelUpBonusAmount Decimal? @db.Decimal(18, 2) // One-time bonus upon reaching this level
+// //   // rankUpBonusAmount   Decimal?  @db.Decimal(18, 2) // If rank up is distinct from level up
+
+// //   // Cyclical reward configurations for this level
+// //   weeklyBonusAmount  Decimal? @db.Decimal(18, 2)
+// //   monthlyBonusAmount Decimal? @db.Decimal(18, 2)
+
+// //   // Benefit multipliers/rates
+// //   dailySignInMultiplier Decimal? @default(1.0) @db.Decimal(5, 2) // e.g., 1.0, 1.2, 1.5
+// //   cashbackRate          Decimal? @default(0) @db.Decimal(5, 4) // e.g., 0.05 for 5%
+// //   rebateRate            Decimal? @default(0) @db.Decimal(5, 4) // If distinct from cashback
+
+// //   // Switches from VipInfo (can be per-level or global app settings)
+// //   // For per-level control:
+// //   cycleAwardSwitch  Boolean @default(true) // Weekly/Monthly bonus active
+// //   levelAwardSwitch  Boolean @default(true) // Level up bonus active
+// //   signInAwardSwitch Boolean @default(true) // Sign-in bonus active (or multiplier)
+// //   betAwardSwitch    Boolean @default(true) // Bet/Turnover based rewards active
+
+// //   // Relegation protection settings
+// //   protectionDays Int?   @default(0) // Days of protection before potential demotion
+// //   keepRate       Float? @default(0) // e.g. 0.8 means 80% of exp needed to maintain level
+
+// //   // JSON field for flexible/additional benefits not easily modeled otherwise
+// //   // This aligns with `PrismaVipBenefit` from your vip_interface.ts
+// //   additionalBenefits Json? // Store as array of { name: string, description: string, value: string, type: string }
+
+// //   createdAt DateTime @default(now())
+// //   updatedAt DateTime @updatedAt
+
+// //   // Relations
+// //   userVipProgresses UserVipProgress[] // Users who are at this VIP level
+// //   // If you want a more structured approach for benefits instead of JSON:
+// //   // specificBenefits    VipSpecificBenefit[]
+// // }
+
+// // // Tracks a user's specific VIP progress and status
+// // model UserVipProgress {
+// //   id     String @id @default(cuid())
+// //   userId String @unique
+// //   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+// //   currentVipLevelId     String
+// //   currentVipLevel       VipLevel @relation(fields: [currentVipLevelId], references: [id])
+// //   currentVipLevelNumber Int // Denormalized for querying convenience; matches currentVipLevel.level
+
+// //   // Current cycle accumulation (for weekly/monthly rewards/maintenance)
+// //   currentCycleDepositExp Decimal  @default(0) @db.Decimal(18, 2)
+// //   currentCycleBetExp     Decimal  @default(0) @db.Decimal(18, 2)
+// //   cycleStartDate         DateTime @default(now()) // Start of the current weekly/monthly cycle
+
+// //   // Lifetime accumulation for level progression
+// //   lifetimeDepositExp Decimal @default(0) @db.Decimal(18, 2)
+// //   lifetimeBetExp     Decimal @default(0) @db.Decimal(18, 2)
+// //   totalXp            BigInt  @default(0) // If you have a separate VIP XP system
+
+// //   // Relegation Protection
+// //   isRelegationProtected       Boolean   @default(false)
+// //   relegationProtectionEndDate DateTime?
+
+// //   // Timestamps for last claimed rewards
+// //   lastLevelUpRewardClaimedForLevel Int? // Which level's reward was claimed
+// //   lastWeeklyBonusClaimedAt         DateTime?
+// //   lastMonthlyBonusClaimedAt        DateTime?
+// //   lastDailySignInDate              DateTime? // Date of last successful daily sign-in for VIP
+// //   lastBetRewardClaimedAt           DateTime? // For turnover/bet based rewards
+
+// //   // User-specific overrides or notes
+// //   telegramHandle String? // User's telegram handle, if provided
+
+// //   // Matches exp_switch_type in VipInfo from your interface.
+// //   // This might indicate how user's XP is calculated (e.g., 1 for deposit, 2 for bet, 3 for both)
+// //   // Could also be a global setting or derived.
+// //   expSwitchType Int? @default(3) // Example: 1=deposit, 2=bet, 3=both
+
+// //   createdAt DateTime @default(now())
+// //   updatedAt DateTime @updatedAt
+// //   User      User[]   @relation("UserToVipProgress")
+
+// //   @@index([userId])
+// //   @@index([currentVipLevelId])
+// // }
+
+// // // Records claimed VIP rewards (for audit and preventing double claims)
+// // model VipRewardClaim {
+// //   id     String @id @default(cuid())
+// //   userId String
+// //   user   User   @relation(fields: [userId], references: [id])
+
+// //   rewardType        String // e.g., "LEVEL_UP", "WEEKLY_BONUS", "DAILY_SIGN_IN", "BET_REBATE"
+// //   vipLevelAtClaim   Int // VIP level when the reward was claimed
+// //   claimedAmount     Decimal? @db.Decimal(18, 2) // Amount of the bonus/reward
+// //   currency          String? // Currency of the reward, if applicable
+// //   description       String? // e.g., "Level 5 Upgrade Bonus"
+// //   relatedResourceId String? // e.g., ID of the VipLevel for level up, or a specific weekly cycle ID
+
+// //   claimedAt DateTime @default(now())
+// //   User      User[]   @relation("UserToVipRewardClaims")
+
+// //   @@index([userId, rewardType])
+// // }
+
+// // // For VIP Tasks if you implement them
+// // model VipTask {
+// //   id               String   @id @default(cuid())
+// //   title            String
+// //   description      String?
+// //   xpReward         Int      @default(0)
+// //   bonusReward      Decimal? @db.Decimal(18, 2)
+// //   currencyForBonus String?
+// //   type             String // e.g., 'DEPOSIT_X_AMOUNT', 'BET_Y_TIMES', 'COMPLETE_PROFILE'
+// //   targetValue      Decimal? // e.g., deposit amount, number of bets
+// //   isActive         Boolean  @default(true)
+// //   resetFrequency   String? // e.g., 'DAILY', 'WEEKLY', 'NONE' (for one-time tasks)
+
+// //   createdAt DateTime @default(now())
+// //   updatedAt DateTime @updatedAt
+
+// //   userTaskProgress UserVipTaskProgress[]
+// // }
+
+// // model UserVipTaskProgress {
+// //   id        String  @id @default(cuid())
+// //   userId    String
+// //   user      User    @relation(fields: [userId], references: [id])
+// //   vipTaskId String
+// //   vipTask   VipTask @relation(fields: [vipTaskId], references: [id])
+
+// //   progress    Decimal   @default(0) // Current progress towards targetValue
+// //   isCompleted Boolean   @default(false)
+// //   completedAt DateTime?
+// //   lastResetAt DateTime? // If the task resets
+
+// //   createdAt DateTime @default(now())
+// //   updatedAt DateTime @updatedAt
+
+// //   @@unique([userId, vipTaskId]) // A user has one progress entry per task
+// //   @@index([userId])
+// //   @@index([vipTaskId])
+// // }
+
+// // // Make sure to add the 'vip' relation to your User model:
+// // // model User {
+// // //   ... existing fields ...
+// // //   vipProgress UserVipProgress?
+// // //   vipRewardClaims VipRewardClaim[]
+// // //   vipTaskProgress UserVipTaskProgress[]
+// // //   ... other relations ...
+// // // }

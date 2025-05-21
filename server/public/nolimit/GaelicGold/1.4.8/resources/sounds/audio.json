@@ -1,0 +1,67 @@
+[
+  {
+    "name": "effects",
+    "src": ["effects.mp4"],
+    "sprite": {
+      "anticipation": [0, 5762],
+      "anticipation2": [7000, 6482],
+      "asWin": [15000, 646],
+      "asWinBig": [17000, 5762],
+      "bigwin": [24000, 12073],
+      "bigwinEnds1": [38000, 5762],
+      "bigwinInitialWin": [45000, 4322],
+      "bonusCollectsToPosition1": [51000, 2012],
+      "bonusCollectsToPosition2": [55000, 2012],
+      "bonusContinue": [59000, 2881],
+      "bonusEnds": [63000, 4802],
+      "bonusEndsSweep": [69000, 4322],
+      "bonusFail": [75000, 960],
+      "bonusPling1": [77000, 1921],
+      "bonusPling2": [80000, 1921],
+      "bonusStarPick": [83000, 1829],
+      "bonusStarPickExpand": [86000, 3902],
+      "bonusStarsIn": [91000, 5762],
+      "bonusStarsOut2": [98000, 5282],
+      "bonusStarToCenter": [105000, 6242],
+      "bonusWin": [113000, 5762],
+      "countup": [120000, 4878],
+      "countupEnds": [126000, 2881],
+      "rainbow1": [130000, 1982],
+      "rainbow2": [133000, 1982],
+      "reel-one-landing": [136000, 518],
+      "wheels-spinning": [138000, 12081],
+      "wildLanding": [152000, 1159],
+      "wildNudge1": [155000, 3361],
+      "wildNudge2": [160000, 3361],
+      "wildNudgeAbort": [165000, 1189],
+      "wildNudgeNoWin1": [168000, 1311],
+      "wildNudgeNoWin2": [171000, 1220],
+      "winHit": [174000, 1768],
+      "winLarge": [177000, 5762],
+      "winMedium": [184000, 4802],
+      "winSmall": [190000, 3841],
+      "winTiny": [195000, 2881]
+    }
+  },
+  {
+    "name": "keypad",
+    "src": ["keypad.mp4"],
+    "sprite": {
+      "click": [0, 173],
+      "disabled": [2000, 173],
+      "fast-spin-off": [4000, 173],
+      "fast-spin-on": [6000, 173],
+      "spin-start": [8000, 488],
+      "spin-stop": [10000, 457]
+    }
+  },
+  {
+    "name": "loops",
+    "src": ["loops.mp4"],
+    "sprite": {
+      "background-music-bonus": [0, 32717],
+      "background-music-main": [34000, 78757],
+      "background-music-pick": [114000, 38112]
+    }
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "bun run --watch src/server.ts -- --elide-lines=10000",
+    "build": "bun build src/index.ts --outdir ./dist --target bun",
+    "start": "bun run ./dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@cashflow/database": "workspace:*",
+    "@cashflow/types": "workspace:*",
+    "@faker-js/faker": "^9.7.0",
+    "@hono/swagger-ui": "^0.5.1",
+    "@hono/zod-openapi": "^0.19.6",
+    "@hono/zod-validator": "^0.5.0",
+    "@prisma/client": "^6.7.0",
+    "@types/websocket": "^1.0.10",
+    "@zenstackhq/runtime": "^2.14.2",
+    "better-auth": "^1.2.7",
+    "hono": "^4.3.7",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.15.6",
+    "pg-listen": "^1.7.0",
+    "resend": "^4.5.1",
+    "short-uuid": "^5.2.0",
+    "stoker": "^1.4.2",
+    "uuid": "^11.1.0",
+    "websocket": "^1.0.35",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.4.5",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5"
+  }
+}

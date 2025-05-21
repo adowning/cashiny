@@ -1,0 +1,510 @@
+
+LM_flirt_group.png
+size: 2048,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+langur_swing_left/Body/langur_swing_left_body_0001
+  rotate: false
+  xy: 1257, 43
+  size: 45, 31
+  orig: 135, 38
+  offset: 57, 7
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0002
+  rotate: false
+  xy: 1113, 43
+  size: 46, 32
+  orig: 135, 38
+  offset: 50, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0003
+  rotate: false
+  xy: 1161, 43
+  size: 46, 32
+  orig: 135, 38
+  offset: 44, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0004
+  rotate: false
+  xy: 1209, 9
+  size: 45, 32
+  orig: 135, 38
+  offset: 38, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0005
+  rotate: false
+  xy: 1256, 9
+  size: 45, 32
+  orig: 135, 38
+  offset: 32, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0006
+  rotate: false
+  xy: 1209, 43
+  size: 46, 32
+  orig: 135, 38
+  offset: 25, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0007
+  rotate: false
+  xy: 1113, 9
+  size: 46, 32
+  orig: 135, 38
+  offset: 19, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0008
+  rotate: false
+  xy: 1304, 42
+  size: 45, 32
+  orig: 135, 38
+  offset: 13, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0009
+  rotate: false
+  xy: 1351, 42
+  size: 45, 32
+  orig: 135, 38
+  offset: 7, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0010
+  rotate: false
+  xy: 1161, 9
+  size: 46, 32
+  orig: 135, 38
+  offset: 0, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0053
+  rotate: false
+  xy: 1161, 9
+  size: 46, 32
+  orig: 135, 38
+  offset: 0, 6
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0054
+  rotate: true
+  xy: 589, 10
+  size: 63, 33
+  orig: 135, 38
+  offset: 6, 5
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0055
+  rotate: false
+  xy: 838, 2
+  size: 51, 23
+  orig: 135, 38
+  offset: 42, 4
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0056
+  rotate: false
+  xy: 891, 2
+  size: 51, 22
+  orig: 135, 38
+  offset: 63, 2
+  index: -1
+langur_swing_left/Body/langur_swing_left_body_0057
+  rotate: false
+  xy: 944, 2
+  size: 51, 22
+  orig: 135, 38
+  offset: 84, 0
+  index: -1
+langur_swing_left/Head/langur_swing_head_0001
+  rotate: false
+  xy: 2, 72
+  size: 52, 54
+  orig: 158, 82
+  offset: 73, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0002
+  rotate: false
+  xy: 2, 16
+  size: 52, 54
+  orig: 158, 82
+  offset: 67, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0003
+  rotate: false
+  xy: 56, 72
+  size: 52, 54
+  orig: 158, 82
+  offset: 60, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0004
+  rotate: false
+  xy: 56, 16
+  size: 52, 54
+  orig: 158, 82
+  offset: 54, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0005
+  rotate: false
+  xy: 110, 72
+  size: 52, 54
+  orig: 158, 82
+  offset: 48, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0006
+  rotate: false
+  xy: 110, 16
+  size: 52, 54
+  orig: 158, 82
+  offset: 42, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0007
+  rotate: false
+  xy: 164, 72
+  size: 52, 54
+  orig: 158, 82
+  offset: 36, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0008
+  rotate: true
+  xy: 332, 75
+  size: 51, 54
+  orig: 158, 82
+  offset: 30, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0009
+  rotate: false
+  xy: 325, 19
+  size: 51, 54
+  orig: 158, 82
+  offset: 24, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0010
+  rotate: true
+  xy: 388, 75
+  size: 51, 54
+  orig: 158, 82
+  offset: 18, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0011
+  rotate: false
+  xy: 537, 19
+  size: 50, 54
+  orig: 158, 82
+  offset: 17, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0012
+  rotate: true
+  xy: 1066, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 17, 18
+  index: -1
+langur_swing_left/Head/langur_swing_head_0013
+  rotate: true
+  xy: 1121, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 15, 19
+  index: -1
+langur_swing_left/Head/langur_swing_head_0014
+  rotate: true
+  xy: 1176, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0015
+  rotate: true
+  xy: 1231, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0016
+  rotate: false
+  xy: 1998, 73
+  size: 48, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0017
+  rotate: true
+  xy: 1286, 76
+  size: 50, 53
+  orig: 158, 82
+  offset: 13, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0018
+  rotate: true
+  xy: 1561, 76
+  size: 50, 52
+  orig: 158, 82
+  offset: 13, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0019
+  rotate: true
+  xy: 1615, 76
+  size: 50, 52
+  orig: 158, 82
+  offset: 13, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0020
+  rotate: true
+  xy: 1669, 76
+  size: 50, 52
+  orig: 158, 82
+  offset: 13, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0021
+  rotate: true
+  xy: 1723, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 13, 18
+  index: -1
+langur_swing_left/Head/langur_swing_head_0022
+  rotate: true
+  xy: 612, 76
+  size: 50, 54
+  orig: 158, 82
+  offset: 12, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0023
+  rotate: true
+  xy: 668, 76
+  size: 50, 54
+  orig: 158, 82
+  offset: 12, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0024
+  rotate: false
+  xy: 378, 19
+  size: 51, 54
+  orig: 158, 82
+  offset: 12, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0025
+  rotate: true
+  xy: 444, 75
+  size: 51, 54
+  orig: 158, 82
+  offset: 12, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0026
+  rotate: true
+  xy: 218, 75
+  size: 51, 55
+  orig: 158, 82
+  offset: 12, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0027
+  rotate: false
+  xy: 431, 19
+  size: 51, 54
+  orig: 158, 82
+  offset: 12, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0028
+  rotate: false
+  xy: 164, 16
+  size: 52, 54
+  orig: 158, 82
+  offset: 12, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0029
+  rotate: true
+  xy: 1341, 76
+  size: 50, 53
+  orig: 158, 82
+  offset: 14, 18
+  index: -1
+langur_swing_left/Head/langur_swing_head_0030
+  rotate: true
+  xy: 1778, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0031
+  rotate: true
+  xy: 1833, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0032
+  rotate: true
+  xy: 894, 29
+  size: 48, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0033
+  rotate: true
+  xy: 1888, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 13, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0034
+  rotate: true
+  xy: 1943, 77
+  size: 49, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0035
+  rotate: true
+  xy: 1396, 76
+  size: 50, 53
+  orig: 158, 82
+  offset: 13, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0036
+  rotate: false
+  xy: 624, 22
+  size: 50, 52
+  orig: 158, 82
+  offset: 13, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0037
+  rotate: false
+  xy: 676, 22
+  size: 50, 52
+  orig: 158, 82
+  offset: 13, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0038
+  rotate: true
+  xy: 728, 25
+  size: 49, 53
+  orig: 158, 82
+  offset: 13, 18
+  index: -1
+langur_swing_left/Head/langur_swing_head_0039
+  rotate: true
+  xy: 724, 76
+  size: 50, 54
+  orig: 158, 82
+  offset: 12, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0040
+  rotate: true
+  xy: 780, 76
+  size: 50, 54
+  orig: 158, 82
+  offset: 12, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0041
+  rotate: true
+  xy: 500, 75
+  size: 51, 54
+  orig: 158, 82
+  offset: 12, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0042
+  rotate: false
+  xy: 484, 19
+  size: 51, 54
+  orig: 158, 82
+  offset: 12, 16
+  index: -1
+langur_swing_left/Head/langur_swing_head_0043
+  rotate: false
+  xy: 218, 18
+  size: 51, 55
+  orig: 158, 82
+  offset: 12, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0044
+  rotate: true
+  xy: 275, 75
+  size: 51, 55
+  orig: 158, 82
+  offset: 12, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0045
+  rotate: true
+  xy: 556, 75
+  size: 51, 54
+  orig: 158, 82
+  offset: 12, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0046
+  rotate: false
+  xy: 271, 19
+  size: 52, 54
+  orig: 158, 82
+  offset: 12, 15
+  index: -1
+langur_swing_left/Head/langur_swing_head_0047
+  rotate: true
+  xy: 1451, 76
+  size: 50, 53
+  orig: 158, 82
+  offset: 14, 18
+  index: -1
+langur_swing_left/Head/langur_swing_head_0048
+  rotate: true
+  xy: 783, 25
+  size: 49, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0049
+  rotate: true
+  xy: 949, 29
+  size: 48, 53
+  orig: 158, 82
+  offset: 14, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0050
+  rotate: true
+  xy: 1059, 26
+  size: 49, 52
+  orig: 158, 82
+  offset: 13, 21
+  index: -1
+langur_swing_left/Head/langur_swing_head_0051
+  rotate: true
+  xy: 838, 27
+  size: 49, 53
+  orig: 158, 82
+  offset: 12, 21
+  index: -1
+langur_swing_left/Head/langur_swing_head_0052
+  rotate: true
+  xy: 1004, 26
+  size: 49, 53
+  orig: 158, 82
+  offset: 12, 21
+  index: -1
+langur_swing_left/Head/langur_swing_head_0053
+  rotate: true
+  xy: 1010, 77
+  size: 49, 54
+  orig: 158, 82
+  offset: 11, 21
+  index: -1
+langur_swing_left/Head/langur_swing_head_0054
+  rotate: false
+  xy: 1506, 76
+  size: 53, 50
+  orig: 158, 82
+  offset: 27, 20
+  index: -1
+langur_swing_left/Head/langur_swing_head_0055
+  rotate: false
+  xy: 836, 78
+  size: 56, 48
+  orig: 158, 82
+  offset: 44, 19
+  index: -1
+langur_swing_left/Head/langur_swing_head_0056
+  rotate: false
+  xy: 952, 79
+  size: 56, 47
+  orig: 158, 82
+  offset: 65, 17
+  index: -1
+langur_swing_left/Head/langur_swing_head_0057
+  rotate: false
+  xy: 894, 79
+  size: 56, 47
+  orig: 158, 82
+  offset: 86, 15
+  index: -1

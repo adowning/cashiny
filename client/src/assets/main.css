@@ -1,0 +1,132 @@
+/* apps/client/src/assets/main.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can add global styles here if needed */
+body {
+  font-family: "Rox Display", sans-serif; /* Example: Using Inter font */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+  font-family: "Bronzier";
+  src:
+    local("Bronzier"),
+    url("./Bronzier-Medium.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Bronzier";
+  src:
+    local("Bronzier"),
+    url("./Bronzier-Medium.ttf") format("truetype");
+  font-weight: bold;
+}
+.Bronzier {
+  /* color: #ffea00; A bright yellow */
+  /* text-shadow: 0 0 1px black; */
+
+  /* First layer: a subtle yellow glow */
+  /* Make the text bold */
+  /* font-weight: bold; */
+
+  font-family: "Bronzier";
+  /* font-size: xx-large;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px; */
+}
+/* Example custom component style (if you prefer to define some here) */
+/* .btn-primary {
+  @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+} */
+.glow {
+  font-size: 22px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 1.5px;
+  /* font-family: 'Hind Guntur', sans-serif; */
+  /* font-weight: 800;
+  font-style: normal; */
+  /* animation: 'glow'; */
+  text-shadow:
+    1px 1px 3px #c74dff,
+    0 0 2px #c74dff,
+    0 0 4px #720fc4;
+}
+.futex-cell {
+  background: rgb(105, 33, 146);
+  background: radial-gradient(
+    circle,
+    rgba(105, 33, 146, 1) 24%,
+    rgba(28, 0, 46, 1) 100%
+  );
+  /* border-right-style: solid; */
+  /* border-right-color: rgb(105, 33, 146); */
+  /* border-width: 0.1px; */
+  /* border-top-style: none; */
+  /* border-radius: 5px; */
+}
+.onacona {
+  /* color: #ffea00; A bright yellow */
+  /* text-shadow: 0 0 1px black; */
+
+  /* First layer: a subtle yellow glow */
+  /* Make the text bold */
+  /* font-weight: bold; */
+
+  font-family: "onacona", sans-serif;
+  /* font-size: xx-large;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px; */
+}
+.roxdisplay {
+  /* color: #ffea00; A bright yellow */
+  /* text-shadow: 0 0 1px black; */
+
+  /* First layer: a subtle yellow glow */
+  /* Make the text bold */
+  /* font-weight: bold; */
+
+  font-family: "Rox Display", sans-serif;
+  /* font-size: xx-large;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px; */
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Onacona"; /* Choose a name for your font */
+  src: url("/Onacona.ttf") format("truetype");
+  /* url('/fonts/your-font-file.woff2') format('woff2'), Path relative to public folder
+       url('/fonts/your-font-file.woff') format('woff'),
+       /* Add other formats if needed for broader browser support */
+  /* url('/fonts/your-font-file.ttf') format('truetype'); */
+  font-weight: normal; /* Or the specific weight of the font file */
+  font-style: normal; /* Or 'italic' if it's an italic font file */
+  /* Add font-display: swap; for better performance */
+  font-display: swap;
+}
+@font-face {
+  font-family: "Rox Display"; /* Choose a name for your font */
+  src: url("/ROXDISPLAY.ttf") format("truetype");
+  /* url('/fonts/your-font-file.woff2') format('woff2'), Path relative to public folder
+       url('/fonts/your-font-file.woff') format('woff'),
+       /* Add other formats if needed for broader browser support */
+  /* url('/fonts/your-font-file.ttf') format('truetype'); */
+  font-weight: normal; /* Or the specific weight of the font file */
+  font-style: normal; /* Or 'italic' if it's an italic font file */
+  /* Add font-display: swap; for better performance */
+  font-display: swap;
+}
