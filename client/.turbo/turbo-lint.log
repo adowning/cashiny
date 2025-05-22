@@ -1,19 +1,2 @@
 
-[0m[2m[35m$[0m [2m[1meslint . --ext .ts --report-unused-disable-directives --max-warnings 0[0m
-
-Oops! Something went wrong! :(
-
-ESLint: 7.32.0
-
-Error: Failed to load plugin 'vue' declared in '.eslintrc.cjs': This method cannot be used with flat config. Add your entries directly into the config array.
-Referenced from: /home/ash/Documents/cashflow/client/.eslintrc.cjs
-    at assertEslintrcConfig (/home/ash/Documents/cashflow/node_modules/eslint/lib/linter/linter.js:1465:9)
-    at Linter.getRules (/home/ash/Documents/cashflow/node_modules/eslint/lib/linter/linter.js:2665:3)
-    at getCoreRule (/home/ash/Documents/cashflow/node_modules/eslint-plugin-vue/lib/utils/index.js:74:70)
-    at wrapCoreRule (/home/ash/Documents/cashflow/node_modules/eslint-plugin-vue/lib/utils/index.js:333:22)
-    at Object.<anonymous> (/home/ash/Documents/cashflow/node_modules/eslint-plugin-vue/lib/rules/array-bracket-newline.js:9:18)
-    at Module._compile (/home/ash/Documents/cashflow/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)
-    at Object..js (node:internal/modules/cjs/loader:1706:10)
-    at Module.load (node:internal/modules/cjs/loader:1289:32)
-    at Function._load (node:internal/modules/cjs/loader:1108:12)
-    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[0m[2m[35m$[0m [2m[1mESLINT_USE_FLAT_CONFIG=false eslint . --ext .vue,.ts,.js,.cjs --report-unused-disable-directives --max-warnings 0 --fix[0m

@@ -21,9 +21,10 @@
     "db:studio": "bun prisma studio",
     "db:push": "bun prisma db push",
     "db:seed": "bun prisma db seed",
-    "lintx": "eslint . --ext .ts",
+    "lint": "eslint . --ext .ts,.js --report-unused-disable-directives --max-warnings 0 --fix",
     "format": "prettier --write \"src/**/*.ts\" \"prisma/**/*.prisma\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules dist .turbo"
   },
   "dependencies": {
     "@prisma/client": "6.8.2",
@@ -40,9 +41,9 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.0",
     "@types/node": "latest",
-    "eslint": "^7.32.0",
     "prettier": "^3.2.5",
     "prisma": "^6.8.2",
+    "eslint": "^9.27.0",
     "typescript": "^5.4.5"
   },
   "files": [

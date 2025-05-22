@@ -1,20 +1,21 @@
 
-[0m[2m[35m$[0m [2m[1meslint . --ext .ts[0m
+[0m[2m[35m$[0m [2m[1meslint . --ext .ts,.js --report-unused-disable-directives --max-warnings 0 --fix[0m
 
 Oops! Something went wrong! :(
 
-ESLint: 7.32.0
+ESLint: 9.27.0
 
-Error: .eslintrc.cjs:
-	Environment key "es2022" is unknown
-
-    at /home/ash/Documents/cashflow/packages/database/node_modules/eslint/node_modules/@eslint/eslintrc/lib/shared/config-validator.js:175:23
-    at Array.forEach (<anonymous>)
-    at ConfigValidator.validateEnvironment (/home/ash/Documents/cashflow/packages/database/node_modules/eslint/node_modules/@eslint/eslintrc/lib/shared/config-validator.js:169:34)
-    at ConfigValidator.validateConfigArray (/home/ash/Documents/cashflow/packages/database/node_modules/eslint/node_modules/@eslint/eslintrc/lib/shared/config-validator.js:319:18)
-    at CascadingConfigArrayFactory._finalizeConfigArray (/home/ash/Documents/cashflow/packages/database/node_modules/eslint/node_modules/@eslint/eslintrc/lib/cascading-config-array-factory.js:493:23)
-    at CascadingConfigArrayFactory.getConfigArrayForFile (/home/ash/Documents/cashflow/packages/database/node_modules/eslint/node_modules/@eslint/eslintrc/lib/cascading-config-array-factory.js:299:21)
-    at FileEnumerator._iterateFilesRecursive (/home/ash/Documents/cashflow/packages/database/node_modules/eslint/lib/cli-engine/file-enumerator.js:445:49)
-    at _iterateFilesRecursive.next (<anonymous>)
-    at FileEnumerator.iterateFiles (/home/ash/Documents/cashflow/packages/database/node_modules/eslint/lib/cli-engine/file-enumerator.js:296:49)
-    at iterateFiles.next (<anonymous>)
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'typescript-eslint' imported from /home/ash/Documents/cashflow/packages/database/eslint.config.js
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:268:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49)
+(node:35598) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/ash/Documents/cashflow/packages/database/eslint.config.js?mtime=1747891397803 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /home/ash/Documents/cashflow/packages/database/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)

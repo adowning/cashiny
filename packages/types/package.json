@@ -16,7 +16,8 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "format": "prettier --write \"src/**/*.ts\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules dist .turbo"
   },
   "dependencies": {
     "@cashflow/database": "workspace:*"

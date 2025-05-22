@@ -39,7 +39,15 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // Allow console in dev
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     semi: 'off',
-
+    '@typescript-eslint/no-unused-expressions': [
+      'error',
+      {
+        allowShortCircuit: true,
+        allowTernary: true,
+        allowTaggedTemplates: false, // Or true, depending on your preference
+        enforceForJSX: false, // Or true, depending on your preference
+      },
+    ],
     // Add any project-specific rules here
     // e.g., if you use specific Hono patterns or Prisma idioms you want to enforce/discourage
   },

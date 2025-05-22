@@ -9,36 +9,38 @@
     "build": "bun build src/index.ts --outdir ./dist --target bun",
     "start": "bun run ./dist/index.js",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --ext .ts --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext .ts --report-unused-disable-directives --max-warnings 0 --fix",
     "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "clean": "rm -rf node_modules dist .turbo"
   },
   "dependencies": {
     "@cashflow/database": "workspace:*",
     "@cashflow/types": "workspace:*",
-    "@faker-js/faker": "^9.7.0",
+    "@faker-js/faker": "^9.8.0",
     "@hono/swagger-ui": "^0.5.1",
     "@hono/zod-openapi": "^0.19.6",
     "@hono/zod-validator": "^0.5.0",
-    "@prisma/client": "^6.7.0",
+    "@prisma/client": "^6.8.2",
     "@types/websocket": "^1.0.10",
-    "@zenstackhq/runtime": "^2.14.2",
-    "better-auth": "^1.2.7",
-    "hono": "^4.3.7",
+    "better-auth": "^1.2.8",
+    "hono": "^4.7.10",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.15.6",
+    "pg": "^8.16.0",
     "pg-listen": "^1.7.0",
     "resend": "^4.5.1",
     "short-uuid": "^5.2.0",
     "stoker": "^1.4.2",
     "uuid": "^11.1.0",
     "websocket": "^1.0.35",
-    "zod": "^3.22.4"
+    "zod": "^3.25.20"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "^5.4.5",
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5"
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "eslint": "^8.57.1",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
   }
 }

@@ -1,54 +1,38 @@
-// client/.eslintrc.cjs
 module.exports = {
   root: true,
   env: {
     browser: true,
-    es2020: true,
+    es2022: true,
     node: true,
   },
   parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: '@typescript-eslint/parser', // Should be @typescript-eslint/parser v4.x
-    ecmaVersion: 2020,
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 'latest',
     sourceType: 'module',
     project: './tsconfig.json',
     extraFileExtensions: ['.vue'],
   },
-  plugins: [
-    '@typescript-eslint', // Should be @typescript-eslint/eslint-plugin v4.x
-    'vue', // Should be eslint-plugin-vue v7.x (e.g., ^7.20.0)
-    'prettier', // Should be eslint-plugin-prettier v3.x
-  ],
+  plugins: ['@typescript-eslint', 'vue', 'prettier'],
   extends: [
     'eslint:recommended',
-    'plugin:vue/vue3-recommended', // From eslint-plugin-vue v7.x
-    'plugin:@typescript-eslint/recommended', // From @typescript-eslint/eslint-plugin v4.x
-    'prettier', // From eslint-config-prettier (make sure version is compatible)
-    'plugin:prettier/recommended', // From eslint-plugin-prettier v3.x
+    'plugin:vue/vue3-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+    'plugin:prettier/recommended',
   ],
   rules: {
     'prettier/prettier': 'warn',
-
-    // Vue specific rules from eslint-plugin-vue v7.x
     'vue/multi-word-component-names': 'warn',
     'vue/no-v-html': 'warn',
-    'css.lint.emptyRules': 'ignore',
-    'css.emptyRules': 'ignore',
-    'css.lint.emptyRules': 'off',
-    'css.emptyRules': 'off',
     'vue/component-name-in-template-casing': [
       'warn',
       'PascalCase',
       {
         registeredComponentsOnly: false,
-        globals: [],
       },
     ],
-    // Check documentation for eslint-plugin-vue v7.x for available rules like:
-    // 'vue/no-unused-components': 'warn',
-    // 'vue/script-setup-uses-vars': 'error', // If available and using <script setup>
-
-    // TypeScript specific rules from @typescript-eslint v4.x
+    'vue/script-setup-uses-vars': 'error',
     '@typescript-eslint/no-unused-vars': [
       'warn',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
@@ -66,22 +50,20 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-non-null-assertion': 'warn',
-
-    // General ESLint rules
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    indent: 'off', // Let Prettier handle this
-    '@typescript-eslint/indent': 'off', // Let Prettier handle this
+    indent: 'off',
+    '@typescript-eslint/indent': 'off',
   },
   overrides: [
     {
-      files: ['vite.config.ts', 'tailwind.config.js', 'postcss.config.js', '.eslintrc.cjs'],
+      files: ['*.cjs', 'vite.config.ts', 'tailwind.config.js', 'postcss.config.js'],
       env: {
         node: true,
       },
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       },
     },
   ],
