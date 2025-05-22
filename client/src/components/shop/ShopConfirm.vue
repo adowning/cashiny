@@ -1,50 +1,49 @@
 <!-- eslint-disable ts/ban-ts-comment -->
 <script lang="ts" setup>
   // import { useOperatorStore } from '@/stores/operator'
-  import { useUserStore } from "@/stores/user";
-  import { useDepositStore } from "@/stores/deposit";
-  import { currency } from "@/utils/currency";
+  import { useUserStore } from '@/stores/user.store'
+  import { useDepositStore } from '@/stores/deposit.store'
+  import { currency } from '@/utils/currency'
   // import { AppLauncher } from '@capacitor/app-launcher'
-  import { nextTick, onMounted, ref } from "vue";
+  import { nextTick, onMounted, ref } from 'vue'
   // import { Transaction } from "@cashflow/database";
-  import { useAuthStore } from "@/stores/auth";
-import { InitializeDepositDto } from "@cashflow/types";
+  import { useAuthStore } from '@/stores/auth.store'
+  import { InitializeDepositDto } from '@cashflow/types'
 
-  const eventBus = useEventManager();
-  const authStore = useAuthStore();
-  const userStore = useUserStore();
-  const depositStore = useDepositStore();
-  const { operatorData, getSelectedPaymentMethod, getSelectedProduct } =
-    storeToRefs(depositStore);
+  const eventBus = useEventManager()
+  const authStore = useAuthStore()
+  const userStore = useUserStore()
+  const depositStore = useDepositStore()
+  const { operatorData, getSelectedPaymentMethod, getSelectedProduct } = storeToRefs(depositStore)
 
   const {
     // isAuthenticated, // Computed property from authStore (single source of truth)
     currentUser, // isLoading: authLoading, // If you need to show auth-specific loading in App.vue
     // error: authError, // Auth store errors
-  } = storeToRefs(authStore);
+  } = storeToRefs(authStore)
   // const shopStore = useOperatorStore()
   // const shop = shopStore.currentShop
-  const _cashtag = ref();
-  const changeStores = ref(false);
-  const storeId = ref();
+  const _cashtag = ref()
+  const changeStores = ref(false)
+  const storeId = ref()
   // if (operatorData === undefined) return
   // if (currentUser === undefined) return
-  const showKeyboard = ref(false);
+  const showKeyboard = ref(false)
   if (currentUser?.value?.cashtag !== undefined) {
-    _cashtag.value = currentUser.value?.cashtag;
+    _cashtag.value = currentUser.value?.cashtag
   }
   if (operatorData.value?.id !== undefined) {
-    storeId.value = operatorData.value?.id;
+    storeId.value = operatorData.value?.id
   }
-  const errorMsg = ref("");
-  const value = ref<any>([]);
-  const badTag = ref(false);
-  const badStore = ref(false);
-  const paymentMethodCorrect = ref(false);
-  const method = ref();
-  const _cashtag_field = ref("");
+  const errorMsg = ref('')
+  const value = ref<any>([])
+  const badTag = ref(false)
+  const badStore = ref(false)
+  const paymentMethodCorrect = ref(false)
+  const method = ref()
+  const _cashtag_field = ref('')
   function priceFormatted(price: number) {
-    return currency(price, "en-US", { currency: "USD" });
+    return currency(price, 'en-US', { currency: 'USD' })
   }
 
   async function setCashtag(val: string) {
@@ -70,23 +69,22 @@ import { InitializeDepositDto } from "@cashflow/types";
     //   }, 3000)
     // } else {
     // const updatedUser = await updateUserCashtag(accessToken.value, val)
-    const updatedUser: any = await userStore.dispatchUserCashtag(val);
+    const updatedUser: any = await userStore.dispatchUserCashtag(val)
 
-    _cashtag_field.value = "";
-    errorMsg.value = "";
-    _cashtag.value = updatedUser.cashtag;
+    _cashtag_field.value = ''
+    errorMsg.value = ''
+    _cashtag.value = updatedUser.cashtag
     // router.push('/shop')
-    eventBus.emit("activeName", "shopConfirm");
+    eventBus.emit('activeName', 'shopConfirm')
     // }
     //#27787-b
-    method.value = 0;
+    method.value = 0
   }
   async function setStore(_val: any) {
-    const val = _val.join(``);
+    const val = _val.join(``)
     //   const store = await findStoreByCode(accessToken.value, val)
-    const api = useApiClient();
+    const api = useApiClient()
     // const store: any = await api.shopController.send({ data: val });
-
 
     // // queryClient.invalidateQueries({ queryKey: ['userInfo'] })
 
@@ -112,21 +110,21 @@ import { InitializeDepositDto } from "@cashflow/types";
     //   }
     if (badStore.value) {
       setTimeout(() => {
-        badStore.value = false;
-        value.value = [];
-        window.focus();
-        errorMsg.value = "";
-      }, 3000);
-      return;
+        badStore.value = false
+        value.value = []
+        window.focus()
+        errorMsg.value = ''
+      }, 3000)
+      return
     }
     // @ts-ignore
     // paymentMethods.value = store.acceptedPayments
     if (paymentMethods.value.includes(props.paymentMethod)) {
-      paymentMethodCorrect.value = true;
+      paymentMethodCorrect.value = true
     } else {
-      paymentMethodCorrect.value = false;
+      paymentMethodCorrect.value = false
     }
-    method.value = 0;
+    method.value = 0
   }
   async function checkCanOpenUrl() {
     // const { value } = await AppLauncher?.canOpenUrl({
@@ -161,26 +159,26 @@ import { InitializeDepositDto } from "@cashflow/types";
       // @ts-ignore
       // selectedProduct: state.value.selectedProduct,
       // shopId: depositStore.operatorData.id
-      channels_id: '1'
-    };
-    if (method === "CASHAPP") {
+      channels_id: '1',
+    }
+    if (method === 'CASHAPP') {
       // data.paymentMethod = "CASHAPP";
     }
 
-    if (method === "INSTORE") {
+    if (method === 'INSTORE') {
       // data.paymentMethod = "INSTORE";
     }
     // data.productid = depositStore.getSelectedProduct?.id;
     // const api = getApiClient()
     //   const balanceTransaction = await createbalanceTransaction(accessToken.value, data)
     // const tran = await api.transactionControllerCreate.send({ data });
-    await depositStore.dispatchUserDepositSubmit(data);
+    await depositStore.dispatchUserDepositSubmit(data)
     // const sse = await api.transactionSseControllerCreate({ body: tran })
     // console.log(tran)
     // //console.log(sse)
     // await transactionStore.dispatchGetTransactions()
-    if (method === "CASHAPP") {
-      checkCanOpenUrl();
+    if (method === 'CASHAPP') {
+      checkCanOpenUrl()
     }
     // queryClient.invalidateQueries({ queryKey: ['user'] })
 
@@ -188,10 +186,10 @@ import { InitializeDepositDto } from "@cashflow/types";
     // target!.value!.classList.add(`animate__animated`, 'animate__bounceOut')
     nextTick(() => {
       // console.log('nextTick callback')
-      eventBus.emit("activeName", "none");
+      eventBus.emit('activeName', 'none')
       // $bus.$emit(eventTypes.setPending)
       // $bus.$emit(eventTypes.closeShop)
-    });
+    })
   }
 
   onMounted(async () => {
@@ -199,15 +197,11 @@ import { InitializeDepositDto } from "@cashflow/types";
     // //console.log(state.value.shop.paymentMethod)
     // paymentMethods = state.value.shop.acceptedPayments/
     // console.log(operatorData.value.acceptedPayments);
-    console.log(getSelectedPaymentMethod.value);
-    if (
-      depositStore.operatorData?.acceptedPayments.includes(
-        getSelectedPaymentMethod.value
-      )
-    ) {
-      paymentMethodCorrect.value = true;
+    console.log(getSelectedPaymentMethod.value)
+    if (depositStore.operatorData?.acceptedPayments.includes(getSelectedPaymentMethod.value)) {
+      paymentMethodCorrect.value = true
     }
-  });
+  })
 </script>
 
 <template>
@@ -228,25 +222,13 @@ import { InitializeDepositDto } from "@cashflow/types";
           </h3>
           <div
             v-if="badTag"
-            style="
-              color: red;
-              font-size: 18px;
-              font-weight: 600;
-              margin: auto;
-              padding-bottom: 4px;
-            "
+            style="color: red; font-size: 18px; font-weight: 600; margin: auto; padding-bottom: 4px"
           >
             {{ errorMsg }}
           </div>
           <div
             v-else
-            style="
-              color: red;
-              font-size: 18px;
-              font-weight: 600;
-              margin: auto;
-              padding-bottom: 4px;
-            "
+            style="color: red; font-size: 18px; font-weight: 600; margin: auto; padding-bottom: 4px"
           >
             &nbsp;
           </div>
@@ -309,10 +291,7 @@ import { InitializeDepositDto } from "@cashflow/types";
           style="margin-bottom: 10px; margin-top: 16px"
         >
           <div @click="setCashtag(_cashtag_field)">
-            <GlassButton
-              :disabled="_cashtag_field.length < 4 || badTag === true"
-              color="green"
-            >
+            <GlassButton :disabled="_cashtag_field.length < 4 || badTag === true" color="green">
               Submit
             </GlassButton>
           </div>
@@ -321,16 +300,15 @@ import { InitializeDepositDto } from "@cashflow/types";
 
       <div
         v-if="
-
           storeId !== null &&
-          depositStore.getSelectedPaymentMethod == ('INSTORE_CASH') &&
+          depositStore.getSelectedPaymentMethod == 'INSTORE_CASH' &&
           paymentMethodCorrect === true
         "
         class="flex flex-col justify-start"
       >
         <div
           style="
-            background-image: url(&quot;/images/cell_noglow_trans.avif&quot;);
+            background-image: url('/images/cell_noglow_trans.avif');
             background-size: 100% 100%;
             background-repeat: no-repeat;
             border-image-slice: 60px 60px fill;
@@ -341,22 +319,22 @@ import { InitializeDepositDto } from "@cashflow/types";
           "
         >
           <div class="glow flex py-2" style="font-size: 18px">
-            Once submitted the order will remain pending until a cashier at the
-            store confirms payment
+            Once submitted the order will remain pending until a cashier at the store confirms
+            payment
           </div>
         </div>
         <div
           class="margin-auto text-align-center mx-3 flex flex-row justify-start pt-2"
           style="
             height: 80px;
-            background: url(&quot;/images/input.avif&quot;) no-repeat;
+            background: url('/images/input.avif') no-repeat;
             background-size: 100% 100%;
             background-position: center;
             padding: 18px;
           "
         >
           <div
-            class="h-100 text-align-center flex flex-row items-center justify-between "
+            class="h-100 text-align-center flex flex-row items-center justify-between"
             style="margin: auto"
           >
             <img
@@ -364,10 +342,7 @@ import { InitializeDepositDto } from "@cashflow/types";
               color="green"
               style="color: white; width: 35px; height: 35px"
             />
-            <div
-              class="bungee mt-0"
-              style="font-weight: 700; font-size: x-large; color: white"
-            >
+            <div class="bungee mt-0" style="font-weight: 700; font-size: x-large; color: white">
               <h4 class="bungee" style="font-size: x-large">
                 &nbsp;&nbsp;{{ getSelectedProduct?.amountToReceiveInCredits }}
               </h4>
@@ -396,10 +371,7 @@ import { InitializeDepositDto } from "@cashflow/types";
           Amount due:
         </h3>
         <div>
-          <h1
-            class="margin-auto glow mb-2 text-center text-white"
-            style="font-size: 32px"
-          >
+          <h1 class="margin-auto glow mb-2 text-center text-white" style="font-size: 32px">
             ${{ getSelectedProduct?.priceInCents! / 100 }}.00
           </h1>
         </div>
@@ -425,22 +397,26 @@ import { InitializeDepositDto } from "@cashflow/types";
     </div>
     <div
       v-if="
- _cashtag !== null && _cashtag !== undefined && _cashtag !== '' &&
-          storeId !== null &&
-          depositStore.operatorData?.acceptedPayments.includes('CASH_APP') &&
-          paymentMethodCorrect === true &&
+        _cashtag !== null &&
+        _cashtag !== undefined &&
+        _cashtag !== '' &&
+        storeId !== null &&
+        depositStore.operatorData?.acceptedPayments.includes('CASH_APP') &&
+        paymentMethodCorrect === true &&
         getSelectedPaymentMethod === 'CASH_APP' &&
         _cashtag !== null &&
         depositStore.operatorData?.acceptedPayments.includes('CASH_APP')
       "
       class="flex flex-col"
     >
-      <div class="glow font-small my-2" style="font-size: medium">Click confirm to be taken to cashapp</div>
+      <div class="glow font-small my-2" style="font-size: medium">
+        Click confirm to be taken to cashapp
+      </div>
       <div
         class="margin-auto text-align-center mx-3 flex flex-row justify-start pt-2"
         style="
           height: 80px;
-          background: url(&quot;/images/input.avif&quot;) no-repeat;
+          background: url('/images/input.avif') no-repeat;
           background-size: 100% 100%;
           background-position: center;
           padding: 18px;
@@ -455,10 +431,7 @@ import { InitializeDepositDto } from "@cashflow/types";
             color="green"
             style="color: white; width: 35px; height: 35px"
           />
-          <div
-            class="bungee mt-0"
-            style="font-weight: 700; font-size: x-large; color: white"
-          >
+          <div class="bungee mt-0" style="font-weight: 700; font-size: x-large; color: white">
             <h4 class="bungee" style="font-size: x-large">
               &nbsp;&nbsp;{{ getSelectedProduct?.amountToReceiveInCredits }}
             </h4>
@@ -466,31 +439,21 @@ import { InitializeDepositDto } from "@cashflow/types";
 
           <div class="grow-1 flex" style="width: 15px" />
           <div />
-          <img
-            src="/images/shop/shoparrow.avif"
-            color="green"
-            style="width: 20px; height: 20px"
-          />
+          <img src="/images/shop/shoparrow.avif" color="green" style="width: 20px; height: 20px" />
           <div color="green" style="width: 15px; font-weight: 700" />
           <div
             class="text-align-center mt-0"
             style="font-weight: 700; font-size: small; color: white"
-        >
-          {{ currentUser.name }}
-        </div>
+          >
+            {{ currentUser.name }}
+          </div>
         </div>
       </div>
-      <h3
-        class="margin-auto mt-2 text-center text-white"
-        style="font-size: 18px; font-weight: 500"
-      >
+      <h3 class="margin-auto mt-2 text-center text-white" style="font-size: 18px; font-weight: 500">
         Amount due:
       </h3>
       <div>
-        <h1
-          class="margin-auto glow my-1 text-center text-white"
-          style="font-size: 32px"
-        >
+        <h1 class="margin-auto glow my-1 text-center text-white" style="font-size: 32px">
           {{ priceFormatted(getSelectedProduct?.priceInCents! / 100) }}
         </h1>
       </div>
@@ -505,10 +468,7 @@ import { InitializeDepositDto } from "@cashflow/types";
           height: 40px;
         "
       >
-        <div
-          class="color-white flex flex-col gap-3"
-          @click="confirm('cashapp')"
-        >
+        <div class="color-white flex flex-col gap-3" @click="confirm('cashapp')">
           <GlassButton
             color="green"
             style="
@@ -558,8 +518,7 @@ import { InitializeDepositDto } from "@cashflow/types";
             class="glow text-small mb-2 w-full text-pretty text-white"
             style="font-size: 24px"
           >
-            Cannot find a store associated with this account. <br />Please enter
-            a valid store id
+            Cannot find a store associated with this account. <br />Please enter a valid store id
           </h3>
           <h3
             v-if="changeStores === true"
@@ -571,25 +530,13 @@ import { InitializeDepositDto } from "@cashflow/types";
           </h3>
           <div
             v-if="badStore"
-            style="
-              color: red;
-              font-size: 18px;
-              font-weight: 600;
-              margin: auto;
-              padding-bottom: 4px;
-            "
+            style="color: red; font-size: 18px; font-weight: 600; margin: auto; padding-bottom: 4px"
           >
             {{ errorMsg }}
           </div>
           <div
             v-else
-            style="
-              color: red;
-              font-size: 18px;
-              font-weight: 600;
-              margin: auto;
-              padding-bottom: 4px;
-            "
+            style="color: red; font-size: 18px; font-weight: 600; margin: auto; padding-bottom: 4px"
           >
             &nbsp;
           </div>
@@ -621,8 +568,8 @@ import { InitializeDepositDto } from "@cashflow/types";
               :focused="showKeyboard"
               @focus="showKeyboard = true"
               @complete="setStore(value)"
-            >
-              <!-- <input
+            />
+            <!-- <input
                 v-model="passwordValue"
                 type="password"
                 :icon="mdiMail"
@@ -684,8 +631,8 @@ import { InitializeDepositDto } from "@cashflow/types";
             class="glow text-small mb-2 w-full text-pretty text-white"
             style="font-size: 24px"
           >
-            Your current active store/agent does not accept in store payments.
-            Do you want to change your active store to a new store?
+            Your current active store/agent does not accept in store payments. Do you want to change
+            your active store to a new store?
           </h3>
 
           <!-- <GlassButton
@@ -709,19 +656,13 @@ import { InitializeDepositDto } from "@cashflow/types";
           class="mx-16 mb-12 flex flex-row justify-center gap-3"
           style="margin-bottom: 150px; margin-top: 16px"
         >
-          <div @click="eventBus.emit( 'selectPayment')">
-            <GlassButton
-              :disabled="storeId.length < 4 || badStore === true"
-              color="red"
-            >
+          <div @click="eventBus.emit('selectPayment')">
+            <GlassButton :disabled="storeId.length < 4 || badStore === true" color="red">
               No
             </GlassButton>
           </div>
           <div @click="changeStores = true">
-            <GlassButton
-              :disabled="storeId.length < 4 || badStore === true"
-              color="green"
-            >
+            <GlassButton :disabled="storeId.length < 4 || badStore === true" color="green">
               Yes
             </GlassButton>
           </div>
@@ -738,15 +679,14 @@ import { InitializeDepositDto } from "@cashflow/types";
       >
         <!-- <div class="futex-cell"> -->
         <div class="futex-cell">
-          Once submitted the order will remain pending until a cashier at the
-          store confirms payment
+          Once submitted the order will remain pending until a cashier at the store confirms payment
         </div>
         <!-- </div> -->
         <div
           class="margin-auto text-align-center mx-3 flex flex-row justify-start pt-2"
           style="
             height: 80px;
-            background: url(&quot;/images/input.avif&quot;) no-repeat;
+            background: url('/images/input.avif') no-repeat;
             background-size: 100% 100%;
             background-position: center;
             padding: 18px;
@@ -761,10 +701,7 @@ import { InitializeDepositDto } from "@cashflow/types";
               color="green"
               style="color: white; width: 35px; height: 35px"
             />
-            <div
-              class="bungee mt-0"
-              style="font-weight: 700; font-size: x-large; color: white"
-            >
+            <div class="bungee mt-0" style="font-weight: 700; font-size: x-large; color: white">
               <h4 class="bungee" style="font-size: x-large">
                 &nbsp;&nbsp;{{ getSelectedProduct?.priceInCents }}
               </h4>
@@ -793,12 +730,9 @@ import { InitializeDepositDto } from "@cashflow/types";
           Amount due:
         </h3>
         <div>
-          <h1
-            class="margin-auto glow mb-2 text-center text-white"
-            style="font-size: 32px"
-        >
-          ${{ getSelectedProduct?.priceInCents }}
-        </h1>
+          <h1 class="margin-auto glow mb-2 text-center text-white" style="font-size: 32px">
+            ${{ getSelectedProduct?.priceInCents }}
+          </h1>
         </div>
         <div
           class="margin-auto w-100% mb-12 mt-4 flex flex-row justify-center"

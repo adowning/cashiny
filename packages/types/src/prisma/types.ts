@@ -9,14 +9,14 @@ export type EnumRole =
   | 'OWNER'
   | 'MEMBER'
   | 'OPERATOR'
-  | 'SUPPORT_AGENT';
+  | 'SUPPORT_AGENT'
 
 export type EnumProductType =
   | 'DEPOSIT_PACKAGE'
   | 'VIRTUAL_CURRENCY'
   | 'ITEM'
   | 'SUBSCRIPTION'
-  | 'FEATURE_UNLOCK';
+  | 'FEATURE_UNLOCK'
 
 export type EnumUserStatus =
   | 'ACTIVE'
@@ -24,9 +24,9 @@ export type EnumUserStatus =
   | 'ONLINE'
   | 'OFFLINE'
   | 'SUSPENDED'
-  | 'BANNED';
+  | 'BANNED'
 
-export type EnumGender = 'MALE' | 'FEMALE' | 'NON_BINARY' | 'OTHER' | 'PREFER_NOT_TO_SAY';
+export type EnumGender = 'MALE' | 'FEMALE' | 'NON_BINARY' | 'OTHER' | 'PREFER_NOT_TO_SAY'
 
 export type EnumGameCategory =
   | 'FISH'
@@ -38,7 +38,7 @@ export type EnumGameCategory =
   | 'VIRTUAL_SPORTS'
   | 'LOTTERY'
   | 'CRASH'
-  | 'OTHER';
+  | 'OTHER'
 
 export type EnumGameProvider =
   | 'PRAGMATICPLAY'
@@ -55,7 +55,7 @@ export type EnumGameProvider =
   | 'BIGFISHGAMES'
   | 'CQNINE'
   | 'NOLIMIT'
-  | 'KICKASS';
+  | 'KICKASS'
 
 export type EnumTransactionType =
   | 'DEPOSIT'
@@ -84,7 +84,7 @@ export type EnumTransactionType =
   | 'ADJUSTMENT_SUB'
   | 'INTERNAL_TRANSFER'
   | 'PRODUCT_PURCHASE'
-  | 'REBATE_PAYOUT';
+  | 'REBATE_PAYOUT'
 
 export type EnumTransactionStatus =
   | 'PENDING'
@@ -96,7 +96,7 @@ export type EnumTransactionStatus =
   | 'EXPIRED'
   | 'REJECTED'
   | 'REQUIRES_ACTION'
-  | 'ON_HOLD';
+  | 'ON_HOLD'
 
 export type EnumNotificationType =
   | 'SYSTEM_MESSAGE'
@@ -116,9 +116,9 @@ export type EnumNotificationType =
   | 'SECUITY_ALERT'
   | 'TRANSACTION_UPDATE'
   | 'REWARD_UNLOCKED'
-  | 'MAINTENANCE';
+  | 'MAINTENANCE'
 
-export type EnumFriendshipStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'BLOCKED';
+export type EnumFriendshipStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'BLOCKED'
 
 export type EnumKeyMode =
   | 'read'
@@ -126,13 +126,13 @@ export type EnumKeyMode =
   | 'upload'
   | 'manage_users'
   | 'manage_settings'
-  | 'launch_game';
+  | 'launch_game'
 
-export type EnumInvitationStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'INACTIVE';
+export type EnumInvitationStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'INACTIVE'
 
-export type EnumPaymentMethod = 'INSTORE_CASH' | 'INSTORE_CARD' | 'CASH_APP';
+export type EnumPaymentMethod = 'INSTORE_CASH' | 'INSTORE_CARD' | 'CASH_APP'
 
-export type EnumCurrencyType = 'FIAT' | 'CRYPTO' | 'VIRTUAL';
+export type EnumCurrencyType = 'FIAT' | 'CRYPTO' | 'VIRTUAL'
 
 export type EnumRewardType =
   | 'DAILY_SIGN_IN'
@@ -147,9 +147,9 @@ export type EnumRewardType =
   | 'REGISTRATION_BONUS'
   | 'FREE_SPINS'
   | 'TOURNAMENT_PRIZE'
-  | 'OTHER';
+  | 'OTHER'
 
-export type EnumRewardStatus = 'AVAILABLE' | 'CLAIMED' | 'EXPIRED' | 'PENDING' | 'VOIDED';
+export type EnumRewardStatus = 'AVAILABLE' | 'CLAIMED' | 'EXPIRED' | 'PENDING' | 'VOIDED'
 
 export type EnumVipTaskType =
   | 'DEPOSIT_STREAK'
@@ -159,584 +159,583 @@ export type EnumVipTaskType =
   | 'PLAY_SPECIFIC_GAME'
   | 'VERIFY_EMAIL'
   | 'PLACE_BETS'
-  | 'WIN_STREAK';
-
-export type Currency = {
-  id: string;
-  name: string;
-  symbol: string;
-  type: string;
-  precision: number;
-  isActive: boolean;
-  isDefault: boolean;
-  contractAddress: string | null;
-  blockchain: string | null;
-  withdrawalFeeFixed: number | null;
-  withdrawalFeePercent: number | null;
-  usersPreferringThisCurrency?: User[];
-  wallets?: Wallet[];
-  transactions?: Transaction[];
-  products?: Product[];
-  createdAt: Date;
-  updatedAt: Date;
-};
+  | 'WIN_STREAK'
 
 export type User = {
-  id: string;
-  username: string | null;
-  name: string;
-  email: string;
-  emailVerified: boolean | null;
-  displayUsername: string | null;
-  phone: string | null;
-  cashtag: string | null;
-  phoneVerified: Date | null;
-  isVerified: boolean;
-  passwordHash: string | null;
-  role: EnumRole;
-  status: EnumUserStatus;
-  totalXp: number;
-  currentLevel: number;
-  referralCode: string | null;
-  commissionRate: number | null;
-  twoFactorEnabled: boolean | null;
-  isOnline: boolean | null;
-  twoFactorSecret: string | null;
-  image: string | null;
-  twoFactorRecoveryCodes: string[];
-  lastLogin: Date | null;
-  lastIp: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  profile?: Profile | null;
-  otherProfiles?: Profile[];
-  settings?: Settings | null;
-  activeWalletId: string | null;
-  wallets?: Wallet[];
-  posts?: Post[];
-  comments?: Comment[];
-  gameSessions?: GameSession[];
-  xpEvents?: XpEvent[];
-  userAchievements?: UserAchievement[];
-  sentMessages?: ChatMessage[];
-  friendshipsSent?: Friendship[];
-  friendshipsReceived?: Friendship[];
-  gameLaunchLinks?: GameLaunchLink[];
-  eventLogsAsActor?: EventLog[];
-  createdOperators?: OperatorAccess[];
-  invitationsSent?: OperatorInvitation[];
-  invitationsReceived?: OperatorInvitation[];
-  referrerId: string | null;
-  referrer?: User | null;
-  referrals?: User[];
-  Account?: Account[];
-  Session?: Session[];
-  vipInfo?: VipInfo | null;
-  RebateTransaction?: RebateTransaction[];
-  firstName: string | null;
-  lastName: string | null;
-  avatarUrl: string | null;
-  dob: Date | null;
-  gender: EnumGender | null;
-  preferredCurrencyId: string | null;
-  preferredCurrency?: Currency | null;
-  timezone: string | null;
-  locale: string | null;
-  mfaEnabled: boolean;
-  mfaSecret: string | null;
-  userRewards?: UserReward[];
-  userVipTaskProgress?: UserVipTaskProgress[];
-  sentNotifications?: Notification[];
-  receivedNotifications?: Notification[];
-  originatedTransactions?: Transaction[];
-  receivedTransactions?: Transaction[];
-};
+  id: string
+  username: string | null
+  name: string
+  email: string
+  emailVerified: boolean | null
+  displayUsername: string | null
+  phone: string | null
+  cashtag: string | null
+  phoneVerified: Date | null
+  isVerified: boolean
+  passwordHash: string | null
+  role: EnumRole
+  status: EnumUserStatus
+  totalXp: number
+  currentLevel: number
+  referralCode: string | null
+  commissionRate: number | null
+  twoFactorEnabled: boolean | null
+  isOnline: boolean | null
+  twoFactorSecret: string | null
+  image: string | null
+  twoFactorRecoveryCodes: string[]
+  lastLogin: Date | null
+  lastIp: string | null
+  createdAt: Date
+  updatedAt: Date
+  profile?: Profile | null
+  otherProfiles?: Profile[]
+  settings?: Settings | null
+  activeWalletId: string | null
+  wallets?: Wallet[]
+  posts?: Post[]
+  comments?: Comment[]
+  gameSessions?: GameSession[]
+  xpEvents?: XpEvent[]
+  userAchievements?: UserAchievement[]
+  sentMessages?: ChatMessage[]
+  friendshipsSent?: Friendship[]
+  friendshipsReceived?: Friendship[]
+  gameLaunchLinks?: GameLaunchLink[]
+  eventLogsAsActor?: EventLog[]
+  createdOperators?: OperatorAccess[]
+  invitationsSent?: OperatorInvitation[]
+  invitationsReceived?: OperatorInvitation[]
+  referrerId: string | null
+  referrer?: User | null
+  referrals?: User[]
+  account?: Account[]
+  Session?: Session[]
+  vipInfo?: VipInfo | null
+  rebateTransaction?: RebateTransaction[]
+  firstName: string | null
+  lastName: string | null
+  avatarUrl: string | null
+  dob: Date | null
+  gender: EnumGender | null
+  preferredCurrencyId: string | null
+  preferredCurrency?: Currency | null
+  timezone: string | null
+  locale: string | null
+  mfaEnabled: boolean
+  mfaSecret: string | null
+  userRewards?: UserReward[]
+  userVipTaskProgress?: UserVipTaskProgress[]
+  sentNotifications?: Notification[]
+  receivedNotifications?: Notification[]
+  originatedTransactions?: Transaction[]
+  receivedTransactions?: Transaction[]
+}
+
+export type Currency = {
+  id: string
+  name: string
+  symbol: string
+  type: string
+  precision: number
+  isActive: boolean
+  isDefault: boolean
+  contractAddress: string | null
+  blockchain: string | null
+  withdrawalFeeFixed: number | null
+  withdrawalFeePercent: number | null
+  usersPreferringThisCurrency?: User[]
+  wallets?: Wallet[]
+  transactions?: Transaction[]
+  products?: Product[]
+  createdAt: Date
+  updatedAt: Date
+}
 
 export type Session = {
-  id: string;
-  userId: string;
-  username: string | null;
-  name: string | null;
-  activeGameId: string | null;
-  ipAddress: string | null;
-  startTime: Date;
-  endTime: Date | null;
-  lastActivityAt: Date | null;
-  userAgent: string | null;
-  expiresAt: Date;
-  createdAt: Date;
-  refreshToken: string | null;
-  active: boolean;
-  token: string;
-  updatedAt: Date | null;
-  user?: User;
-};
+  id: string
+  userId: string
+  username: string | null
+  name: string | null
+  activeGameId: string | null
+  ipAddress: string | null
+  startTime: Date
+  endTime: Date | null
+  lastActivityAt: Date | null
+  userAgent: string | null
+  expiresAt: Date
+  createdAt: Date
+  refreshToken: string | null
+  active: boolean
+  token: string
+  updatedAt: Date | null
+  user?: User
+}
 
 export type Account = {
-  id: string;
-  accountId: string;
-  providerId: string;
-  userId: string;
-  accessToken: string | null;
-  refreshToken: string | null;
-  idToken: string | null;
-  accessTokenExpiresAt: Date | null;
-  refreshTokenExpiresAt: Date | null;
-  scope: string | null;
-  password: string | null;
-  createdAt: Date;
-  updatedAt: Date | null;
-  user?: User;
-};
+  id: string
+  accountId: string
+  providerId: string
+  userId: string
+  accessToken: string | null
+  refreshToken: string | null
+  idToken: string | null
+  accessTokenExpiresAt: Date | null
+  refreshTokenExpiresAt: Date | null
+  scope: string | null
+  password: string | null
+  createdAt: Date
+  updatedAt: Date | null
+  user?: User
+}
 
 export type Verification = {
-  id: string;
-  identifier: string;
-  value: string;
-  expiresAt: Date;
-  createdAt: Date | null;
-  updatedAt: Date | null;
-};
+  id: string
+  identifier: string
+  value: string
+  expiresAt: Date
+  createdAt: Date | null
+  updatedAt: Date | null
+}
 
 export type Profile = {
-  id: string;
-  balance: number;
-  totalXpFromOperator: number;
-  activeCurrencyType: string;
-  createdAt: Date;
-  updatedAt: Date;
-  currentGameSession?: GameSession | null;
-  currentGameSessionid: string | null;
-  userId: string;
-  user?: User;
-  otherUser?: User | null;
-  otherUserid: string | null;
-  role: EnumRole | null;
-  operatorAccessId: string | null;
-  operator?: OperatorAccess | null;
-};
+  id: string
+  balance: number
+  totalXpFromOperator: number
+  activeCurrencyType: string
+  createdAt: Date
+  updatedAt: Date
+  currentGameSession?: GameSession | null
+  currentGameSessionid: string | null
+  userId: string
+  user?: User
+  otherUser?: User | null
+  otherUserid: string | null
+  role: EnumRole | null
+  operatorAccessId: string | null
+  operator?: OperatorAccess | null
+}
 
 export type Settings = {
-  id: string;
-  theme: string | null;
-  language: string | null;
-  emailNotifications: boolean;
-  smsNotifications: boolean;
-  pushNotifications: boolean;
-  meta: JsonValue | null;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  user?: User;
-};
+  id: string
+  theme: string | null
+  language: string | null
+  emailNotifications: boolean
+  smsNotifications: boolean
+  pushNotifications: boolean
+  meta: JsonValue | null
+  createdAt: Date
+  updatedAt: Date
+  userId: string
+  user?: User
+}
 
 export type Wallet = {
-  id: string;
-  balance: number;
-  isActive: boolean;
-  address: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  user?: User;
-  currencyId: string;
-  currency?: Currency;
-  transactions?: Transaction[];
-  bonusBalance: number;
-  lockedBalance: number;
-};
+  id: string
+  balance: number
+  isActive: boolean
+  address: string | null
+  createdAt: Date
+  updatedAt: Date
+  userId: string
+  user?: User
+  currencyId: string
+  currency?: Currency
+  transactions?: Transaction[]
+  bonusBalance: number
+  lockedBalance: number
+}
 
 export type OperatorAccess = {
-  id: string;
-  name: string;
-  operator_secret: string;
-  operator_access: string;
-  callback_url: string;
-  active: boolean;
-  permissions: EnumKeyMode[];
-  ips: string[];
-  description: string | null;
-  last_used_at: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-  ownerId: string | null;
-  acceptedPayments: EnumPaymentMethod[];
-  invitations?: OperatorInvitation[];
-  ownedById: string | null;
-  owner?: User | null;
-  gameLaunchLinks?: GameLaunchLink[];
-  products?: Product[];
-  games?: Game[];
-  profiles?: Profile[];
-};
+  id: string
+  name: string
+  operator_secret: string
+  operator_access: string
+  callbackUrl: string
+  active: boolean
+  permissions: EnumKeyMode[]
+  ips: string[]
+  description: string | null
+  lastUsedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
+  ownerId: string | null
+  acceptedPayments: EnumPaymentMethod[]
+  invitations?: OperatorInvitation[]
+  ownedById: string | null
+  owner?: User | null
+  gameLaunchLinks?: GameLaunchLink[]
+  products?: Product[]
+  games?: Game[]
+  profiles?: Profile[]
+}
 
 export type Achievement = {
-  id: string;
-  name: string;
-  description: string;
-  xpReward: number;
-  iconUrl: string | null;
-  secret: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  blur: number;
-  userAchievements?: UserAchievement[];
-};
+  id: string
+  name: string
+  description: string
+  xpReward: number
+  iconUrl: string | null
+  secret: boolean
+  createdAt: Date
+  updatedAt: Date
+  blur: number
+  userAchievements?: UserAchievement[]
+}
 
 export type Game = {
-  id: string;
-  name: string;
-  title: string;
-  goldsvetData: JsonValue | null;
-  description: string | null;
-  provider: EnumGameProvider;
-  category: EnumGameCategory;
-  tags: string[];
-  isActive: boolean;
-  thumbnailUrl: string | null;
-  bannerUrl: string | null;
-  meta: JsonValue | null;
-  createdAt: Date;
-  updatedAt: Date;
-  featured: boolean;
-  gameSessions?: GameSession[];
-  gameLaunchLinks?: GameLaunchLink[];
-  operatorId: string | null;
-  operator?: OperatorAccess | null;
-};
+  id: string
+  name: string
+  title: string
+  goldsvetData: JsonValue | null
+  description: string | null
+  provider: EnumGameProvider
+  category: EnumGameCategory
+  tags: string[]
+  isActive: boolean
+  thumbnailUrl: string | null
+  bannerUrl: string | null
+  meta: JsonValue | null
+  createdAt: Date
+  updatedAt: Date
+  featured: boolean
+  gameSessions?: GameSession[]
+  gameLaunchLinks?: GameLaunchLink[]
+  operatorId: string | null
+  operator?: OperatorAccess | null
+}
 
 export type Post = {
-  id: string;
-  title: string;
-  content: string;
-  published: boolean;
-  tags: string[];
-  viewCount: number;
-  meta: JsonValue | null;
-  createdAt: Date;
-  updatedAt: Date;
-  authorId: string;
-  author?: User;
-  comments?: Comment[];
-};
+  id: string
+  title: string
+  content: string
+  published: boolean
+  tags: string[]
+  viewCount: number
+  meta: JsonValue | null
+  createdAt: Date
+  updatedAt: Date
+  authorId: string
+  author?: User
+  comments?: Comment[]
+}
 
 export type Comment = {
-  id: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-  postId: string;
-  post?: Post;
-  authorId: string;
-  author?: User;
-};
+  id: string
+  content: string
+  createdAt: Date
+  updatedAt: Date
+  postId: string
+  post?: Post
+  authorId: string
+  author?: User
+}
 
 export type GameSpin = {
-  id: string;
-  spinData: JsonValue | null;
-  createdAt: Date;
-  grossWinAmount: number | null;
-  currencyId: string | null;
-  spinNumber: number;
-  gameSessionId: string;
-  wagerAmount: number | null;
-  sessionId: string;
-  timeStamp: Date;
-  gameSession?: GameSession;
-};
+  id: string
+  spinData: JsonValue | null
+  createdAt: Date
+  grossWinAmount: number
+  currencyId: string | null
+  spinNumber: number
+  gameSessionId: string
+  wagerAmount: number
+  sessionId: string
+  timeStamp: Date
+  gameSession?: GameSession
+}
 
 export type GameSession = {
-  id: string;
-  isActive: boolean;
-  sessionData: JsonValue | null;
-  spins?: GameSpin[];
-  sessionId: string | null;
-  currencyId: string | null;
-  startedAt: Date;
-  endTime: Date | null;
-  startTime: Date | null;
-  ipAddress: string | null;
-  startingBalance: number | null;
-  userAgent: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  totalWagered: number;
-  totalWon: number;
-  userId: string;
-  user?: User;
-  gameId: string;
-  game?: Game;
-  profileId: string | null;
-  Profile?: Profile[];
-};
+  id: string
+  isActive: boolean
+  sessionData: JsonValue | null
+  spins?: GameSpin[]
+  sessionId: string | null
+  currencyId: string | null
+  startedAt: Date
+  endTime: Date | null
+  startTime: Date | null
+  ipAddress: string | null
+  startingBalance: number | null
+  userAgent: string | null
+  createdAt: Date
+  updatedAt: Date
+  totalWagered: number
+  totalWon: number
+  userId: string
+  user?: User
+  gameId: string
+  game?: Game
+  profileId: string | null
+  Profile?: Profile[]
+}
 
 export type UserAchievement = {
-  id: string;
-  unlockedAt: Date;
-  metaData: JsonValue | null;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  user?: User;
-  achievementId: string;
-  achievement?: Achievement;
-};
+  id: string
+  unlockedAt: Date
+  metaData: JsonValue | null
+  createdAt: Date
+  updatedAt: Date
+  userId: string
+  user?: User
+  achievementId: string
+  achievement?: Achievement
+}
 
 export type XpEvent = {
-  id: string;
-  points: number;
-  source: string;
-  sourceId: string | null;
-  meta: JsonValue | null;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  user?: User;
-};
+  id: string
+  points: number
+  source: string
+  sourceId: string | null
+  meta: JsonValue | null
+  createdAt: Date
+  updatedAt: Date
+  userId: string
+  user?: User
+}
 
 export type Notification = {
-  id: string;
-  userId: string;
-  type: EnumNotificationType;
-  title: string;
-  message: string;
-  isRead: boolean;
-  readAt: Date | null;
-  actionUrl: string | null;
-  imageUrl: string | null;
-  metadata: JsonValue | null;
-  createdBy: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  sender?: User;
-  originator?: User;
-};
+  id: string
+  userId: string
+  type: EnumNotificationType
+  title: string
+  message: string
+  isRead: boolean
+  readAt: Date | null
+  actionUrl: string | null
+  imageUrl: string | null
+  metadata: JsonValue | null
+  createdAt: Date
+  updatedAt: Date
+  sender?: User
+  originator?: User
+}
 
 export type ChatMessage = {
-  id: string;
-  channel: string;
-  content: string;
-  mediaUrl: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  authorId: string;
-  author?: User;
-};
+  id: string
+  channel: string
+  content: string
+  mediaUrl: string | null
+  createdAt: Date
+  updatedAt: Date
+  authorId: string
+  author?: User
+}
 
 export type Friendship = {
-  id: string;
-  status: EnumFriendshipStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  requesterId: string;
-  requester?: User;
-  receiverId: string;
-  receiver?: User;
-};
+  id: string
+  status: EnumFriendshipStatus
+  createdAt: Date
+  updatedAt: Date
+  requesterId: string
+  requester?: User
+  receiverId: string
+  receiver?: User
+}
 
 export type Transaction = {
-  id: string;
-  originatorUserId: string;
-  originator?: User;
-  receiverUserId: string | null;
-  receiver?: User | null;
-  walletId: string | null;
-  wallet?: Wallet | null;
-  type: EnumTransactionType;
-  status: EnumTransactionStatus;
-  amount: number;
-  netAmount: number | null;
-  feeAmount: number | null;
-  productId: string | null;
-  product?: Product | null;
-  currencyId: string;
-  currency?: Currency;
-  balanceBefore: number | null;
-  balanceAfter: number | null;
-  bonusBalanceBefore: number | null;
-  bonusBalanceAfter: number | null;
-  bonusAmount: number | null;
-  wageringRequirement: number | null;
-  wageringProgress: number | null;
-  description: string | null;
-  provider: string | null;
-  providerTxId: string | null;
-  relatedGameId: string | null;
-  relatedRoundId: string | null;
-  metadata: JsonValue | null;
-  processedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-  rebateGenerated?: RebateTransaction | null;
-  Product?: Product[];
-};
+  id: string
+  originatorUserId: string
+  processedAt: Date | null
+  originator?: User
+  receiverUserId: string | null
+  receiver?: User | null
+  walletId: string | null
+  wallet?: Wallet | null
+  type: EnumTransactionType
+  status: EnumTransactionStatus
+  amount: number
+  netAmount: number | null
+  feeAmount: number | null
+  productId: string | null
+  product?: Product | null
+  currencyId: string
+  currency?: Currency
+  balanceBefore: number | null
+  balanceAfter: number | null
+  bonusBalanceBefore: number | null
+  bonusBalanceAfter: number | null
+  bonusAmount: number | null
+  wageringRequirement: number | null
+  wageringProgress: number | null
+  description: string | null
+  provider: string | null
+  providerTxId: string | null
+  relatedGameId: string | null
+  relatedRoundId: string | null
+  metadata: JsonValue | null
+  createdAt: Date
+  updatedAt: Date
+  rebateGenerated?: RebateTransaction | null
+  Product?: Product[]
+}
 
 export type GameLaunchLink = {
-  id: string;
-  token_internal: string;
-  currency: string;
-  player_operator_id: string | null;
-  mode: string;
-  meta: JsonValue | null;
-  request_ip: string | null;
-  user_agent: string | null;
-  session_url: string | null;
-  state: string;
-  active: boolean;
-  expires_at: Date | null;
-  extra_meta: JsonValue | null;
-  token_original: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  user?: User;
-  gameId: string;
-  game?: Game;
-  operatorId: string;
-  operator?: OperatorAccess;
-};
+  id: string
+  token_internal: string
+  currency: string
+  player_operator_id: string | null
+  mode: string
+  meta: JsonValue | null
+  requestIp: string | null
+  userAgent: string | null
+  session_url: string | null
+  state: string
+  active: boolean
+  expiresAt: Date | null
+  extra_meta: JsonValue | null
+  token_original: string | null
+  createdAt: Date
+  updatedAt: Date
+  userId: string
+  user?: User
+  gameId: string
+  game?: Game
+  operatorId: string
+  operator?: OperatorAccess
+}
 
 export type Product = {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-  iconUrl: string | null;
-  productType: string;
-  bonusCode: string | null;
-  bonusTotalInCredits: number;
-  isActive: boolean | null;
-  currencyId: string;
-  currency?: Currency;
-  priceInCents: number;
-  amountToReceiveInCredits: number;
-  bestValue: number;
-  discountInCents: number;
-  bonusSpins: number;
-  isPromo: boolean | null;
-  totalDiscountInCents: number;
-  shopId: string | null;
-  createdAt: Date;
-  updatedAt: Date | null;
-  operator?: OperatorAccess | null;
-  transactions?: Transaction[];
-  Transaction?: Transaction | null;
-  transactionId: string | null;
-};
+  id: string
+  title: string
+  description: string
+  url: string
+  iconUrl: string | null
+  productType: string
+  bonusCode: string | null
+  bonusTotalInCredits: number
+  isActive: boolean | null
+  currencyId: string
+  currency?: Currency
+  priceInCents: number
+  amountToReceiveInCredits: number
+  bestValue: number
+  discountInCents: number
+  bonusSpins: number
+  isPromo: boolean | null
+  totalDiscountInCents: number
+  shopId: string | null
+  createdAt: Date
+  updatedAt: Date | null
+  operator?: OperatorAccess | null
+  transactions?: Transaction[]
+  Transaction?: Transaction | null
+  transactionId: string | null
+}
 
 export type EventLog = {
-  id: string;
-  action: string;
-  targetType: string | null;
-  targetId: string | null;
-  data: JsonValue | null;
-  ipAddress: string | null;
-  userAgent: string | null;
-  timestamp: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  actorId: string | null;
-  actor?: User | null;
-};
+  id: string
+  action: string
+  targetType: string | null
+  targetId: string | null
+  data: JsonValue | null
+  ipAddress: string | null
+  userAgent: string | null
+  timestamp: Date
+  createdAt: Date
+  updatedAt: Date
+  actorId: string | null
+  actor?: User | null
+}
 
 export type OperatorInvitation = {
-  id: string;
-  operatorId: string;
-  email: string;
-  role: EnumRole;
-  token: string;
-  expiresAt: Date;
-  acceptedAt: Date | null;
-  invitedById: string;
-  operator?: OperatorAccess;
-  invitedBy?: User;
-  User?: User[];
-};
+  id: string
+  operatorId: string
+  email: string
+  role: EnumRole
+  token: string
+  expiresAt: Date
+  acceptedAt: Date | null
+  invitedById: string
+  operator?: OperatorAccess
+  invitedBy?: User
+  User?: User[]
+}
 
 export type VipInfo = {
-  id: string;
-  userId: string;
-  user?: User;
-  level: number;
-  currentLevelXp: number;
-  totalXp: number;
-  nextLevelXpRequired: number;
-  cashbackPercentage: number;
-  prioritySupport: boolean;
-  specialBonusesAvailable: number;
-  dailyBonusClaimedAt: Date | null;
-  weeklyBonusClaimedAt: Date | null;
-  monthlyBonusClaimedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  id: string
+  userId: string
+  user?: User
+  level: number
+  currentLevelXp: number
+  totalXp: number
+  nextLevelXpRequired: number
+  cashbackPercentage: number
+  prioritySupport: boolean
+  specialBonusesAvailable: number
+  dailyBonusClaimedAt: Date | null
+  weeklyBonusClaimedAt: Date | null
+  monthlyBonusClaimedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
+}
 
 export type UserReward = {
-  id: string;
-  userId: string;
-  user?: User;
-  rewardType: EnumRewardType;
-  description: string;
-  status: EnumRewardStatus;
-  amount: number | null;
-  currencyId: string | null;
-  metaData: JsonValue | null;
-  claimedAt: Date | null;
-  expiresAt: Date | null;
-  availableFrom: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  vipLevelRequirement: number | null;
-};
+  id: string
+  userId: string
+  user?: User
+  rewardType: EnumRewardType
+  claimedAt: Date | null
+  description: string
+  status: EnumRewardStatus
+  amount: number | null
+  currencyId: string | null
+  metaData: JsonValue | null
+  expiresAt: Date | null
+  availableFrom: Date
+  createdAt: Date
+  updatedAt: Date
+  vipLevelRequirement: number | null
+}
 
 export type VipTask = {
-  id: string;
-  taskType: EnumVipTaskType;
-  title: string | null;
-  description: string;
-  xpReward: number | null;
-  itemRewardId: string | null;
-  bonusRewardAmount: number | null;
-  bonusCurrencyId: string | null;
-  targetValue: number | null;
-  durationDays: number | null;
-  isActive: boolean;
-  requiredVipLevel: number;
-  resetCycle: string | null;
-  userTaskProgress?: UserVipTaskProgress[];
-  createdAt: Date;
-  updatedAt: Date;
-};
+  id: string
+  taskType: EnumVipTaskType
+  title: string | null
+  description: string
+  xpReward: number | null
+  itemRewardId: string | null
+  bonusRewardAmount: number | null
+  bonusCurrencyId: string | null
+  targetValue: number | null
+  durationDays: number | null
+  isActive: boolean
+  requiredVipLevel: number
+  resetCycle: string | null
+  userTaskProgress?: UserVipTaskProgress[]
+  createdAt: Date
+  updatedAt: Date
+}
 
 export type UserVipTaskProgress = {
-  id: string;
-  userId: string;
-  user?: User;
-  taskId: string;
-  task?: VipTask;
-  progress: number;
-  isCompleted: boolean;
-  rewardClaimedAt: Date | null;
-  lastProgressAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  id: string
+  userId: string
+  user?: User
+  taskId: string
+  task?: VipTask
+  progress: number
+  isCompleted: boolean
+  rewardClaimedAt: Date | null
+  lastProgressAt: Date
+  createdAt: Date
+  updatedAt: Date
+}
 
 export type RebateTransaction = {
-  id: string;
-  userId: string;
-  user?: User;
-  transactionId: string;
-  originalTransaction?: Transaction;
-  rebateAmount: number;
-  currencyId: string;
-  vipLevel: number;
-  rebatePercentage: number;
-  status: EnumRewardStatus;
-  paidOutAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  id: string
+  userId: string
+  user?: User
+  transactionId: string
+  originalTransaction?: Transaction
+  rebateAmount: number
+  currencyId: string
+  vipLevel: number
+  rebatePercentage: number
+  status: EnumRewardStatus
+  paidOutAt: Date | null
+  createdAt: Date
+  updatedAt: Date
+}
 
 type JsonValue =
   | string
@@ -744,4 +743,4 @@ type JsonValue =
   | boolean
   | { [key in string]?: JsonValue }
   | Array<JsonValue>
-  | null;
+  | null

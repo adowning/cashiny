@@ -65,7 +65,7 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
       dts: 'src/types/auto/auto-imports.d.ts',
-      dirs: ['src/composables'],
+      dirs: ['src/composables', 'src/stores'],
       eslintrc: {
         enabled: true, // <-- this
       },

@@ -52,14 +52,14 @@
   import { useRouter } from 'vue-router'
 
   import { useDisplay } from './composables/useDisplay'
-  import { useAuthStore } from './stores/auth'
-  import { useDepositStore } from './stores/deposit'
-  import { useGameStore } from './stores/game'
-  // Import useRouter
-  import { useGlobalStore } from './stores/global'
-  import { useSocketStore } from './stores/socket'
-  import { useUserStore } from './stores/user'
-  import { useVipStore } from './stores/vip'
+  // import { useAuthStore } from './stores/auth.store'
+  // import { useDepositStore } from './stores/deposit.store'
+  // import { useGameStore } from './stores/game.store'
+  // // Import useRouter
+  // import { useGlobalStore } from './stores/global.store'
+  // import { useSocketStore } from './stores/socket.store'
+  // import { useUserStore } from './stores/user.store'
+  // import { useVipStore } from './stores/vip.store'
   import LoginView from './views/LoginView.vue'
 
   // --- Stores ---

@@ -1,6 +1,6 @@
 import { readonly, ref } from 'vue'
 
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth.store'
 // Import existing types
 import {
   type ApiErrorData,
@@ -22,6 +22,7 @@ import {
   GetBonusResponse as GetRewardBonusResponse, // Renaming to avoid conflict if GetBonusResponse is used elsewhere
   GetRewardCenterList,
   GetRewardCenterListResponse,
+  GetSessionResponse,
   GetUserBonusResponse,
   type GoogleSignInDto,
   type GoogleSignInResponse,
@@ -252,8 +253,8 @@ function useApiClient() {
       request<AuthResponseDto>(NETWORK_CONFIG.LOGIN.REGISTER, 'POST', payload), // Assuming NETWORK_CONFIG.LOGIN.REGISTER exists
     logout: (payload: RefreshTokenDto): Promise<void> =>
       request<void>(NETWORK_CONFIG.LOGIN.LOGOUT, 'POST', payload), // Assuming NETWORK_CONFIG.LOGIN.LOGOUT exists
-    getMe: (): Promise<UserWithProfile> =>
-      request<UserWithProfile>(NETWORK_CONFIG.LOGIN.GET_SESSION, 'GET'),
+    getMe: (): Promise<GetSessionResponse> =>
+      request<GetSessionResponse>(NETWORK_CONFIG.LOGIN.GET_SESSION, 'GET'),
     refreshToken: (
       payload: RefreshTokenDto
     ): Promise<AuthResponseDto> => // Added for completeness
@@ -502,7 +503,7 @@ function useApiClient() {
 export default useApiClient
 // import { readonly, ref } from 'vue';
 
-// import { useAuthStore } from '@/stores/auth';
+// import { useAuthStore } from '@/stores/auth.store';
 // // import { UserWithProfile } from '@cashflow/database';
 // import {
 //   type ApiErrorData,

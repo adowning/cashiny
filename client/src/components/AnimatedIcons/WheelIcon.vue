@@ -1,18 +1,18 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
-  import * as WheelJson from "@/assets/anim/wheel.json";
-  import WheelImg from "@/assets/anim/wheel.png";
-  import { useUserStore } from "@/stores/user";
+  import * as WheelJson from '@/assets/anim/wheel.json'
+  import WheelImg from '@/assets/anim/wheel.png'
+  import { useUserStore } from '@/stores/user.store'
 
-  const eventBus = useEventManager();
-  const { currentUser } = useUserStore();
-  const isMounted = ref(false);
-  const countdownActive = ref(false);
+  const eventBus = useEventManager()
+  const { currentUser } = useUserStore()
+  const isMounted = ref(false)
+  const countdownActive = ref(false)
 
-  const sprite = ref();
-  const isSpiral = ref(false);
-  const complete = ref(false);
-  const shakeIt = ref(false);
+  const sprite = ref()
+  const isSpiral = ref(false)
+  const complete = ref(false)
+  const shakeIt = ref(false)
   // function formatTime(seconds: number): string {
   //   const hours = Math.floor(seconds / 3600)
   //   const minutes = Math.floor((seconds % 3600) / 60)
@@ -23,39 +23,37 @@
   // const formattedTime = ref('')
   function warnDisabled() {
     // //console.log('wd')
-    shakeIt.value = true;
+    shakeIt.value = true
     setTimeout(() => {
-      shakeIt.value = false;
-    }, 1500);
+      shakeIt.value = false
+    }, 1500)
   }
   function doFreeSpin() {
-    console.log("doFreeSpin");
+    console.log('doFreeSpin')
     if (complete.value === false) {
-      warnDisabled();
+      warnDisabled()
     } else {
-      eventBus.emit("wheelPageOpen", true);
+      eventBus.emit('wheelPageOpen', true)
     }
     // $bus.$emit(eventTypes.show_wheel, true)
   }
   // //console.log(WheelJson)
   const start_date = new Date(
-    currentUser?.lastDailySpin
-      ? currentUser.lastDailySpin.toString()
-      : "2023-01-01T00:00:00.000Z"
-  );
-  const remaining_minutes = ref(0);
-  const remaining_seconds_display = ref(0);
-  const interval = ref();
+    currentUser?.lastDailySpin ? currentUser.lastDailySpin.toString() : '2023-01-01T00:00:00.000Z'
+  )
+  const remaining_minutes = ref(0)
+  const remaining_seconds_display = ref(0)
+  const interval = ref()
   function countdownTimer(start_date: Date): void {
     // Calculate the end date, which is one hour after the start date
-    const end_date = new Date(start_date.getTime() + 3600000); // One hour later
+    const end_date = new Date(start_date.getTime() + 3600000) // One hour later
 
     // Calculate the difference between the end date and now
-    const now = new Date();
-    const time_difference = end_date.getTime() - now.getTime();
+    const now = new Date()
+    const time_difference = end_date.getTime() - now.getTime()
 
     // Convert the time difference to seconds
-    const total_seconds = Math.floor(time_difference / 1000);
+    const total_seconds = Math.floor(time_difference / 1000)
 
     // Calculate minutes and seconds
     // const minutes = Math.floor(total_seconds / 60)
@@ -65,11 +63,11 @@
     // console.log(`Countdown: ${minutes} minutes and ${seconds} seconds`)
 
     // Start the countdown
-    let remaining_seconds = total_seconds;
+    let remaining_seconds = total_seconds
     interval.value = setInterval(() => {
       // Calculate remaining minutes and seconds
-      remaining_minutes.value = Math.floor(remaining_seconds / 60);
-      remaining_seconds_display.value = remaining_seconds % 60;
+      remaining_minutes.value = Math.floor(remaining_seconds / 60)
+      remaining_seconds_display.value = remaining_seconds % 60
 
       // Print the remaining time
       // console.log(
@@ -77,18 +75,18 @@
       // )
 
       // Decrease the remaining seconds by one
-      remaining_seconds -= 1;
+      remaining_seconds -= 1
 
       // Stop the countdown when it reaches zero
       if (remaining_seconds < 0) {
-        clearInterval(interval.value);
+        clearInterval(interval.value)
         // console.log('Countdown finished!')
-        complete.value = true;
+        complete.value = true
       }
-    }, 1000);
-    countdownActive.value = true;
+    }, 1000)
+    countdownActive.value = true
   }
-  countdownTimer(start_date);
+  countdownTimer(start_date)
   // const countDown = useCountdown(Math.floor(time / 1000))
   // console.log(new Date(countDown.remaining.value))
 
@@ -130,23 +128,19 @@
   // if (countDown.value.remaining === 0) {
   //   complete.value = true
   // }
-  const wheel = shallowRef<any>();
+  const wheel = shallowRef<any>()
   onMounted(() => {
     setTimeout(() => {
-      isMounted.value = true;
-    }, 1000);
+      isMounted.value = true
+    }, 1000)
     setTimeout(() => {
-      isSpiral.value = true;
-    }, 7000);
-  });
+      isSpiral.value = true
+    }, 7000)
+  })
 </script>
 
 <template>
-  <div
-    ref="wheel"
-    style="margin: auto"
-    class="flex grow-1 flex-col justify-between"
-  >
+  <div ref="wheel" style="margin: auto" class="flex grow-1 flex-col justify-between">
     <!-- <img src="/images/freespins2.avif"
       style="margin: auto; margin-top: -10px; width: 80px; height: 60px;  background-repeat: no-repeat"
       @click="doFreeSpin()"> -->
@@ -206,7 +200,7 @@
       "
       class="futex-cell flex"
     >
-      {{ remaining_minutes }}:{{ remaining_seconds_display < 10 ? 0 : ""
+      {{ remaining_minutes }}:{{ remaining_seconds_display < 10 ? 0 : ''
       }}{{ remaining_seconds_display }}
     </div>
     <!-- <div
@@ -297,7 +291,7 @@
 
     margin: 2em auto;
 
-    background: transparent url("") 0 0 no-repeat;
+    background: transparent url('') 0 0 no-repeat;
 
     animation: spriteAnim 1s steps(12) infinite;
   }

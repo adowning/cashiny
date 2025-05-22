@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useNotificationStore } from '@/stores/notifications' // Adjust path
+  import { useNotificationStore } from '@/stores/notification.store' // Adjust path
   import { computed } from 'vue'
 
   const notificationStore = useNotificationStore()

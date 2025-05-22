@@ -1,14 +1,14 @@
-import { h } from 'vue';
+import { h } from 'vue'
 
-import { IEventManagerService, useEventManager } from '@/composables/EventManager';
-import { useNotificationStore } from '@/stores/notifications';
-import { ChatMessage } from '@cashflow/types';
+import { IEventManagerService, useEventManager } from '@/composables/EventManager'
+import { useNotificationStore } from '@/stores/notification.store'
+import { ChatMessage } from '@cashflow/types'
 
 // Message type definition
 export interface WebSocketMessage {
-  type: string;
-  data?: any;
-  [key: string]: any;
+  type: string
+  data?: any
+  [key: string]: any
 }
 
 // Message type mapping
@@ -21,26 +21,26 @@ const messageTypeMap: Record<string, { color: string; text: string }> = {
   workflow_transfer: { color: 'info', text: '工作流已转派' },
   chat: { color: 'primary', text: '新消息' },
   recall_notification: { color: 'info', text: '消息撤回提醒' },
-};
+}
 
 // Initialize message handler
 export function setupWebSocketHandlers(): void {
-  const emitter: IEventManagerService = useEventManager();
-  const notificationStore = useNotificationStore();
+  const emitter: IEventManagerService = useEventManager()
+  const notificationStore = useNotificationStore()
   // Handle WebSocket messages
   emitter.on('wsMessage', (message: WebSocketMessage) => {
-    console.log('[WebSocket] 收到消息:', message);
+    console.log('[WebSocket] 收到消息:', message)
 
     if (message.type === 'read_status_update') {
-      return;
+      return
     }
 
     // If it is a chat message, forward it directly to the chat component for processing
     if (message.type === 'text' || message.type === 'image' || message.type === 'file') {
       // 直接转发原始消息
       //@ts-ignore
-      emitter.emit('chatMessage', message as ChatMessage);
-      return;
+      emitter.emit('chatMessage', message as ChatMessage)
+      return
     }
 
     // Handle recall message notification
@@ -49,14 +49,14 @@ export function setupWebSocketHandlers(): void {
         fromUserId: message.fromUserId,
         toUserId: message.toUserId,
         id: message.id,
-      });
-      return;
+      })
+      return
     }
 
     const typeInfo = messageTypeMap[message.type] || {
       color: 'info',
       text: '系统消息',
-    };
+    }
 
     const notification = notificationStore.addComplexNotification('info', {
       title: typeInfo.text,
@@ -78,39 +78,39 @@ export function setupWebSocketHandlers(): void {
 
                 if (['workflow_reject', 'workflow_complete'].includes(message.type)) {
                   // Jump to workflow details page
-                  window.location.href = `/engine/instance/index?id=${message.instanceId}`;
+                  window.location.href = `/engine/instance/index?id=${message.instanceId}`
                 } else {
                   // Jump to task details page
-                  window.location.href = `/engine/todo/index?id=${message.instanceId}`;
+                  window.location.href = `/engine/todo/index?id=${message.instanceId}`
                 }
               },
             },
-            '查看详情',
+            '查看详情'
           ),
       ]),
       type: typeInfo.color as any,
       duration: 5000,
       position: 'top-right',
       offset: 16,
-    });
-  });
+    })
+  })
 
   // Handle connection status changes
   emitter.on('wsConnected', (connected: boolean) => {
     if (connected) {
-      console.log('WebSocket连接已建立');
+      console.log('WebSocket连接已建立')
     } else {
-      console.log('WebSocket连接已断开');
+      console.log('WebSocket连接已断开')
     }
-  });
+  })
 
   // Handle error
   emitter.on('wsError', (error: string) => {
-    notificationStore.addNotification('error', error);
-  });
+    notificationStore.addNotification('error', error)
+  })
 }
 
 // Export message type mapping
 export function getMessageTypeInfo(type: string) {
-  return messageTypeMap[type] || { color: 'info', text: '系统消息' };
+  return messageTypeMap[type] || { color: 'info', text: '系统消息' }
 }

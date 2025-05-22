@@ -24,6 +24,7 @@ export default createMiddleware<HonoEnv>(async (c, next) => {
       throw new HTTPException(401, { message: 'Unauthorized' })
     }
     const userwithProfile = await getUserFromBetterAuthUser(_user)
+    console.log('right here mfer ', userwithProfile.id)
     c.set('user_with_profile', userwithProfile)
 
     if (!userwithProfile) {

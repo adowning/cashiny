@@ -1,59 +1,59 @@
 <script lang="ts" setup>
   // import MazIcon from 'maz-ui/components/MazIcon'
-  import { router } from "@/router";
+  import { router } from '@/router'
   // import { resetAllStores } from '@/stores/index'
-  import { useUserStore } from "@/stores/user";
-  import { useAuthStore } from "@/stores/auth";
-  const eventBus = useEventManager();
+  import { useUserStore } from '@/stores/user.store'
+  import { useAuthStore } from '@/stores/auth.store'
+  const eventBus = useEventManager()
   const props = defineProps({
     hasCancel: Boolean,
     modelValue: {
       type: [String, Number, Boolean],
       default: null,
     },
-  });
-  const emit = defineEmits(["update:modelValue"]);
+  })
+  const emit = defineEmits(['update:modelValue'])
   function logout() {
-    const userStore = useUserStore();
-    const authStore = useAuthStore();
-    userStore.isAuthenticated = false;
-    authStore.setAuthenticated(false);
-    authStore.isAuthenticated = false;
-    authStore.setToken(null);
+    const authStore = useAuthStore()
+    // userStore.isAuthenticated = false;
+    // authStore.setAuthenticated(false);
+    // authStore.isAuthenticated = false;
+    // authStore.setToken(null);
+    authStore.clearAuthData()
 
     // userStore.currentUser = undefined;
     // userStore.token = "";
 
-    localStorage.clear();
-    value.value = false;
+    localStorage.clear()
+    value.value = false
     // router.push("/login");
-    // window.location.reload();
+    window.location.reload()
   }
   // const isOpen = ref(false)
   const customElementsForm = reactive({
-    checkbox: ["lorem"],
-    radio: "one",
-    switch: ["one", "two", "three"],
+    checkbox: ['lorem'],
+    radio: 'one',
+    switch: ['one', 'two', 'three'],
     file: null,
-  });
+  })
   const value = computed({
     get: () => props.modelValue,
-    set: (value) => emit("update:modelValue", value),
-  });
+    set: (value) => emit('update:modelValue', value),
+  })
 
   function gotoAgent() {
-    eventBus.emit("settingsModal", false);
-    router.replace("/agent");
+    eventBus.emit('settingsModal', false)
+    router.replace('/agent')
     // window.location.reload()
   }
   function cancel() {
-    eventBus.emit("settingsModal", false);
-    router.replace("/");
+    eventBus.emit('settingsModal', false)
+    router.replace('/')
     // window.location.reload()
   }
   function logOutz() {
     // console.log('logging out..')
-    logout();
+    logout()
   }
 </script>
 
@@ -65,8 +65,7 @@
       style="
         background-repeat: no-repeat;
         margin: auto;
-        border-image: url(&quot;/images/common/cell-2.png&quot;) 30 30 30 30
-          fill / 30px 30px 30px 30px;
+        border-image: url('/images/common/cell-2.png') 30 30 30 30 fill / 30px 30px 30px 30px;
         padding: 30px 30px 30px 30px;
       "
     >
@@ -92,9 +91,7 @@
           pressed-image="/images/common/close-pressed.png"
         />
       </div>
-      <div class="flex justify-end pb-3 w-full px-4 text-white font-bold">
-        version: 1.08
-      </div>
+      <div class="flex justify-end pb-3 w-full px-4 text-white font-bold">version: 1.08</div>
       <div class="flex justify-between w-full glow px-4 gap-2 pb-1">
         Full Screen
         <FormCheckRadioGroup
@@ -130,9 +127,7 @@
         class="flex justify-around items-center w-full glow px-4"
         style="margin-top: 30px; margin-bottom: 0px; padding-bottom: 0px"
       >
-        <GlassButton color="red" :shine="false" @click="logout">
-          LOG OUT
-        </GlassButton>
+        <GlassButton color="red" :shine="false" @click="logout"> LOG OUT </GlassButton>
 
         <GlassButton :shine="false" @click="gotoAgent"> AGENT </GlassButton>
       </div>

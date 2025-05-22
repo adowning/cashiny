@@ -206,75 +206,35 @@ enum CurrencyType {
   VIRTUAL
 }
 
-model Currency {
-  id     String @id @default(cuid()) // e.g., "USD", "EUR", "BTC", "ETH", "USD_FUN" (your virtual/game currency)
-  name   String @unique // e.g., "US Dollar", "Euro", "Bitcoin", "Fun Bucks"
-  symbol String // e.g., "$", "€", "₿", "FB"
-  type   String @default("FIAT") // Type of currency: e.g., "FIAT", "CRYPTO", "VIRTUAL"
-  // Consider using an enum for this: CurrencyType @default(FIAT)
-
-  // CRUCIAL for UI formatting when storing amounts as integers (cents/smallest unit)
-  // For USD, precision = 2 (means amounts are in cents)
-  // For JPY, precision = 0 (means amounts are in Yen directly)
-  // For BTC, precision = 8 (means amounts are in Satoshis)
-  precision Int @default(2)
-
-  isActive  Boolean @default(true) // Whether this currency is currently active and usable in the system
-  isDefault Boolean @default(false) // Is this the default currency for new users? (Ensure only one is true)
-
-  // Optional fields for cryptocurrency specifics
-  contractAddress      String? @unique // For ERC20 tokens or similar
-  blockchain           String? // e.g., "Ethereum", "Bitcoin", "TRON", "Solana"
-  withdrawalFeeFixed   Int? // Fixed withdrawal fee in smallest unit (cents/satoshi) for this currency
-  withdrawalFeePercent Float? // Percentage withdrawal fee (e.g., 0.01 for 1%)
-
-  // Exchange rate against a base currency (e.g., USD) if you need to display approximate values
-  // This would need a separate system to update regularly
-  // rateToBaseCurrency Float?
-
-  // Relations to other models
-  usersPreferringThisCurrency User[]        @relation("PreferredCurrency") // Users who prefer this currency
-  wallets                     Wallet[] // Wallets holding this currency
-  transactions                Transaction[] // Transactions made in this currency
-  products                    Product[] // Products priced in this currency (if Product.currencyId links here)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([type])
-  @@index([isActive])
-  @@map("currency")
-}
-
 model User {
-  id                     String               @id @default(cuid())
-  username               String?              @unique
-  name                   String               @unique
-  email                  String               @unique
+  id                     String                @id @default(cuid())
+  username               String?               @unique
+  name                   String                @unique
+  email                  String                @unique
   emailVerified          Boolean?
   displayUsername        String?
-  phone                  String?              @unique
-  cashtag                String?              @unique
+  phone                  String?               @unique
+  cashtag                String?               @unique
   phoneVerified          DateTime?
-  isVerified             Boolean              @default(false)
+  isVerified             Boolean               @default(false)
   passwordHash           String?
-  role                   Role                 @default(USER)
-  status                 UserStatus           @default(ACTIVE)
-  totalXp                Int                  @default(0)
-  currentLevel           Int                  @default(0)
-  referralCode           String?              @unique @default(cuid())
-  commissionRate         Float?               @default(0.05)
-  twoFactorEnabled       Boolean?             @default(false)
-  isOnline               Boolean?             @default(false)
+  role                   Role                  @default(USER)
+  status                 UserStatus            @default(ACTIVE)
+  totalXp                Int                   @default(0)
+  currentLevel           Int                   @default(0)
+  referralCode           String?               @unique @default(cuid())
+  commissionRate         Float?                @default(0.05)
+  twoFactorEnabled       Boolean?              @default(false)
+  isOnline               Boolean?              @default(false)
   twoFactorSecret        String?
   image                  String?
   twoFactorRecoveryCodes String[]
   lastLogin              DateTime?
   lastIp                 String?
-  createdAt              DateTime             @default(now())
-  updatedAt              DateTime             @updatedAt
-  profile                Profile?             @relation("PrimaryProfile")
-  otherProfiles          Profile[]            @relation("OtherProfiles")
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  profile                Profile?              @relation("PrimaryProfile")
+  otherProfiles          Profile[]             @relation("OtherProfiles")
   settings               Settings?
   activeWalletId         String?
   wallets                Wallet[]
@@ -285,25 +245,25 @@ model User {
   xpEvents               XpEvent[]
   userAchievements       UserAchievement[]
   // notifications          Notification[]
-  sentMessages           ChatMessage[]        @relation("SentMessages")
-  friendshipsSent        Friendship[]         @relation("SentFriendRequests")
-  friendshipsReceived    Friendship[]         @relation("ReceivedFriendRequests")
+  sentMessages           ChatMessage[]         @relation("SentMessages")
+  friendshipsSent        Friendship[]          @relation("SentFriendRequests")
+  friendshipsReceived    Friendship[]          @relation("ReceivedFriendRequests")
   // targetedTransactions   Transaction[]        @relation("TargetUserTransactions")
-  gameLaunchLinks        GameLaunchLink[]     @relation("UserGameLaunchLinks")
-  eventLogsAsActor       EventLog[]           @relation("ActorEvents")
+  gameLaunchLinks        GameLaunchLink[]      @relation("UserGameLaunchLinks")
+  eventLogsAsActor       EventLog[]            @relation("ActorEvents")
   // gameTransactions       Transaction[]    @relation("UserGameTransactions")
   // operators UserOperator[] // User's memberships in operators
-  createdOperators       OperatorAccess[]     @relation("OperatorOwner")
-  invitationsSent        OperatorInvitation[] @relation("SentInvitations")
-  invitationsReceived    OperatorInvitation[] @relation("ReceivedInvitations") // If linking invitation directly to an existing user
+  createdOperators       OperatorAccess[]      @relation("OperatorOwner")
+  invitationsSent        OperatorInvitation[]  @relation("SentInvitations")
+  invitationsReceived    OperatorInvitation[]  @relation("ReceivedInvitations") // If linking invitation directly to an existing user
   // vipProgress            UserVipProgress?     @relation("UserToVipProgress", fields: [userVipProgressId], references: [id])
   // vipRewardClaims        VipRewardClaim[]     @relation("UserToVipRewardClaims")
   // vipTaskProgress        UserVipTaskProgress[]
   // vip                    UserVipProgress?      @relation("UserToVipProgress", fields: [userVipProgressId], references: [id])
   referrerId             String?
-  referrer               User?                @relation("Referrals", fields: [referrerId], references: [id], onDelete: SetNull)
-  referrals              User[]               @relation("Referrals")
-  Account                Account[]
+  referrer               User?                 @relation("Referrals", fields: [referrerId], references: [id], onDelete: SetNull)
+  referrals              User[]                @relation("Referrals")
+  account                Account[]
   Session                Session[]
   vipInfo                VipInfo?
   // UserVipTaskProgress UserVipTaskProgress[]
@@ -313,25 +273,21 @@ model User {
   // // VipRewardClaim         VipRewardClaim[]
   // UserVipProgress     UserVipProgress?
   // VipRewardClaim      VipRewardClaim[]
-  RebateTransaction      RebateTransaction[]
-
-  firstName String?
-  lastName  String?
-  avatarUrl String? // URL to profile picture
-  dob       DateTime? // Date of birth for KYC/age verification
-  gender    Gender?
-
+  rebateTransaction      RebateTransaction[]
+  firstName              String?
+  lastName               String?
+  avatarUrl              String? // URL to profile picture
+  dob                    DateTime? // Date of birth for KYC/age verification
+  gender                 Gender?
   // Preferences
-  preferredCurrencyId String?
-  preferredCurrency   Currency? @relation("PreferredCurrency", fields: [preferredCurrencyId], references: [id])
-  timezone            String?   @default("UTC")
-  locale              String?   @default("en-US") // For language and regional formats
-
+  preferredCurrencyId    String?
+  preferredCurrency      Currency?             @relation("PreferredCurrency", fields: [preferredCurrencyId], references: [id])
+  timezone               String?               @default("UTC")
+  locale                 String?               @default("en-US") // For language and regional formats
   // MFA
-  mfaEnabled Boolean @default(false)
-  mfaSecret  String? // Encrypted
+  mfaEnabled             Boolean               @default(false)
+  mfaSecret              String? // Encrypted
   // mfaBackupCodes Json? // Store hashed backup codes
-
   // Relationships
   userRewards            UserReward[]
   userVipTaskProgress    UserVipTaskProgress[]
@@ -348,6 +304,40 @@ model User {
   @@index([username])
   @@index([cashtag])
   @@map("users")
+}
+
+model Currency {
+  id                          String        @id @default(cuid()) // e.g., "USD", "EUR", "BTC", "ETH", "USD_FUN" (your virtual/game currency)
+  name                        String        @unique // e.g., "US Dollar", "Euro", "Bitcoin", "Fun Bucks"
+  symbol                      String // e.g., "$", "€", "₿", "FB"
+  type                        String        @default("FIAT") // Type of currency: e.g., "FIAT", "CRYPTO", "VIRTUAL"
+  // Consider using an enum for this: CurrencyType @default(FIAT)
+  // CRUCIAL for UI formatting when storing amounts as integers (cents/smallest unit)
+  // For USD, precision = 2 (means amounts are in cents)
+  // For JPY, precision = 0 (means amounts are in Yen directly)
+  // For BTC, precision = 8 (means amounts are in Satoshis)
+  precision                   Int           @default(2)
+  isActive                    Boolean       @default(true) // Whether this currency is currently active and usable in the system
+  isDefault                   Boolean       @default(false) // Is this the default currency for new users? (Ensure only one is true)
+  // Optional fields for cryptocurrency specifics
+  contractAddress             String?       @unique // For ERC20 tokens or similar
+  blockchain                  String? // e.g., "Ethereum", "Bitcoin", "TRON", "Solana"
+  withdrawalFeeFixed          Int? // Fixed withdrawal fee in smallest unit (cents/satoshi) for this currency
+  withdrawalFeePercent        Float? // Percentage withdrawal fee (e.g., 0.01 for 1%)
+  // Exchange rate against a base currency (e.g., USD) if you need to display approximate values
+  // This would need a separate system to update regularly
+  // rateToBaseCurrency Float?
+  // Relations to other models
+  usersPreferringThisCurrency User[]        @relation("PreferredCurrency") // Users who prefer this currency
+  wallets                     Wallet[] // Wallets holding this currency
+  transactions                Transaction[] // Transactions made in this currency
+  products                    Product[] // Products priced in this currency (if Product.currencyId links here)
+  createdAt                   DateTime      @default(now())
+  updatedAt                   DateTime      @updatedAt
+
+  @@index([type])
+  @@index([isActive])
+  @@map("currency")
 }
 
 model Session {
@@ -375,9 +365,8 @@ model Session {
 }
 
 model Account {
-  id        String @id @default(cuid())
-  accountId String
-
+  id                    String    @id @default(cuid())
+  accountId             String
   providerId            String
   userId                String
   accessToken           String?
@@ -436,31 +425,26 @@ model Settings {
   meta               Json? // For user-specific arbitrary settings
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
-
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_settings")
 }
 
 model Wallet {
-  id        String   @id @default(cuid())
-  balance   Float    @default(0.0)
-  isActive  Boolean  @default(true)
-  address   String?  @unique // For crypto wallets
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  currencyId String
-  currency   Currency @relation(fields: [currencyId], references: [id]) // This is the relation
-
-  transactions Transaction[]
-
-  bonusBalance  Int @default(0) // Bonus money balance
-  lockedBalance Int @default(0) // Balance locked in active bets or pending withdrawals
+  id            String        @id @default(cuid())
+  balance       Float         @default(0.0)
+  isActive      Boolean       @default(true)
+  address       String?       @unique // For crypto wallets
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currencyId    String
+  currency      Currency      @relation(fields: [currencyId], references: [id]) // This is the relation
+  transactions  Transaction[]
+  bonusBalance  Int           @default(0) // Bonus money balance
+  lockedBalance Int           @default(0) // Balance locked in active bets or pending withdrawals
 
   @@unique([userId, currencyId])
   @@map("wallets")
@@ -471,12 +455,12 @@ model OperatorAccess {
   name             String               @unique
   operator_secret  String // Hashed secret
   operator_access  String // e.g., 'ip_whitelist', 'internal_services'
-  callback_url     String
+  callbackUrl      String               @map("callback_url")
   active           Boolean              @default(true)
   permissions      KeyMode[] // Array of permissions using the KeyMode enum
   ips              String[] // List of allowed IP addresses
   description      String?              @db.Text
-  last_used_at     DateTime?
+  lastUsedAt       DateTime?            @map("last_used_at")
   createdAt        DateTime             @default(now())
   updatedAt        DateTime             @updatedAt
   ownerId          String? // ID of the User who created/owns the operator
@@ -487,11 +471,10 @@ model OperatorAccess {
   invitations      OperatorInvitation[]
   ownedById        String? // Renamed from ownedBy for Prisma relation convention
   owner            User?                @relation("OperatorOwner", fields: [ownedById], references: [id], onDelete: SetNull)
-
-  gameLaunchLinks GameLaunchLink[]
-  products        Product[]
-  games           Game[]
-  profiles        Profile[]
+  gameLaunchLinks  GameLaunchLink[]
+  products         Product[]
+  games            Game[]
+  profiles         Profile[]
 
   @@map("operator_access_keys")
 }
@@ -537,20 +520,18 @@ model Game {
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   title     String
-  content   String   @db.Text
-  published Boolean  @default(false)
+  content   String    @db.Text
+  published Boolean   @default(false)
   tags      String[]
-  viewCount Int      @default(0)
+  viewCount Int       @default(0)
   meta      Json? // e.g., readingTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  comments Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments  Comment[]
 
   @@map("posts")
 }
@@ -560,29 +541,28 @@ model Comment {
   content   String   @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  postId String
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade) // Or SetNull if comments should remain if author is deleted
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade) // Or SetNull if comments should remain if author is deleted
 
   @@map("comments")
 }
 
 model GameSpin {
-  id             String   @id @default(cuid())
+  id             String      @id @default(cuid())
   spinData       Json? // e.g., betAmount, winAmount
-  createdAt      DateTime @default(now())
-  grossWinAmount Int?     @default(0)
+  createdAt      DateTime    @default(now())
+  grossWinAmount Int         @default(0)
   currencyId     String?
-  spinNumber     Int      @default(0)
+  spinNumber     Int         @default(0)
+  gameSessionId  String
+  wagerAmount    Int         @default(0)
+  sessionId      String
+  timeStamp      DateTime
+  gameSession    GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
 
-  gameSessionId String
-  wagerAmount   Int?        @default(0)
-  sessionId     String
-  timeStamp     DateTime
-  gameSession   GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
+  @@map("game_spins")
 }
 
 model GameSession {
@@ -604,65 +584,25 @@ model GameSession {
   totalWon        Int        @default(0)
   userId          String
   user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  gameId String
-  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
-
+  gameId          String
+  game            Game       @relation(fields: [gameId], references: [id], onDelete: Cascade)
   // gameTransactions Transaction[]
-  profileId String?
-
+  profileId       String?
   // profileId String
   // profile   Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  Profile Profile[]
+  Profile         Profile[]
 
   @@map("game_sessions")
 }
 
-// model UserOperator {
-//   userId     String
-//   user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   operatorId String
-//   operator   OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: Cascade)
-//   role       Role           @default(MEMBER)
-//   isActive   Boolean        @default(true)
-//   createdAt  DateTime       @default(now())
-//   updatedAt  DateTime       @updatedAt
-
-//   @@id([userId, operatorId])
-//   @@map("user_operators")
-// }
-
-// model currencyCode{
-//   id                 String          @id @default(cuid())
-//   type               TransactionType // Subset: BET, WIN
-//   amount             Int // Integer amount, smallest unit of currency if applicable
-//   currency           String // e.g., "CREDITS" or a real currency code
-//   transactionDetails Json? // e.g., roundId, action
-//   createdAt          DateTime        @default(now())
-//   updatedAt          DateTime        @updatedAt
-
-//   sessionId String
-//   session   GameSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-
-//   userId String
-//   user   User   @relation("UserGameTransactions", fields: [userId], references: [id], onDelete: Cascade) // Denormalized for easier querying
-
-//   parentFinancialTransactionId String?      @unique // Link to a master financial transaction if this game tx resulted in one
-//   parentFinancialTransaction   Transaction? @relation("GameToFinancialTx", fields: [parentFinancialTransactionId], references: [id], onDelete: SetNull)
-
-//   @@map("game_transactions")
-// }
-
 model UserAchievement {
-  id         String   @id @default(cuid())
-  unlockedAt DateTime @default(now())
-  metaData   Json? // e.g., source of achievement
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id            String      @id @default(cuid())
+  unlockedAt    DateTime    @default(now())
+  metaData      Json? // e.g., source of achievement
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   achievementId String
   achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
 
@@ -678,36 +618,30 @@ model XpEvent {
   meta      Json? // Additional context
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("xp_events")
 }
 
 model Notification {
-  id     String @id @default(cuid())
-  userId String // The recipient user
+  id         String           @id @default(cuid())
+  userId     String // The recipient user
   // user   User   @relation("UserNotification", fields: [userId], references: [id], onDelete: Cascade)
-
-  type    NotificationType
-  title   String
-  message String           @db.Text
-  isRead  Boolean          @default(false)
-  readAt  DateTime?
-
-  actionUrl String? // Optional URL for the user to click (e.g., to view the reward)
-  imageUrl  String? // Optional image for the notification
-  metadata  Json? // e.g., { relatedEntityId: "...", relatedEntityType: "..." }
-
-  createdBy String? // Optional: userId of admin/system if applicable
+  type       NotificationType
+  title      String
+  message    String           @db.Text
+  isRead     Boolean          @default(false)
+  readAt     DateTime?
+  actionUrl  String? // Optional URL for the user to click (e.g., to view the reward)
+  imageUrl   String? // Optional image for the notification
+  metadata   Json? // e.g., { relatedEntityId: "...", relatedEntityType: "..." }  createdBy String? // Optional: userId of admin/system if applicable
   // createdByAdmin User? @relation("AdminNotification", fields: [createdBy], references: [id], onDelete:SetNull)
-
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
   // User       User     @relation(fields: [userId], references: [id])
-  sender     User     @relation("Sender", fields: [userId], references: [id], map: "notifications_senderId_fkey")
-  originator User     @relation("Originator", fields: [userId], references: [id])
+  sender     User             @relation("Sender", fields: [userId], references: [id], map: "notifications_senderId_fkey")
+  originator User             @relation("Originator", fields: [userId], references: [id])
 
   @@index([userId, isRead, createdAt])
   @@map("notifications")
@@ -721,75 +655,66 @@ model ChatMessage {
   // readBy    User[] @relation("MessageReadBy") // For group chats, if needed, requires many-to-many
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  authorId String
-  author   User   @relation("SentMessages", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation("SentMessages", fields: [authorId], references: [id], onDelete: Cascade)
 
   @@map("chat_messages")
 }
 
 model Friendship {
-  id        String           @id @default(cuid())
-  status    FriendshipStatus @default(PENDING)
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-
+  id          String           @id @default(cuid())
+  status      FriendshipStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   requesterId String
-  requester   User   @relation("SentFriendRequests", fields: [requesterId], references: [id], onDelete: Cascade)
-
-  receiverId String
-  receiver   User   @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  requester   User             @relation("SentFriendRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+  receiverId  String
+  receiver    User             @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
 
   @@unique(name: "userId_friendId", [requesterId, receiverId])
   @@map("friendships")
 }
 
 model Transaction {
-  id String @id @default(cuid())
-
+  id                  String             @id @default(cuid())
   // Relationships for originator and receiver (as per your service code)
   // Assuming 'originatorUserId' and 'receiverUserId' are the foreign key fields
-  originatorUserId String
-  originator       User   @relation("OriginatedTransactions", fields: [originatorUserId], references: [id], onDelete: Restrict)
-
-  receiverUserId String? // Optional: for P2P, commissions, or system-to-user transfers
-  receiver       User?   @relation("ReceivedTransactions", fields: [receiverUserId], references: [id], onDelete: SetNull)
-
+  originatorUserId    String
+  processedAt         DateTime?
+  originator          User               @relation("OriginatedTransactions", fields: [originatorUserId], references: [id], onDelete: Restrict)
+  receiverUserId      String? // Optional: for P2P, commissions, or system-to-user transfers
+  receiver            User?              @relation("ReceivedTransactions", fields: [receiverUserId], references: [id], onDelete: SetNull)
   // Wallet relation (optional, but good for direct link if a specific wallet is always involved)
   // If a transaction can occur without directly hitting one specific user wallet (e.g. system fee not tied to user wallet)
   // then this can be optional. But for user deposits/withdrawals/bets, it's usually tied to their wallet.
   // Your service code for initializeDeposit uses walletId.
-  walletId String? // The ID of the primary user's (originator's) wallet involved.
-  wallet   Wallet? @relation(fields: [walletId], references: [id], onDelete: SetNull)
-
-  type       TransactionType
-  status     TransactionStatus @default(PENDING)
-  amount     Int // Gross amount in CENTS (or smallest unit of the currency)
-  netAmount  Int? // Net amount in CENTS after fees (if applicable)
-  feeAmount  Int? // Fee amount in CENTS (if applicable)
-  productId  String? // Optional: Link to a product if this transaction is for a product purchase/deposit package
-  product    Product?          @relation("TransactionProduct", fields: [productId], references: [id], onDelete: SetNull) // onDelete: SetNull means if product is deleted, transaction still exists but productId is nullified. Use Restrict if transaction should prevent product deletion.
-  currencyId String
-  currency   Currency          @relation(fields: [currencyId], references: [id]) // This is the relation
-
+  walletId            String? // The ID of the primary user's (originator's) wallet involved.
+  wallet              Wallet?            @relation(fields: [walletId], references: [id], onDelete: SetNull)
+  type                TransactionType
+  status              TransactionStatus  @default(PENDING)
+  amount              Int // Gross amount in CENTS (or smallest unit of the currency)
+  netAmount           Int? // Net amount in CENTS after fees (if applicable)
+  feeAmount           Int? // Fee amount in CENTS (if applicable)
+  productId           String? // Optional: Link to a product if this transaction is for a product purchase/deposit package
+  product             Product?           @relation("TransactionProduct", fields: [productId], references: [id], onDelete: SetNull) // onDelete: SetNull means if product is deleted, transaction still exists but productId is nullified. Use Restrict if transaction should prevent product deletion.
+  currencyId          String
+  currency            Currency           @relation(fields: [currencyId], references: [id]) // This is the relation
   // Balances for audit trail (recorded at the time of completion, in CENTS)
-  balanceBefore      Int? // User's real balance (cents) before this transaction completed
-  balanceAfter       Int? // User's real balance (cents) after this transaction completed
-  bonusBalanceBefore Int? // User's bonus balance (cents) before
-  bonusBalanceAfter  Int? // User's bonus balance (cents) after
-
+  balanceBefore       Int? // User's real balance (cents) before this transaction completed
+  balanceAfter        Int? // User's real balance (cents) after this transaction completed
+  bonusBalanceBefore  Int? // User's bonus balance (cents) before
+  bonusBalanceAfter   Int? // User's bonus balance (cents) after
   // For bonus-specific transactions or if a transaction awards/uses bonus funds
   bonusAmount         Int? // Amount of bonus funds involved in this transaction (cents)
   wageringRequirement Int? // If this bonus award has a wagering requirement (in cents)
   wageringProgress    Int? // Progress made towards this specific bonus's wagering (in cents)
-
   // Details & Metadata
-  description    String? @db.Text
-  provider       String? // e.g., "Stripe", "CashApp", "System", "PragmaticPlay", "AdminPanel"
-  providerTxId   String? // Transaction ID from the external provider (can be @unique if truly unique per provider)
-  relatedGameId  String? // If related to a game session or bet
-  relatedRoundId String? // Game round ID
-  metadata       Json? // For any other relevant data:
+  description         String?            @db.Text
+  provider            String? // e.g., "Stripe", "CashApp", "System", "PragmaticPlay", "AdminPanel"
+  providerTxId        String? // Transaction ID from the external provider (can be @unique if truly unique per provider)
+  relatedGameId       String? // If related to a game session or bet
+  relatedRoundId      String? // Game round ID
+  metadata            Json? // For any other relevant data:
   // {
   //   ipAddress: "...",
   //   deviceInfo: { ... },
@@ -802,15 +727,12 @@ model Transaction {
   //   failureReason: "...", // For failed transactions
   //   adminNotes: "...",
   //   systemActionDetails: "..."
-  // }
-
-  processedAt DateTime? // Timestamp when the transaction moved to a final state (COMPLETED, FAILED, CANCELLED, EXPIRED)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
+  // }  processedAt         DateTime? // Timestamp when the transaction moved to a final state (COMPLETED, FAILED, CANCELLED, EXPIRED)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
   // For linking to rebate if this transaction generated one
-  rebateGenerated RebateTransaction?
-  Product         Product[]
+  rebateGenerated     RebateTransaction?
+  Product             Product[]
 
   @@index([originatorUserId, status, type])
   @@index([receiverUserId])
@@ -822,48 +744,44 @@ model Transaction {
 }
 
 model GameLaunchLink {
-  id                 String    @id @default(cuid())
-  token_internal     String    @unique @default(cuid()) // Primary internal token for launching
+  id                 String         @id @default(cuid())
+  token_internal     String         @unique @default(cuid()) // Primary internal token for launching
   currency           String // Currency context for the game session (e.g., "USD", "CREDITS")
   player_operator_id String? // Player's ID as known by the external operator system
   mode               String // e.g., "real" money, "demo" play
   meta               Json? // e.g., "real" money, "demo" play
-  request_ip         String?
-  user_agent         String?   @db.Text
-  session_url        String?   @unique // The fully formed URL given to the player
-  state              String    @default("SESSION_INIT") // e.g., INIT, STARTED, EXPIRED, COMPLETED
-  active             Boolean   @default(true)
-  expires_at         DateTime?
+  requestIp          String?        @map("request_ip")
+  userAgent          String?        @map("user_agent") @db.Text
+  session_url        String?        @unique // The fully formed URL given to the player
+  state              String         @default("SESSION_INIT") // e.g., INIT, STARTED, EXPIRED, COMPLETED
+  active             Boolean        @default(true)
+  expiresAt          DateTime?      @map("expires_at")
   extra_meta         Json? // Provider options, language, specific entry points
   token_original     String? // If the launch involves an upstream provider's token
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-
-  userId String
-  user   User   @relation("UserGameLaunchLinks", fields: [userId], references: [id], onDelete: NoAction)
-
-  gameId String
-  game   Game   @relation(fields: [gameId], references: [id], onDelete: NoAction)
-
-  operatorId String
-  operator   OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: NoAction)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  userId             String
+  user               User           @relation("UserGameLaunchLinks", fields: [userId], references: [id], onDelete: NoAction)
+  gameId             String
+  game               Game           @relation(fields: [gameId], references: [id], onDelete: NoAction)
+  operatorId         String
+  operator           OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: NoAction)
 
   @@map("game_launch_links")
 }
 
 model Product {
-  id                  String   @id @default(cuid())
-  title               String   @default("default")
-  description         String   @default("default")
-  url                 String   @default("default")
-  iconUrl             String?  @default("default")
-  productType         String   @default("bundle")
-  bonusCode           String?  @default("")
-  bonusTotalInCredits Int      @default(0)
-  isActive            Boolean?
-  currencyId          String
-  currency            Currency @relation(fields: [currencyId], references: [id]) // This is the relation
-
+  id                       String          @id @default(cuid())
+  title                    String          @default("default")
+  description              String          @default("default")
+  url                      String          @default("default")
+  iconUrl                  String?         @default("default")
+  productType              String          @default("bundle")
+  bonusCode                String?         @default("")
+  bonusTotalInCredits      Int             @default(0)
+  isActive                 Boolean?
+  currencyId               String
+  currency                 Currency        @relation(fields: [currencyId], references: [id]) // This is the relation
   priceInCents             Int             @default(0)
   amountToReceiveInCredits Int             @default(0)
   bestValue                Int             @default(0)
@@ -893,83 +811,55 @@ model EventLog {
   timestamp  DateTime @default(now()) // Precise timestamp of when the event occurred
   createdAt  DateTime @default(now()) // Standard audit field
   updatedAt  DateTime @updatedAt // Standard audit field
-
-  actorId String?
-  actor   User?   @relation("ActorEvents", fields: [actorId], references: [id], onDelete: SetNull)
+  actorId    String?
+  actor      User?    @relation("ActorEvents", fields: [actorId], references: [id], onDelete: SetNull)
 
   @@map("event_logs")
 }
 
-// model UserOperator {
-//   userId      String
-//   operatorId  String
-//   role        Role     // Enum: ADMIN, MEMBER, etc.
-//   joinedAt    DateTime @default(now())
-//   isActive    Boolean  @default(true) // For soft deactivation of membership
-
-//   // user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   operator    OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: Cascade)
-
-//   @@id([userId, operatorId])
-//   @@index([operatorId])
-//   @@index([userId])
-// }
-
-// enum Role {
-//   OWNER
-//   ADMIN
-//   MEMBER
-//   // Add other roles as needed
-// }
-
 model OperatorInvitation {
-  id          String    @id @default(cuid())
+  id          String         @id @default(cuid())
   operatorId  String
   email       String // Email of the invited user
-  role        Role      @default(USER)
-  token       String    @unique @default(uuid())
+  role        Role           @default(USER)
+  token       String         @unique @default(uuid())
   expiresAt   DateTime
   acceptedAt  DateTime?
   invitedById String // ID of the User who sent the invitation
-
-  operator  OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: Cascade)
-  invitedBy User           @relation("SentInvitations", fields: [invitedById], references: [id])
+  operator    OperatorAccess @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  invitedBy   User           @relation("SentInvitations", fields: [invitedById], references: [id])
   // invitedUser User?     @relation("ReceivedInvitations", fields: [email], references: [email]) // Optional: if you want to link to existing user by email
-  User      User[]         @relation("ReceivedInvitations")
+  User        User[]         @relation("ReceivedInvitations")
 
   @@index([operatorId])
   @@index([email])
   @@index([token])
+  @@map("operator_invitations")
 }
 
 model VipInfo {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  level               Int   @default(1) // Current VIP level
-  currentLevelXp      Float @default(0) // XP accumulated *within* the current level towards the next
-  totalXp             Float @default(0) // Total XP ever earned by the user
-  nextLevelXpRequired Float // The total XP required to complete the current level's XP bar (i.e., the "length" of this level's bar)
+  id                      String    @id @default(cuid())
+  userId                  String    @unique
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  level                   Int       @default(1) // Current VIP level
+  currentLevelXp          Float     @default(0) // XP accumulated *within* the current level towards the next
+  totalXp                 Float     @default(0) // Total XP ever earned by the user
+  nextLevelXpRequired     Float // The total XP required to complete the current level's XP bar (i.e., the "length" of this level's bar)
   // This should be set based on your leveling.config.ts for the current 'level'
-
   // Benefits based on VIP level (can be denormalized here or dynamically calculated)
-  cashbackPercentage      Float   @default(0.01) // e.g., 0.01 for 1%
-  prioritySupport         Boolean @default(false)
-  specialBonusesAvailable Int     @default(0) // Count of special, perhaps one-time, bonuses available
-
+  cashbackPercentage      Float     @default(0.01) // e.g., 0.01 for 1%
+  prioritySupport         Boolean   @default(false)
+  specialBonusesAvailable Int       @default(0) // Count of special, perhaps one-time, bonuses available
   // Timestamps for last claimed periodic bonuses
-  dailyBonusClaimedAt   DateTime?
-  weeklyBonusClaimedAt  DateTime?
-  monthlyBonusClaimedAt DateTime?
-
+  dailyBonusClaimedAt     DateTime?
+  weeklyBonusClaimedAt    DateTime?
+  monthlyBonusClaimedAt   DateTime?
   // Other potential VIP-specific fields
   // Example: dedicatedAccountManager Boolean @default(false)
   // Example: higherWithdrawalLimits Boolean @default(false)
   // Example: exclusiveAccessToEvents Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
 
   @@index([userId]) // Ensure efficient lookups by userId
   @@map("vipinfos")
@@ -1002,29 +892,26 @@ enum RewardStatus {
 
 // Tracks specific instances of rewards available to or claimed by a user
 model UserReward {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  rewardType  RewardType
-  description String // e.g., "Daily Sign-in Bonus - Day 3", "Level 5 Reached!", "Weekly Cashback"
-  status      RewardStatus @default(AVAILABLE)
-  amount      Float? // e.g., bonus currency amount, number of free spins
-  currencyId  String? // If the reward is monetary
+  id                  String       @id @default(cuid())
+  userId              String
+  user                User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rewardType          RewardType
+  claimedAt           DateTime?
+  description         String // e.g., "Daily Sign-in Bonus - Day 3", "Level 5 Reached!", "Weekly Cashback"
+  status              RewardStatus @default(AVAILABLE)
+  amount              Float? // e.g., bonus currency amount, number of free spins
+  currencyId          String? // If the reward is monetary
   // currency    Currency? @relation(fields: [currencyId], references: [id]) // If monetary
-  metaData    Json? // e.g., { "level": 5, "bonusCode": "VIPSPECIAL" }
-
-  claimedAt     DateTime?
-  expiresAt     DateTime? // Some rewards might expire
-  availableFrom DateTime  @default(now()) // When the reward becomes available
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  metaData            Json? // e.g., { "level": 5, "bonusCode": "VIPSPECIAL" }  claimedAt     DateTime?
+  expiresAt           DateTime? // Some rewards might expire
+  availableFrom       DateTime     @default(now()) // When the reward becomes available
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
   vipLevelRequirement Int? // Optional: if this reward is tied to being a certain VIP level
 
   @@index([userId, status])
   @@index([userId, rewardType])
+  @@map("user_rewards")
 }
 
 enum VipTaskType {
@@ -1055,51 +942,48 @@ model VipTask {
   requiredVipLevel  Int                   @default(1) // Minimum VIP level to see/participate in this task
   resetCycle        String?
   userTaskProgress  UserVipTaskProgress[]
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("vip_tasks")
 }
 
 model UserVipTaskProgress {
-  id     String  @id @default(cuid())
-  userId String
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  taskId String
-  task   VipTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taskId          String
+  task            VipTask   @relation(fields: [taskId], references: [id], onDelete: Cascade)
   progress        Float     @default(0) // Current progress towards targetValue
   isCompleted     Boolean   @default(false)
   rewardClaimedAt DateTime? // When the reward for this task fwas claimed
-
-  lastProgressAt DateTime @updatedAt // To track streaks or daily progress
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  lastProgressAt  DateTime  @updatedAt // To track streaks or daily progress
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@unique([userId, taskId]) // User has one progress record per task
+  @@map("user_vip_task_progress")
 }
 
 // For rebate history, a specific model might be useful or it could be part of Transactions
 model RebateTransaction {
-  id                  String      @id @default(cuid())
+  id                  String       @id @default(cuid())
   userId              String
-  user                User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  transactionId       String      @unique // Original transaction that generated the rebate
-  originalTransaction Transaction @relation(fields: [transactionId], references: [id])
-
-  rebateAmount     Float
-  currencyId       String
+  user                User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactionId       String       @unique // Original transaction that generated the rebate
+  originalTransaction Transaction  @relation(fields: [transactionId], references: [id])
+  rebateAmount        Float
+  currencyId          String
   // currency      Currency @relation(fields: [currencyId], references: [id])
-  vipLevel         Int // VIP level at the time of the original transaction
-  rebatePercentage Float // Cashback percentage applied
-
-  status    RewardStatus @default(PENDING) // PENDING until paid out, then CLAIMED/COMPLETED
-  paidOutAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  vipLevel            Int // VIP level at the time of the original transaction
+  rebatePercentage    Float // Cashback percentage applied
+  status              RewardStatus @default(PENDING) // PENDING until paid out, then CLAIMED/COMPLETED
+  paidOutAt           DateTime?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
 
   @@index([userId, status])
+  @@map("rebate_transactions")
 }
 
 // // === prisma/schema.prisma (or your ps.txt) ===

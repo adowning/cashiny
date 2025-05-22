@@ -46,6 +46,8 @@ declare global {
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const h: typeof import('vue')['h']
+  const handleException: typeof import('../../stores/exception')['handleException']
+  const hydrateStores: typeof import('../../stores/index')['hydrateStores']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
@@ -99,14 +101,18 @@ declare global {
   const refDefault: typeof import('@vueuse/core')['refDefault']
   const refThrottled: typeof import('@vueuse/core')['refThrottled']
   const refWithControl: typeof import('@vueuse/core')['refWithControl']
+  const resetAllStores: typeof import('../../stores/index')['resetAllStores']
   const resolveComponent: typeof import('vue')['resolveComponent']
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
   const resolveUnref: typeof import('@vueuse/core')['resolveUnref']
   const setActivePinia: typeof import('pinia')['setActivePinia']
   const setMapStoreSuffix: typeof import('pinia')['setMapStoreSuffix']
+  const setupStore: typeof import('../../stores/index')['setupStore']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const startSubscriptions: typeof import('../../stores/index')['startSubscriptions']
+  const store: typeof import('../../stores/index')['store']
   const storeToRefs: typeof import('pinia')['storeToRefs']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
@@ -131,6 +137,7 @@ declare global {
   const useAnimate: typeof import('@vueuse/core')['useAnimate']
   const useAnimationController: typeof import('../../composables/useAnimationController')['useAnimationController']
   const useApiClient: typeof import('../../composables/useApiClient')['default']
+  const useAppBarStore: typeof import('../../stores/appBar.store')['useAppBarStore']
   const useAppWebSocket: typeof import('../../composables/useAppWebsocket')['useAppWebSocket']
   const useArrayDifference: typeof import('@vueuse/core')['useArrayDifference']
   const useArrayEvery: typeof import('@vueuse/core')['useArrayEvery']
@@ -147,6 +154,7 @@ declare global {
   const useAsyncQueue: typeof import('@vueuse/core')['useAsyncQueue']
   const useAsyncState: typeof import('@vueuse/core')['useAsyncState']
   const useAttrs: typeof import('vue')['useAttrs']
+  const useAuthStore: typeof import('../../stores/auth.store')['useAuthStore']
   const useBase64: typeof import('@vueuse/core')['useBase64']
   const useBattery: typeof import('@vueuse/core')['useBattery']
   const useBluetooth: typeof import('@vueuse/core')['useBluetooth']
@@ -164,6 +172,7 @@ declare global {
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVar: typeof import('@vueuse/core')['useCssVar']
   const useCssVars: typeof import('vue')['useCssVars']
+  const useCurrencyStore: typeof import('../../stores/currency.store')['useCurrencyStore']
   const useCurrentElement: typeof import('@vueuse/core')['useCurrentElement']
   const useCycleList: typeof import('@vueuse/core')['useCycleList']
   const useDark: typeof import('@vueuse/core')['useDark']
@@ -171,6 +180,7 @@ declare global {
   const useDebounce: typeof import('@vueuse/core')['useDebounce']
   const useDebounceFn: typeof import('@vueuse/core')['useDebounceFn']
   const useDebouncedRefHistory: typeof import('@vueuse/core')['useDebouncedRefHistory']
+  const useDepositStore: typeof import('../../stores/deposit.store')['useDepositStore']
   const useDeviceMotion: typeof import('@vueuse/core')['useDeviceMotion']
   const useDeviceOrientation: typeof import('@vueuse/core')['useDeviceOrientation']
   const useDevicePixelRatio: typeof import('@vueuse/core')['useDevicePixelRatio']
@@ -198,8 +208,10 @@ declare global {
   const useFocusWithin: typeof import('@vueuse/core')['useFocusWithin']
   const useFps: typeof import('@vueuse/core')['useFps']
   const useFullscreen: typeof import('@vueuse/core')['useFullscreen']
+  const useGameStore: typeof import('../../stores/game.store')['useGameStore']
   const useGamepad: typeof import('@vueuse/core')['useGamepad']
   const useGeolocation: typeof import('@vueuse/core')['useGeolocation']
+  const useGlobalStore: typeof import('../../stores/global.store')['useGlobalStore']
   const useId: typeof import('vue')['useId']
   const useIdle: typeof import('@vueuse/core')['useIdle']
   const useImage: typeof import('@vueuse/core')['useImage']
@@ -226,6 +238,7 @@ declare global {
   const useMutationObserver: typeof import('@vueuse/core')['useMutationObserver']
   const useNavigatorLanguage: typeof import('@vueuse/core')['useNavigatorLanguage']
   const useNetwork: typeof import('@vueuse/core')['useNetwork']
+  const useNotificationStore: typeof import('../../stores/notification.store')['useNotificationStore']
   const useNow: typeof import('@vueuse/core')['useNow']
   const useObjectUrl: typeof import('@vueuse/core')['useObjectUrl']
   const useOffsetPagination: typeof import('@vueuse/core')['useOffsetPagination']
@@ -245,8 +258,10 @@ declare global {
   const usePreferredReducedMotion: typeof import('@vueuse/core')['usePreferredReducedMotion']
   const usePreferredReducedTransparency: typeof import('@vueuse/core')['usePreferredReducedTransparency']
   const usePrevious: typeof import('@vueuse/core')['usePrevious']
+  const useProfileStore: typeof import('../../stores/profile.store')['useProfileStore']
   const useRafFn: typeof import('@vueuse/core')['useRafFn']
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
+  const useRefferalStore: typeof import('../../stores/refferal.store')['useRefferalStore']
   const useResizeObserver: typeof import('@vueuse/core')['useResizeObserver']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
@@ -259,6 +274,7 @@ declare global {
   const useSessionStorage: typeof import('@vueuse/core')['useSessionStorage']
   const useShare: typeof import('@vueuse/core')['useShare']
   const useSlots: typeof import('vue')['useSlots']
+  const useSocketStore: typeof import('../../stores/socket.store')['useSocketStore']
   const useSorted: typeof import('@vueuse/core')['useSorted']
   const useSpeechRecognition: typeof import('@vueuse/core')['useSpeechRecognition']
   const useSpeechSynthesis: typeof import('@vueuse/core')['useSpeechSynthesis']
@@ -288,9 +304,11 @@ declare global {
   const useTransition: typeof import('@vueuse/core')['useTransition']
   const useUrlSearchParams: typeof import('@vueuse/core')['useUrlSearchParams']
   const useUserMedia: typeof import('@vueuse/core')['useUserMedia']
+  const useUserStore: typeof import('../../stores/user.store')['useUserStore']
   const useVModel: typeof import('@vueuse/core')['useVModel']
   const useVModels: typeof import('@vueuse/core')['useVModels']
   const useVibrate: typeof import('@vueuse/core')['useVibrate']
+  const useVipStore: typeof import('../../stores/vip.store')['useVipStore']
   const useVirtualList: typeof import('@vueuse/core')['useVirtualList']
   const useWakeLock: typeof import('@vueuse/core')['useWakeLock']
   const useWebNotification: typeof import('@vueuse/core')['useWebNotification']
@@ -334,4 +352,16 @@ declare global {
   // @ts-ignore
   export type { SSROptions } from '../../composables/useDisplay'
   import('../../composables/useDisplay')
+  // @ts-ignore
+  export type { Category, GameSearchResponse, GameEnterResponse, Search, GameHistoryResponse, GameBigWinData, GetGameCategoriesResponse, GetGameSearchResponse, GameUserBody, GetGameEnterResponse, GetGameHistoryResponse, GetGameBigWinResponse, GetGameFavoriteListResponse, GameEnterBody } from '../../stores/game.store'
+  import('../../stores/game.store')
+  // @ts-ignore
+  export type { Notification, INotificationStore } from '../../stores/notification.store'
+  import('../../stores/notification.store')
+  // @ts-ignore
+  export type { ProfileData } from '../../stores/profile.store'
+  import('../../stores/profile.store')
+  // @ts-ignore
+  export type { UserState, UserActions, UserStore } from '../../stores/user.store'
+  import('../../stores/user.store')
 }

@@ -132,10 +132,10 @@
   import { storeToRefs } from 'pinia' // Import storeToRefs
   import { useRouter } from 'vue-router' // For navigation (though handled elsewhere now)
 
-  import { useAuthStore } from '@/stores/auth'
-  import { useUserStore } from '@/stores/user' // Keep if needed for user data display (unlikely in LoginView)
-  import { useNotificationStore } from '@/stores/notifications'
-  import { useGlobalStore } from '@/stores/global' // Keep if needed for global loading toggle (unlikely here now)
+  // import { useAuthStore } from '@/stores/auth.store'
+  // import { useUserStore } from '@/stores/user.store' // Keep if needed for user data display (unlikely in LoginView)
+  // import { useNotificationStore } from '@/stores/notification.store'
+  // import { useGlobalStore } from '@/stores/global.store' // Keep if needed for global loading toggle (unlikely here now)
 
   // Assuming you have these components/utilities
   // import Logo from "@/components/icons/Logo.vue";
@@ -295,7 +295,7 @@
         'Google Sign-In credential not received. Please try again.'
       )
       console.error('Google Sign-In failed or no credential received:', response)
-      authStore.setError({ message: 'Google Sign-In failed.', code: 400 }) // Set auth store error
+      // authStore.setError({ message: 'Google Sign-In failed.', code: 400 }) // Set auth store error
       setTimeout(() => {
         showError.value = false
         window.location.reload()

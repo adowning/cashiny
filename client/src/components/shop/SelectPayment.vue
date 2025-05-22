@@ -1,45 +1,45 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+  import { ref } from 'vue'
 
-import { useDepositStore } from '@/stores/deposit';
+  import { useDepositStore } from '@/stores/deposit.store'
 
-// import { useUserStore } from '@/stores/user';
+  // import { useUserStore } from '@/stores/user';
 
-const eventBus = useEventManager();
+  const eventBus = useEventManager()
 
-const depositStore = useDepositStore();
-// const router = useRouter();
-const target = ref();
-const method = ref(0);
-const cashappSelected = ref(false);
-const cashinstore = ref(false);
-const hasPendingBalanceTransaction = ref(false);
-// const balancetransactionsCanceled = ref(false);
-// async function close() {
-// await dispatchGetCurrentUser()
-// await queryClient.invalidateQueries({ queryKey: ['user'] })
-// $bus.$emit(eventTypes.setPending)
-// target!.value!.classList.add(`animate__animated`, 'animate__bounceOut')
-// nextTick(() => {
-//   $bus.$emit(eventTypes.change_page, 0)
-//   // delay(300)
-//   $bus.$emit(eventTypes.show_bars, true)
-// })
-// }
-async function setMethod(_method: number) {
-  console.log(_method);
-  if (_method === 1) {
-    cashappSelected.value = true;
-    cashinstore.value = false;
-    // console.log(state)
-    depositStore.setSelectedPaymentMethod('CASH_APP');
-  } else {
-    cashappSelected.value = false;
-    cashinstore.value = true;
-    depositStore.setSelectedPaymentMethod('INSTORE_CASH');
+  const depositStore = useDepositStore()
+  // const router = useRouter();
+  const target = ref()
+  const method = ref(0)
+  const cashappSelected = ref(false)
+  const cashinstore = ref(false)
+  const hasPendingBalanceTransaction = ref(false)
+  // const balancetransactionsCanceled = ref(false);
+  // async function close() {
+  // await dispatchGetCurrentUser()
+  // await queryClient.invalidateQueries({ queryKey: ['user'] })
+  // $bus.$emit(eventTypes.setPending)
+  // target!.value!.classList.add(`animate__animated`, 'animate__bounceOut')
+  // nextTick(() => {
+  //   $bus.$emit(eventTypes.change_page, 0)
+  //   // delay(300)
+  //   $bus.$emit(eventTypes.show_bars, true)
+  // })
+  // }
+  async function setMethod(_method: number) {
+    console.log(_method)
+    if (_method === 1) {
+      cashappSelected.value = true
+      cashinstore.value = false
+      // console.log(state)
+      depositStore.setSelectedPaymentMethod('CASH_APP')
+    } else {
+      cashappSelected.value = false
+      cashinstore.value = true
+      depositStore.setSelectedPaymentMethod('INSTORE_CASH')
+    }
+    method.value = _method
   }
-  method.value = _method;
-}
 </script>
 
 <template>

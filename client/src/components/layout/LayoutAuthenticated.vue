@@ -2,11 +2,11 @@
 //   import { useCashflowSocket } from "@/composables/useCashflowSocket";
 //   import { ref } from "vue";
 //   import { useRouter } from "vue-router";
-//   import { useAppBarStore } from "@/stores/appBar";
+//   import { useAppBarStore } from "@/stores/appBar.store";
 //   import { useAuthStore } from "@/stores/auth";
 //   // import { useUserStore } from '@/stores/user'
 //   import { useSocketStore } from "@/stores/socket";
-//   import { useDepositStore } from "@/stores/deposit";
+//   import { useDepositStore } from "@/@/stores/deposit.store";
 //   // import { useCurrencyStore } from '@/stores/currency'
 
 //   // const { api } = useRequest()

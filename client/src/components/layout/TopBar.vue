@@ -1,330 +1,259 @@
-<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script lang="ts" setup>
-  // import { useSocketStore } from '@/stores/socket'
-  import { useUserStore } from "@/stores/user";
-  import { ref } from "vue";
-  // import PlayerAvatar from "./PlayerAvatar.vue";
-  // import { useSocketStore } from "@/stores/socket";
-  import { useAuthStore } from "@/stores/auth";
-  import { useDepositStore } from "@/stores/deposit";
-  import { DepositHistoryItem } from "@cashflow/types";
+  import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { storeToRefs } from 'pinia'
+  import { useAuthStore } from '@/stores/auth.store'
+  import { useDepositStore } from '@/stores/deposit.store'
+  import { useEventManager } from '@/composables/EventManager' // Assuming this path
+  import type { DepositHistoryItem, User } from '@cashflow/types' // Assuming User type is available
+  import PlayerAvatar from './PlayerAvatar.vue' // Explicitly import the child component
 
-  const eventBus = useEventManager();
-  console.log(eventBus);
-  const router = useRouter();
-  const countdownActive = ref(false);
-  const sparkle = ref(false);
-  const { currentUser, currentProfile } = useUserStore();
-  const { dispatchUserDepositHistory, getDepositHistoryItems } =
-    useDepositStore();
+  const PENDING_DEPOSIT_TIMEOUT_MS = 3600000 // 1 hour in milliseconds
 
-  function openSettings() {
-    console.log("x");
-    eventBus.emit("settingsModal", true);
-  }
-  const depositItems = ref<DepositHistoryItem[]>();
+  // Router and Event Bus
+  const router = useRouter()
+  const eventBus = useEventManager()
 
-  const target = ref();
-  const trans = currentProfile?.transactions;
-  const remaining_minutes = ref(0);
-  const remaining_seconds_display = ref(0);
-  const interval = ref();
+  // Stores
+  const authStore = useAuthStore()
+  const depositStore = useDepositStore()
 
-  function countdownTimer(start_date: Date): void {
-    // Calculate the end date, which is one hour after the start date
-    const end_date = new Date(start_date.getTime() + 3600000); // One hour later
+  // Store State & Getters
+  const { currentUser, isAuthenticated } = storeToRefs(authStore)
+  const { getDepositHistoryItems: depositHistoryFromStore } = storeToRefs(depositStore) // Use storeToRefs for getters too
+  const { dispatchUserDepositHistory } = depositStore
 
-    // Calculate the difference between the end date and now
-    const now = new Date();
-    const time_difference = end_date.getTime() - now.getTime();
+  // Local Reactive State
+  const localDepositItems = ref<DepositHistoryItem[]>([]) // Local mutable copy if needed for splicing
+  const countdownActive = ref(false)
+  const sparkle = ref(false) // This seems to be for the PlayerAvatar child
+  const currentExp = ref(0) // This is for PlayerAvatar child, manage its source
+  const maxExp = ref(100) // This is for PlayerAvatar child
 
-    // Convert the time difference to seconds
-    const total_seconds = Math.floor(time_difference / 1000);
+  const remainingMinutes = ref(0)
+  const remainingSecondsDisplay = ref(0)
+  let countdownInterval: number | undefined | NodeJS.Timeout = undefined // More specific type
 
-    // Calculate minutes and seconds
-    const minutes = Math.floor(total_seconds / 60);
-    const seconds = total_seconds % 60;
+  // Computed Properties
+  const userBalance = computed(() => {
+    // Assuming balance is on `currentUser.value.profile.balance`
+    // Adjust if your User/Profile structure is different.
+    // Check `currentUser.value?.profile?.balance` if profile can be undefined.
+    // For now, let's assume User has a profile and balance, or use a default.
+    return currentUser.value?.profile?.balance ?? '0.00'
+  })
 
-    // Print the initial countdown
-    console.log(`Countdown: ${minutes} minutes and ${seconds} seconds`);
+  const activePendingDeposit = computed(() => {
+    return localDepositItems.value.find((item) => item.status === 'PENDING')
+  })
 
-    // Start the countdown
-    let remaining_seconds = total_seconds;
-    interval.value = setInterval(() => {
-      // Calculate remaining minutes and seconds
-      remaining_minutes.value = Math.floor(remaining_seconds / 60);
-      remaining_seconds_display.value = remaining_seconds % 60;
+  const formattedCountdown = computed(() => {
+    if (!countdownActive.value) return ''
+    return remainingMinutes.value > 0
+      ? `${remainingMinutes.value}m ${remainingSecondsDisplay.value}s`
+      : `0m ${remainingSecondsDisplay.value}s`
+  })
 
-      // Print the remaining time
-      // console.log(
-      //   `Countdown: ${remaining_minutes.value} minutes and ${remaining_seconds_display.value} seconds`,
-      // )
-
-      // Decrease the remaining seconds by one
-      remaining_seconds -= 1;
-
-      // Stop the countdown when it reaches zero
-      if (remaining_seconds < 0) {
-        clearInterval(interval.value);
-        console.log("Countdown finished!");
-        depositItems.value?.splice(0, 3);
-        // api.transactionControllerCancelPending.send();
-      }
-    }, 1000);
-    countdownActive.value = true;
+  // Methods
+  function openSettingsModal() {
+    eventBus.emit('settingsModal', true)
   }
 
-  // async function setPending(transaction?: Transaction) {
-  //   if (transaction === undefined) {
-  //     let t
-  //     if (activeProfile !== undefined) {
-  //       t = activeProfile.purchases
-  //     }
-  //     if (t !== undefined) {
-  //       t.forEach((purch: any) => {
-  //         if (purch.status === 'PENDING_PAYMENT') {
-  //           transaction = purch
-  //         }
-  //       })
-  //     }
-  //   }
-  //   let p
-  //   if (typeof transaction === 'string') {
-  //     p = JSON.parse(transaction)
-  //   } else {
-  //     p = transaction
-  //   }
-  //   if (p === null || p === undefined) {
-  //     return
-  //   }
-  //   if (p.status === 'PENDING_PAYMENT') {
-  //     const created = new Date(p.createdAt)
-  //     const time = created.getTime() + 3600000 - new Date().getTime()
-  //     // const countdown = useCountDown({
-  //     //   time: +time,
-  //     //   millisecond: true,
-  //     //   // onChange: (current) => $bus.$emit(eventTypes.update_player, current),
-  //     //   // onFinish: () => $bus.$emit(eventTypes.is_loading, false),
-  //     // })
-  //     // countdown.start()
-  //     timeToExpire.value = current
-  //   }
-  // }
-
-  if (trans !== undefined) {
-    trans.forEach(() => {
-      // if (purch.status === 'PENDING_PAYMENT') {
-      //   const created = new Date(purch.createdAt)
-      //   const time = created.getTime() + 3600000 - new Date().getTime()
-      //   console.log(created.getTime() + 3600000)
-      //   const countdown = useCountDown({
-      //     time: +time,
-      //     millisecond: true,
-      //     // onChange: current => $emit('change', current),
-      //     // onFinish: () => emit('finish'),
-      //   })
-      //   countdown.start()
-      //   current.value = countdown.current
-      //   pendingTransactions.value.push(purch)
-      // }
-      // incomingMessage.value = 'change'
-      // setTimeout(() => {
-      //   incomingMessage.value = null
-      // }, 3000)
-    });
+  function navigateToProfile() {
+    router.push('/client/profile')
   }
 
-  watch(getDepositHistoryItems, (newVal) => {
-    console.log(currentProfile);
-    const pendings = newVal.find(
-      (purch: { status: string }) => purch.status === "PENDING_PAYMENT"
-    );
-    if (pendings) {
-      countdownTimer(new Date(pendings.createdAt));
+  function startOrUpdateCountdown(deposit?: DepositHistoryItem) {
+    if (countdownInterval) {
+      clearInterval(countdownInterval)
+      countdownInterval = undefined
     }
-  });
-  eventBus.on("updatePurchases", (newVal) => {
-    // console.log(newVal);
-    // console.log(pendingTransactions.value);
-    // if (newVal.status !== "PENDING_PAYMENT") {
-    //   if (newVal.id === pendingTransactions.value[0].id) {
-    //     clearInterval(interval.value);
-    //     console.log("Countdown finished!");
-    //     pendingTransactions.value.splice(0, 3);
-    //     console.log(pendingTransactions.value);
-    //     countdownActive.value = false;
-    //   }
-    // } else {
-    //   pendingTransactions.value.push(newVal);
-    //   countdownTimer(new Date(newVal.createdAt));
-    // }
-  });
-  const currentExp = ref(0);
-  let ran = false;
+
+    const pendingDeposit = deposit || activePendingDeposit.value
+    if (!pendingDeposit || pendingDeposit.status !== 'PENDING') {
+      countdownActive.value = false
+      return
+    }
+
+    const startDate = new Date(pendingDeposit.createdAt)
+    const endDate = new Date(startDate.getTime() + PENDING_DEPOSIT_TIMEOUT_MS)
+
+    function updateTimer() {
+      if (pendingDeposit === undefined) {
+        countdownActive.value = false
+        return
+      }
+      const now = new Date()
+      const timeDifference = endDate.getTime() - now.getTime()
+      const totalSecondsRemaining = Math.max(0, Math.floor(timeDifference / 1000))
+
+      remainingMinutes.value = Math.floor(totalSecondsRemaining / 60)
+      remainingSecondsDisplay.value = totalSecondsRemaining % 60
+
+      if (totalSecondsRemaining <= 0) {
+        clearInterval(countdownInterval)
+        countdownInterval = undefined
+        countdownActive.value = false
+        console.log('Countdown finished for deposit ID:', pendingDeposit.id)
+        // Handle expired deposit - ideally, this should be an action in the store
+        // For example: depositStore.handleExpiredDeposit(pendingDeposit.id)
+        // The direct splice here is a side effect that might be better managed in the store
+        // after an API call confirms cancellation or expiration.
+        const index = localDepositItems.value.findIndex((item) => item.id === pendingDeposit.id)
+        if (index > -1) {
+          // localDepositItems.value.splice(index, 1) // Or update its status
+          // Instead of splicing, it's better to refetch or let the store update its state
+          // and this component will react to it.
+          // For now, we'll just mark it as inactive here.
+        }
+        // Potentially refetch deposit history or let WebSocket update handle it
+        // dispatchUserDepositHistory();
+      } else {
+        countdownActive.value = true
+      }
+    }
+
+    updateTimer() // Initial call
+    if (endDate.getTime() > new Date().getTime()) {
+      countdownInterval = setInterval(updateTimer, 1000)
+    }
+  }
+
+  // Watchers
+  watch(
+    depositHistoryFromStore,
+    (newItems) => {
+      localDepositItems.value = [...newItems] // Keep a local reactive copy
+      const pending = newItems.find((item) => item.status === 'PENDING')
+      if (pending) {
+        startOrUpdateCountdown(pending)
+      } else {
+        if (countdownInterval) clearInterval(countdownInterval)
+        countdownActive.value = false
+      }
+    },
+    { deep: true, immediate: true }
+  ) // Immediate to run on component mount if history is already there
+
+  // Event Bus Handlers
+  // The 'updatePurchases' event logic was commented out.
+  // If needed, it should be implemented clearly. For example:
+  eventBus.on('updatePurchases', (updatedPurchase: DepositHistoryItem) => {
+    console.log('Received updatePurchases event:', updatedPurchase)
+    // Find and update the item in localDepositItems or dispatch an action to the store
+    const index = localDepositItems.value.findIndex((item) => item.id === updatedPurchase.id)
+    if (index !== -1) {
+      localDepositItems.value.splice(index, 1, updatedPurchase)
+    } else if (updatedPurchase.status === 'PENDING') {
+      localDepositItems.value.unshift(updatedPurchase) // Add new pending
+    }
+    // Re-evaluate countdown if necessary
+    const currentPending = localDepositItems.value.find((item) => item.status === 'PENDING')
+    startOrUpdateCountdown(currentPending)
+  })
+
+  // Lifecycle Hooks
   onMounted(async () => {
-    if (ran === false) await dispatchUserDepositHistory();
-    ran = true;
-    //@ts-ignore
-    depositItems.value = getDepositHistoryItems;
-  });
+    if (isAuthenticated.value) {
+      // Fetch only if authenticated
+      await dispatchUserDepositHistory()
+    }
+    // Example: currentExp could be fetched or derived from currentUser or vipInfo
+    // if (currentUser.value) {
+    //   currentExp.value = currentUser.value.totalXp || 0;
+    // }
+  })
+
+  onUnmounted(() => {
+    if (countdownInterval) {
+      clearInterval(countdownInterval)
+    }
+    // eventBus.off('updatePurchases') // If the listener was added
+  })
 </script>
 
 <template>
-  <div
-    ref="target"
-    class="animate__animated animate__slideInDown flex"
-    style="width: 100%"
-  >
-    <div ref="target" class="tbar flex flex-row justify-stretch">
-      <div class="flex flex-row w-100 justify-start">
-        <!-- <PlayerAvatar @click="router.push('/client/profile')" style="z-index: 99; max-height: 60px" /> -->
+  <div class="flex w-full animate__animated animate__slideInDown">
+    <div class="tbar flex flex-row justify-between items-center w-full px-2">
+      <div class="flex flex-row items-center">
         <PlayerAvatar
-          @click="router.push('/client/profile')"
-          style="z-index: 99; width: 55px"
-          :currentExp="currentExp"
+          class="z-[99] w-[55px] cursor-pointer"
+          :current-exp="currentExp"
           :sparkle="sparkle"
-          :maxExp="100"
+          :max-exp="maxExp"
+          @click="navigateToProfile"
         />
-        <div
-          id="PlayerCredits"
-          class="flex flex-col color-white pl-1 pb-1 text-center"
-        >
+        <div id="PlayerCredits" class="flex flex-col text-white pl-2 text-center">
           <div
             v-if="countdownActive"
-            class="w-full flex flex-row"
-            style="
-              height: 14px;
-              font-size: 16px;
-              font-weight: 600;
-              line-height: 0.5;
-              margin-left: 6px;
-              margin-top: 2px;
-            "
+            class="flex items-center text-sm font-semibold h-[20px] mb-0.5"
           >
-            <img
-              src="/images/layout/cashappicon.avif"
-              width="14px"
-              style="margin-right: 7px"
-            />
-            ends:
-            {{
-              remaining_minutes > 1
-                ? `${remaining_minutes}m`
-                : `0m:${remaining_seconds_display}`
-            }}
+            <img src="/images/layout/cashappicon.avif" alt="CashApp" class="w-3.5 h-3.5 mr-1.5" />
+            <span class="leading-none">Ends: {{ formattedCountdown }}</span>
           </div>
+          <div v-else class="h-[20px] mb-0.5" />
+
           <div
-            v-else
-            class="w-full flex flex-row"
-            style="height: 20px; font-size: 26px; font-weight: 600"
-          />
-          <div
-            class="glow-light flex flex-row items-center justify-center"
-            style="
-              z-index: 999;
-              line-height: 14px;
-              text-align: center;
-              height: 30px;
-              min-width: 100px;
-              max-width: 100px;
-              font-size: 23px;
-              padding-top: 1px;
-              padding-left: 6px;
-              margin-top: 2px;
-              margin-left: 6px;
-              font-weight: 600;
-              background-size: cover;
-              background-image: url(&quot;/images/layout/money_backing.png&quot;);
-            "
+            class="glow-light flex items-center justify-center h-[30px] min-w-[100px] max-w-[120px] px-2 text-xl font-semibold bg-cover bg-center"
+            style="background-image: url('/images/layout/money_backing.png')"
           >
-            <div
-              v-if="currentUser !== undefined"
-              class="flex justify-center mt--2 glow"
-              style="
-                line-height: 0.6;
-                text-align: center;
-                letter-spacing: 0px;
-                font-weight: 800;
-              "
+            <span
+              v-if="currentUser"
+              class="glow color-white leading-none tracking-tight font-extrabold"
             >
-              {{ currentProfile?.balance }}
-            </div>
+              {{ userBalance }}
+            </span>
           </div>
         </div>
       </div>
+
       <div
-        @click="openSettings"
-        style="
-          height: 50px;
-          width: 50px;
-          position: absolute;
-          top: 0px;
-          right: 8px;
-          gap: 0px;
-          margin: 0px;
-          padding: 4px;
-          background-size: cover;
-          z-index: 999999;
-        "
+        class="relative w-[50px] h-[50px] cursor-pointer p-1 z-[999999]"
+        @click="openSettingsModal"
       >
         <img
-          style="
-            top: 0px;
-            right: 8px;
-            gap: 0px;
-            margin: 0px;
-            padding: 0px;
-            background-size: cover;
-            z-index: 999999;
-          "
           src="/images/layout/settings.avif"
-          @click="openSettings"
+          alt="Settings"
+          class="w-full h-full object-contain"
         />
       </div>
-      <!-- <div
-      class=""
-      style="
-        position: absolute;
-        top: 0px;
-        right: 8px;
-        gap: 0px;
-        margin: 0px;
-        padding: 0px;
-        background-size: cover;
-        z-index: 99;
-      "
-    >
-      <img style="width: 52px; height: 52px" src="@/assets/bars/settings.avif" />
-    </div> -->
     </div>
   </div>
-  <!-- </div> -->
 </template>
 
 <style scoped>
   .tbar {
     background-size: cover;
-
-    position: absolute;
+    /* position: absolute; */ /* Removed to be part of flex flow */
     width: 100%;
+    min-height: 62px; /* Use min-height for responsiveness */
     max-height: 62px;
-
-    /* height: 52px; */
     background-position: center;
-    top: 0px;
-    left: 0px;
+    /* top: 0px; */ /* Handled by flex layout */
+    /* left: 0px; */ /* Handled by flex layout */
     background-repeat: no-repeat;
-    background-image: url("/images/layout/topback.png");
+    background-image: url('/images/layout/topback.png');
+    /* Consider adding padding directly here if consistent or use Tailwind padding on child elements */
   }
 
-  .moveout {
-    animation: moveout 0.32s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-    transform: translate(50, 0, 0);
-  }
+  /* Removed .moveout and @keyframes moveout as it wasn't used in the template */
 
-  @keyframes moveout {
-    100% {
-      transform: translate3d(-50px, 0, 0);
-    }
+  /* If .glow and .glow-light are purely for text effects,
+   consider Tailwind's text-shadow utilities or custom plugins.
+   If they are more complex, keeping them here is fine.
+*/
+  .glow {
+    font-size: 22px;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 1.5px;
+    /* font-family: 'Hind Guntur', sans-serif; */
+    /* font-weight: 800;
+  font-style: normal; */
+    /* animation: 'glow'; */
+    text-shadow:
+      1px 1px 3px #c74dff,
+      0 0 2px #c74dff,
+      0 0 4px #720fc4;
   }
 </style>

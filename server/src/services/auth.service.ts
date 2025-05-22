@@ -101,7 +101,6 @@ export async function findOrCreateUserByGoogleProfile(
         profile: true,
       },
     })
-    console.log(user)
     if (user) {
       // User found by email, link Google ID and update info
       user = await db.user.update({
@@ -155,7 +154,6 @@ export async function createUserWithProfileAndAccount(userData: {
   // avatar?: string
   /// 800
 }) {
-  console.log(userData)
   return prisma.$transaction(async () => {
     console.log('transaction')
     let defaultOperator: any = await prisma.operatorAccess.findFirst()
@@ -415,7 +413,6 @@ export async function google(c: Context, req: HonoRequest): Promise<any> {
     user = await db.user.findUnique({
       where: { email: (signInUsername as any)?.user.email },
     })
-    console.log(user)
     if (user) {
       // User found by email, link Google ID and update info
       user = await db.user.update({
@@ -448,7 +445,7 @@ export async function google(c: Context, req: HonoRequest): Promise<any> {
 }
 
 type GetSessionResponse = {
-  user?: any
+  user?: UserWithProfile
   access_token?: string
   code: number
   status?: number
@@ -456,10 +453,10 @@ type GetSessionResponse = {
 }
 
 export async function getSession(req: HonoRequest): Promise<GetSessionResponse> {
+  console.log('getting session')
   const session = await auth.api.getSession({
     headers: req.raw.headers,
   })
-  console.log(session)
   if (!session || session == null) {
     return {
       message: 'Not Authorized',
@@ -479,7 +476,7 @@ export async function getSession(req: HonoRequest): Promise<GetSessionResponse> 
   }
   if (userWprofile.profile == undefined || userWprofile.profile == null)
     userWprofile = await db.user.update({
-      where: { id: user.id },
+      where: { id: userWprofile.id },
       data: {
         isOnline: true,
         status: UserStatus.ONLINE,
@@ -501,7 +498,7 @@ export async function getSession(req: HonoRequest): Promise<GetSessionResponse> 
     })
 
   return {
-    user: userWprofile,
+    user: userWprofile as UserWithProfile,
     access_token: session?.session.token,
     code: 200,
     // }),
@@ -618,7 +615,6 @@ export async function login(req: HonoRequest) {
   // const user = await validateUser(username, password)
   const user = signInUsername && 'user' in signInUsername ? signInUsername.user : null
   const token = signInUsername && 'token' in signInUsername ? signInUsername.token : undefined
-  console.log(user)
   if (user == null) {
     return new Response(JSON.stringify({ message: 'Invalid credentials', code: 401 }), {
       status: 401,

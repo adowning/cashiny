@@ -1,105 +1,105 @@
 <script lang="ts" setup>
-// import { useUserStore } from '@/stores/user'
-import { useDepositStore } from '@/stores/deposit';
-import { currency } from '@/utils/currency';
-// import { computed, ref } from 'vue'
-import type { Product } from 'shared/prisma/interfaces';
+  // import { useUserStore } from '@/stores/user'
+  import { useDepositStore } from '@/stores/deposit.store'
+  import { currency } from '@/utils/currency'
+  // import { computed, ref } from 'vue'
+  import type { Product } from 'shared/prisma/interfaces'
 
-import type { ProductWithSelected } from './ShopView.vue';
+  import type { ProductWithSelected } from './ShopView.vue'
 
-const eventBus = useEventManager();
+  const eventBus = useEventManager()
 
-// const props = defineProps(['currentUser', 'products'])
-// const userStore = useUserStore()
-const depositStore = useDepositStore();
-// const $bus = useEventsBus()
-// const activeProfile = userStore.currentUser.activeProfile
-// const products = inject('productsData') as any
-// const selectedProduct = ref<ProductWithSelected | null>(null)
+  // const props = defineProps(['currentUser', 'products'])
+  // const userStore = useUserStore()
+  const depositStore = useDepositStore()
+  // const $bus = useEventsBus()
+  // const activeProfile = userStore.currentUser.activeProfile
+  // const products = inject('productsData') as any
+  // const selectedProduct = ref<ProductWithSelected | null>(null)
 
-// const productList = ref<ProductWithSelected[]>([])
-const _productList = depositStore.getOperatorData?.products;
-const productList = ref<ProductWithSelected[]>([]);
-// @ts-ignore
-// _productList.forEach((item: Product) => {
-//   const pWithSel: ProductWithSelected = {
-//     ...item,
-//     selected: false,
-//   }
-//   productList.value.push(pWithSel)
-// })
-// props.products.forEach((p: any) =>
-//   productList.value.push({
-//     ...p,
-//     selected: false,
-//   }),
-// )
-// const currentUser = inject('userData') as any
-// const currentUser = props.currentUser
-function priceFormatted(price: number) {
-  return currency(price, 'en-US', { currency: 'USD' });
-}
+  // const productList = ref<ProductWithSelected[]>([])
+  const _productList = depositStore.getOperatorData?.products
+  const productList = ref<ProductWithSelected[]>([])
+  // @ts-ignore
+  // _productList.forEach((item: Product) => {
+  //   const pWithSel: ProductWithSelected = {
+  //     ...item,
+  //     selected: false,
+  //   }
+  //   productList.value.push(pWithSel)
+  // })
+  // props.products.forEach((p: any) =>
+  //   productList.value.push({
+  //     ...p,
+  //     selected: false,
+  //   }),
+  // )
+  // const currentUser = inject('userData') as any
+  // const currentUser = props.currentUser
+  function priceFormatted(price: number) {
+    return currency(price, 'en-US', { currency: 'USD' })
+  }
 
-// const usingCustom = ref(false)
-// const stepperAmount = ref(1)
-// const selectedProduct = ref<ProductWithSelected>({
-//   id: '0  ',
-//   amountToReceiveInCredits: 0,
-//   description: '',
-//   type: '',
-//   shopId: activeProfile.shopId,
-//   bonusSpins: 0,
-//   selected: false,
-//   title: '',
-//   url: '',
-//   priceInCents: 0,
-//   isPromo: false,
-//   // createdAt: new Date(),
-//   bonusCode: undefined,
-//   bonusTotalInCredits: 0,
-//   discountInCents: 0,
-//   totalDiscountInCents: 0,
-//   Transaction: [],
-//   createdAt: '',
-//   updatedAt: '',
-// })
-const tempDepositAmount = ref(0);
+  // const usingCustom = ref(false)
+  // const stepperAmount = ref(1)
+  // const selectedProduct = ref<ProductWithSelected>({
+  //   id: '0  ',
+  //   amountToReceiveInCredits: 0,
+  //   description: '',
+  //   type: '',
+  //   shopId: activeProfile.shopId,
+  //   bonusSpins: 0,
+  //   selected: false,
+  //   title: '',
+  //   url: '',
+  //   priceInCents: 0,
+  //   isPromo: false,
+  //   // createdAt: new Date(),
+  //   bonusCode: undefined,
+  //   bonusTotalInCredits: 0,
+  //   discountInCents: 0,
+  //   totalDiscountInCents: 0,
+  //   Transaction: [],
+  //   createdAt: '',
+  //   updatedAt: '',
+  // })
+  const tempDepositAmount = ref(0)
 
-// const calculatedSpins = computed(() => {
-//   return tempDepositAmount.value / 10
-// })
+  // const calculatedSpins = computed(() => {
+  //   return tempDepositAmount.value / 10
+  // })
 
-function selectProduct(val: any) {
-  // console.log(val.id)
-  // if (val.id !== '0') {
-  //   usingCustom.value = false
-  //   tempDepositAmount.value = val.price
-  // } else {
-  //   //console.log(stepperAmount.value)
-  //   usingCustom.value = true
-  //   tempDepositAmount.value = stepperAmount.value * 100
-  // }
-  console.log(val);
-  depositStore.setSelectedProduct(val);
-  productList.value.forEach((product: any) => {
-    product.selected = false;
-  });
-  val.selected = true;
-  // $bus.$emit(eventTypes.shopSelectProduct, selectedProduct)
+  function selectProduct(val: any) {
+    // console.log(val.id)
+    // if (val.id !== '0') {
+    //   usingCustom.value = false
+    //   tempDepositAmount.value = val.price
+    // } else {
+    //   //console.log(stepperAmount.value)
+    //   usingCustom.value = true
+    //   tempDepositAmount.value = stepperAmount.value * 100
+    // }
+    console.log(val)
+    depositStore.setSelectedProduct(val)
+    productList.value.forEach((product: any) => {
+      product.selected = false
+    })
+    val.selected = true
+    // $bus.$emit(eventTypes.shopSelectProduct, selectedProduct)
 
-  // state.value.selectedProduct = val
-  // console.log(state.value.selectedProduct)
-}
-_productList.forEach((item: Product) => {
-  const pWithSel: ProductWithSelected = {
-    ...item,
-    selected: false,
-  };
-  productList.value.push(pWithSel);
-});
-// onMounted(() => {
+    // state.value.selectedProduct = val
+    // console.log(state.value.selectedProduct)
+  }
+  _productList.forEach((item: Product) => {
+    const pWithSel: ProductWithSelected = {
+      ...item,
+      selected: false,
+    }
+    productList.value.push(pWithSel)
+  })
+  // onMounted(() => {
 
-// })
+  // })
 </script>
 
 <template>

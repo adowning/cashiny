@@ -1,48 +1,48 @@
 <script setup lang="ts">
-  import LeaderJson from "@/assets/anim/leadernew.json";
-  import Part3Json from "@/assets/anim/part3.json";
-  import { useUserStore } from "@/stores/user";
-  import { useAppBarStore } from "@/stores/appBar";
-  import { useDepositStore } from "@/stores/deposit";
-  import { ref } from "vue";
-  import VaultJson from "@/assets/anim/vault.json";
+  import LeaderJson from '@/assets/anim/leadernew.json'
+  import Part3Json from '@/assets/anim/part3.json'
+  import { useAppBarStore } from '@/stores/appBar.store'
+  import { useDepositStore } from '@/stores/deposit.store'
+  import { ref } from 'vue'
+  import VaultJson from '@/assets/anim/vault.json'
 
-  import { useEventManager } from "@/composables/EventManager";
-  const eventBus = useEventManager();
+  import { useEventManager } from '@/composables/EventManager'
+  const eventBus = useEventManager()
 
-  const target = ref();
+  const target = ref()
 
-  const userStore = useUserStore();
-  const depositStore = useDepositStore();
-  const appBarStore = useAppBarStore();
-  const currentUser = userStore.currentUser;
-  const pressed = ref(false);
-  const { isMobile } = useDisplay();
-  const leaderBoardOpen = ref(false);
-  const rightDrawer = ref(false);
-  const bonusDrawer = ref(false);
-  const wheelPageOpen = ref(false);
+  const authStore = useAuthStore()
+  // --- State & Getters from Sores (using storeToRefs for reactivity) ---
+  const { currentUser } = storeToRefs(authStore)
+  const depositStore = useDepositStore()
+  const appBarStore = useAppBarStore()
+  const pressed = ref(false)
+  const { isMobile } = useDisplay()
+  const leaderBoardOpen = ref(false)
+  const rightDrawer = ref(false)
+  const bonusDrawer = ref(false)
+  const wheelPageOpen = ref(false)
   function toggleChat() {
-    rightDrawer.value = !rightDrawer.value;
-    appBarStore.setRightBarToggle(rightDrawer.value);
+    rightDrawer.value = !rightDrawer.value
+    appBarStore.setRightBarToggle(rightDrawer.value)
   }
   function toggleBonusDrawer() {
-    bonusDrawer.value = !bonusDrawer.value;
-    appBarStore.setBonusDashboardDialogVisible(bonusDrawer.value);
+    bonusDrawer.value = !bonusDrawer.value
+    appBarStore.setBonusDashboardDialogVisible(bonusDrawer.value)
   }
   function _toggleShopOpen() {
-    console.log("asdf");
-    depositStore.toggleShopOpen();
+    console.log('asdf')
+    depositStore.toggleShopOpen()
   }
   function changeLeaderBoardOpen() {
-    console.log(leaderBoardOpen);
-    leaderBoardOpen.value = true;
-    eventBus.emit("leaderBoardOpen", leaderBoardOpen.value);
+    console.log(leaderBoardOpen)
+    leaderBoardOpen.value = true
+    eventBus.emit('leaderBoardOpen', leaderBoardOpen.value)
   }
   function changeWheelPageOpen() {
-    pressed.value = !pressed.value;
-    leaderBoardOpen.value = true;
-    eventBus.emit("wheelPageOpen", wheelPageOpen.value);
+    pressed.value = !pressed.value
+    leaderBoardOpen.value = true
+    eventBus.emit('wheelPageOpen', wheelPageOpen.value)
   }
 </script>
 
@@ -54,7 +54,7 @@
       style="
         width: 100%;
         z-index: 888;
-        background-image: url(&quot;/images/bottom/slice.avif&quot;);
+        background-image: url('/images/bottom/slice.avif');
         background-size: contain;
       "
     >
@@ -77,29 +77,18 @@
             class="flex"
             image-src="/images/bottom/leadernew.png"
             :sprite-sheet-data="LeaderJson"
-            style="
-              background-repeat: no-repeat;
-              z-index: 10;
-              margin-top: -58px;
-              margin-right: 5px;
-            "
+            style="background-repeat: no-repeat; z-index: 10; margin-top: -58px; margin-right: 5px"
             :speed="30"
             :delay="3500"
             :offset="12000"
             :autoplay="true"
           />
-          <span
-            class="glow rounded-lg px-1"
-            style="font-size: 16px; line-height: 1.3"
+          <span class="glow rounded-lg px-1" style="font-size: 16px; line-height: 1.3"
             >Battles</span
           >
         </div>
         <div class="flex w-5" />
-        <div
-          class="wn-btn-item mr-3 pt-22"
-          style="margin-top: 19px"
-          @click="_toggleShopOpen"
-        >
+        <div class="wn-btn-item mr-3 pt-22" style="margin-top: 19px" @click="_toggleShopOpen">
           <VGSprite
             id="vaultIcon"
             class="flex"
@@ -151,7 +140,7 @@
           z-index: 99999;
           width: 90px;
           /* margin-left: 50px; */
-          background-image: url(&quot;/images/bottom/bottombarback-center3.avif&quot;);
+          background-image: url('/images/bottom/bottombarback-center3.avif');
         "
       />
       <VGSprite

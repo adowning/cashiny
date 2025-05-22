@@ -1,7 +1,7 @@
-import { NETWORK_CONFIG } from '@cashflow/types';
+import { NETWORK_CONFIG } from '@cashflow/types'
 
-import { createErrorResponse, createSuccessResponse } from '.';
-import createRouter from '../create-router';
+import { createErrorResponse, createSuccessResponse } from '.'
+import createRouter from '../create-router'
 import {
   getGameBigWin,
   getGameEnter,
@@ -16,56 +16,61 @@ import {
   getGameUserGame,
   rtgSettings,
   rtgSpin,
-} from '../services/game.service';
-import { handleGameCommand } from '@/services/php.service';
+} from '../services/game.service'
+import { handleGameCommand } from '@/services/php.service'
 
-const router = createRouter();
+const router = createRouter()
 router.get(NETWORK_CONFIG.GAME_INFO.GAME_LIST, async (c) => {
-  return await getGameList();
-});
+  return await getGameList()
+})
 router.get(NETWORK_CONFIG.GAME_INFO.GAME_CATEGORY, async (c) => {
-  return await getGameGameCategory(c.req);
-});
+  return await getGameGameCategory(c.req)
+})
 router.get(NETWORK_CONFIG.GAME_INFO.GAME_SEARCH, async (c) => {
-  return await getGameSearch(c.req);
-});
+  try {
+    const gameList = await getGameSearch(c.req)
+    return createSuccessResponse(gameList)
+  } catch (e: any) {
+    return createErrorResponse(e.message, 500)
+  }
+})
 router.get(NETWORK_CONFIG.GAME_INFO.GAME_ENTER, async (c) => {
-  return await getGameEnter(c.req, c.get('user')!, c.get('session')!);
-});
+  return await getGameEnter(c.req, c.get('user')!, c.get('session')!)
+})
 router.get(NETWORK_CONFIG.GAME_INFO.USER_GAME, async (c) => {
-  return await getGameUserGame(c.req);
-});
+  return await getGameUserGame(c.req)
+})
 router.get(NETWORK_CONFIG.GAME_INFO.FAVORITE_GAME, async (c) => {
-  return await getGameFavoriteGame(c.req, c.get('user')!);
-});
+  return await getGameFavoriteGame(c.req, c.get('user')!)
+})
 router.get(NETWORK_CONFIG.GAME_INFO.FAVORITE_GAME_LIST, async (c) => {
-  return await getGameFavoriteGameList();
-});
+  return await getGameFavoriteGameList()
+})
 router.get(NETWORK_CONFIG.GAME_INFO.GAME_HISTORY, async (c) => {
-  return await getGameHistory(c.req, c.get('user')!);
-});
+  return await getGameHistory(c.req, c.get('user')!)
+})
 router.get(NETWORK_CONFIG.GAME_INFO.GAME_BIGWIN, async () => {
-  return await getGameBigWin();
+  return await getGameBigWin()
 
   // try {
   //   return createSuccessResponse(await getGameBigWin());
   // } catch (e: any) {
   //   return createErrorResponse(e.message, 500);
   // }
-});
+})
 router.get(NETWORK_CONFIG.GAME_INFO.SPIN, async (c) => {
-  return await getGameSpin();
-});
+  return await getGameSpin()
+})
 router.get(NETWORK_CONFIG.GAME_INFO.SPINPAGE, async (c) => {
-  return await getGameSpinPage();
-});
+  return await getGameSpinPage()
+})
 router.get(NETWORK_CONFIG.GAME_INFO.RTG_SETTINGS, async (c) => {
-  return await rtgSettings(c, c.get('user')!, c.get('session')!);
-});
+  return await rtgSettings(c, c.get('user')!, c.get('session')!)
+})
 router.get(NETWORK_CONFIG.GAME_INFO.RTG_SPIN, async (c) => {
-  return await rtgSpin(c, c.get('user')!, c.get('session')!);
-});
+  return await rtgSpin(c, c.get('user')!, c.get('session')!)
+})
 router.get('/php', async (c) => {
-  return await handleGameCommand(c, c.get('user')!);
-});
-export default router;
+  return await handleGameCommand(c, c.get('user')!)
+})
+export default router

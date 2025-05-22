@@ -66,17 +66,19 @@ export default function createApp() {
       headers: c.req.raw.headers,
     })
 
-    if (!session) {
+    if (!session || !session.user) {
+      // Also check if session.user exists
       c.set('user', null)
       c.set('session', null)
-      return next()
+    } else {
+      c.set('user', session.user as BetterAuthUser) // Set the 'user' object
+      c.set('session', session.session)
+      // The 'user_with_profile' will be derived and set by the isAuthenticated middleware
     }
-    c.set('user_with_profile')
-    c.set('session', session.session)
     return next()
   })
-  registerRoutes(app)
   app.use(isAuthenticated)
+  registerRoutes(app)
   app.use(notFound)
   app.onError(onError)
   return app

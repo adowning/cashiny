@@ -1,7 +1,7 @@
 // // apps/client/src/composables/useBetterAuth.ts
 // import { onMounted, onUnmounted, computed, watch } from "vue";
-// import { useAuthStore } from "../stores/auth";
-// import { useUserStore, type UserData } from "../stores/user";
+// import { useAuthStore } from "../stores/auth.store";
+// import { useUserStore, type UserData } from "../stores/user.store";
 // import { useProfileStore, type ProfileData } from "../stores/profile";
 // import { useCashflowSocket } from "./useCashflowSocket"; // Renamed from useZilaWebsocket
 // import type {

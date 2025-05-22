@@ -1,11 +1,11 @@
 // import { db } from ""; // Assuming Prisma client path
 // Helper function to get a random element from an array
 // const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
-import { auth } from '@/auth';
-import { WebSocketRouter } from '@/routes/socket.router';
-import { AppWsData } from '@/server';
-import { db, GameSession, GameSpin } from '@cashflow/database';
-import type { Prisma } from '@prisma/client';
+import { auth } from '@/auth'
+import { WebSocketRouter } from '@/routes/socket.router'
+import { AppWsData } from '@/server'
+import { db, Game, GameSession, GameSpin } from '@cashflow/database'
+import type { Prisma } from '@prisma/client'
 import {
   GameBigWinData,
   GameBigWinItem,
@@ -22,17 +22,18 @@ import {
   GetGameFavoriteListResponse,
   GetGameHistoryResponse,
   GetGameSearchResponse,
+  PaginatedResponse,
   RawGameSpinBody,
   Search,
   UserWithProfile,
-} from '@cashflow/types';
-import { faker } from '@faker-js/faker';
-import { Session } from 'better-auth';
-import { Server } from 'bun';
-import { Context, HonoRequest } from 'hono';
-import { uuid } from 'short-uuid';
-import { connection } from 'websocket';
-import { buildJson, buildJsonForSpin } from './buildjson';
+} from '@cashflow/types'
+import { faker } from '@faker-js/faker'
+import { Session } from 'better-auth'
+import { Server } from 'bun'
+import { Context, HonoRequest } from 'hono'
+import { uuid } from 'short-uuid'
+import { connection } from 'websocket'
+import { buildJson, buildJsonForSpin } from './buildjson'
 
 // class NoLimitRouter {
 //   private server!: Server; // Use definite assignment assertion `!`
@@ -105,13 +106,12 @@ import { buildJson, buildJsonForSpin } from './buildjson';
 // const wsRouter = new NoLimitRouter<AppWsData>(); // CORRECT
 
 // Helper function to get a random number within a range
-const getRandomInt = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
 
 export async function getGameList() {
   const games = await db.game.findMany({
     where: { isActive: true },
-  });
+  })
 
   // const list: Game = {
   //   id: "",
@@ -167,9 +167,9 @@ export async function getGameList() {
     code: 200,
     list: games,
     total: games.length,
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 // async function getRtpForPlayerToday(
 //   currentUser: User,
@@ -216,18 +216,18 @@ async function getRtpForGameSession(
       grossWinAmount: true,
       wagerAmount: true,
     },
-  });
-  const sessionTotalWinAmount = (aggregateDataForGameSession._sum?.grossWinAmount || 0) + winAmount;
-  const sessionTotalBetAmount = (aggregateDataForGameSession._sum?.wagerAmount || 0) + betAmount;
+  })
+  const sessionTotalWinAmount = (aggregateDataForGameSession._sum?.grossWinAmount || 0) + winAmount
+  const sessionTotalBetAmount = (aggregateDataForGameSession._sum?.wagerAmount || 0) + betAmount
 
-  let gameSessionRTP = calculateRTP(sessionTotalWinAmount, sessionTotalBetAmount).toString();
+  let gameSessionRTP = calculateRTP(sessionTotalWinAmount, sessionTotalBetAmount).toString()
   if (isNaN(Number(gameSessionRTP))) {
-    gameSessionRTP = '0';
+    gameSessionRTP = '0'
   } else {
-    gameSessionRTP = parseInt(gameSessionRTP);
+    gameSessionRTP = parseInt(gameSessionRTP)
   }
 
-  return [gameSessionRTP, sessionTotalWinAmount, sessionTotalBetAmount];
+  return [gameSessionRTP, sessionTotalWinAmount, sessionTotalBetAmount]
 }
 /**
  * Handles fetching game categories.
@@ -237,10 +237,10 @@ async function getRtpForGameSession(
 export async function getGameGameCategory(req: HonoRequest): Promise<Response> {
   try {
     // Extract query parameters if needed (e.g., type=developers)
-    const url = new URL(req.url);
-    const type = url.searchParams.get('type');
+    const url = new URL(req.url)
+    const type = url.searchParams.get('type')
 
-    const categories: GameCategory[] = [];
+    const categories: GameCategory[] = []
 
     if (type === 'developers') {
       // Fetch operators (acting as developers in this context based on schema)
@@ -285,14 +285,14 @@ export async function getGameGameCategory(req: HonoRequest): Promise<Response> {
       code: 200,
       data: categories,
       messsage: 'Game categories retrieved successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error fetching game categories:', error);
+    console.error('Error fetching game categories:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 
@@ -301,12 +301,14 @@ export async function getGameGameCategory(req: HonoRequest): Promise<Response> {
  * @param req HonoRequest
  * @returns Response
  */
-export async function getGameSearch(req: HonoRequest): Promise<Response> {
+export async function getGameSearch(
+  req: HonoRequest
+): Promise<GameSearchResponse | { message: string; code: number }> {
   try {
-    const url = new URL(req.url);
-    const searchTerm = url.searchParams.get('q') || ''; // Get search term from query params
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
-    const offset = parseInt(url.searchParams.get('offset') || '0', 10);
+    const url = new URL(req.url)
+    const searchTerm = url.searchParams.get('q') || '' // Get search term from query params
+    const limit = parseInt(url.searchParams.get('limit') || '20', 10)
+    const offset = parseInt(url.searchParams.get('offset') || '0', 10)
     // Search for games by name or title
     // const gamesessions = await db.gameSession.findMany();
 
@@ -330,7 +332,7 @@ export async function getGameSearch(req: HonoRequest): Promise<Response> {
       },
       take: limit,
       skip: offset,
-    });
+    })
     const totalGames = await db.game.count({
       where: {
         isActive: true,
@@ -339,7 +341,7 @@ export async function getGameSearch(req: HonoRequest): Promise<Response> {
           { title: { contains: searchTerm, mode: 'insensitive' } },
         ],
       },
-    });
+    })
 
     const searchResults: Search[] = games.map((game) => ({
       id: game.id, // Using game.id as the ID
@@ -348,24 +350,35 @@ export async function getGameSearch(req: HonoRequest): Promise<Response> {
       image: `/images/${game.provider}/${game.name}.webp`, // Placeholder for image
       developer: game.provider || 'Unknown', // Using developer as developer
       is_demo: false, //game.denomination === 0, // Assuming 0 denomination means demo
-    }));
+    }))
 
+    searchResults.forEach((game) => {
+      const _developer = game.name.substring(
+        game.name.toLocaleLowerCase().length,
+        game.name.toLowerCase().length - 3
+      )
+      let developer
+      if (_developer?.toLowerCase().includes('ng')) developer = 'netgame'
+      if (_developer?.toLowerCase().includes('net')) developer = 'netent'
+      if (_developer?.toLowerCase().includes('rtg')) developer = 'redtiger'
+      if (_developer?.toLowerCase().includes('nlc')) developer = 'nolimit'
+      if (_developer?.toLowerCase().includes('bfg')) developer = 'bigfish'
+      game.developer = developer as string
+    })
     const responseData: GameSearchResponse = {
-      list: searchResults,
+      items: searchResults,
       total: totalGames,
-    };
+    }
 
     const response: GetGameSearchResponse = {
       code: 200,
       data: responseData,
       message: 'Game search results retrieved successfully',
-    };
-    return new Response(JSON.stringify(response));
+    }
+    return responseData
   } catch (error) {
-    console.error('Error searching games:', error);
-    return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
-      status: 500,
-    });
+    console.error('Error searching games:', error)
+    return { message: `Internal server error: ${error}`, code: 500 }
   }
 }
 
@@ -376,13 +389,13 @@ export async function getGameSearch(req: HonoRequest): Promise<Response> {
  */
 export async function getGameEnter(
   req: HonoRequest,
-  user: Partial<User>,
+  user: Partial<UserWithProfile>,
   session: Session
 ): Promise<Response> {
   try {
-    const body: GameEnterBody = await req.json();
-    const gameId = Array.isArray(body.id) ? body.id[0] : body.id; // Handle single ID or array
-    const isDemo = body.demo || false;
+    const body: GameEnterBody = await req.json()
+    const gameId = Array.isArray(body.id) ? body.id[0] : body.id // Handle single ID or array
+    const isDemo = body.demo || false
 
     // Fetch game details
     const game = await db.game.findUnique({
@@ -393,12 +406,12 @@ export async function getGameEnter(
         operatorId: true,
         // Add other fields needed for game entry if available in schema
       },
-    });
+    })
 
     if (!game) {
       return new Response(JSON.stringify({ message: 'Game not found', code: 404 }), {
         status: 404,
-      });
+      })
     }
 
     // Here you would typically interact with a game developer's API
@@ -411,7 +424,7 @@ export async function getGameEnter(
       developer: game.operatorId || 'unknown', // Using operatorId as developer identifier
       reserve: faker.string.uuid(), // Placeholder for a session token or similar
       weburl: `https://example.com/launchgame?gameId=${game.id}&demo=${isDemo}&userId=${user.id}`, // Placeholder URL
-    };
+    }
 
     const gameSession = await db.gameSession.create({
       data: {
@@ -424,19 +437,19 @@ export async function getGameEnter(
         totalWon: 0, // Will be updated by spins (in cents)
         // currencyId will be determined by the first spin or a default
       },
-    });
+    })
     const response: GetGameEnterResponse = {
       code: 200,
       data: gameEnterData,
       gameSession,
       message: 'Game entry data retrieved successfully',
-    };
-    return new Response(JSON.stringify(response));
+    }
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error entering game:', error);
+    console.error('Error entering game:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 /**
@@ -449,8 +462,8 @@ export async function registerGameRound(
   session: Session
 ): Promise<Response> {
   try {
-    const body: RawGameSpinBody = await req.json();
-    const gameId = body.game_id; // Array.isArray(body.id) ? body.id[0] : body.id; // Handle single ID or array
+    const body: RawGameSpinBody = await req.json()
+    const gameId = body.game_id // Array.isArray(body.id) ? body.id[0] : body.id; // Handle single ID or array
     // const isDemo = body.demo || false;
 
     // Fetch game details
@@ -462,12 +475,12 @@ export async function registerGameRound(
         operatorId: true,
         // Add other fields needed for game entry if available in schema
       },
-    });
+    })
 
     if (!game) {
       return new Response(JSON.stringify({ message: 'Game not found', code: 404 }), {
         status: 404,
-      });
+      })
     }
 
     // Here you would typically interact with a game developer's API
@@ -480,7 +493,7 @@ export async function registerGameRound(
       developer: game.operatorId || 'unknown', // Using operatorId as developer identifier
       reserve: faker.string.uuid(), // Placeholder for a session token or similar
       weburl: `https://example.com/launchgame?gameId=${game.id}&userId=${user.id}`, // Placeholder URL
-    };
+    }
 
     const gameSession = await db.gameSession.create({
       data: {
@@ -493,19 +506,19 @@ export async function registerGameRound(
         totalWon: 0, // Will be updated by spins (in cents)
         // currencyId will be determined by the first spin or a default
       },
-    });
+    })
     const response: GetGameEnterResponse = {
       code: 200,
       data: gameEnterData,
       gameSession,
       message: 'Game entry data retrieved successfully',
-    };
-    return new Response(JSON.stringify(response));
+    }
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error entering game:', error);
+    console.error('Error entering game:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 /**
@@ -515,11 +528,11 @@ export async function registerGameRound(
  */
 export async function getGameUserGame(req: HonoRequest): Promise<Response> {
   try {
-    const body: GameUserBody = await req.json();
-    const categorySlug = body.game_categories_slug;
-    const page = body.page || 1;
-    const limit = body.limit || 20;
-    const offset = (page - 1) * limit;
+    const body: GameUserBody = await req.json()
+    const categorySlug = body.game_categories_slug
+    const page = body.page || 1
+    const limit = body.limit || 20
+    const offset = (page - 1) * limit
 
     // Fetch games based on category slug (assuming category slug maps to gamebank or operator slug)
     // This logic might need refinement based on how categories are structured
@@ -537,14 +550,14 @@ export async function getGameUserGame(req: HonoRequest): Promise<Response> {
       },
       take: limit,
       skip: offset,
-    });
+    })
 
     const totalGames = await db.game.count({
       where: {
-        active: true,
+        isActive: true,
         // OR: [{ gamebank: categorySlug }, { operator: { slug: categorySlug } }],
       },
-    });
+    })
 
     const userGames: Search[] = games.map((game: any) => ({
       id: game.id, // Using game.id as the ID
@@ -552,25 +565,25 @@ export async function getGameUserGame(req: HonoRequest): Promise<Response> {
       image: '', // Placeholder for image
       developer: game.developer || 'Unknown', // Using developer as developer
       is_demo: game.denomination === 0, // Assuming 0 denomination means demo
-    }));
+    }))
 
     const responseData: GameSearchResponse = {
-      list: userGames as Array<Search>,
+      items: userGames as Array<Search>,
       total: totalGames,
-    };
+    }
 
     const response: GetGameSearchResponse = {
       code: 200,
       data: responseData,
       message: 'User games retrieved successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error fetching user games:', error);
+    console.error('Error fetching user games:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 
@@ -581,12 +594,12 @@ export async function getGameUserGame(req: HonoRequest): Promise<Response> {
  */
 export async function getGameFavoriteGame(
   req: HonoRequest,
-  user: Partial<User>
+  user: Partial<UserWithProfile>
 ): Promise<Response> {
   try {
-    const body = await req.json();
-    const gameId = body.gameId; // Assuming gameId is provided in the body
-    const isFavorite = body.isFavorite; // Assuming isFavorite (boolean) is provided
+    const body = await req.json()
+    const gameId = body.gameId // Assuming gameId is provided in the body
+    const isFavorite = body.isFavorite // Assuming isFavorite (boolean) is provided
 
     // You would typically have a many-to-many relationship between User and Game
     // for favorites, or a dedicated UserFavoriteGame model.
@@ -594,20 +607,20 @@ export async function getGameFavoriteGame(
     // You might need to adjust this based on your actual favorite game implementation.
 
     // Placeholder logic: Just acknowledge the request
-    console.log(`User ${user.id} is trying to set game ${gameId} as favorite: ${isFavorite}`);
+    console.log(`User ${user.id} is trying to set game ${gameId} as favorite: ${isFavorite}`)
 
     // Assuming a simple success response is sufficient based on store action
     const response = {
       code: 200,
       message: 'Favorite game status updated',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error updating favorite game status:', error);
+    console.error('Error updating favorite game status:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 
@@ -623,7 +636,7 @@ export async function getGameFavoriteGameList(): Promise<Response> {
     // in the provided schema. Assuming a relationship or a separate model exists.
     // Placeholder: Returning an empty list or some dummy data
 
-    const favoriteGameIds: (number | string)[] = []; // Placeholder for favorite game IDs
+    const favoriteGameIds: (number | string)[] = [] // Placeholder for favorite game IDs
     // Example: Fetching favorite game IDs if a relation existed:
     // const userWithFavorites = await db.user.findUnique({
     //   where: { id: user.id },
@@ -637,14 +650,14 @@ export async function getGameFavoriteGameList(): Promise<Response> {
       code: 200,
       data: favoriteGameIds,
       message: 'Favorite game list retrieved successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error fetching favorite game list:', error);
+    console.error('Error fetching favorite game list:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 
@@ -653,12 +666,15 @@ export async function getGameFavoriteGameList(): Promise<Response> {
  * @param req HonoRequest
  * @returns Response
  */
-export async function getGameHistory(req: HonoRequest, user: Partial<User>): Promise<Response> {
+export async function getGameHistory(
+  req: HonoRequest,
+  user: Partial<UserWithProfile>
+): Promise<Response> {
   try {
-    const body = await req.json();
-    const page = body.page || 1;
-    const limit = body.limit || 20;
-    const offset = (page - 1) * limit;
+    const body = await req.json()
+    const page = body.page || 1
+    const limit = body.limit || 20
+    const offset = (page - 1) * limit
 
     // Fetch game sessions for the user's active profile
     const gameSessions = await db.gameSession.findMany({
@@ -671,11 +687,11 @@ export async function getGameHistory(req: HonoRequest, user: Partial<User>): Pro
       orderBy: { createdAt: 'desc' }, // Order by most recent
       take: limit,
       skip: offset,
-    });
+    })
 
     const totalGameSessions = await db.gameSession.count({
       where: { Profile: user.profile?.id! },
-    });
+    })
 
     const gameHistoryRecords: GameHistoryItem[] = gameSessions.map((session: any) => ({
       name: session.game?.name || 'Unknown Game', // Use game name
@@ -688,25 +704,25 @@ export async function getGameHistory(req: HonoRequest, user: Partial<User>): Pro
       bet_id: session.id, // Using game session ID as bet ID
       status: session.endTime ? 'Completed' : 'In Progress', // Simple status
       profit: session.winAmount || 0 - (session.betAmount || 0), // Calculate profit
-    }));
+    }))
 
     const responseData: GameHistoryResponse = {
       total_pages: Math.ceil(totalGameSessions / limit),
       record: gameHistoryRecords,
-    };
+    }
 
     const response: GetGameHistoryResponse = {
       code: 200,
       data: responseData,
       message: 'Game history retrieved successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error fetching game history:', error);
+    console.error('Error fetching game history:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 
@@ -717,85 +733,141 @@ export async function getGameHistory(req: HonoRequest, user: Partial<User>): Pro
  */
 export async function getGameBigWin(): Promise<Response> {
   try {
-    const bigWinSpins = await db.gameSpin.findMany({
+    const allSpins = await db.gameSpin.findMany({
       where: {
-        grossWinAmount: { gt: 0 }, // Only sessions with wins
-        // : { gt: 0 }, // Avoid division by zero
-        // Add conditions for "big" wins, e.g., winAmount > threshold or multiplier > threshold
+        grossWinAmount: { gt: 0 },
       },
       include: {
         gameSession: true,
       },
-      // profile: {
-      //   include: {
-      //     userProfileUseridtouser: {
-      //       // Assuming this is the relation back to User
-      //       select: { username: true },
-      //     },
-      //   },
-      // },
-      orderBy: [{ createdAt: 'desc' }, { grossWinAmount: 'desc' }], // Order by win amount (simplified)
-      take: 20, // Get top 20 for example
-    });
+    })
 
-    const bigWinItems: GameBigWinItem[] = bigWinSpins.map((spin: any) => {
-      const _developer = spin.game.name.substring(
-        spin.game.game.name.toLocaleLowerCase().length,
-        spin.game.game.name.toLowerCase().length - 3
-      );
-      // if (_developer.toLowerCase() !== "rtg") console.log(_developer.toLowerCase());
-      let developer;
-      // switch (_developer.toLowerCase()) {
-      //   case "net":
-      //     developer = "netent";
-      //   case "nlc":
-      //     developer = "nolimit";
-      //   case "rtg":
-      //     developer = "redtiger";
-      // }
-      if (_developer.toLowerCase().includes('ng')) developer = 'netgame';
-      if (_developer.toLowerCase().includes('net')) developer = 'netent';
-      if (_developer.toLowerCase().includes('rtg')) developer = 'redtiger';
-      if (_developer.toLowerCase().includes('nlc')) developer = 'nolimit';
-      if (_developer.toLowerCase().includes('bfg')) developer = 'bigfish';
-      // if (developer !== "redtiger") console.log(developer);
-      let username = spin.game.user?.username;
-      if (username.length > 6) username = username.substring(0, 6) + '..';
+    // Function to ensure user diversity
+    const ensureUserDiversity = (spins: any[], maxLength: number): GameBigWinItem[] => {
+      const selectedUsers = new Set<string>()
+      const diverseSpins: GameBigWinItem[] = []
+      for (const spin of spins) {
+        if (
+          spin.gameSession &&
+          !selectedUsers.has(spin.gameSession.userId) &&
+          diverseSpins.length < maxLength
+        ) {
+          selectedUsers.add(spin.gameSession.userId)
+          diverseSpins.push(spin)
+        }
+      }
+      return diverseSpins
+    }
 
-      return {
-        game_id: spin.game.game.gameId,
-        game_name: spin.game.game?.name || 'Unknown Game',
-        game_icon: `/images/games/${developer}/${spin.game.game.name.toLowerCase()}.avif`, // Placeholder for game icon
-        user_name: username || 'Anonymous',
-        user_vip_group: 0, // Placeholder
-        user_vip_level: 0, // Placeholder
-        bet_amount: spin.game.betAmount?.toString() || '0',
-        multiplier:
-          spin.game.winAmount && spin.game.betAmount
-            ? (spin.game.winAmount / spin.game.betAmount).toFixed(2)
-            : '0',
-        win_amount: (spin.grossWinAmount / 100).toString() || '0',
-        time: spin.game.startedAt.getTime(), // Timestamp
-      };
-    });
+    // Prepare high rollers
+    const highRollersSpins = [...allSpins].sort((a, b) => b.grossWinAmount - a.grossWinAmount)
+    const diverseHighRollers = ensureUserDiversity(highRollersSpins, 20)
+
+    // Prepare lucky bets
+    const luckyBetsSpins = [...allSpins].sort(
+      (a, b) => b.grossWinAmount - b.betAmount - (a.grossWinAmount - a.betAmount)
+    )
+    const diverseLuckyBets = ensureUserDiversity(luckyBetsSpins, 20)
+
+    const highRollersItems: GameBigWinItem[] = await Promise.all(
+      diverseHighRollers.map(async (spin: any) => {
+        if (spin.gameSession) {
+          const gameId = spin.gameSession.gameId
+          const userId = spin.gameSession.userId
+          const game = await db.game.findUnique({ where: { id: gameId } })
+          const user = await db.user.findUnique({ where: { id: userId } })
+          if (user !== null && game != null) {
+            const _developer = game.name.substring(
+              game.name.toLocaleLowerCase().length,
+              game.name.toLowerCase().length - 3
+            )
+            let developer
+            if (_developer?.toLowerCase().includes('ng')) developer = 'netgame'
+            if (_developer?.toLowerCase().includes('net')) developer = 'netent'
+            if (_developer?.toLowerCase().includes('rtg')) developer = 'redtiger'
+            if (_developer?.toLowerCase().includes('nlc')) developer = 'nolimit'
+            if (_developer?.toLowerCase().includes('bfg')) developer = 'bigfish'
+            let username = user.username
+            if (username && username.length > 8) username = username.substring(0, 8) + '..'
+
+            return {
+              game_id: game?.id,
+              game_name: game?.name || 'Unknown Game',
+              game_icon: `/images/games/${developer}/${game?.name.toLowerCase()}.avif`,
+              user_name: username || 'Anonymous',
+              user_vip_group: 0,
+              user_vip_level: 0,
+              bet_amount: spin?.betAmount?.toString() || '0',
+              multiplier:
+                spin.winAmount && spin.betAmount
+                  ? (spin.winAmount / spin.betAmount).toFixed(2)
+                  : '0',
+              win_amount: (spin.grossWinAmount / 100).toString() || '0',
+              time: spin.timeStamp.getTime(),
+            }
+          }
+        }
+      })
+    )
+
+    const luckyBetsItems: GameBigWinItem[] = await Promise.all(
+      diverseLuckyBets.map(async (spin: any) => {
+        if (spin.gameSession) {
+          const gameId = spin.gameSession.gameId
+          const userId = spin.gameSession.userId
+          const game = await db.game.findUnique({ where: { id: gameId } })
+          const user = await db.user.findUnique({ where: { id: userId } })
+          if (user !== null && game != null) {
+            const _developer = game.name.substring(
+              game.name.toLocaleLowerCase().length,
+              game.name.toLowerCase().length - 3
+            )
+            let developer
+            if (_developer?.toLowerCase().includes('ng')) developer = 'netgame'
+            if (_developer?.toLowerCase().includes('net')) developer = 'netent'
+            if (_developer?.toLowerCase().includes('rtg')) developer = 'redtiger'
+            if (_developer?.toLowerCase().includes('nlc')) developer = 'nolimit'
+            if (_developer?.toLowerCase().includes('bfg')) developer = 'bigfish'
+            let username = user.username
+            if (username && username.length > 8) username = username.substring(0, 8) + '..'
+
+            return {
+              game_id: game?.id,
+              game_name: game?.name || 'Unknown Game',
+              game_icon: `/images/games/${developer}/${game?.name.toLowerCase()}.avif`,
+              user_name: username || 'Anonymous',
+              user_vip_group: 0,
+              user_vip_level: 0,
+              bet_amount: spin?.betAmount?.toString() || '0',
+              multiplier:
+                spin.winAmount && spin.betAmount
+                  ? (spin.winAmount / spin.betAmount).toFixed(2)
+                  : '0',
+              win_amount: (spin.grossWinAmount / 100).toString() || '0',
+              time: spin.timeStamp.getTime(),
+            }
+          }
+        }
+      })
+    )
 
     const responseData: GameBigWinData = {
-      high_rollers: bigWinItems, // Using the same list for simplicity
-      lucky_bets: bigWinItems, // Using the same list for simplicity
-    };
+      high_rollers: highRollersItems,
+      lucky_bets: luckyBetsItems,
+    }
 
     const response: GetGameBigWinResponse = {
       code: 200,
       data: responseData,
       message: 'Big win data retrieved successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error fetching big win data:', error);
+    console.error('Error fetching big win data:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 
   // async function createGameSessionRtg(
@@ -836,17 +908,16 @@ export async function getGameBigWin(): Promise<Response> {
   // return activeGameSessions.get(data.profileId)!;
 }
 function formatCentsAmount(value: number | string): number {
-  const amount = typeof value === 'string' ? parseFloat(value) : value;
+  const amount = typeof value === 'string' ? parseFloat(value) : value
   if (isNaN(amount)) {
-    throw new Error('Invalid input: not a number');
+    throw new Error('Invalid input: not a number')
   }
-  return Math.round(amount * 100);
+  return Math.round(amount * 100)
 }
 // function getGameSession(profileId: string): GameSession | undefined {
 //   const arr = Array.from(activeGameSessions);
 //   let gs: GameSession | undefined = undefined;
 //   arr.forEach((gameSession) => {
-//     // //console.log(gameSession[0], profileId)
 //     if (gameSession[0] == profileId) {
 //       gs = gameSession[1];
 //     }
@@ -859,10 +930,10 @@ export async function rtgSettings(
   user: UserWithProfile
   // session: Session
 ): Promise<Response> {
-  const dataFromClient = await c.req.json();
-  console.log('dataFromClient ', dataFromClient);
-  const gameName = 'WantedWildzExtreme';
-  const sessId = Math.random() * 100000;
+  const dataFromClient = await c.req.json()
+  console.log('dataFromClient ', dataFromClient)
+  const gameName = 'WantedWildzExtreme'
+  const sessId = Math.random() * 100000
   const init = {
     body: JSON.stringify({
       token: dataFromClient.token,
@@ -884,17 +955,17 @@ export async function rtgSettings(
     headers: {
       'content-type': 'application/json;charset=UTF-8',
     },
-  };
+  }
 
   const r = await fetch(
     `https://proxy.andrews.workers.dev/proxy/gserver-rtg.redtiger.com/rtg/platform/game/settings`,
     init
-  );
-  const gameSettingsFromDeveloper: any = await r.json();
+  )
+  const gameSettingsFromDeveloper: any = await r.json()
   // if (currentUser === null) throw new Error('Account not found');
   // return r;
-  const currentUser = user;
-  console.log('gameSettingsFromDeveloper ', gameSettingsFromDeveloper);
+  const currentUser = user
+  console.log('gameSettingsFromDeveloper ', gameSettingsFromDeveloper)
   // await createGameSessionRtg(user, gameSettingsFromDeveloper, gameName);
   // return gameSettingsFromDeveloper;
   return new Response(
@@ -904,15 +975,15 @@ export async function rtgSettings(
       currentUser.profile!.balance,
       0
     )
-  );
+  )
   // return new Response(
   //   JSON.stringify({ message: 'RTG settings retrieved successfully', code: 200 })
   // );
 }
 export async function rtgSpin(c: Context, user: UserWithProfile, session: Session): Promise<any> {
-  const currentUser = user;
-  const dataFromClient = await c.req.json();
-  console.log(dataFromClient);
+  const currentUser = user
+  const dataFromClient = await c.req.json()
+  console.log(dataFromClient)
   if (currentUser.profile === undefined)
     return JSON.stringify({
       success: false,
@@ -923,8 +994,8 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
         },
         code: 775,
       },
-    });
-  const originalBalance = currentUser.profile!.balance;
+    })
+  const originalBalance = currentUser.profile!.balance
   //console.log("orignalbalance ", originalBalance);
   //console.log("stake ", dataFromClient.stake);
 
@@ -938,7 +1009,7 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
         },
         code: 775,
       },
-    });
+    })
 
   // let gameSession = getGameSession(
   //   currentUser.profileId as string,
@@ -975,7 +1046,7 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
       headers: {
         'content-type': 'application/json;charset=UTF-8',
       },
-    };
+    }
     //console.log(init);
     //fbc9636c3aecd55e2cffdf50f5a105082d94c05e6dd48fa3406c668d671f8be2723bfab4ef699580eed0577dab3b6b278dc4d1f96671575ac8b9828b5e036de6
     //fbc9636c3aecd55e2cffdf50f5a105082d94c05e6dd48fa3406c668d671f8be2723bfab4ef699580eed0577dab3b6b278dc4d1f96671575ac8b9828b5e036de6\
@@ -983,23 +1054,21 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
       // "https://gserver-rtg.redtiger.com/rtg/platform/game/spin",
       'https://proxy.andrews.workers.dev/proxy/gserver-rtg.redtiger.com/rtg/platform/game/spin',
       init
-    );
+    )
     let gameSession = await db.gameSession.findFirst({
       where: { profileId: currentUser.profile.id, isActive: true, user: user, game: game },
-    });
+    })
     //console.log(response);
     const previousSpins = await db.gameSpin.findMany({
       where: { gameSessionId: gameSession.id },
-    });
-    let gameResultFromDeveloper: any = await response.json();
-    //console.log(gameResultFromDeveloper);
-    // const spinNumber = previousSpins.length + 1
-    const spinNumber = previousSpins.length + 1;
+    })
+    let gameResultFromDeveloper: any = await response.json()
+    const spinNumber = previousSpins.length + 1
 
     if (!gameResultFromDeveloper.success) {
       if (gameResultFromDeveloper.error.code === 5)
-        gameResultFromDeveloper.error.details.info = { isReal: false };
-      return JSON.stringify(gameResultFromDeveloper);
+        gameResultFromDeveloper.error.details.info = { isReal: false }
+      return JSON.stringify(gameResultFromDeveloper)
     }
 
     if (gameSession === null) {
@@ -1010,7 +1079,7 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
           user: { connect: { id: currentUser.id } },
           game: { connect: { id: dataFromClient.gameId } }, // Make sure dataFromClient.gameId is available and correct
         },
-      });
+      })
     }
     const spin = await db.gameSpin.create({
       data: {
@@ -1018,25 +1087,25 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
         spinNumber,
         result: gameResultFromDeveloper,
       },
-    }); //getActiveSession(currentUser.id)
+    }) //getActiveSession(currentUser.id)
 
     // const previousSpins = await db.gameSpin.findMany({
     //   where: { gameSessionId: gameSession.id },
     // });
     // const hasState = gameResultFromDeveloper.result.game.hasState;
-    let winAmount = formatCentsAmount(gameResultFromDeveloper.result.game.win.total);
-    let betAmount = formatCentsAmount(dataFromClient.stake); // Example bet amount
-    const balanceChange = winAmount - betAmount;
-    const spinId = gameResultFromDeveloper.result.transactions.roundId;
-    const gameBalance = formatCentsAmount(gameResultFromDeveloper.result.user.balance.cash.atEnd);
-    const playerStartingBalance = gameSession.startingBalance;
+    let winAmount = formatCentsAmount(gameResultFromDeveloper.result.game.win.total)
+    let betAmount = formatCentsAmount(dataFromClient.stake) // Example bet amount
+    const balanceChange = winAmount - betAmount
+    const spinId = gameResultFromDeveloper.result.transactions.roundId
+    const gameBalance = formatCentsAmount(gameResultFromDeveloper.result.user.balance.cash.atEnd)
+    const playerStartingBalance = gameSession.startingBalance
     const [playerRTPToday, playerWinTotalToday, playerBetTotalToday] = await getRtpForPlayerToday(
       currentUser,
       winAmount,
       betAmount
-    );
+    )
     const [gameSessionRTP, sessionTotalWinAmount, sessionTotalBetAmount] =
-      await getRtpForGameSession(gameSession, winAmount, betAmount);
+      await getRtpForGameSession(gameSession, winAmount, betAmount)
     const spinData: GameSpin = {
       id: spinId.toString(),
       gameSessionId: gameSession.id,
@@ -1060,10 +1129,10 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
       playerRTPToday,
       temperature: null,
       developer: null,
-    };
+    }
     await db.gameSpin.create({
       data: spinData,
-    });
+    })
     // updatePlayerAndShop(currentUser, winAmount, betAmount);
     return new Response(
       buildJsonForSpin(
@@ -1074,11 +1143,11 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
         currentUser.profile!.balance
         // user.profile.vipInfo.bet_exp as number
       )
-    );
+    )
   } catch (e) {
     //console.log("390");
     //console.log(e);
-    return JSON.stringify(e);
+    return JSON.stringify(e)
   }
 }
 /**
@@ -1095,20 +1164,20 @@ export async function getGameSpinPage(): Promise<Response> {
       spinCount: getRandomInt(0, 10),
       lastSpinTime: faker.date.recent().getTime(),
       availableRewards: ['Bonus Cash', 'Free Spins', 'XP Boost'],
-    };
+    }
 
     const response = {
       code: 200,
       data: spinPageData,
       message: 'Spin page data retrieved successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error fetching spin page data:', error);
+    console.error('Error fetching spin page data:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 
@@ -1128,20 +1197,20 @@ export async function getGameSpin(): Promise<Response> {
       winAmount: faker.datatype.boolean(0.3) ? getRandomInt(100, 1000) : 0, // 30% chance of winning
       rewardType: faker.datatype.boolean(0.5) ? 'Bonus Cash' : 'Nothing',
       message: 'You spun the wheel!',
-    };
+    }
 
     const response = {
       code: 200,
       data: spinResult,
       message: 'Spin action completed',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error performing spin action:', error);
+    console.error('Error performing spin action:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 

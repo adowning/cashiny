@@ -61,7 +61,7 @@ export function registerRoutes(app: OpenAPIHono<HonoEnv>) {
   // }
   // );
   // app.use(isAuthenticated);
-  app.route(BASE_PATH, authRoute)
+  app.route('/', authRoute)
   app.route(BASE_PATH, userRoute)
   app.route(BASE_PATH, depositRoute)
   app.route(BASE_PATH, currencyRoute)

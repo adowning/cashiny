@@ -120,22 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.CurrencyScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  symbol: 'symbol',
-  type: 'type',
-  precision: 'precision',
-  isActive: 'isActive',
-  isDefault: 'isDefault',
-  contractAddress: 'contractAddress',
-  blockchain: 'blockchain',
-  withdrawalFeeFixed: 'withdrawalFeeFixed',
-  withdrawalFeePercent: 'withdrawalFeePercent',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
@@ -175,6 +159,22 @@ exports.Prisma.UserScalarFieldEnum = {
   locale: 'locale',
   mfaEnabled: 'mfaEnabled',
   mfaSecret: 'mfaSecret'
+};
+
+exports.Prisma.CurrencyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  symbol: 'symbol',
+  type: 'type',
+  precision: 'precision',
+  isActive: 'isActive',
+  isDefault: 'isDefault',
+  contractAddress: 'contractAddress',
+  blockchain: 'blockchain',
+  withdrawalFeeFixed: 'withdrawalFeeFixed',
+  withdrawalFeePercent: 'withdrawalFeePercent',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
@@ -266,12 +266,12 @@ exports.Prisma.OperatorAccessScalarFieldEnum = {
   name: 'name',
   operator_secret: 'operator_secret',
   operator_access: 'operator_access',
-  callback_url: 'callback_url',
+  callbackUrl: 'callbackUrl',
   active: 'active',
   permissions: 'permissions',
   ips: 'ips',
   description: 'description',
-  last_used_at: 'last_used_at',
+  lastUsedAt: 'lastUsedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   ownerId: 'ownerId',
@@ -398,7 +398,6 @@ exports.Prisma.NotificationScalarFieldEnum = {
   actionUrl: 'actionUrl',
   imageUrl: 'imageUrl',
   metadata: 'metadata',
-  createdBy: 'createdBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -425,6 +424,7 @@ exports.Prisma.FriendshipScalarFieldEnum = {
 exports.Prisma.TransactionScalarFieldEnum = {
   id: 'id',
   originatorUserId: 'originatorUserId',
+  processedAt: 'processedAt',
   receiverUserId: 'receiverUserId',
   walletId: 'walletId',
   type: 'type',
@@ -447,7 +447,6 @@ exports.Prisma.TransactionScalarFieldEnum = {
   relatedGameId: 'relatedGameId',
   relatedRoundId: 'relatedRoundId',
   metadata: 'metadata',
-  processedAt: 'processedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -459,12 +458,12 @@ exports.Prisma.GameLaunchLinkScalarFieldEnum = {
   player_operator_id: 'player_operator_id',
   mode: 'mode',
   meta: 'meta',
-  request_ip: 'request_ip',
-  user_agent: 'user_agent',
+  requestIp: 'requestIp',
+  userAgent: 'userAgent',
   session_url: 'session_url',
   state: 'state',
   active: 'active',
-  expires_at: 'expires_at',
+  expiresAt: 'expiresAt',
   extra_meta: 'extra_meta',
   token_original: 'token_original',
   createdAt: 'createdAt',
@@ -544,12 +543,12 @@ exports.Prisma.UserRewardScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   rewardType: 'rewardType',
+  claimedAt: 'claimedAt',
   description: 'description',
   status: 'status',
   amount: 'amount',
   currencyId: 'currencyId',
   metaData: 'metaData',
-  claimedAt: 'claimedAt',
   expiresAt: 'expiresAt',
   availableFrom: 'availableFrom',
   createdAt: 'createdAt',
@@ -808,8 +807,8 @@ exports.VipTaskType = exports.$Enums.VipTaskType = {
 };
 
 exports.Prisma.ModelName = {
-  Currency: 'Currency',
   User: 'User',
+  Currency: 'Currency',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',

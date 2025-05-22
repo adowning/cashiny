@@ -3,8 +3,8 @@
 // // -------------------------------------------------------------------
 // import { ref, onMounted, onUnmounted, computed } from "vue";
 // import { supabase } from "../supabase"; // Ensure this path is correct
-// import { useAuthStore } from "../stores/auth";
-// import { useUserStore, type UserData } from "../stores/user";
+// import { useAuthStore } from "../stores/auth.store";
+// import { useUserStore, type UserData } from "../stores/user.store";
 // import { useProfileStore, type ProfileData } from "../stores/profile";
 // import type {
 //   AuthChangeEvent,

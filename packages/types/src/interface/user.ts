@@ -7,17 +7,17 @@ import type {
   Profile as PrismaProfile,
   Profile,
   User,
-} from '../prisma/types';
+} from '../prisma/types'
 
 // Adjust path if needed, e.g., to "../prisma/interfaces"
 
 // --- Type Aliases for Readability or Branding ---
-export type Email = string;
-export type Username = string;
+export type Email = string
+export type Username = string
 export type UserWithProfile = User & {
-  profile: Profile;
-  avatar?: string; // Add optional avatar property
-};
+  profile: Profile
+  avatar?: string // Add optional avatar property
+}
 // --- Canonical UserWithProfile ---
 /**
  * Represents the primary, comprehensive User object structure returned by the backend
@@ -41,11 +41,11 @@ export type UserWithProfile = User & {
  * Contains only the fields a user is allowed to modify directly.
  */
 export interface UpdateUserInput {
-  username?: Username;
-  avatar_url?: string; // URL to the new avatar image
-  first_name?: string;
-  last_name?: string;
-  date_of_birth?: string; // Expects ISO Date string format (YYYY-MM-DD)
+  username?: Username
+  avatar_url?: string // URL to the new avatar image
+  first_name?: string
+  last_name?: string
+  date_of_birth?: string // Expects ISO Date string format (YYYY-MM-DD)
   // language?: string; // Example: 'en', 'es'
   // locale?: string;   // Example: 'en-US', 'es-ES'
   // Add other fields like notification preferences, etc.
@@ -56,8 +56,8 @@ export interface UpdateUserInput {
  * Requires current password for verification.
  */
 export interface UpdateEmailDto {
-  _email: Email;
-  password: string; // Current password for verification (ensure server expects 'password')
+  _email: Email
+  password: string // Current password for verification (ensure server expects 'password')
 }
 
 /**
@@ -65,32 +65,32 @@ export interface UpdateEmailDto {
  * Requires current password for verification.
  */
 export interface UpdateCashtagDto {
-  cashtag: string; // The new cashtag value
-  password: string; // Current password for verification (ensure server expects 'password')
+  cashtag: string // The new cashtag value
+  password: string // Current password for verification (ensure server expects 'password')
 }
 
 /**
  * DTO for client to change their password.
  */
 export interface UpdatePasswordDto {
-  current_password: string; // User's current plain text password
-  password: string; // User's new plain text password
+  current_password: string // User's current plain text password
+  password: string // User's new plain text password
 }
 
 /**
  * DTO for client to set their referrer.
  */
 export interface SetReferrerDto {
-  referrerCode: string;
+  referrerCode: string
 }
 
 /**
  * DTO for client to tip another user.
  */
 export interface TipUserDto {
-  recipientUsername: Username;
-  amount: number; // Positive value
-  currency_id: string; // ID of the currency (e.g., from PrismaCurrency.id)
+  recipientUsername: Username
+  amount: number // Positive value
+  currency_id: string // ID of the currency (e.g., from PrismaCurrency.id)
 }
 
 // --- DTOs for Specific User Data Retrieval Responses ---
@@ -101,33 +101,38 @@ export interface TipUserDto {
  * Review and align with your actual API response for fetching detailed user profiles.
  */
 export interface DetailedUserProfile {
-  uid: string; // Usually matches UserWithProfile.id
-  username: Username;
-  avatar_url?: string | null; // Standard field name for avatar
-  first_name?: string | null;
-  last_name?: string | null;
+  uid: string // Usually matches UserWithProfile.id
+  username: Username
+  avatar_url?: string | null // Standard field name for avatar
+  first_name?: string | null
+  last_name?: string | null
   // id?: number | string; // If this is a different ID system, clarify. User.id should be the primary.
   // id_number?: string | null; // Example: National ID, if collected
-  email: Email;
-  is_email_confirmed: boolean; // Corrected typo, standard boolean
-  phone?: string | null;
-  is_phone_confirmed: boolean; // Corrected typo, standard boolean
-  date_of_birth?: string | null; // ISO Date string (YYYY-MM-DD)
-  country?: string | null; // Corrected from 'county'
-  state?: string | null;
-  city?: string | null;
-  address?: string | null;
-  postal_code?: string | null;
-  language?: string | null; // e.g., 'en'
-  locale?: string | null; // e.g., 'en-US'
-  is_initial_profile_complete: boolean;
-  is_suspended: boolean; // Standard boolean
+  email: Email
+  is_email_confirmed: boolean // Corrected typo, standard boolean
+  phone?: string | null
+  is_phone_confirmed: boolean // Corrected typo, standard boolean
+  date_of_birth?: string | null // ISO Date string (YYYY-MM-DD)
+  country?: string | null // Corrected from 'county'
+  state?: string | null
+  city?: string | null
+  address?: string | null
+  postal_code?: string | null
+  language?: string | null // e.g., 'en'
+  locale?: string | null // e.g., 'en-US'
+  is_initial_profile_complete: boolean
+  is_suspended: boolean // Standard boolean
   // sys_communications?: boolean; // Notification preferences might be part of UpdateUserInput
   // locked_personal_info_fields?: string[]; // Fields that user cannot change
-  created_at: string; // ISO Date string
+  created_at: string // ISO Date string
   // Include fields from PrismaProfile if they are part of this detailed view
 }
-
+export interface GetSessionResponse {
+  access_token: string
+  code: number
+  status: number
+  user: UserWithProfile
+}
 /**
  * Response structure when fetching detailed user information.
  */
@@ -136,7 +141,7 @@ export interface GetDetailedUserProfileResponse {
   // If so, a generic wrapper type might be useful.
   // code: number;
   // message?: string;
-  user_profile: DetailedUserProfile; // The detailed profile data
+  user_profile: DetailedUserProfile // The detailed profile data
 }
 
 /**
@@ -145,17 +150,17 @@ export interface GetDetailedUserProfileResponse {
  */
 export interface BalanceType {
   // You can augment PrismaBalance if needed, e.g., with the Currency object
-  Currency?: PrismaCurrency;
+  Currency?: PrismaCurrency
 }
 // Or if you need a more specific structure for client display:
 export interface UserBalanceDetails {
-  currency_id: string; // e.g., "USD", "BTC"
-  currency_name: string;
-  currency_symbol: string;
-  total_amount: string; // Using string for precision (e.g., from Decimal.js)
-  available_balance: string; // Using string for precision
-  real_balance: string; // Using string for precision
-  bonus_balance: string; // Using string for precision
+  currency_id: string // e.g., "USD", "BTC"
+  currency_name: string
+  currency_symbol: string
+  total_amount: string // Using string for precision (e.g., from Decimal.js)
+  available_balance: string // Using string for precision
+  real_balance: string // Using string for precision
+  bonus_balance: string // Using string for precision
 }
 
 // --- VIP Related User Types ---
@@ -163,45 +168,45 @@ export interface UserBalanceDetails {
  * DTO representing the user's detailed VIP status and benefits.
  */
 export interface UserVipStatus {
-  level: number;
-  currentLevelName: string;
-  currentPoints: number; // Current VIP XP or points
-  pointsToNextLevel?: number; // Points required to enter the next VIP level (total for that level)
+  level: number
+  currentLevelName: string
+  currentPoints: number // Current VIP XP or points
+  pointsToNextLevel?: number // Points required to enter the next VIP level (total for that level)
   // Or could be 'pointsRemainingForNextLevel'
-  nextLevel?: number; // The number of the next VIP level (if one exists)
-  nextLevelName?: string;
-  progressPercentage?: number; // Percentage towards the next level (0-100)
+  nextLevel?: number // The number of the next VIP level (if one exists)
+  nextLevelName?: string
+  progressPercentage?: number // Percentage towards the next level (0-100)
   // benefits: PrismaVipBenefit[]; // List of VipBenefit objects for the current level
 }
 
 // --- Real-time Update Types (Keep if used for WebSockets) ---
 export interface ProfileStatsUpdateData {
-  balance: string; // Use string for currency precision
-  createdAt: string; // ISO Date string
-  currency_id: string; // e.g., "USD"
-  id: string; // Profile ID?
-  isActive: boolean;
-  lastPlayed: string; // ISO Date string
+  balance: string // Use string for currency precision
+  createdAt: string // ISO Date string
+  currency_id: string // e.g., "USD"
+  id: string // Profile ID?
+  isActive: boolean
+  lastPlayed: string // ISO Date string
   // phpId?: number; // If legacy, consider phasing out
   // shopId?: string; // If relevant
-  updatedAt?: string | null; // ISO Date string
-  user_id: string;
-  xpEarned: number;
+  updatedAt?: string | null // ISO Date string
+  user_id: string
+  xpEarned: number
 }
 
 export interface UserStatsUpdateData {
   // This seems general. Consider if it should be tied to a specific currency
   // or if it's an aggregate value.
-  balance_cash_change?: string; // Change in real balance (string for precision)
-  balance_bonus_change?: string; // Change in bonus balance (string for precision)
-  total_xp_change?: number; // Change in XP
+  balance_cash_change?: string // Change in real balance (string for precision)
+  balance_bonus_change?: string // Change in bonus balance (string for precision)
+  total_xp_change?: number // Change in XP
   // Include currency_id if balance changes are per currency
 }
 
 export interface StatsUpdate {
-  table: 'User' | 'Profile' | 'Balance' | string; // Be more specific with table names if possible
-  row_id: string; // ID of the affected row
-  operation: 'UPDATE' | 'INSERT' | 'DELETE';
+  table: 'User' | 'Profile' | 'Balance' | string // Be more specific with table names if possible
+  row_id: string // ID of the affected row
+  operation: 'UPDATE' | 'INSERT' | 'DELETE'
   // Use a more specific type for 'data' based on the 'table' and 'operation'
   // This helps in type-safe handling of the data on the client.
   // Example:
@@ -209,6 +214,6 @@ export interface StatsUpdate {
   //   | ({ table: "User" } & Partial<UserWithProfile>)
   //   | ({ table: "Profile" } & Partial<PrismaProfile>)
   //   | ({ table: "Balance" } & Partial<BalanceType>);
-  data: Partial<UserStatsUpdateData | ProfileStatsUpdateData | PrismaProfile | BalanceType>;
-  event_id?: string; // Unique event identifier
+  data: Partial<UserStatsUpdateData | ProfileStatsUpdateData | PrismaProfile | BalanceType>
+  event_id?: string // Unique event identifier
 }

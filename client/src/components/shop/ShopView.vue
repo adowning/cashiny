@@ -1,157 +1,157 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+  import { onMounted } from 'vue'
 
-// import { getApiClient } from '@/sdk/apiClient';
-import { useAuthStore } from '@/stores/auth';
-import { useDepositStore } from '@/stores/deposit';
-import type { Product } from '@cashflow/types';
+  // import { getApiClient } from '@/sdk/apiClient';
+  import { useAuthStore } from '@/stores/auth.store'
+  import { useDepositStore } from '@/stores/deposit.store'
+  import type { Product } from '@cashflow/types'
 
-// import { eventTypes, useEventsBus } from '@/hooks/events'
-// import { useUserStore } from '@/store/user.store'
-// import type { Product, Shop } from '@/api/v1/client'
-// import type { ShopDetailed } from '@/store/shop.store'
-const eventBus = useEventManager();
-const api = useApiClient();
-const activeName = ref('selectProduct');
-eventBus.on('activeName', (val) => {
-  activeName.value = val;
-  if (val === 'none') close();
-});
-const target = ref();
-const authStore = useAuthStore();
-const depositStore = useDepositStore();
-const {
-  currentUser, // isLoading: authLoading, // If you need to show auth-specific loading in App.vue
-  // error: authError, // Auth store errors
-} = storeToRefs(authStore);
-const { dispatchOperatorData } = depositStore;
-const { dispatchUserDepositHistory } = depositStore;
+  // import { eventTypes, useEventsBus } from '@/hooks/events'
+  // import { useUserStore } from '@/store/user.store'
+  // import type { Product, Shop } from '@/api/v1/client'
+  // import type { ShopDetailed } from '@/store/shop.store'
+  const eventBus = useEventManager()
+  const api = useApiClient()
+  const activeName = ref('selectProduct')
+  eventBus.on('activeName', (val) => {
+    activeName.value = val
+    if (val === 'none') close()
+  })
+  const target = ref()
+  const authStore = useAuthStore()
+  const depositStore = useDepositStore()
+  const {
+    currentUser, // isLoading: authLoading, // If you need to show auth-specific loading in App.vue
+    // error: authError, // Auth store errors
+  } = storeToRefs(authStore)
+  const { dispatchOperatorData } = depositStore
+  const { dispatchUserDepositHistory } = depositStore
 
-// const shop = store.shop
-// const products = store.products
-const closePressed = ref(false);
-const products = ref();
-const pendingTransaction = ref();
-export interface ProductWithSelected extends Product {
-  selected: false;
-}
-// onMounted(async () => {
-//   //console.log(currentUser.value)
-//   if (currentUser.value === undefined)
-//     return
-//   // currentUser.value = await authStore.fetchUserInfo()
-//   recipient.value = currentUser.value
-//   _cashtag.value = currentUser.value.cashtag as string
-//   recipients.value.push(currentUser.value)
-// })
-const selectedProduct = ref<ProductWithSelected>({
-  id: '0  ',
-  amountToReceiveInCredits: 0,
-  description: '',
-  type: '',
-  shopId: '1',
-  bonusSpins: 0,
-  selected: false,
-  title: '',
-  url: '',
-  priceInCents: 0,
-  isPromo: false,
-  // createdAt: new Date(),
-  bonusCode: '',
-  bonusTotalInCredits: 0,
-  discountInCents: 0,
-  totalDiscountInCents: 0,
-  transactions: [],
-  bestValue: 0,
-  createdAt: new Date(),
-  updatedAt: null,
-  operator: null,
-});
-// const { isLoading, clients, currentPage, totalPages, getPage } = useClients();
-
-// $bus.$on(eventTypes.shopSelectProduct, (product: any) => {
-//   //console.log('shopSelectProduct ', product)
-//   selectedProduct.value = product.value
-// })
-// eventBus.on(eventTypes.shopSelectPayment, (payment: string) => {
-//   //console.log('shopSelectPayment ', payment)
-//   paymentMethod.value = payment
-// })
-// $bus.$on(eventTypes.closeShop, () => {
-//   close()
-// })
-// function selectRecipient(val: any) {
-//   recipients.value.forEach((product) => {
-//     product.selected = false
-//   })
-//   recipient.value.id = val.id
-//   //console.log(recipient.value)
-// }
-// const currentUser.value = ref<WUser>()
-// async function close() {
-//     //console.log('tick')
-//     // target!.value!.classList.add(`animate__animated`, 'animate__bounceOut');
-//     eventBus.emit(show_shop, false)
-//     // delay(300)
-//     eventBus.emit(show_bars, true)
-//     // await delay(1000)
-//     // target!.value!.classList.remove(`animate__animated`, 'animate__bounceOut');
-// }
-// const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-async function close() {
-  await depositStore.dispatchUserDepositHistory();
-
-  // console.log('adding fadeout anim and refreshing user')
-  target.value?.classList.add(`animate__animated`, 'animate__fadeOut');
-  depositStore.shopOpen = false;
-
-  // await refreshState()
-  setTimeout(() => {
-    // console.log('firing shop close')
-    eventBus.emit('shopOpen', false);
-  }, 500);
-}
-
-async function cancelBalanceTransactions() {
-  await depositStore.dispatchCancelPending();
-  // // //console.log(canceled)
-  // await loaduser()
-  // $bus.$emit(eventTypes.transaction_updated, [])
-  // // //console.log(canceled)
-  // // eslint-disable-next-line ts/ban-ts-comment
-  // @ts-ignore
-  // if (typeof canceled === 'number') {
-  // balancetransactionsCanceled.value = true;
-  activeName.value = 'selectProduct';
-  // setTimeout(() => {
-  //   // hasPendingBalanceTransaction.value = false
-  //   // balancetransactionsCanceled.value = false
-  //   close();
-  // }, 2000);
-  // }
-}
-onMounted(async () => {
-  // window.addEventListener('resize', updateScreenWidth)
-  // Fetch initial deposit configuration
-  await dispatchUserDepositHistory();
-  await dispatchOperatorData();
-  await authStore.refreshUser();
-  console.log(depositStore.getOperatorData);
-  console.log(depositStore.getProducts);
-  products.value = depositStore.getOperatorData?.products;
-  console.log(depositStore.depositHistoryItem);
-  for (const item of depositStore.depositHistoryItem.data.record) {
-    console.log(item);
-    if (item.status === 'PENDING') {
-      activeName.value = 'pendingTransaction';
-      pendingTransaction.value = item;
-    }
+  // const shop = store.shop
+  // const products = store.products
+  const closePressed = ref(false)
+  const products = ref()
+  const pendingTransaction = ref()
+  export interface ProductWithSelected extends Product {
+    selected: false
   }
-});
-onUnmounted(() => {
-  depositStore.shopOpen = false;
-});
+  // onMounted(async () => {
+  //   //console.log(currentUser.value)
+  //   if (currentUser.value === undefined)
+  //     return
+  //   // currentUser.value = await authStore.fetchUserInfo()
+  //   recipient.value = currentUser.value
+  //   _cashtag.value = currentUser.value.cashtag as string
+  //   recipients.value.push(currentUser.value)
+  // })
+  const selectedProduct = ref<ProductWithSelected>({
+    id: '0  ',
+    amountToReceiveInCredits: 0,
+    description: '',
+    type: '',
+    shopId: '1',
+    bonusSpins: 0,
+    selected: false,
+    title: '',
+    url: '',
+    priceInCents: 0,
+    isPromo: false,
+    // createdAt: new Date(),
+    bonusCode: '',
+    bonusTotalInCredits: 0,
+    discountInCents: 0,
+    totalDiscountInCents: 0,
+    transactions: [],
+    bestValue: 0,
+    createdAt: new Date(),
+    updatedAt: null,
+    operator: null,
+  })
+  // const { isLoading, clients, currentPage, totalPages, getPage } = useClients();
+
+  // $bus.$on(eventTypes.shopSelectProduct, (product: any) => {
+  //   //console.log('shopSelectProduct ', product)
+  //   selectedProduct.value = product.value
+  // })
+  // eventBus.on(eventTypes.shopSelectPayment, (payment: string) => {
+  //   //console.log('shopSelectPayment ', payment)
+  //   paymentMethod.value = payment
+  // })
+  // $bus.$on(eventTypes.closeShop, () => {
+  //   close()
+  // })
+  // function selectRecipient(val: any) {
+  //   recipients.value.forEach((product) => {
+  //     product.selected = false
+  //   })
+  //   recipient.value.id = val.id
+  //   //console.log(recipient.value)
+  // }
+  // const currentUser.value = ref<WUser>()
+  // async function close() {
+  //     //console.log('tick')
+  //     // target!.value!.classList.add(`animate__animated`, 'animate__bounceOut');
+  //     eventBus.emit(show_shop, false)
+  //     // delay(300)
+  //     eventBus.emit(show_bars, true)
+  //     // await delay(1000)
+  //     // target!.value!.classList.remove(`animate__animated`, 'animate__bounceOut');
+  // }
+  // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+  async function close() {
+    await depositStore.dispatchUserDepositHistory()
+
+    // console.log('adding fadeout anim and refreshing user')
+    target.value?.classList.add(`animate__animated`, 'animate__fadeOut')
+    depositStore.shopOpen = false
+
+    // await refreshState()
+    setTimeout(() => {
+      // console.log('firing shop close')
+      eventBus.emit('shopOpen', false)
+    }, 500)
+  }
+
+  async function cancelBalanceTransactions() {
+    await depositStore.dispatchCancelPending()
+    // // //console.log(canceled)
+    // await loaduser()
+    // $bus.$emit(eventTypes.transaction_updated, [])
+    // // //console.log(canceled)
+    // // eslint-disable-next-line ts/ban-ts-comment
+    // @ts-ignore
+    // if (typeof canceled === 'number') {
+    // balancetransactionsCanceled.value = true;
+    activeName.value = 'selectProduct'
+    // setTimeout(() => {
+    //   // hasPendingBalanceTransaction.value = false
+    //   // balancetransactionsCanceled.value = false
+    //   close();
+    // }, 2000);
+    // }
+  }
+  onMounted(async () => {
+    // window.addEventListener('resize', updateScreenWidth)
+    // Fetch initial deposit configuration
+    await dispatchUserDepositHistory()
+    await dispatchOperatorData()
+    await authStore.refreshUser()
+    console.log(depositStore.getOperatorData)
+    console.log(depositStore.getProducts)
+    products.value = depositStore.getOperatorData?.products
+    console.log(depositStore.depositHistoryItem)
+    for (const item of depositStore.depositHistoryItem.data.record) {
+      console.log(item)
+      if (item.status === 'PENDING') {
+        activeName.value = 'pendingTransaction'
+        pendingTransaction.value = item
+      }
+    }
+  })
+  onUnmounted(() => {
+    depositStore.shopOpen = false
+  })
 </script>
 
 <template>
@@ -294,40 +294,40 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.7s;
-}
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.7s;
+  }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
 
-.Tabs__nav {
-  background-color: transparent !important;
-  color: transparent !important;
-}
+  .Tabs__nav {
+    background-color: transparent !important;
+    color: transparent !important;
+  }
 
-.glow {
-  font-size: 30px;
-  font-weight: 800;
-  color: #fff;
-  text-align: end;
-  /* text-shadow:  #FC0 1px 0 10px; */
-  text-shadow:
-    0px 0px 10px #fff,
-    0 0 20px #c74dff,
-    0 0 30px #720fc4;
-}
+  .glow {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    text-align: end;
+    /* text-shadow:  #FC0 1px 0 10px; */
+    text-shadow:
+      0px 0px 10px #fff,
+      0 0 20px #c74dff,
+      0 0 30px #720fc4;
+  }
 
-.not-glow {
-  font-size: 18px;
-  font-weight: 900;
-  color: #fff;
-  text-align: center;
-  /* -webkit-animation: glow 1s ease-in-out infinite alternate;
+  .not-glow {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+    /* -webkit-animation: glow 1s ease-in-out infinite alternate;
     -moz-animation: glow 1s ease-in-out infinite alternate;
     animation: glow 1s ease-in-out infinite alternate; */
-}
+  }
 </style>

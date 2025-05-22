@@ -1,5 +1,5 @@
-import { UserWithProfile, db } from '@cashflow/database';
-import { TransactionStatus, TransactionType } from '@cashflow/database';
+import { UserWithProfile, db } from '@cashflow/database'
+import { TransactionStatus, TransactionType } from '@cashflow/database'
 import {
   DepositHistoryItem,
   DepositHistoryResponse,
@@ -13,10 +13,10 @@ import {
   ProductWithoutTransactions,
   SubmitDepositResponse,
   User,
-} from '@cashflow/types';
-import { HonoRequest } from 'hono';
+} from '@cashflow/types'
+import { HonoRequest } from 'hono'
 
-import { Product } from '../../../../../packages/types/src/prisma/interfaces';
+import { Product } from '../../../../../packages/types/src/prisma/interfaces'
 
 // Import PrismaClient
 
@@ -33,7 +33,7 @@ export async function getDepositMethods(
       min: 10,
       max: 5000,
     },
-  ];
+  ]
 
   return new Response(
     JSON.stringify({
@@ -41,7 +41,7 @@ export async function getDepositMethods(
       data: methods,
       message: 'Success',
     })
-  );
+  )
 }
 
 export async function createDeposit(
@@ -54,7 +54,7 @@ export async function createDeposit(
       data: { transactionId: 'tx_12345' },
       message: 'Deposit created successfully',
     } as SubmitDepositResponse)
-  );
+  )
 }
 // Assuming NETWORK_CONFIG is defined in a shared module
 // Assuming getUserFromHeader is a utility function for authentication
@@ -66,8 +66,8 @@ export async function getProducts(req: HonoRequest): Promise<Response> {
       // operator: true,
       // transactions: true,
     },
-  });
-  const user = req.get('user');
+  })
+  const user = req.get('user')
 
   // const products = await db.product.findMany({
   //   orderBy: { priceInCents: "asc" },
@@ -80,21 +80,20 @@ export async function getProducts(req: HonoRequest): Promise<Response> {
     code: 200,
     products,
     message: 'Products',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 export async function getOperatorData(
   req: HonoRequest,
   user: Partial<UserWithProfile>
 ): Promise<Response> {
-  console.log(user);
   await db.profile.findUnique({
     where: {
       id: user.profile?.id as string,
     },
-  });
+  })
 
   const _operator = await db.operatorAccess.findUnique({
     where: {
@@ -103,8 +102,8 @@ export async function getOperatorData(
     include: {
       products: true,
     },
-  });
-  if (_operator == null) throw new Error('Operator not found');
+  })
+  if (_operator == null) throw new Error('Operator not found')
   const products: ProductWithoutTransactions[] = _operator.products.map(
     (product): ProductWithoutTransactions => {
       return {
@@ -127,22 +126,22 @@ export async function getOperatorData(
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
         operator: null,
-      };
+      }
     }
-  );
+  )
 
   const operator: OperatorData = {
     id: _operator.id,
     acceptedPayments: _operator.acceptedPayments,
     products,
-  };
+  }
   const response: GetOperatorDataResponse = {
     code: 200,
     operator,
     message: 'Operator data with products',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 // Helper function to fetch deposit configuration
@@ -203,17 +202,17 @@ export async function getDepositConfig(req: HonoRequest, user: User) {
       },
     ],
     // Add other currencies and payment methods as needed, ideally fetched from DB
-  };
+  }
 
-  const sampleAmountList = ['20', '50', '100', '200', '500']; // Sample predefined amounts, ideally fetched from DB
+  const sampleAmountList = ['20', '50', '100', '200', '500'] // Sample predefined amounts, ideally fetched from DB
 
   const sampleBonusConfig = [
     { type: 0, min: 100, max: 500, award: 50 }, // Fixed bonus of 50 for deposits between 100 and 500
     { type: 1, min: 501, max: 0, rate: 0.1 }, // 10% bonus for deposits over 500 (max 0 means no max), ideally fetched from DB
     // Add other bonus rules as needed
-  ];
+  ]
 
-  const depositUserSwitch = false; // Example switch for user info requirement, ideally fetched from DB
+  const depositUserSwitch = false // Example switch for user info requirement, ideally fetched from DB
 
   const configData = {
     cfg: sampleCurrencyCfg,
@@ -221,16 +220,16 @@ export async function getDepositConfig(req: HonoRequest, user: User) {
     bonus: sampleBonusConfig,
     deposit_user_switch: depositUserSwitch,
     // Add other configuration fields as needed
-  };
+  }
   // --- End Database Logic Placeholder ---
 
   const response: GetDepositResponse = {
     code: 200,
     data: configData,
     message: 'Deposit configuration fetched successfully',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 // Helper function to submit a deposit
@@ -238,7 +237,7 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
   // Authenticate the user
 
   // Parse the request body to get deposit details
-  const depositData: InitializeDepositDto = await req.json();
+  const depositData: InitializeDepositDto = await req.json()
 
   // --- Database and Payment Gateway Logic for Processing Deposit ---
   // In a real application, you would:
@@ -249,38 +248,38 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
   // 5. Update the 'transaction' status based on the payment gateway response (often via webhooks).
   // 6. Update the user's balance upon successful payment confirmation (usually via webhook).
 
-  console.log('Received deposit submission:', depositData);
+  console.log('Received deposit submission:', depositData)
 
-  let submissionResult: any = {}; // Placeholder for the result from payment gateway
-  let newTransaction;
+  let submissionResult: any = {} // Placeholder for the result from payment gateway
+  let newTransaction
 
   try {
     // 1. Validate deposit data (basic example)
     if (typeof depositData.amount !== 'number' || depositData.amount <= 0) {
       return new Response(JSON.stringify({ message: 'Invalid deposit amount', code: 400 }), {
         status: 400,
-      });
+      })
     }
     if (!depositData.method) {
       return new Response(JSON.stringify({ message: 'Payment channel not specified', code: 400 }), {
         status: 400,
-      });
+      })
     }
 
     // Find the user's active profile to link the transaction
     // const userProfile = await db.profile.findFirst({
     //   where: { userId: user.id },
     // });
-    const userProfile = user.profile;
+    const userProfile = user.profile
 
     if (!userProfile) {
       return new Response(JSON.stringify({ message: 'User profile not found', code: 404 }), {
         status: 404,
-      });
+      })
     }
-    let walletId = user.activeWalletId;
+    let walletId = user.activeWalletId
     if (!walletId) {
-      walletId = user.wallets?.[0].id;
+      walletId = user.wallets?.[0].id
     }
     if (!walletId) {
       const wallet = await db.wallet.create({
@@ -288,14 +287,14 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
           userId: user.id as string,
           currencyCode: 'USD',
         },
-      });
+      })
       const updatedUser = await db.user.update({
         where: { id: user.id },
         data: {
           activeWalletId: wallet.id,
         },
-      });
-      walletId = updatedUser.activeWalletId;
+      })
+      walletId = updatedUser.activeWalletId
     }
     // 2. Create a new 'transaction' record with status PENDING
     submissionResult = await db.transaction.create({
@@ -322,7 +321,7 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
         // reference: '...', // Generate or get a unique reference from payment gateway
         // processedAt: null, // Set upon successful processing
       },
-    });
+    })
 
     // 3. Interact with a payment gateway (simulated)
     // This is where you would call your payment gateway's API
@@ -383,7 +382,7 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
       }
       */
   } catch (error) {
-    console.error('Failed to process deposit submission:', error);
+    console.error('Failed to process deposit submission:', error)
     // If transaction was created but gateway failed, maybe update transaction status to FAILED
     if (submissionResult) {
       await db.transaction
@@ -395,11 +394,11 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
             // metadata: { error },
           },
         })
-        .catch(console.error); // Log update error but don't block the original error response
+        .catch(console.error) // Log update error but don't block the original error response
     }
     return new Response(JSON.stringify({ message: 'Failed to process deposit', code: 500 }), {
       status: 500,
-    });
+    })
   }
 
   // --- End Database and Payment Gateway Logic ---
@@ -408,9 +407,9 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
     code: 200,
     data: submissionResult, // Return the result from the payment process (e.g., code_url or redirect url)
     message: 'Deposit submitted successfully',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 export async function cancelPendingDeposits(userId: string): Promise<number> {
@@ -423,27 +422,24 @@ export async function cancelPendingDeposits(userId: string): Promise<number> {
     data: {
       status: TransactionStatus.CANCELLED,
     },
-  });
-  return result.count;
+  })
+  return result.count
 }
 // Helper function to fetch deposit history
 export async function getDepositHistory(req: HonoRequest, user: Partial<UserWithProfile>) {
   // Authenticate the user
 
   // Parse request parameters (e.g., pagination)
-  const url = new URL(req.url);
-  const page = parseInt(url.searchParams.get('page') || '1', 10);
-  const limit = parseInt(url.searchParams.get('limit') || '10', 10);
+  const url = new URL(req.url)
+  const page = parseInt(url.searchParams.get('page') || '1', 10)
+  const limit = parseInt(url.searchParams.get('limit') || '10', 10)
 
   // --- Database Logic for Fetching History ---
   // Query the 'transaction' table for the user's deposit history with pagination.
 
   try {
     // Find the user's profile IDs
-    console.log(user);
-    console.log(page);
-    console.log(limit);
-    console.log((page - 1) * limit);
+
     // const userProfiles = await db.profile.findMany({
     //   where: { userId: user.id },
     //   select: { id: true },
@@ -495,7 +491,7 @@ export async function getDepositHistory(req: HonoRequest, user: Partial<UserWith
         },
         product: true,
       },
-    });
+    })
 
     // Count total deposit transactions for pagination
     const totalRecords = await db.transaction.count({
@@ -503,9 +499,9 @@ export async function getDepositHistory(req: HonoRequest, user: Partial<UserWith
         originatorUserId: user.id,
         type: TransactionType.DEPOSIT,
       },
-    });
+    })
 
-    const totalPages = Math.ceil(totalRecords / limit);
+    const totalPages = Math.ceil(totalRecords / limit)
 
     // Map Prisma results to DepositHistoryItem interface
     const historyRecords: DepositHistoryItem[] = transactions.map((tx) => ({
@@ -521,32 +517,32 @@ export async function getDepositHistory(req: HonoRequest, user: Partial<UserWith
       // currency: tx.currency,
       currency: 'USD', // tx.profile.currency,
       product: tx.product as unknown as Product, // Get currency from related profile
-    }));
+    }))
 
     const historyData: DepositHistoryResponse = {
       total_pages: totalPages,
       record: historyRecords,
-    };
+    }
     // --- End Database Logic ---
 
     const response: GetDepositHistoryResponse = {
       code: 200,
       data: historyData,
       message: 'Deposit history fetched successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Failed to fetch deposit history:', error);
+    console.error('Failed to fetch deposit history:', error)
     return new Response(JSON.stringify({ message: 'Failed to fetch deposit history', code: 500 }), {
       status: 500,
-    });
+    })
   }
 }
 
 // Expire pending deposits older than 1 hour
 export async function expireOldDeposits(): Promise<number> {
-  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
 
   const result = await db.transaction.updateMany({
     where: {
@@ -557,24 +553,24 @@ export async function expireOldDeposits(): Promise<number> {
     data: {
       status: TransactionStatus.EXPIRED,
     },
-  });
+  })
 
-  return result.count;
+  return result.count
 }
 
 // Initialize cron job to expire old deposits
 export function initDepositExpirationJob() {
-  const cron = require('node-cron');
+  const cron = require('node-cron')
 
   // Run every hour at minute 0
   cron.schedule('0 * * * *', async () => {
     try {
-      const expiredCount = await expireOldDeposits();
-      console.log(`Expired ${expiredCount} pending deposits`);
+      const expiredCount = await expireOldDeposits()
+      console.log(`Expired ${expiredCount} pending deposits`)
     } catch (error) {
-      console.error('Failed to expire deposits:', error);
+      console.error('Failed to expire deposits:', error)
     }
-  });
+  })
 }
 
 // Main async function to handle deposit routes

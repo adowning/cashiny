@@ -3,7 +3,7 @@ import type { Pinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 // import { useOperatorStore } from './operator'
-// import { useUserStore } from './user'
+// import { useUserStore } from './user.store'
 // import userController from '../sdk/userModule/userController'
 // import shopController from '../sdk/shopModule/shopController'
 // import spinDataController from '../sdk/spinDataModule/spinDataController'

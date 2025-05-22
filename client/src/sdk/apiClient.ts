@@ -1,5 +1,5 @@
 // // apps/client/src/sdk/apiClient.ts
-// import { useAuthStore } from '@/stores/auth';
+// import { useAuthStore } from '@/stores/auth.store';
 // import {
 //   type ApiErrorData,
 //   type AuthCredentials, // Auth related

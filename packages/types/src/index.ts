@@ -6,19 +6,19 @@
 // import { User } from './prisma/types';
 // Or, if you have them re-exported in your own types package:
 // import type { User as PrismaUser, Profile as PrismaProfile } from '../prisma/interfaces'; // Adjust path as needed
-import { Profile, User } from './prisma/types';
+import { Profile, User } from './prisma/types'
 
-export type { Transaction, Product } from './prisma/interfaces';
+export type { Transaction, Product } from './prisma/interfaces'
 /**
  * Represents a User object fully populated with its associated Profile.
  * The profile can be null if a user might not have one.
  */
 export type UserWithProfile = User & {
-  profile: Profile; // Or PrismaProfile if a profile is always expected
-};
+  profile: Profile // Or PrismaProfile if a profile is always expected
+}
 // export type User = PrismaUser;
 
-export * from './interface/index';
+export * from './interface/index'
 // export type Achievement = import('./prisma/interfaces').Achievement;
 // export type ChatMessage = import('./prisma/interfaces').ChatMessage;
 // export type Currency = import('./prisma/interfaces').Currency;
@@ -43,26 +43,26 @@ export * from './interface/index';
 // export type User = import('./prisma/interfaces').User;
 
 export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page?: number;
-  limit?: number;
-  totalPages?: number;
-  hasNextPage?: boolean;
-  hasPrevPage?: boolean;
+  items: T[]
+  total: number
+  page?: number
+  limit?: number
+  totalPages?: number
+  hasNextPage?: boolean
+  hasPrevPage?: boolean
 }
 export type GenericApiResponse<T = any> = {
-  code: number;
-  data: T;
-  message: string;
-};
-export * from './interface/auth.interface';
-export * from './interface/auth.socket-interface';
-export * from './interface/routes';
+  code: number
+  data: T
+  message: string
+}
+export * from './interface/auth.interface'
+export * from './interface/auth.socket-interface'
+export * from './interface/routes'
 
 export type Fetcher = {
-  fetch: (request: Request | URL | string) => Promise<Response>;
-};
+  fetch: (request: Request | URL | string) => Promise<Response>
+}
 
 // const userWithProfile = Prisma.validator<Prisma.UserDefaultArgs>()({
 //   include: { profile: true },

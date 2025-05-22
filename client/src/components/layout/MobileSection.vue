@@ -1,6 +1,6 @@
 <script setup>
-  import { useAuthStore } from '@/stores/auth'
-  import { useDepositStore } from '@/stores/deposit'
+  import { useAuthStore } from '@/stores/auth.store'
+  import { useDepositStore } from '@/stores/deposit.store'
 
   const authStore = useAuthStore()
   const depositStore = useDepositStore()

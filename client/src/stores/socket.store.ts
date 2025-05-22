@@ -1,8 +1,8 @@
-import { logToPage } from '@/utils/logger';
-import { WebSocketClient } from '@/utils/websocketClient';
-import { defineStore } from 'pinia';
+import { logToPage } from '@/utils/logger'
+import { WebSocketClient } from '@/utils/websocketClient'
+import { defineStore } from 'pinia'
 
-import { useAuthStore } from './auth';
+import { useAuthStore } from './auth.store'
 
 export const useSocketStore = defineStore('socket', () => {
   // --- State ---
@@ -11,43 +11,43 @@ export const useSocketStore = defineStore('socket', () => {
 
   // --- Actions ---
   function connectWebSocket() {
-    logToPage('info', 'Attempting to connect WebSocket...');
-    const authStore = useAuthStore();
-    const token = authStore.accessToken;
+    logToPage('info', 'Attempting to connect WebSocket...')
+    const authStore = useAuthStore()
+    const token = authStore.accessToken
 
     if (token) {
       // WebSocketService.getInstance().connect(token); // Pass token if needed for connection/authentication
-      WebSocketClient.getInstance().connect(); // Assuming token is handled internally or not needed for initial connect
+      WebSocketClient.getInstance().connect() // Assuming token is handled internally or not needed for initial connect
       // isConnected.value = true; // Update state
     } else {
-      logToPage('warn', 'Cannot connect WebSocket, no token available.');
+      logToPage('warn', 'Cannot connect WebSocket, no token available.')
     }
   }
 
   function disconnectWebSocket() {
-    logToPage('info', 'Attempting to disconnect WebSocket...');
-    WebSocketClient.getInstance().close();
+    logToPage('info', 'Attempting to disconnect WebSocket...')
+    WebSocketClient.getInstance().close()
     // isConnected.value = false; // Update state
   }
 
   // --- Subscriptions ---
   function startWatchToSubscribe() {
-    const authStore = useAuthStore();
+    const authStore = useAuthStore()
     watch(
       () => authStore.initialAuthCheckComplete, // Source to watch
       (newIsAuthenticated, oldIsAuthenticated) => {
         console.log(
-          `[SocketStore] Auth state changed: ${oldIsAuthenticated} -> ${newIsAuthenticated}`,
-        );
+          `[SocketStore] Auth state changed: ${oldIsAuthenticated} -> ${newIsAuthenticated}`
+        )
         if (newIsAuthenticated && authStore.accessToken) {
-          connectWebSocket();
+          connectWebSocket()
         } else {
-          disconnectWebSocket();
+          disconnectWebSocket()
         }
       },
-      { immediate: false }, // `immediate: true` would run this on store initialization
+      { immediate: false } // `immediate: true` would run this on store initialization
       // Set to true if you want to attempt connection immediately if already authenticated
-    );
+    )
   }
 
   // authStore.$subscribe((mutation, state) => {
@@ -77,8 +77,8 @@ export const useSocketStore = defineStore('socket', () => {
     // Expose actions if needed for manual control (less common)
     // connectWebSocket,
     // disconnectWebSocket,
-  };
-});
+  }
+})
 
 // import { defineStore } from "pinia";
 // import { ref, computed } from "vue";
