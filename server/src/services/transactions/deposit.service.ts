@@ -87,6 +87,7 @@ export async function getOperatorData(
   _req: HonoRequest,
   user: Partial<UserWithProfile>
 ): Promise<Response> {
+  console.log(user)
   await db.profile.findUnique({
     where: {
       id: user.profile?.id as string,
