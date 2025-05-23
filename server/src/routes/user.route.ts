@@ -51,7 +51,7 @@ router.get(NETWORK_CONFIG.PERSONAL_INFO_PAGE.USER_EMAIL_VERIFY, async (c) => {
   try {
     const user = await verifyUserEmail(c.req, c.get('user_with_profile')!)
     return createSuccessResponse(user)
-  } catch (e: any) {
+  } catch (e) {
     return createErrorResponse(e.message, 500)
   }
 })

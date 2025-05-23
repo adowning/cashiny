@@ -1,11 +1,10 @@
-// import { db } from ""; // Assuming Prisma client path
-// Helper function to get a random element from an array
-// const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
-import { auth } from '@/auth'
-import { WebSocketRouter } from '@/routes/socket.router'
-import { AppWsData } from '@/server'
-import { db, Game, GameSession, GameSpin } from '@cashflow/database'
-import type { Prisma } from '@prisma/client'
+// Helper function to calculate RTP
+function calculateRTP(win: number, bet: number): number {
+  return bet > 0 ? (win / bet) * 100 : 0
+}
+
+import { db, GameSession } from '@cashflow/database'
+import { TransactionType } from '@cashflow/database'
 import {
   GameBigWinData,
   GameBigWinItem,
@@ -22,17 +21,36 @@ import {
   GetGameFavoriteListResponse,
   GetGameHistoryResponse,
   GetGameSearchResponse,
-  PaginatedResponse,
-  RawGameSpinBody,
   Search,
   UserWithProfile,
 } from '@cashflow/types'
+
+interface RawGameSpinBody {
+  game_id: string
+  bet_amount: number
+  win_amount: number
+  currency: string
+  round_id?: string
+  transaction_id?: string
+  [key: string]: unknown
+}
 import { faker } from '@faker-js/faker'
+import {
+  PrismaClient,
+  Prisma,
+  User,
+  Wallet,
+  Transaction,
+  TransactionStatus,
+  XpEvent,
+  Notification,
+  Currency,
+  UserReward,
+  RewardType,
+  NotificationType,
+} from '@cashflow/database'
 import { Session } from 'better-auth'
-import { Server } from 'bun'
 import { Context, HonoRequest } from 'hono'
-import { uuid } from 'short-uuid'
-import { connection } from 'websocket'
 import { buildJson, buildJsonForSpin } from './buildjson'
 
 // class NoLimitRouter {
@@ -191,9 +209,7 @@ export async function getGameList() {
 //   });
 //     currentUser.activeProfileId as string
 //   );
-//   const playerWinTotalToday = (aggregateDataForPlayerToday._sum?.grossWinAmount || 0) + winAmount;
-//   const playerBetTotalToday = (aggregateDataForPlayerToday._sum?.wagerAmount || 0) + betAmount;
-
+//   const playerWinTotalToday = (aggregateDataForPlayerToday._sum?.grossWinAmount || 0) + winA
 //   // //console.log(aggregateDataForPlayerToday._sum);
 //   function calculateRTP(win: number, bet: number): number {
 //     return bet > 0 ? (win / bet) * 100 : 0;
@@ -224,7 +240,7 @@ async function getRtpForGameSession(
   if (isNaN(Number(gameSessionRTP))) {
     gameSessionRTP = '0'
   } else {
-    gameSessionRTP = parseInt(gameSessionRTP)
+    gameSessionRTP = parseInt(gameSessionRTP).toString()
   }
 
   return [gameSessionRTP, sessionTotalWinAmount, sessionTotalBetAmount]
@@ -264,7 +280,7 @@ export async function getGameGameCategory(req: HonoRequest): Promise<Response> {
       // }))
     } else {
       // Fetch distinct game banks or categories from the Game model
-      // // This is a simplified approach; a dedicated GameCategory model would be better
+      // This is a simplified approach; a dedicated GameCategory model would be better
       // const distinctGameBanks = await db.game.findMany({
       //   select: { gamebank: true },
       //   distinct: ['gamebank'],
@@ -274,8 +290,8 @@ export async function getGameGameCategory(req: HonoRequest): Promise<Response> {
       //   image: '', // No specific image for these categories
       //   pictures: '',
       //   game_count: 0, // Need to implement logic to count games per bank
-      //   name: game.gamebank || 'Unknown',
-      //   slug: game.gamebank || 'unknown',
+      //   name: '', //game.gamebank || 'Unknown',
+      //   slug: '', //game.gamebank || 'unknown',
       //   games: [], // Games are not included in this category list
       //   page_no: 1, // Assuming a single page
       // }));
@@ -370,11 +386,6 @@ export async function getGameSearch(
       total: totalGames,
     }
 
-    const response: GetGameSearchResponse = {
-      code: 200,
-      data: responseData,
-      message: 'Game search results retrieved successfully',
-    }
     return responseData
   } catch (error) {
     console.error('Error searching games:', error)
@@ -429,7 +440,7 @@ export async function getGameEnter(
     const gameSession = await db.gameSession.create({
       data: {
         sessionId: session.id,
-        userId: user.id,
+        userId: user.id ?? '',
         gameId: game.id,
         startTime: new Date(),
         // endTime: gameSessionEndTime,
@@ -458,13 +469,12 @@ export async function getGameEnter(
  */
 export async function registerGameRound(
   req: HonoRequest,
-  user: Partial<User>,
+  user: Partial<UserWithProfile>,
   session: Session
 ): Promise<Response> {
   try {
     const body: RawGameSpinBody = await req.json()
-    const gameId = body.game_id // Array.isArray(body.id) ? body.id[0] : body.id; // Handle single ID or array
-    // const isDemo = body.demo || false;
+    const gameId = body.game_id
 
     // Fetch game details
     const game = await db.game.findUnique({
@@ -483,39 +493,64 @@ export async function registerGameRound(
       })
     }
 
-    // Here you would typically interact with a game developer's API
-    // to get the actual game entry URL and parameters.
-    // This is a placeholder implementation.
-
-    const gameEnterData: GameEnterResponse = {
-      method: 'GET', // Or POST, depending on the developer
-      parames: '', // Parameters for the game launch
-      developer: game.operatorId || 'unknown', // Using operatorId as developer identifier
-      reserve: faker.string.uuid(), // Placeholder for a session token or similar
-      weburl: `https://example.com/launchgame?gameId=${game.id}&userId=${user.id}`, // Placeholder URL
-    }
-
-    const gameSession = await db.gameSession.create({
-      data: {
+    const gameSession = await db.gameSession.findFirst({
+      where: {
         sessionId: session.id,
-        userId: user.id,
+        userId: user.id ?? '',
         gameId: game.id,
-        startTime: new Date(),
-        // endTime: gameSessionEndTime,
-        totalWagered: 0, // Will be updated by spins (in cents)
-        totalWon: 0, // Will be updated by spins (in cents)
-        // currencyId will be determined by the first spin or a default
       },
     })
-    const response: GetGameEnterResponse = {
+
+    if (!gameSession) {
+      return new Response(JSON.stringify({ message: 'Game session not found', code: 404 }), {
+        status: 404,
+      })
+    }
+
+    const { bet_amount, win_amount } = body
+    const betAmount = toCents(bet_amount.toString())
+    const winAmount = toCents(win_amount.toString())
+
+    const [gameSessionRTP, sessionTotalWinAmount, sessionTotalBetAmount] =
+      await getRtpForGameSession(gameSession, winAmount, betAmount)
+
+    const gameSpin = await db.gameSpin.create({
+      data: {
+        gameSessionId: gameSession.id,
+        createdAt: new Date(),
+        wagerAmount: betAmount,
+        grossWinAmount: winAmount,
+        metadata: {
+          netWinAmount: winAmount - betAmount,
+        },
+        // currencyId: gameSession.currencyId, // TODO - determine this
+        // balanceBefore: user.profile.balance, // TODO
+        // balanceAfter: user.profile.balance + winAmount - betAmount, // TODO
+        // externalId: body.round_id, // TODO
+        // externalRoundId: body.round_id, // TODO
+        // externalGameId: game.id, // TODO
+      },
+    })
+
+    await db.gameSession.update({
+      where: { id: gameSession.id },
+      data: {
+        totalWagered: sessionTotalBetAmount,
+        totalWon: sessionTotalWinAmount,
+      },
+    })
+
+    const response = {
       code: 200,
-      data: gameEnterData,
-      gameSession,
-      message: 'Game entry data retrieved successfully',
+      message: 'Game round registered successfully',
+      data: {
+        gameSpin,
+        gameSessionRTP,
+      },
     }
     return new Response(JSON.stringify(response))
   } catch (error) {
-    console.error('Error entering game:', error)
+    console.error('Error registering game round:', error)
     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
       status: 500,
     })
@@ -529,7 +564,7 @@ export async function registerGameRound(
 export async function getGameUserGame(req: HonoRequest): Promise<Response> {
   try {
     const body: GameUserBody = await req.json()
-    const categorySlug = body.game_categories_slug
+    // const categorySlug = body.game_categories_slug
     const page = body.page || 1
     const limit = body.limit || 20
     const offset = (page - 1) * limit
@@ -690,7 +725,7 @@ export async function getGameHistory(
     })
 
     const totalGameSessions = await db.gameSession.count({
-      where: { Profile: user.profile?.id! },
+      where: { userId: user?.id },
     })
 
     const gameHistoryRecords: GameHistoryItem[] = gameSessions.map((session: any) => ({
@@ -765,91 +800,97 @@ export async function getGameBigWin(): Promise<Response> {
 
     // Prepare lucky bets
     const luckyBetsSpins = [...allSpins].sort(
-      (a, b) => b.grossWinAmount - b.betAmount - (a.grossWinAmount - a.betAmount)
+      (a, b) => b.grossWinAmount - b.wagerAmount - (a.grossWinAmount - a.wagerAmount)
     )
     const diverseLuckyBets = ensureUserDiversity(luckyBetsSpins, 20)
 
-    const highRollersItems: GameBigWinItem[] = await Promise.all(
-      diverseHighRollers.map(async (spin: any) => {
-        if (spin.gameSession) {
-          const gameId = spin.gameSession.gameId
-          const userId = spin.gameSession.userId
-          const game = await db.game.findUnique({ where: { id: gameId } })
-          const user = await db.user.findUnique({ where: { id: userId } })
-          if (user !== null && game != null) {
-            const _developer = game.name.substring(
-              game.name.toLocaleLowerCase().length,
-              game.name.toLowerCase().length - 3
-            )
-            let developer
-            if (_developer?.toLowerCase().includes('ng')) developer = 'netgame'
-            if (_developer?.toLowerCase().includes('net')) developer = 'netent'
-            if (_developer?.toLowerCase().includes('rtg')) developer = 'redtiger'
-            if (_developer?.toLowerCase().includes('nlc')) developer = 'nolimit'
-            if (_developer?.toLowerCase().includes('bfg')) developer = 'bigfish'
-            let username = user.username
-            if (username && username.length > 8) username = username.substring(0, 8) + '..'
+    const highRollersItems: GameBigWinItem[] = (
+      await Promise.all(
+        diverseHighRollers.map(async (spin: any) => {
+          if (spin.gameSession) {
+            const gameId = spin.gameSession.gameId
+            const userId = spin.gameSession.userId
+            const game = await db.game.findUnique({ where: { id: gameId } })
+            const user = await db.user.findUnique({ where: { id: userId } })
+            if (user !== null && game != null) {
+              const _developer = game.name.substring(
+                game.name.toLocaleLowerCase().length,
+                game.name.toLowerCase().length - 3
+              )
+              let developer
+              if (_developer?.toLowerCase().includes('ng')) developer = 'netgame'
+              if (_developer?.toLowerCase().includes('net')) developer = 'netent'
+              if (_developer?.toLowerCase().includes('rtg')) developer = 'redtiger'
+              if (_developer?.toLowerCase().includes('nlc')) developer = 'nolimit'
+              if (_developer?.toLowerCase().includes('bfg')) developer = 'bigfish'
+              let username = user.username
+              if (username && username.length > 8) username = username.substring(0, 8) + '..'
 
-            return {
-              game_id: game?.id,
-              game_name: game?.name || 'Unknown Game',
-              game_icon: `/images/games/${developer}/${game?.name.toLowerCase()}.avif`,
-              user_name: username || 'Anonymous',
-              user_vip_group: 0,
-              user_vip_level: 0,
-              bet_amount: spin?.betAmount?.toString() || '0',
-              multiplier:
-                spin.winAmount && spin.betAmount
-                  ? (spin.winAmount / spin.betAmount).toFixed(2)
-                  : '0',
-              win_amount: (spin.grossWinAmount / 100).toString() || '0',
-              time: spin.timeStamp.getTime(),
+              return {
+                game_id: game?.id,
+                game_name: game?.name || 'Unknown Game',
+                game_icon: `/images/games/${developer}/${game?.name.toLowerCase()}.avif`,
+                user_name: username || 'Anonymous',
+                user_vip_group: 0,
+                user_vip_level: 0,
+                bet_amount: spin?.wagerAmount?.toString() || '0',
+                multiplier:
+                  spin.winAmount && spin.wagerAmount
+                    ? (spin.winAmount / spin.wagerAmount).toFixed(2)
+                    : '0',
+                win_amount: (spin.grossWinAmount / 100).toString() || '0',
+                time: spin.timeStamp.getTime(),
+              }
             }
           }
-        }
-      })
-    )
+          return undefined
+        })
+      )
+    ).filter(Boolean) as GameBigWinItem[]
 
-    const luckyBetsItems: GameBigWinItem[] = await Promise.all(
-      diverseLuckyBets.map(async (spin: any) => {
-        if (spin.gameSession) {
-          const gameId = spin.gameSession.gameId
-          const userId = spin.gameSession.userId
-          const game = await db.game.findUnique({ where: { id: gameId } })
-          const user = await db.user.findUnique({ where: { id: userId } })
-          if (user !== null && game != null) {
-            const _developer = game.name.substring(
-              game.name.toLocaleLowerCase().length,
-              game.name.toLowerCase().length - 3
-            )
-            let developer
-            if (_developer?.toLowerCase().includes('ng')) developer = 'netgame'
-            if (_developer?.toLowerCase().includes('net')) developer = 'netent'
-            if (_developer?.toLowerCase().includes('rtg')) developer = 'redtiger'
-            if (_developer?.toLowerCase().includes('nlc')) developer = 'nolimit'
-            if (_developer?.toLowerCase().includes('bfg')) developer = 'bigfish'
-            let username = user.username
-            if (username && username.length > 8) username = username.substring(0, 8) + '..'
+    const luckyBetsItems: GameBigWinItem[] = (
+      await Promise.all(
+        diverseLuckyBets.map(async (spin: any) => {
+          if (spin.gameSession) {
+            const gameId = spin.gameSession.gameId
+            const userId = spin.gameSession.userId
+            const game = await db.game.findUnique({ where: { id: gameId } })
+            const user = await db.user.findUnique({ where: { id: userId } })
+            if (user !== null && game != null) {
+              const _developer = game.name.substring(
+                game.name.toLocaleLowerCase().length,
+                game.name.toLowerCase().length - 3
+              )
+              let developer
+              if (_developer?.toLowerCase().includes('ng')) developer = 'netgame'
+              if (_developer?.toLowerCase().includes('net')) developer = 'netent'
+              if (_developer?.toLowerCase().includes('rtg')) developer = 'redtiger'
+              if (_developer?.toLowerCase().includes('nlc')) developer = 'nolimit'
+              if (_developer?.toLowerCase().includes('bfg')) developer = 'bigfish'
+              let username = user.username
+              if (username && username.length > 8) username = username.substring(0, 8) + '..'
 
-            return {
-              game_id: game?.id,
-              game_name: game?.name || 'Unknown Game',
-              game_icon: `/images/games/${developer}/${game?.name.toLowerCase()}.avif`,
-              user_name: username || 'Anonymous',
-              user_vip_group: 0,
-              user_vip_level: 0,
-              bet_amount: spin?.betAmount?.toString() || '0',
-              multiplier:
-                spin.winAmount && spin.betAmount
-                  ? (spin.winAmount / spin.betAmount).toFixed(2)
-                  : '0',
-              win_amount: (spin.grossWinAmount / 100).toString() || '0',
-              time: spin.timeStamp.getTime(),
+              return {
+                game_id: game?.id,
+                game_name: game?.name || 'Unknown Game',
+                game_icon: `/images/games/${developer}/${game?.name.toLowerCase()}.avif`,
+                user_name: username || 'Anonymous',
+                user_vip_group: 0,
+                user_vip_level: 0,
+                bet_amount: spin?.wagerAmount?.toString() || '0',
+                multiplier:
+                  spin.winAmount && spin.wagerAmount
+                    ? (spin.winAmount / spin.wagerAmount).toFixed(2)
+                    : '0',
+                win_amount: (spin.grossWinAmount / 100).toString() || '0',
+                time: spin.timeStamp.getTime(),
+              }
             }
           }
-        }
-      })
-    )
+          return undefined
+        })
+      )
+    ).filter(Boolean) as GameBigWinItem[]
 
     const responseData: GameBigWinData = {
       high_rollers: highRollersItems,
@@ -1056,13 +1097,13 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
       init
     )
     let gameSession = await db.gameSession.findFirst({
-      where: { profileId: currentUser.profile.id, isActive: true, user: user, game: game },
+      where: { profileId: currentUser.profile.id, isActive: true },
     })
     //console.log(response);
     const previousSpins = await db.gameSpin.findMany({
-      where: { gameSessionId: gameSession.id },
+      where: { gameSessionId: gameSession!.id },
     })
-    let gameResultFromDeveloper: any = await response.json()
+    const gameResultFromDeveloper: any = await response.json()
     const spinNumber = previousSpins.length + 1
 
     if (!gameResultFromDeveloper.success) {
@@ -1081,11 +1122,13 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
         },
       })
     }
-    const spin = await db.gameSpin.create({
+    await db.gameSpin.create({
       data: {
         gameSessionId: gameSession.id,
         spinNumber,
-        result: gameResultFromDeveloper,
+        spinData: JSON.stringify(gameResultFromDeveloper),
+        sessionId: session.id,
+        timeStamp: new Date(),
       },
     }) //getActiveSession(currentUser.id)
 
@@ -1093,42 +1136,39 @@ export async function rtgSpin(c: Context, user: UserWithProfile, session: Sessio
     //   where: { gameSessionId: gameSession.id },
     // });
     // const hasState = gameResultFromDeveloper.result.game.hasState;
-    let winAmount = formatCentsAmount(gameResultFromDeveloper.result.game.win.total)
-    let betAmount = formatCentsAmount(dataFromClient.stake) // Example bet amount
-    const balanceChange = winAmount - betAmount
+    const winAmount = formatCentsAmount(gameResultFromDeveloper.result.game.win.total)
+    const betAmount = formatCentsAmount(dataFromClient.stake) // Example bet amount
     const spinId = gameResultFromDeveloper.result.transactions.roundId
-    const gameBalance = formatCentsAmount(gameResultFromDeveloper.result.user.balance.cash.atEnd)
-    const playerStartingBalance = gameSession.startingBalance
-    const [playerRTPToday, playerWinTotalToday, playerBetTotalToday] = await getRtpForPlayerToday(
-      currentUser,
-      winAmount,
-      betAmount
-    )
-    const [gameSessionRTP, sessionTotalWinAmount, sessionTotalBetAmount] =
-      await getRtpForGameSession(gameSession, winAmount, betAmount)
-    const spinData: GameSpin = {
+    // const [playerRTPToday, playerWinTotalToday, playerBetTotalToday] = await getRtpForPlayerToday(
+    //   currentUser,
+    //   winAmount,
+    //   betAmount
+    // );
+    const [gameSessionRTP] = await getRtpForGameSession(gameSession, winAmount, betAmount)
+    const spinData = {
       id: spinId.toString(),
       gameSessionId: gameSession.id,
-      sessionNetPosition: formatCentsAmount(gameResultFromDeveloper.result.user.sessionNetPosition),
-      userSessionId: session.id as string,
-      profileId: currentUser.profile!.id,
+      // sessionNetPosition: formatCentsAmount(gameResultFromDeveloper.result.user.sessionNetPosition),
+      sessionId: session.id as string,
+      // profileId: currentUser.profile!.id,
       createdAt: new Date(),
       updatedAt: new Date(),
       gameId: gameSession.gameId,
-      gameBalance,
-      playerBalanceAtStart: playerStartingBalance,
-      playerBalance: currentUser.profile!.balance + balanceChange,
-      betAmount,
-      winAmount: winAmount || 0,
-      playerWinTotalToday: playerWinTotalToday,
-      playerBetTotalToday: playerBetTotalToday,
-      sessionTotalWinAmount: sessionTotalWinAmount,
-      sessionTotalBetAmount: sessionTotalBetAmount,
+      // gameBalance,
+      // playerBalanceAtStart: playerStartingBalance,
+      // playerBalance: currentUser.profile!.balance + balanceChange,
+      wagerAmount: betAmount,
+      grossWinAmount: winAmount || 0,
+      // playerWinTotalToday: playerWinTotalToday,
+      // playerBetTotalToday: playerBetTotalToday,
+      // sessionTotalWinAmount: sessionTotalWinAmount,
+      // sessionTotalBetAmount: sessionTotalBetAmount,
       spinNumber,
       gameSessionRTP: parseFloat(gameSessionRTP),
-      playerRTPToday,
-      temperature: null,
-      developer: null,
+      // playerRTPToday,
+      // temperature: null,
+      // developer: null,
+      timeStamp: new Date(),
     }
     await db.gameSpin.create({
       data: spinData,
@@ -1214,302 +1254,1048 @@ export async function getGameSpin(): Promise<Response> {
   }
 }
 
-// class SocketConnection {
-//   target: HostPortPair
-//   socket?: WebSocket
+// --- Mocked imports from leveling.config.ts ---
+// In a real setup, you'd import these directly.
+interface LevelConfig {
+  level: number
+  name: string
+  xpRequired: number // XP for this specific level bar
+  cumulativeXpToReach: number // Total XP needed to attain this level
+  cashbackPercentage: number
+  prioritySupport: boolean
+  benefits: any[] // Define more strictly if needed
+  levelUpRewards?: Array<
+    Omit<
+      Prisma.UserRewardCreateInput,
+      'userId' | 'rewardType' | 'status' | 'vipLevelRequirement' | 'user' | 'currency'
+    > & { currencyId?: string; amount?: number | Prisma.Decimal }
+  >
+}
 
-//   constructor(target: HostPortPair) {
-//     target = target
-//   }
+const VIP_LEVEL_CONFIGS: Readonly<LevelConfig[]> = Object.freeze([
+  {
+    level: 1,
+    name: 'Bronze',
+    xpRequired: 100,
+    cumulativeXpToReach: 0,
+    cashbackPercentage: 0.01,
+    prioritySupport: false,
+    benefits: [],
+    levelUpRewards: [{ description: 'Welcome Bonus!', amount: 1000, currencyId: 'USD_FUN' }],
+  }, // 1000 cents = 10 USD_FUN
+  {
+    level: 2,
+    name: 'Silver',
+    xpRequired: 150,
+    cumulativeXpToReach: 100,
+    cashbackPercentage: 0.02,
+    prioritySupport: true,
+    benefits: [],
+    levelUpRewards: [{ description: 'Silver Tier Bonus!', amount: 5000, currencyId: 'USD_FUN' }],
+  },
+])
 
-//   async start() {
-//     return new Promise<WebSocket>((res, rej) => {
-//       const sock = net.connect({
-//         host: target.host,
-//         port: target.port,
-//       })
-//       sock.on('connect', () => {
-//         socket = sock
-//         res(sock)
-//       })
-//       sock.on('timeout', () => rej(new Error('TIMEOUT')))
-//     })
-//   }
+function getVipLevelByTotalXp(totalXp: number): Readonly<LevelConfig> {
+  for (let i = VIP_LEVEL_CONFIGS.length - 1; i >= 0; i--) {
+    if (totalXp >= VIP_LEVEL_CONFIGS[i].cumulativeXpToReach) {
+      return VIP_LEVEL_CONFIGS[i]
+    }
+  }
+  return (
+    VIP_LEVEL_CONFIGS[0] || {
+      level: 0,
+      name: 'Unranked',
+      xpRequired: 100,
+      cumulativeXpToReach: 0,
+      cashbackPercentage: 0,
+      prioritySupport: false,
+      benefits: [],
+    }
+  )
+}
+// --- End of Mocked imports ---
 
-//   async close() {
-//     const { socket } = this
-//     if (!socket) throw new Error('NOCONNECTION')
-//     return new Promise<void>((res) => {
-//       socket.end(() => {
-//         socket = undefined
-//         res()
-//       })
-//     })
-//   }
-// }
+// --- 0. Core Type Definitions (from game provider) ---
+type MonetaryAmountProvider = string // e.g., "100.00" from provider
+type UserIdProvider = number | string
+type SessionIdProvider = string
+type TokenProvider = string
+type IsoDateTimeStringProvider = string
 
-// export class HostPortPair {
-//   host!: string
-//   port!: number
+// --- 1. TypeScript Interfaces for Game Provider Data (largely unchanged) ---
+interface ProviderCurrency {
+  code: string
+  symbol: string
+}
 
-//   constructor(s: string)
-//   constructor(host: string, port: number)
-//   constructor(...params) {
-//     if (params.length === 1 && typeof params[0] === 'string') {
-//       host = params[0].split(':')[0]
-//       port = parseInt(params[0].split(':')[1])
-//     } else if (
-//       params.length === 2 &&
-//       typeof params[0] === 'string' &&
-//       typeof params[1] === 'number'
-//     ) {
-//       host = params[0]
-//       port = params[1]
-//     }
-//   }
+interface ProviderUserInitialBalance {
+  cash: MonetaryAmountProvider
+  freeBets: MonetaryAmountProvider
+  bonus: MonetaryAmountProvider
+}
 
-//   static fromBody(body: any) {
-//     return new HostPortPair(body.host, body.port)
-//   }
+interface ProviderSettingsUserResult {
+  balance: ProviderUserInitialBalance
+  userId: UserIdProvider
+  country?: string
+  currency: ProviderCurrency
+  token: TokenProvider
+  sessionId: SessionIdProvider
+  canGamble?: boolean
+}
 
-//   public toString() {
-//     return host + ':' + port
-//   }
-// }
-// export const sendJSON = (conn: connection, log: Logger, body: any) => {
-//   const logOutput = { ...body }
-//   if (log.level !== 'trace' && logOutput.data) logOutput.data = '==TRUNCATED=='
-//   log[log.level === 'trace' ? 'trace' : 'debug']('⬆ %o', logOutput)
-//   conn.sendUTF(JSON.stringify(body))
-// }
+interface ProviderSettingsGameResult {
+  version?: string
+  gameType?: string
+}
 
-// export const logResponse = (log: Logger, body: any) => {
-//   const logOutput = { ...body }
-//   if (log.level !== 'trace' && logOutput.data) logOutput.data = '==TRUNCATED=='
-//   log[log.level === 'trace' ? 'trace' : 'debug']('⬇ %o', logOutput)
-// }
-// export async function proxyWebsocket(req: Request, wsRouter: WebSocketRouter<AppWsData>, server: Server): Promise<Response> {
-//     if (req.headers.get('upgrade') !== 'websocket') {
-//     return new Response('Expected websocket', {status: 400} )
-//   }else{
-//       const url = new URL(req.url);
-//            let sessionId: string | null = null;
-//            console.log(url.searchParams.get('token'));
-//            // const authHeader = req.headers.get('Authorization');
-//            sessionId = url.searchParams.get('token');
-//            // if (authHeader?.startsWith('Bearer ')) sessionId = authHeader.substring(7);
-//            if (!sessionId) {
-//              console.warn('[WS Upgrade] Denied: No session ID found.');
-//              return new Response('Unauthorized: Authentication required.', {
-//                status: 401,
-//              });
-//            }
-//           req.headers.set('Authorization', sessionId as string);
-//            try {
-//              const session = await auth.api.getSession({
-//                headers: req.headers,
-//              });
-//              const user = session!.user;
-//              if (!session || !user || !user.id) {
-//                console.warn(`[WS Upgrade] Denied: Invalid session ID.`);
-//                return new Response('Unauthorized: Invalid session.', {
-//                  status: 401,
-//                });
-//              }
-//                   const upgradeResponse = wsRouter.upgrade({
-//                         server,
-//                         request: req,
-//                         data: { userId: user.id },
-//                       });
-//                       if (upgradeResponse instanceof Response) return upgradeResponse;
-//                       return new Response(null, { status: 101 });
-//            } catch (error: any) {
-//              if (error?.message === 'AUTH_INVALID_SESSION_ID') {
-//                console.warn(`[WS Upgrade] Denied: Invalid session ID (validation error)`);
-//                return new Response('Unauthorized: Invalid session.', {
-//                  status: 401,
-//                });
-//              }
-//              console.error('[WS Upgrade] Error:', error);
-//              return new Response('Internal Server Error during upgrade.', {
-//                status: 500,
-//              });
-//            }
-//          }
-//   }
-//   try {
-//     // Placeholder logic for performing a spin
-//     // Deduct spin cost from user balance/spin count, determine reward, update user record, etc.
-//     const body = await c.req.json()
-//     const pair = HostPortPair.fromBody(body)
-//             const socketConnection = new SocketConnection(pair)
-//             const id = uuid()
-//             const { passphrase } = conn
-//     sendJSON(conn, log, {
-//               command: 'START',
-//               status: 'CONNECTING',
-//               connection: id,
-//             })
-//             socketConnection
-//               .start()
-//               .then((socket: net.Socket) => {
-//                 let remoteIP = req.socket.remoteAddress
-//                 if (req.httpRequest.headers['x-forwarded-for'])
-//                   remoteIP = req.httpRequest.headers[
-//                     'x-forwarded-for'
-//                   ] as string
-//                 else if (req.httpRequest.headers['x-remote-ip'])
-//                   remoteIP = req.httpRequest.headers['x-remote-ip'] as string
+interface ProviderSettingsResponseData {
+  user: ProviderSettingsUserResult
+  game: ProviderSettingsGameResult
+  launcher?: { version?: string }
+}
 
-//                 log.info(
-//                   'Established connection %s <===> server <===> %s',
-//                   remoteIP,
-//                   pair.toString()
-//                 )
-//                 sendJSON(conn, log, { status: 'ESTABLISHED', connection: id })
+export interface SettingsResponse {
+  success: boolean
+  result: ProviderSettingsResponseData
+}
 
-//                 socket.on('data', (data) => {
-//                   sendJSON(conn, log, {
-//                     connection: id,
-//                     data: data.toString('base64'),
-//                   })
-//                 })
+interface ProviderBalanceTransaction {
+  atStart: MonetaryAmountProvider
+  afterBet: MonetaryAmountProvider
+  atEnd: MonetaryAmountProvider
+}
 
-//                 socket.on('close', (hadError) => {
-//                   delete sockets[conn.id][id]
-//                   sendJSON(conn, log, {
-//                     connection: id,
-//                     status: 'CLOSED',
-//                     hadError,
-//                   })
-//                   conn.close()
-//                 })
+interface ProviderUserTransactionalBalance {
+  cash: ProviderBalanceTransaction
+}
 
-//                 sockets[conn.id][id] = socketConnection
-//               })
-//               .catch((e) => {
-//                 log.error('Connect failed: %o', e)
-//                 sendJSON(conn, log, {
-//                   status: 'FAILED',
-//                   error: e.reason,
-//                   connection: id,
-//                 })
-//               })
-//             }
+interface ProviderSpinTransactionDetails {
+  roundId: number | string
+}
 
-//           catch(e){
+interface ProviderSpinUserResult {
+  balance: ProviderUserTransactionalBalance
+  userId: UserIdProvider
+  sessionId: SessionIdProvider
+  token: TokenProvider
+  serverTime: IsoDateTimeStringProvider
+}
 
-//           }
+interface ProviderSpinWinDetails {
+  total: MonetaryAmountProvider
+}
 
-//           // else if (body.type == 'TRAFFIC') {
-//             if (!sockets[conn.id]) {
-//               sendJSON(conn, log, { command: body.type, error: 'AUTHFAIL' })
-//             }
-//             if (!body.id) {
-//               sendJSON(conn, log, {
-//                 command: 'TRAFFIC',
-//                 connection: body.id,
-//                 error: 'NOID',
-//               })
-//               return
-//             } else if (!sockets[conn.id][body.id]) {
-//               sendJSON(conn, log, {
-//                 command: 'TRAFFIC',
-//                 connection: body.id,
-//                 error: 'INVALIDID',
-//               })
-//               return
-//             }
+interface ProviderSpinGameResult {
+  win: ProviderSpinWinDetails
+  stake: MonetaryAmountProvider
+}
 
-//             const { socket } = sockets[conn.id][body.id]
-//             if (!socket) {
-//               sendJSON(conn, log, {
-//                 command: 'TRAFFIC',
-//                 connection: body.id,
-//                 error: 'CLOSED',
-//               })
-//               return
-//             }
+interface ProviderSpinResponseData {
+  transactions: ProviderSpinTransactionDetails
+  user: ProviderSpinUserResult
+  game: ProviderSpinGameResult
+}
 
-//             socket.write(Buffer.from(body.data, 'base64'), (err) => {
-//               if (err) {
-//                 sendJSON(conn, log, {
-//                   connection: body.id,
-//                   command: 'TRAFFIC',
-//                   error: err,
-//                 })
-//               } else {
-//                 sendJSON(conn, log, { connection: body.id, command: 'TRAFFIC' })
-//               }
-//             })
-//           } else {
-//             sendJSON(conn, log, {
-//               command: body.type || 'UNKNOWN',
-//               error: 'NOTIMPLEMENTED',
-//             })
-//           }
-//         }
+export interface SpinResponse {
+  success: boolean
+  result: ProviderSpinResponseData
+}
 
-//   //   const response = {
-//   //     code: 200,
-//   //     data: spinResult,
-//   //     message: 'Spin action completed',
-//   //   };
+// --- Helper function for currency conversion ---
+/**
+ * Converts a string monetary amount from the provider to cents (integer).
+ * @param amountStr Amount as string (e.g., "10.50")
+ * @param precision Number of decimal places for the currency (e.g., 2 for USD)
+ * @returns Amount in cents as an integer.
+ */
+function toCents(amountStr: MonetaryAmountProvider, precision: number = 2): number {
+  const num = parseFloat(amountStr)
+  if (isNaN(num)) {
+    console.warn(`Invalid monetary amount string received: ${amountStr}`)
+    return 0
+  }
+  return Math.round(num * Math.pow(10, precision))
+}
 
-//   //   return new Response(JSON.stringify(response));
-//   // } catch (error) {
-//   //   console.error('Error performing spin action:', error);
-//   //   return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
-//   //     status: 500,
-//   //   });
-//   // }
-// }
+/**
+ * Converts an amount in cents (integer) to a float representation for the main unit.
+ * @param amountInCents Amount in cents
+ * @param precision Number of decimal places
+ * @returns Amount as float (e.g., 1050 cents with precision 2 becomes 10.50)
+ */
+function fromCentsToFloat(amountInCents: number, precision: number = 2): number {
+  return amountInCents / Math.pow(10, precision)
+}
 
-// // export async function gameRoutes(req: HonoRequest, route: string, params: string) {
-// //   try {
-// //     const user = await getUserFromHeader(req);
-// //     if (route === NETWORK_CONFIG.WEB_SOCKET.SOCKET_CONNECT) return false;
+// --- 2. Mock Prisma Client & Data ---
+const mockUserDb: { [providerUserId: string]: User & { wallets: Wallet[] } } = {}
+const mockWalletDb: { [walletId: string]: Wallet } = {}
+const mockTransactionDb: Transaction[] = []
+const mockXpEventDb: XpEvent[] = []
+const mockNotificationDb: Notification[] = []
+const mockCurrencyDb: { [code: string]: Currency } = {
+  GBP: {
+    id: 'cl_gbp',
+    name: 'British Pound',
+    symbol: '£',
+    type: 'FIAT',
+    precision: 2,
+    isActive: true,
+    isDefault: false,
+    contractAddress: null,
+    blockchain: null,
+    withdrawalFeeFixed: null,
+    withdrawalFeePercent: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  USD_FUN: {
+    id: 'cl_usd_fun',
+    name: 'Fun Bucks',
+    symbol: 'FB',
+    type: 'VIRTUAL',
+    precision: 2,
+    isActive: true,
+    isDefault: true,
+    contractAddress: null,
+    blockchain: null,
+    withdrawalFeeFixed: null,
+    withdrawalFeePercent: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+}
+const mockUserRewardDb: UserReward[] = []
 
-// //     if (!user || !user.profile) {
-// //       return new Response(
-// //         JSON.stringify({
-// //           code: 401,
-// //           message: "Unauthorized",
-// //           data: { total_pages: 0, record: [] },
-// //         }),
-// //         { status: 401 }
-// //       );
-// //     }
-// //     switch (route) {
-// //       case NETWORK_CONFIG.GAME_INFO.GAME_LIST:
-// //         return await getGameList(req);
-// //       case NETWORK_CONFIG.GAME_INFO.GAME_CATEGORY:
-// //         return await getGameGameCategory(req);
-// //       case NETWORK_CONFIG.GAME_INFO.GAME_SEARCH:
-// //         return await getGameSearch(req);
-// //       case NETWORK_CONFIG.GAME_INFO.GAME_ENTER:
-// //         return await getGameEnter(req, Partial<User>);
-// //       case NETWORK_CONFIG.GAME_INFO.USER_GAME:
-// //         return await getGameUserGame(req);
-// //       case NETWORK_CONFIG.GAME_INFO.FAVORITE_GAME:
-// //         return await getGameFavoriteGame(req, Partial<User>);
-// //       case NETWORK_CONFIG.GAME_INFO.FAVORITE_GAME_LIST:
-// //         return await getGameFavoriteGameList(req);
-// //       case NETWORK_CONFIG.GAME_INFO.GAME_HISTORY:
-// //         return await getGameHistory(req, Partial<User>);
-// //       case NETWORK_CONFIG.GAME_INFO.GAME_BIGWIN:
-// //         return await getGameBigWin(req);
-// //       case NETWORK_CONFIG.GAME_INFO.SPIN:
-// //         return await getGameSpin(req);
-// //       case NETWORK_CONFIG.GAME_INFO.SPINPAGE:
-// //         return await getGameSpinPage(req);
-// //       default:
-// //         return false;
-// //     }
-// //   } catch (error) {
-// //     console.error("Error in gameRoutes:", error);
-// //     return new Response(JSON.stringify({ message: `Internal server error: ${error}`, code: 500 }), {
-// //       status: 500,
-// //     });
-// //   }
-// // }
+const prisma = {
+  user: {
+    findUnique: async (args: {
+      where: { providerUserId?: string; id?: string }
+      include?: any
+    }): Promise<(User & { wallets?: Wallet[] }) | null> => {
+      const user = args.where.providerUserId
+        ? mockUserDb[args.where.providerUserId]
+        : Object.values(mockUserDb).find((u) => u.id === args.where.id)
+      if (user && args.include?.wallets) {
+        // Simulate including wallets
+        return { ...user, wallets: Object.values(mockWalletDb).filter((w) => w.userId === user.id) }
+      }
+      return user || null
+    },
+    create: async (args: {
+      data: Prisma.UserCreateInput & { providerUserId: string }
+    }): Promise<User & { wallets: Wallet[] }> => {
+      const id = `user_${Date.now()}`
+      const newUser: User & { wallets: Wallet[] } = {
+        id,
+        email: args.data.email || `${id}@example.com`,
+        name: args.data.name || `User ${id}`,
+        totalXp: args.data.totalXp || 0,
+        currentLevel: args.data.currentLevel || 1,
+        // Add other required User fields from your schema with defaults
+        username: args.data.username,
+        emailVerified: args.data.emailVerified,
+        displayUsername: args.data.displayUsername,
+        phone: args.data.phone,
+        cashtag: args.data.cashtag,
+        phoneVerified: args.data.phoneVerified,
+        isVerified: args.data.isVerified || false,
+        passwordHash: args.data.passwordHash,
+        role: args.data.role || 'USER',
+        status: args.data.status || 'ACTIVE',
+        referralCode: args.data.referralCode,
+        commissionRate: args.data.commissionRate,
+        twoFactorEnabled: args.data.twoFactorEnabled,
+        isOnline: args.data.isOnline,
+        twoFactorSecret: args.data.twoFactorSecret,
+        image: args.data.image,
+        twoFactorRecoveryCodes: args.data.twoFactorRecoveryCodes || [],
+        lastLogin: args.data.lastLogin,
+        lastIp: args.data.lastIp,
+        activeWalletId: args.data.activeWalletId,
+        referrerId: args.data.referrerId,
+        firstName: args.data.firstName,
+        lastName: args.data.lastName,
+        avatarUrl: args.data.avatarUrl,
+        dob: args.data.dob,
+        gender: args.data.gender,
+        preferredCurrencyId: args.data.preferredCurrencyId,
+        timezone: args.data.timezone || 'UTC',
+        locale: args.data.locale || 'en-US',
+        mfaEnabled: args.data.mfaEnabled || false,
+        mfaSecret: args.data.mfaSecret,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ...args.data, // Spread the rest of the data
+        wallets: [], // Initialize with empty wallets for the mock
+      }
+      mockUserDb[newUser.providerUserId!] = newUser
+      console.log(`[Prisma Mock] Created user:`, newUser)
+      return newUser
+    },
+    update: async (args: {
+      where: { id: string }
+      data: Prisma.UserUpdateInput
+    }): Promise<User> => {
+      const userRef = Object.values(mockUserDb).find((u) => u.id === args.where.id)
+      if (userRef) {
+        const updatedPlayer = { ...userRef, ...args.data, updatedAt: new Date() } as User
+        mockUserDb[userRef.providerUserId!] = updatedPlayer
+        console.log(`[Prisma Mock] Updated user:`, updatedPlayer)
+        return updatedPlayer
+      }
+      throw new Error('User not found for update')
+    },
+  },
+  wallet: {
+    findFirst: async (args: {
+      where: { userId: string; currencyId: string }
+    }): Promise<Wallet | null> => {
+      return (
+        Object.values(mockWalletDb).find(
+          (w) => w.userId === args.where.userId && w.currencyId === args.where.currencyId
+        ) || null
+      )
+    },
+    create: async (args: { data: Prisma.WalletCreateInput }): Promise<Wallet> => {
+      const id = `wallet_${Date.now()}`
+      const newWallet: Wallet = {
+        id,
+        balance: args.data.balance || 0, // Prisma schema has Float
+        bonusBalance: args.data.bonusBalance || 0,
+        lockedBalance: args.data.lockedBalance || 0,
+        isActive: args.data.isActive !== undefined ? args.data.isActive : true,
+        address: args.data.address,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        userId: args.data.user.connect!.id!,
+        currencyId: args.data.currency.connect!.id!,
+      }
+      mockWalletDb[id] = newWallet
+      // Link to user in mockUserDb
+      const user = Object.values(mockUserDb).find((u) => u.id === newWallet.userId)
+      if (user) {
+        if (!user.wallets) user.wallets = []
+        user.wallets.push(newWallet)
+      }
+      console.log(`[Prisma Mock] Created wallet:`, newWallet)
+      return newWallet
+    },
+    update: async (args: {
+      where: { id: string }
+      data: Prisma.WalletUpdateInput
+    }): Promise<Wallet> => {
+      if (mockWalletDb[args.where.id]) {
+        // Deep copy for partial updates of balance
+        const currentBalance = mockWalletDb[args.where.id].balance
+        const balanceUpdate = args.data.balance as Prisma.FloatFilter // Or Prisma.WalletUpdatebalanceInput
+
+        let newBalance = currentBalance
+        if (typeof args.data.balance === 'number') {
+          newBalance = args.data.balance
+        } else if (balanceUpdate && typeof balanceUpdate.increment === 'number') {
+          newBalance = (currentBalance as number) + balanceUpdate.increment
+        } else if (balanceUpdate && typeof balanceUpdate.decrement === 'number') {
+          newBalance = (currentBalance as number) - balanceUpdate.decrement
+        }
+
+        mockWalletDb[args.where.id] = {
+          ...mockWalletDb[args.where.id],
+          ...args.data,
+          balance: newBalance,
+          updatedAt: new Date(),
+        }
+        console.log(`[Prisma Mock] Updated wallet:`, mockWalletDb[args.where.id])
+        return mockWalletDb[args.where.id]
+      }
+      throw new Error('Wallet not found for update')
+    },
+  },
+  transaction: {
+    create: async (args: { data: Prisma.TransactionCreateInput }): Promise<Transaction> => {
+      const id = `txn_${Date.now()}`
+      const newTransaction: Transaction = {
+        id,
+        processedAt: args.data.processedAt,
+        originatorUserId: args.data.originator.connect!.id!,
+        receiverUserId: args.data.receiver?.connect?.id || null,
+        walletId: args.data.wallet?.connect?.id || null,
+        type: args.data.type,
+        status: args.data.status || TransactionStatus.COMPLETED,
+        amount: args.data.amount, // Stored in cents
+        netAmount: args.data.netAmount,
+        feeAmount: args.data.feeAmount,
+        currencyId: args.data.currency.connect!.id!,
+        balanceBefore: args.data.balanceBefore,
+        balanceAfter: args.data.balanceAfter,
+        bonusBalanceBefore: args.data.bonusBalanceBefore,
+        bonusBalanceAfter: args.data.bonusBalanceAfter,
+        bonusAmount: args.data.bonusAmount,
+        wageringRequirement: args.data.wageringRequirement,
+        wageringProgress: args.data.wageringProgress,
+        description: args.data.description,
+        provider: args.data.provider,
+        providerTxId: args.data.providerTxId,
+        relatedGameId: args.data.relatedGameId,
+        relatedRoundId: args.data.relatedRoundId,
+        metadata: args.data.metadata || Prisma.JsonNull,
+        productId: args.data.product?.connect?.id || null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+      mockTransactionDb.push(newTransaction)
+      console.log(`[Prisma Mock] Created transaction:`, newTransaction)
+      return newTransaction
+    },
+  },
+  xpEvent: {
+    create: async (args: { data: Prisma.XpEventCreateInput }): Promise<XpEvent> => {
+      const id = `xp_${Date.now()}`
+      const newXpEvent: XpEvent = {
+        id,
+        points: args.data.points,
+        source: args.data.source,
+        sourceId: args.data.sourceId,
+        meta: args.data.meta || Prisma.JsonNull,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        userId: args.data.user.connect!.id!,
+      }
+      mockXpEventDb.push(newXpEvent)
+      console.log(`[Prisma Mock] Created XP event:`, newXpEvent)
+      return newXpEvent
+    },
+  },
+  notification: {
+    create: async (args: { data: Prisma.NotificationCreateInput }): Promise<Notification> => {
+      const id = `notif_${Date.now()}`
+      // Correctly handle sender and originator relations based on your schema
+      // Assuming 'sender' is the originator of the notification (e.g., system or another user)
+      // And 'userId' in Notification model is the recipient.
+      // The Prisma schema provided has `sender @relation("Sender", fields: [userId], ...)`
+      // and `originator @relation("Originator", fields: [userId], ...)`. This seems like userId is used for both.
+      // For a system notification, sender/originator might be a specific system user or null.
+      // Let's assume args.data.originator.connect.id is the recipient for this context.
+      const recipientUserId = args.data.originator.connect!.id!
+
+      const newNotification: Notification = {
+        id,
+        userId: recipientUserId, // This is the recipient
+        type: args.data.type,
+        title: args.data.title,
+        message: args.data.message,
+        isRead: args.data.isRead || false,
+        readAt: args.data.readAt,
+        actionUrl: args.data.actionUrl,
+        imageUrl: args.data.imageUrl,
+        metadata: args.data.metadata || Prisma.JsonNull,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        // senderId and originatorId would be based on how you model system/user sent notifications
+        // For this example, if originator is the recipient, sender might be a system user ID or a specific field.
+        // The relations in your schema are:
+        // sender User @relation("Sender", fields: [userId], references: [id]...
+        // originator User @relation("Originator", fields: [userId], references: [id]...
+        // This implies the `userId` field on Notification links to both sender and originator, which is unusual.
+        // Typically, Notification would have `recipientId`, `senderId`.
+        // Given the schema, I'll assume `userId` on Notification is the recipient.
+        // The `sender` and `originator` relations in Prisma.NotificationCreateInput would point to User records.
+        // For a LEVEL_UP, the system is the sender/originator.
+      }
+      mockNotificationDb.push(newNotification)
+      console.log(`[Prisma Mock] Created notification:`, newNotification)
+      return newNotification
+    },
+  },
+  currency: {
+    findUnique: async (args: {
+      where: { id?: string; name?: string }
+    }): Promise<Currency | null> => {
+      if (args.where.id) return mockCurrencyDb[args.where.id] || null
+      if (args.where.name)
+        return Object.values(mockCurrencyDb).find((c) => c.name === args.where.name) || null
+      return null
+    },
+    findFirst: async (args: { where: { code: string } }): Promise<Currency | null> => {
+      return Object.values(mockCurrencyDb).find((c) => c.id === args.where.id) || null
+    },
+  },
+  userReward: {
+    create: async (args: { data: Prisma.UserRewardCreateInput }): Promise<UserReward> => {
+      const id = `reward_${Date.now()}`
+      const newUserReward: UserReward = {
+        id,
+        userId: args.data.user.connect!.id!,
+        rewardType: args.data.rewardType,
+        description: args.data.description,
+        status: args.data.status || 'AVAILABLE',
+        amount: args.data.amount !== undefined ? Number(args.data.amount) : null, // Ensure amount is number or null
+        currencyId: args.data.currencyId || null,
+        metaData: args.data.metaData || Prisma.JsonNull,
+        claimedAt: args.data.claimedAt,
+        expiresAt: args.data.expiresAt,
+        availableFrom: args.data.availableFrom || new Date(),
+        vipLevelRequirement: args.data.vipLevelRequirement,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+      mockUserRewardDb.push(newUserReward)
+      console.log(`[Prisma Mock] Created UserReward:`, newUserReward)
+      return newUserReward
+    },
+  },
+  $transaction: async (callback: (prismaClient: any) => Promise<any>) => {
+    console.log('[Prisma Mock] Starting transaction')
+    try {
+      const result = await callback(prisma) // Pass the same mock prisma
+      console.log('[Prisma Mock] Committing transaction')
+      return result
+    } catch (error) {
+      console.error('[Prisma Mock] Rolling back transaction due to error:', error)
+      throw error
+    }
+  },
+} as unknown as PrismaClient
+
+// --- 3. XP and Leveling System Constants (from game_aggregator_logic) ---
+const XP_PER_CURRENCY_UNIT_WAGERED = 1 // 1 XP per unit of currency (smallest unit, e.g., cent) wagered
+const XP_PER_CURRENCY_UNIT_WON = 0.5 // 0.5 XP per unit of currency won
+
+// --- 4. Game Integration Service (Refactored) ---
+export class GameIntegrationService {
+  private prisma: PrismaClient
+  private readonly XP_SYSTEM_USER_ID = 'system_xp_user' // For notifications originating from the XP system
+
+  constructor(prismaClient: PrismaClient) {
+    this.prisma = prismaClient
+  }
+
+  private async findOrCreateCurrency(
+    currencyCode: string,
+    currencySymbol: string
+  ): Promise<Currency> {
+    let currency = await this.prisma.currency.findFirst({ where: { code: currencyCode } })
+    if (!currency) {
+      console.warn(`Currency ${currencyCode} not found, creating with default precision 2.`)
+      currency = await this.prisma.currency.create({
+        data: {
+          code: currencyCode,
+          symbol: currencySymbol,
+          name: `${currencyCode} (Auto-created)`,
+          type: currencyCode === 'USD_FUN' ? 'VIRTUAL' : 'FIAT', // Basic assumption
+          precision: 2,
+          isActive: true,
+        },
+      })
+      mockCurrencyDb[currencyCode] = currency // Add to mock if using mock
+    }
+    return currency
+  }
+
+  async handleGameSettings(
+    gameId: string,
+    settingsResponse: SettingsResponse
+  ): Promise<{ user: User; wallet: Wallet; message: string }> {
+    if (!settingsResponse.success || !settingsResponse.result || !settingsResponse.result.user) {
+      throw new Error('Invalid settings response from provider.')
+    }
+
+    const providerUser = settingsResponse.result.user
+    const providerUserIdStr = String(providerUser.userId)
+    const providerCurrencyInfo = providerUser.currency
+
+    const platformCurrency = await this.findOrCreateCurrency(
+      providerCurrencyInfo.code,
+      providerCurrencyInfo.symbol
+    )
+
+    let user = await this.prisma.user.findUnique({
+      where: { providerUserId: providerUserIdStr }, // Assuming providerUserId is a unique field on User model
+      include: { wallets: { where: { currencyId: platformCurrency.id } } },
+    })
+
+    let message = ''
+    let wallet: Wallet | undefined | null
+
+    const initialBalanceInCents = toCents(providerUser.balance.cash, platformCurrency.precision)
+
+    if (!user) {
+      const initialLevelConfig = getVipLevelByTotalXp(0)
+      user = await this.prisma.user.create({
+        data: {
+          // providerUserId: providerUserIdStr, // Add this field to your User model or use Account model
+          name: `Player_${providerUserIdStr}`, // Or generate a unique username
+          email: `${providerUserIdStr}@temporary.host`, // Placeholder, ensure uniqueness
+          totalXp: 0,
+          currentLevel: initialLevelConfig.level,
+          status: 'ACTIVE',
+          role: 'USER',
+          // ... other required User fields
+          // For mock:
+          providerUserId: providerUserIdStr, // Add this to mock User create
+        } as any, // Cast to any for mock providerUserId
+      })
+      message = `New user registered from game ${gameId}.`
+      console.log(
+        `New user ${user.id} (provider: ${providerUserIdStr}) created for game ${gameId}.`
+      )
+
+      wallet = await this.prisma.wallet.create({
+        data: {
+          user: { connect: { id: user.id } },
+          currency: { connect: { id: platformCurrency.id } },
+          balance: fromCentsToFloat(initialBalanceInCents, platformCurrency.precision), // Wallet.balance is Float
+          isActive: true,
+        },
+      })
+      console.log(
+        `Created wallet ${wallet.id} for user ${user.id} with currency ${platformCurrency.code}.`
+      )
+    } else {
+      message = `User ${user.id} activity updated for game ${gameId}.`
+      wallet =
+        (user as User & { wallets: Wallet[] }).wallets?.length > 0
+          ? (user as User & { wallets: Wallet[] }).wallets[0]
+          : null
+
+      if (!wallet) {
+        wallet = await this.prisma.wallet.create({
+          data: {
+            user: { connect: { id: user.id } },
+            currency: { connect: { id: platformCurrency.id } },
+            balance: fromCentsToFloat(initialBalanceInCents, platformCurrency.precision),
+            isActive: true,
+          },
+        })
+        console.log(
+          `Created missing wallet ${wallet.id} for existing user ${user.id} with currency ${platformCurrency.code}.`
+        )
+      } else {
+        // Optionally sync balance on settings call if needed, though spins usually handle this.
+        // For now, we assume settings just establishes the user and wallet.
+      }
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { lastActivityAt: new Date() },
+      })
+    }
+    if (!wallet) throw new Error('Wallet could not be established for the user.')
+
+    return { user, wallet, message }
+  }
+
+  async handleGameSpinResult(
+    gameId: string, // Platform's internal game ID
+    gameProviderName: string, // e.g., "BassBossProvider" for Transaction.provider
+    spinResponse: SpinResponse
+  ): Promise<{
+    user: User
+    betTransaction: Transaction
+    winTransaction: Transaction | null
+    message: string
+    leveledUp: boolean
+    rewardsGranted: UserReward[]
+  }> {
+    if (!spinResponse.success || !spinResponse.result) {
+      throw new Error('Invalid spin response from provider.')
+    }
+
+    const {
+      user: providerUserSpin,
+      game: gameResult,
+      transactions: providerTransactions,
+    } = spinResponse.result
+    const providerUserIdStr = String(providerUserSpin.userId)
+
+    // Assuming currency from spin response is the one to use.
+    // In a real system, you might get currency from an active game session.
+    // For now, we'll rely on the settings call to have established the primary currency,
+    // or we fetch it based on a common currency code if the provider sends it with each spin.
+    // Let's assume the provider's spin response implies a currency, or we use user's preferred.
+    // For this example, let's find the user's primary/first wallet or a default.
+    // A robust solution would involve the game session's currency.
+
+    return this.prisma.$transaction(async (tx) => {
+      const user = await tx.user.findUnique({
+        where: { providerUserId: providerUserIdStr }, // Assuming providerUserId is unique on User
+        include: { wallets: true, vipInfo: true }, // Include wallets and VipInfo
+      })
+
+      if (!user) {
+        throw new Error(
+          `User with provider ID ${providerUserIdStr} not found. Settings must be called first.`
+        )
+      }
+
+      // Determine currency and wallet
+      // For simplicity, let's assume the first active wallet or a default one.
+      // A more robust system would use currency from game session or provider's spin response.
+      // Let's find a GBP wallet as per settings example, or a default virtual currency.
+      let activeWallet = user.wallets.find(
+        (w) =>
+          w.currencyId === mockCurrencyDb['GBP']?.id ||
+          w.currencyId === mockCurrencyDb['USD_FUN']?.id
+      )
+      if (!activeWallet && user.wallets.length > 0) {
+        activeWallet = user.wallets[0] // Fallback to first wallet
+      }
+      if (!activeWallet) {
+        throw new Error(`No active wallet found for user ${user.id}.`)
+      }
+      const currency = await tx.currency.findUnique({ where: { id: activeWallet.currencyId } })
+      if (!currency) {
+        throw new Error(
+          `Currency with ID ${activeWallet.currencyId} not found for wallet ${activeWallet.id}.`
+        )
+      }
+      const currencyPrecision = currency.precision
+
+      const stakeInCents = toCents(gameResult.stake, currencyPrecision)
+      const winInCents = toCents(gameResult.win.total, currencyPrecision)
+
+      const walletBalanceBeforeNumeric = Number(activeWallet.balance) // Prisma Wallet.balance is Float
+
+      // 1. Create BET Transaction
+      const balanceAfterBet =
+        walletBalanceBeforeNumeric - fromCentsToFloat(stakeInCents, currencyPrecision)
+      const betTransaction = await tx.transaction.create({
+        data: {
+          originator: { connect: { id: user.id } },
+          wallet: { connect: { id: activeWallet.id } },
+          type: TransactionType.BET_PLACE,
+          status: TransactionStatus.COMPLETED,
+          amount: stakeInCents, // Amount in cents
+          currency: { connect: { id: currency.id } },
+          balanceBefore: Math.round(walletBalanceBeforeNumeric * Math.pow(10, currencyPrecision)), // Store balance in cents
+          balanceAfter: Math.round(balanceAfterBet * Math.pow(10, currencyPrecision)),
+          provider: gameProviderName,
+          relatedGameId: gameId,
+          relatedRoundId: String(providerTransactions.roundId),
+          processedAt: new Date(providerUserSpin.serverTime),
+          description: `Bet placed for game ${gameId}, round ${providerTransactions.roundId}`,
+        },
+      })
+
+      // Update wallet balance after bet
+      await tx.wallet.update({
+        where: { id: activeWallet.id },
+        data: { balance: balanceAfterBet },
+      })
+      activeWallet.balance = new Prisma.Decimal(balanceAfterBet) // Update in-memory mock
+
+      // 2. Create WIN Transaction (if applicable)
+      let winTransaction: Transaction | null = null
+      let balanceAfterWin = balanceAfterBet
+
+      if (winInCents > 0) {
+        balanceAfterWin = balanceAfterBet + fromCentsToFloat(winInCents, currencyPrecision)
+        winTransaction = await tx.transaction.create({
+          data: {
+            originator: { connect: { id: user.id } },
+            wallet: { connect: { id: activeWallet.id } },
+            type: TransactionType.BET_WIN,
+            status: TransactionStatus.COMPLETED,
+            amount: winInCents, // Amount in cents
+            currency: { connect: { id: currency.id } },
+            balanceBefore: Math.round(balanceAfterBet * Math.pow(10, currencyPrecision)),
+            balanceAfter: Math.round(balanceAfterWin * Math.pow(10, currencyPrecision)),
+            provider: gameProviderName,
+            relatedGameId: gameId,
+            relatedRoundId: String(providerTransactions.roundId),
+            processedAt: new Date(providerUserSpin.serverTime),
+            description: `Win received for game ${gameId}, round ${providerTransactions.roundId}`,
+          },
+        })
+        // Update wallet balance after win
+        await tx.wallet.update({
+          where: { id: activeWallet.id },
+          data: { balance: balanceAfterWin },
+        })
+        activeWallet.balance = new Prisma.Decimal(balanceAfterWin) // Update in-memory mock
+      }
+
+      // 3. Calculate XP Gained
+      const xpFromWager = Math.floor(
+        (stakeInCents * XP_PER_CURRENCY_UNIT_WAGERED) / Math.pow(10, currencyPrecision)
+      ) // XP based on main unit
+      const xpFromWin = Math.floor(
+        (winInCents * XP_PER_CURRENCY_UNIT_WON) / Math.pow(10, currencyPrecision)
+      )
+      const totalXpGainedThisSpin = xpFromWager + xpFromWin
+
+      const playerXpBefore = user.totalXp
+      const updatedTotalXp = playerXpBefore + totalXpGainedThisSpin
+
+      await tx.xpEvent.create({
+        data: {
+          user: { connect: { id: user.id } },
+          points: totalXpGainedThisSpin,
+          source: 'GAME_SPIN',
+          sourceId: String(providerTransactions.roundId),
+          meta: { gameId, stakeInCents, winInCents },
+        },
+      })
+
+      // 4. Handle Leveling Up
+      let leveledUp = false
+      const rewardsGranted: UserReward[] = []
+      const playerLevelBefore = user.currentLevel
+      const newLevelConfig = getVipLevelByTotalXp(updatedTotalXp)
+      let finalUserLevel = playerLevelBefore
+
+      if (newLevelConfig.level > playerLevelBefore) {
+        leveledUp = true
+        finalUserLevel = newLevelConfig.level
+        console.log(`User ${user.id} leveled up from ${playerLevelBefore} to ${finalUserLevel}!`)
+
+        // Grant level up rewards
+        const levelConfigForNewLevel = VIP_LEVEL_CONFIGS.find((l) => l.level === finalUserLevel)
+        if (levelConfigForNewLevel?.levelUpRewards) {
+          for (const rewardConfig of levelConfigForNewLevel.levelUpRewards) {
+            const rewardCurrencyId = rewardConfig.currencyId || currency.id // Default to game currency
+            const rewardAmount = Number(rewardConfig.amount) || 0 // Ensure it's a number
+
+            // Create UserReward record
+            const userReward = await tx.userReward.create({
+              data: {
+                user: { connect: { id: user.id } },
+                rewardType: RewardType.LEVEL_UP,
+                description: rewardConfig.description || `Level ${finalUserLevel} Reached!`,
+                status: 'AVAILABLE', // Or 'CLAIMED' if auto-claimed
+                amount: rewardAmount, // Assuming amount is in cents if monetary
+                currencyId: rewardCurrencyId,
+                metaData: {
+                  level: finalUserLevel,
+                  ...((rewardConfig.metaData as Prisma.JsonObject) || {}),
+                },
+                availableFrom: new Date(),
+              },
+            })
+            rewardsGranted.push(userReward)
+
+            // If monetary and auto-claimed, update wallet
+            if (rewardConfig.amount && rewardConfig.currencyId) {
+              const rewardWallet = user.wallets.find(
+                (w) => w.currencyId === rewardConfig.currencyId
+              )
+              const rewardCurrency = await tx.currency.findUnique({
+                where: { id: rewardConfig.currencyId },
+              })
+              if (rewardWallet && rewardCurrency) {
+                const currentRewardWalletBalance = Number(rewardWallet.balance)
+                const rewardAmountFloat = fromCentsToFloat(rewardAmount, rewardCurrency.precision)
+                await tx.wallet.update({
+                  where: { id: rewardWallet.id },
+                  data: { balance: currentRewardWalletBalance + rewardAmountFloat },
+                })
+                // Log a transaction for this reward
+                await tx.transaction.create({
+                  data: {
+                    originator: { connect: { id: user.id } }, // Or a system user ID
+                    receiver: { connect: { id: user.id } },
+                    wallet: { connect: { id: rewardWallet.id } },
+                    type: TransactionType.BONUS_AWARD, // Or a specific REWARD_LEVEL_UP type
+                    status: TransactionStatus.COMPLETED,
+                    amount: rewardAmount, // In cents
+                    currency: { connect: { id: rewardCurrency.id } },
+                    description: `Level up reward: ${rewardConfig.description}`,
+                    balanceBefore: Math.round(
+                      currentRewardWalletBalance * Math.pow(10, rewardCurrency.precision)
+                    ),
+                    balanceAfter: Math.round(
+                      (currentRewardWalletBalance + rewardAmountFloat) *
+                        Math.pow(10, rewardCurrency.precision)
+                    ),
+                    processedAt: new Date(),
+                  },
+                })
+                console.log(
+                  `Awarded ${rewardAmountFloat} ${rewardCurrency.code} to wallet ${rewardWallet.id} for level up.`
+                )
+              }
+            }
+          }
+        }
+
+        // Create Notification for level up
+        await tx.notification.create({
+          data: {
+            // userId: user.id, // Recipient
+            originator: { connect: { id: user.id } }, // Recipient
+            // sender: { connect: { id: this.XP_SYSTEM_USER_ID } }, // System as sender - requires system user
+            type: NotificationType.LEVEL_UP,
+            title: 'Level Up!',
+            message: `Congratulations! You've reached Level ${finalUserLevel}. Check out your new rewards!`,
+            actionUrl: '/profile/rewards', // Example URL
+          },
+        })
+      }
+
+      // 5. Update User Record (XP and Level)
+      const updatedUser = await tx.user.update({
+        where: { id: user.id },
+        data: {
+          totalXp: updatedTotalXp,
+          currentLevel: finalUserLevel,
+          lastActivityAt: new Date(providerUserSpin.serverTime),
+        },
+        include: { wallets: true, vipInfo: true }, // Re-fetch updated user with relations
+      })
+
+      let message = `Spin processed for user ${updatedUser.id}. Stake: ${gameResult.stake}, Win: ${gameResult.win.total}. XP Gained: ${totalXpGainedThisSpin}.`
+      if (leveledUp) {
+        message += ` Player leveled up to ${finalUserLevel}!`
+        if (rewardsGranted.length > 0) {
+          message += ` Rewards granted: ${rewardsGranted.map((r) => r.description).join(', ')}.`
+        }
+      }
+
+      return {
+        user: updatedUser,
+        betTransaction,
+        winTransaction,
+        message,
+        leveledUp,
+        rewardsGranted,
+      }
+    })
+  }
+}
+
+// --- 5. Example Usage (Illustrative) ---
+async function runRefactoredExample() {
+  console.log('--- Initializing Refactored Game Integration Service ---')
+  const gameService = new GameIntegrationService(prisma)
+
+  const gameId_BassBossPlatform = 'game_bassboss_001' // Your platform's ID for the game
+  const gameProviderName_BassBoss = 'RedTiger' // Example provider name
+
+  // --- Example: Game Settings Flow ---
+  const settingsResponseData_BassBoss: SettingsResponse = {
+    success: true,
+    result: {
+      user: {
+        balance: { cash: '100.00', freeBets: '0.00', bonus: '0.00' },
+        userId: 7427503, // Provider's user ID
+        currency: { code: 'GBP', symbol: '£' }, // Provider sends currency
+        token: 'provider_token_settings_xyz',
+        sessionId: 'provider_session_abc',
+      },
+      game: { version: '4.0.1', gameType: 'slot' },
+    },
+  }
+
+  let platformUser: User
+  let userWallet: Wallet
+
+  try {
+    console.log(`\n--- Handling Settings for ${gameId_BassBossPlatform} ---`)
+    const settingsResult = await gameService.handleGameSettings(
+      gameId_BassBossPlatform,
+      settingsResponseData_BassBoss
+    )
+    platformUser = settingsResult.user
+    userWallet = settingsResult.wallet
+    console.log(settingsResult.message)
+    console.log('Platform User Data:', platformUser)
+    console.log('User Wallet:', userWallet)
+  } catch (error) {
+    console.error('Error handling settings:', error)
+    return // Stop if settings fail
+  }
+
+  // --- Example: Spin Win Flow ---
+  const spinWinResponseData_BassBoss: SpinResponse = {
+    success: true,
+    result: {
+      transactions: { roundId: 'round_win_001' },
+      user: {
+        balance: { cash: { atStart: '100.00', afterBet: '98.00', atEnd: '112.00' } }, // Cash after this specific spin result
+        userId: 7427503,
+        sessionId: 'provider_session_abc',
+        token: 'provider_token_spin_123',
+        serverTime: new Date().toISOString(),
+      },
+      game: {
+        win: { total: '14.00' }, // Total win from this spin is 14.00 GBP
+        stake: '2.00', // Stake was 2.00 GBP
+      },
+    },
+  }
+
+  try {
+    console.log(`\n--- Handling WIN Spin for ${gameId_BassBossPlatform} ---`)
+    const spinWinResult = await gameService.handleGameSpinResult(
+      gameId_BassBossPlatform,
+      gameProviderName_BassBoss,
+      spinWinResponseData_BassBoss
+    )
+    console.log(spinWinResult.message)
+    console.log('Updated User Data:', spinWinResult.user)
+    console.log('Bet Transaction:', spinWinResult.betTransaction)
+    if (spinWinResult.winTransaction) {
+      console.log('Win Transaction:', spinWinResult.winTransaction)
+    }
+    if (spinWinResult.leveledUp) {
+      console.log('Rewards Granted:', spinWinResult.rewardsGranted)
+    }
+    platformUser = spinWinResult.user // Update user state for next spin
+  } catch (error) {
+    console.error('Error handling win spin:', error)
+  }
+
+  // --- Example: Spin Lose Flow (to test leveling further) ---
+  const spinLoseResponseData_BassBoss: SpinResponse = {
+    success: true,
+    result: {
+      transactions: { roundId: 'round_lose_002' },
+      user: {
+        balance: {
+          cash: {
+            atStart: `${Number(platformUser.wallets.find((w) => w.currencyId === userWallet.currencyId)?.balance || 0).toFixed(2)}`,
+            afterBet: `${(Number(platformUser.wallets.find((w) => w.currencyId === userWallet.currencyId)?.balance || 0) - 5).toFixed(2)}`,
+            atEnd: `${(Number(platformUser.wallets.find((w) => w.currencyId === userWallet.currencyId)?.balance || 0) - 5).toFixed(2)}`,
+          },
+        },
+        userId: 7427503,
+        sessionId: 'provider_session_abc',
+        token: 'provider_token_spin_456',
+        serverTime: new Date().toISOString(),
+      },
+      game: {
+        win: { total: '0.00' },
+        stake: '5.00', // Higher stake for more XP
+      },
+    },
+  }
+  try {
+    console.log(`\n--- Handling LOSE Spin (high stake) for ${gameId_BassBossPlatform} ---`)
+    const spinLoseResult = await gameService.handleGameSpinResult(
+      gameId_BassBossPlatform,
+      gameProviderName_BassBoss,
+      spinLoseResponseData_BassBoss
+    )
+    console.log(spinLoseResult.message)
+    console.log('Updated User Data:', spinLoseResult.user)
+    console.log('Bet Transaction:', spinLoseResult.betTransaction)
+    if (spinLoseResult.leveledUp) {
+      console.log('Rewards Granted on lose spin (due to XP):', spinLoseResult.rewardsGranted)
+    }
+  } catch (error) {
+    console.error('Error handling lose spin:', error)
+  }
+
+  console.log('\n--- Final Mock DB States ---')
+  console.log('Users:', JSON.stringify(mockUserDb, null, 2))
+  console.log('Wallets:', JSON.stringify(mockWalletDb, null, 2))
+  console.log('Transactions:', JSON.stringify(mockTransactionDb, null, 2))
+  console.log('XPEvents:', JSON.stringify(mockXpEventDb, null, 2))
+  console.log('Notifications:', JSON.stringify(mockNotificationDb, null, 2))
+  console.log('UserRewards:', JSON.stringify(mockUserRewardDb, null, 2))
+}
+
+// Run the example if this file is executed directly
+if (typeof require !== 'undefined' && require.main === module) {
+  runRefactoredExample().catch(console.error)
+}

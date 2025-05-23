@@ -1,145 +1,124 @@
 <script lang="ts" setup>
-const props = defineProps(['spritesheet', 'json', 'fps', 'autoplay', 'id']);
-const frames = ref([]);
-const canvas = ref();
-const length = ref(0);
-const currentIndex = ref(0);
-const animationFrameID = ref(null);
-const direction = ref(0);
-const sprite = ref(null);
-const ctx = ref<CanvasRenderingContext2D | null>(null);
-const height = ref(0);
-const width = ref(0);
+  import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 
-const now = ref(0);
-const then = ref(0);
-const fps = ref(props.fps || 30);
-
-// const scale = props.transform.scale
-// const translateX = props.transform.translateX
-// const translateY = props.transform.translateY
-
-const spritesheet = props.spritesheet;
-function init() {
-  if (canvas.value !== undefined && canvas.value !== null) {
-    ctx.value = canvas.value.getContext('2d');
+  interface VSpriteProps {
+    spritesheet: string
+    json: any
+    fps?: number
+    autoplay?: boolean
+    id: string
   }
-  play(0);
-  // loop()
-}
-let x;
-let y;
-let index;
-function render() {
-  if (frames.value[index] !== undefined) {
-    if (frames.value[index].rotated) {
-      direction.value = 1;
+
+  const props = defineProps<VSpriteProps>()
+
+  const frames = ref<any[]>([])
+  const canvas = ref<HTMLCanvasElement | null>(null)
+  const length = ref<number>(0)
+  const currentIndex = ref<number>(0)
+  const animationFrameID = ref<number | null>(null)
+  const direction = ref<number>(0)
+  const sprite = ref<HTMLImageElement | null>(null)
+  const ctx = ref<CanvasRenderingContext2D | null>(null)
+  const height = ref<number>(0)
+  const width = ref<number>(0)
+
+  const now = ref<number>(0)
+  const then = ref<number>(0)
+  const fps = ref<number>(props.fps || 30)
+
+  function init() {
+    if (canvas.value) {
+      ctx.value = canvas.value.getContext('2d')
     }
-    // //console.log(direction.value)
-    ctx.value && ctx.value.clearRect(0, 0, width.value, height.value);
-    if (direction.value && currentIndex.value % length.value === 0 && currentIndex) {
-      direction.value = Number(!direction.value);
-    }
-    index = Math.abs((currentIndex.value % length.value) - length.value * direction.value);
-    x = frames.value[index].x;
-    y = frames.value[index].y;
-    ctx.value &&
+    play(0)
+  }
+
+  let x: number
+  let y: number
+
+  function render() {
+    if (!ctx.value) return
+
+    const index = Math.abs(currentIndex.value % length.value)
+    if (frames.value[index]) {
+      const frame = frames.value[index]
+      ctx.value.clearRect(0, 0, width.value, height.value)
+
       ctx.value.drawImage(
-        sprite.value,
-        x,
-        y,
+        sprite.value as HTMLImageElement,
+        frame.x,
+        frame.y,
         width.value,
         height.value,
         0,
         0,
         width.value,
-        height.value,
-      );
-
-    if (direction.value && index % length.value === 0 && index) {
-      direction.value = Number(!direction.value);
+        height.value
+      )
     }
-    index = Math.abs((currentIndex.value % length.value) - length.value * direction.value);
-
-    x = frames.value[index].x;
-    y = frames.value[index].y;
-    // ctx.value.drawImage(sprite.value, x, y, width.value, height.value, 0, 0, width.value, height.value)
-    // //console.log(sprite.value, x, y, width.value, height.value, 0, 0, width.value, height.value)
-    // if(frames.value[index].rotated){
-    // ctx.value.rotate(180*Math.PI/180);
-    ctx.value.drawImage(
-      sprite.value,
-      x,
-      y,
-      width.value,
-      height.value,
-      0,
-      0,
-      width.value,
-      height.value,
-    );
-    // ctx.value.restore()
   }
-}
-function loop() {
-  now.value = Date.now();
-  const delta = now.value - then.value;
-  if (delta > 1000 / fps.value) {
-    then.value = now.value - (delta % (1000 / fps.value));
-    render();
-    currentIndex.value++;
-  }
-  animationFrameID.value = window.requestAnimationFrame(loop);
-}
-// const stop = () => {
-//   window.cancelAnimationFrame(animationFrameID.value)
-//   index = 0
-// }
-function play(from) {
-  index = Number.isNaN(Number(from)) ? index.value : from;
-  loop();
-}
 
-nextTick(() => {
-  sprite.value = new Image();
-  sprite.value.src = spritesheet;
-  sprite.value.onload = () => {
-    init();
-  };
-});
-
-onMounted(() => {
-  const frams = props.json.frames;
-  // console.log(frams);
-  if (!Array.isArray(frams)) {
-    for (const [key, value] of Object.entries(frams)) {
-      const f = value.frame;
-      f.rotated = value.rotated;
-      // const v = value.aliases
-      f.filename = key;
-
-      if (f.filename.toLowerCase().includes(props.id.toLowerCase())) {
-        frames.value.push(f);
-      }
+  function loop() {
+    now.value = Date.now()
+    const delta = now.value - then.value
+    if (delta > 1000 / fps.value) {
+      then.value = now.value - (delta % (1000 / fps.value))
+      render()
+      currentIndex.value++
     }
-  } else {
-    frams.forEach((item) => {
-      if (item.filename.toLowerCase().includes(props.id.toLowerCase())) {
-        const newObj = {
-          filename: item.filename,
-          ...item.frame,
-        };
-        frames.value.push(newObj);
-        console.log(newObj);
-      }
-    });
+    animationFrameID.value = window.requestAnimationFrame(loop)
   }
 
-  frames.value.sort((a, b) => a.filename < b.filename);
-  width.value = frames.value[0].w;
-  height.value = frames.value[0].h;
-  length.value = frames.value.length - 1;
-});
+  function play(from: number) {
+    currentIndex.value = Number.isNaN(Number(from)) ? currentIndex.value : from
+    loop()
+  }
+
+  nextTick(() => {
+    sprite.value = new Image()
+    sprite.value.src = props.spritesheet
+    sprite.value.onload = () => {
+      init()
+    }
+  })
+
+  onMounted(() => {
+    const frams = props.json.frames
+
+    if (!Array.isArray(frams)) {
+      for (const [key, value] of Object.entries(frams) as [
+        string,
+        { frame: any; rotated: boolean },
+      ][]) {
+        const f = value.frame
+        if (f) {
+          f.rotated = value.rotated
+          f.filename = key
+        }
+
+        if (f.filename.toLowerCase().includes(props.id.toLowerCase())) {
+          frames.value.push(f)
+        }
+      }
+    } else {
+      frams.forEach((item) => {
+        if (item.filename.toLowerCase().includes(props.id.toLowerCase())) {
+          const newObj = {
+            filename: item.filename,
+            ...item.frame,
+          }
+          frames.value.push(newObj)
+        }
+      })
+    }
+
+    frames.value.sort((a, b) => (a.filename < b.filename ? -1 : 1))
+    if (frames.value.length > 0) {
+      width.value = frames.value[0].w
+      height.value = frames.value[0].h
+    }
+    length.value = frames.value.length
+  })
 </script>
 
 <template>
@@ -148,4 +127,4 @@ onMounted(() => {
   </div>
 </template>
 
-<style></style>
+<style scoped></style>

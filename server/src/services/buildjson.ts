@@ -6,22 +6,22 @@ export function buildJson(
   coins: number,
   experience: number
 ): string {
-  console.log(jsonBase);
-  jsonBase.result.user.balance.cash = balance;
-  jsonBase.result.user.balance.freeBets = coins;
-  jsonBase.result.user.balance.sessionFreeBets = experience;
-  jsonBase.result.user.currency.code = 'USD';
-  jsonBase.result.user.currency.symbol = '$';
-  jsonBase.result.user.limits.maxTotalStake = 10;
+  console.log(jsonBase)
+  jsonBase.result.user.balance.cash = balance
+  jsonBase.result.user.balance.freeBets = coins
+  jsonBase.result.user.balance.sessionFreeBets = experience
+  jsonBase.result.user.currency.code = 'USD'
+  jsonBase.result.user.currency.symbol = '$'
+  jsonBase.result.user.limits.maxTotalStake = 10
   //console.log(jsonBase.result.user.stakes.types)
-  const newTypes: string[] = [];
+  const newTypes: string[] = []
 
   jsonBase.result.user.stakes.types.forEach((type: string) => {
     if (parseInt(type) <= 2) {
-      newTypes.push(type);
+      newTypes.push(type)
     }
-  });
-  jsonBase.result.user.stakes.types = newTypes;
+  })
+  jsonBase.result.user.stakes.types = newTypes
   // const pretty = JSON.stringify(jsonBase);
   // , {
   //   // indent: '  ',
@@ -124,7 +124,7 @@ export function buildJson(
   // 		jackpots: null,
   // 	},
   // };
-  return jsonBase;
+  return jsonBase
 }
 
 export function buildJsonForSpin(
@@ -160,7 +160,7 @@ export function buildJsonForSpin(
   //
   // jsonBase.result.user.currency.code = 'USD';
   // jsonBase.result.user.limits.maxGambleStake = 20;
-  return jsonBase;
+  return jsonBase
 }
 
 export function buildJsonForChoice(jsonBase: any): string {
@@ -170,7 +170,7 @@ export function buildJsonForChoice(jsonBase: any): string {
 
   // jsonBase.result.user.currency.code = 'USD';
   // jsonBase.result.user.limits.maxGambleStake = 20;
-  return JSON.stringify(jsonBase);
+  return JSON.stringify(jsonBase)
 }
 
 // import stringifyObject from 'stringify-object'
@@ -181,24 +181,24 @@ export function buildJson2(
   coins: number,
   experience: number
 ): string {
-  jsonBase.result.user.balance.cash = balance;
-  jsonBase.result.user.balance.freeBets = coins;
-  jsonBase.result.user.balance.sessionFreeBets = experience;
-  jsonBase.result.user.currency.code = 'USD';
-  jsonBase.result.user.currency.symbol = '$';
-  jsonBase.result.user.limits.maxTotalStake = 10;
+  jsonBase.result.user.balance.cash = balance
+  jsonBase.result.user.balance.freeBets = coins
+  jsonBase.result.user.balance.sessionFreeBets = experience
+  jsonBase.result.user.currency.code = 'USD'
+  jsonBase.result.user.currency.symbol = '$'
+  jsonBase.result.user.limits.maxTotalStake = 10
   //console.log(jsonBase.result.user.stakes.types);
-  const newTypes: string[] = [];
+  const newTypes: string[] = []
 
   jsonBase.result.user.stakes.types.forEach((type: string) => {
     if (parseInt(type) <= 2) {
-      newTypes.push(type);
+      newTypes.push(type)
     }
-  });
-  jsonBase.result.user.stakes.types = newTypes;
-  const pretty = JSON.stringify(jsonBase);
+  })
+  jsonBase.result.user.stakes.types = newTypes
+  const pretty = JSON.stringify(jsonBase)
 
-  return jsonBase;
+  return jsonBase
 }
 
 export function buildJsonForSpin2(
@@ -212,13 +212,13 @@ export function buildJsonForSpin2(
   // //console.log(jsonBase.result.user.balance.cash, ' -- ', balance)
   // const start = jsonBase.result.user.balance.cash.atStart;
   // const afterBet = jsonBase.result.user.balance.cash.afterBet;
-  const end = jsonBase.result.user.balance.cash.atEnd;
-  jsonBase.result.user.balance.freeBets.atEnd = coins.toString();
-  jsonBase.result.user.balance.sessionFreeBets.atEnd = coins.toString(); // experience.toString();
-  jsonBase.result.user.balance.cash.afterBet = original_crystals - bet;
-  jsonBase.result.user.balance.cash.atStart = original_crystals;
-  jsonBase.result.user.balance.cash.atEnd = balance;
-  jsonBase.rtg = end;
+  const end = jsonBase.result.user.balance.cash.atEnd
+  jsonBase.result.user.balance.freeBets.atEnd = coins.toString()
+  jsonBase.result.user.balance.sessionFreeBets.atEnd = coins.toString() // experience.toString();
+  jsonBase.result.user.balance.cash.afterBet = original_crystals - bet
+  jsonBase.result.user.balance.cash.atStart = original_crystals
+  jsonBase.result.user.balance.cash.atEnd = balance
+  jsonBase.rtg = end
   //console.log(jsonBase);
-  return JSON.stringify(jsonBase);
+  return JSON.stringify(jsonBase)
 }

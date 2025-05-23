@@ -4,7 +4,7 @@
 // Ensure the import path is correct for your monorepo setup.
 // It might be '@<your-project-name>/types' if you have paths aliasing set up,
 // or a relative path like '../../packages/types/src/interface/animation'.
-import type { AnimationData, AnimationType } from '@cashflow/types';
+import type { AnimationData, AnimationType } from '@cashflow/types'
 // Or, if @cashflow/types directly exports from 'interface/animation':
 // import type { AnimationData, AnimationType } from '@cashflow/types/interface/animation';
 
@@ -16,7 +16,7 @@ import type { AnimationData, AnimationType } from '@cashflow/types';
  * @param filename - The name of the JSON file (e.g., 'avatar_xp.json')
  * @returns The path to be used by a Lottie player.
  */
-const animationAssetPath = (filename: string): string => `/src/assets/anim/${filename}`;
+const animationAssetPath = (filename: string): string => `/src/assets/anim/${filename}`
 
 /**
  * Defines a registry for all globally available Lottie animations.
@@ -24,7 +24,7 @@ const animationAssetPath = (filename: string): string => `/src/assets/anim/${fil
  * is an AnimationData object describing it.
  */
 interface GlobalAnimationRegistry {
-  [key: string]: AnimationData;
+  [key: string]: AnimationData
 }
 
 /**
@@ -115,7 +115,7 @@ export const globalAnimations: Readonly<GlobalAnimationRegistry> = Object.freeze
   //   autoplay: true,
   //   player: 'lottie',
   // },
-});
+})
 
 /**
  * The `setupGlobalAnimations` function in this context is conceptualized
@@ -131,8 +131,8 @@ export const globalAnimations: Readonly<GlobalAnimationRegistry> = Object.freeze
 export function setupGlobalAnimations(): Readonly<GlobalAnimationRegistry> {
   // In this declarative approach, the "setup" is the definition of globalAnimations.
   // If pre-loading or other side effects were needed, they could go here.
-  console.log('[Animations] Global Lottie animations registry initialized.');
-  return globalAnimations;
+  console.log('[Animations] Global Lottie animations registry initialized.')
+  return globalAnimations
 }
 
 /**
@@ -144,7 +144,7 @@ export function setupGlobalAnimations(): Readonly<GlobalAnimationRegistry> {
 export function getAnimationData(
   animationName: keyof typeof globalAnimations
 ): AnimationData | undefined {
-  return globalAnimations[animationName];
+  return globalAnimations[animationName]
 }
 
 // If you want to use this as a Vue plugin to make animations globally accessible:

@@ -5,7 +5,7 @@ export interface FilterCurrencyOptions extends Intl.NumberFormatOptions {
 const DEFAULT_OPTIONS: FilterCurrencyOptions = {
   style: 'currency',
   minimumFractionDigits: 2,
-  round: false
+  round: false,
 }
 
 function getFormattedCurrency(
@@ -45,7 +45,7 @@ export function currency(
 ): string {
   const options_: FilterCurrencyOptions = {
     ...DEFAULT_OPTIONS,
-    ...options
+    ...options,
   }
 
   validRequiredAttributes(number, locale, options_)

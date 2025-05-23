@@ -1,6 +1,6 @@
 <template>
   <div class="notification-container">
-    <transition-group
+    <TransitionGroup
       name="toast-fade"
       tag="div"
       enter-active-class="animate__animated animate__lightSpeedInRight animate__delay-0s"
@@ -20,7 +20,7 @@
           &times;
         </button>
       </div>
-    </transition-group>
+    </TransitionGroup>
   </div>
 </template>
 

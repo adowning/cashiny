@@ -191,15 +191,15 @@
 
 <template>
   <div
-    class="m-home-live-win flex"
     v-if="isMobileView"
+    class="m-home-live-win flex"
     style="background-size: 3% 100%; background-position-x: right"
   >
     <div class="flex" style="width: 20px"></div>
 
     <div
-      class="flex"
       v-if="isMobileView"
+      class="flex"
       style="
         background-image: url('/images/bigwin/bigwin-right-pink.png');
 
@@ -251,8 +251,8 @@ background-size: 3% 100%; */
           -->
         <Swiper
           :modules="swiperModules"
-          :slidesPerView="4.5"
-          :spaceBetween="4"
+          :slides-per-view="4.5"
+          :space-between="4"
           :loop="true"
           :autoplay="false"
           class="mx-2"
@@ -261,7 +261,7 @@ background-size: 3% 100%; */
           <SwiperSlide
             v-for="(item, index) in mobileLiveWinList"
             :key="index"
-            :virtualIndex="index"
+            :virtual-index="index"
             @click="navigateToGame(item)"
           >
             <div class="text-center">
@@ -285,7 +285,7 @@ background-size: 3% 100%; */
     </div>
   </div>
 
-  <div class="m-home-live-win" v-else>
+  <div v-else class="m-home-live-win">
     <!-- <div class="live-win-header">
 
 <inline-svg

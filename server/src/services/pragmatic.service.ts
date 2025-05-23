@@ -37,8 +37,8 @@ export async function getUserAmount(userId: string) {
 }
 
 export async function gameRun(c: Context) {
-  var gameCode = c.req.query('gameCode')
-  var token = c.req.query('mgckey')
+  const gameCode = c.req.query('gameCode')
+  const token = c.req.query('mgckey')
   if (!gameCode || !token) {
     return c.res.render('game/maintenancing.ejs')
   }
@@ -108,8 +108,8 @@ export async function miniLobbyGameRun(req: HonoRequest) {
 }
 
 export async function gameDemo(user: UserWithProfile, req: HonoRequest) {
-  var gameCode = req.query.game
-  var token = req.query.token
+  const gameCode = req.query.game
+  const token = req.query.token
 
   const { Game } = req.app.db
   const game = await Game.findOne({ where: { gameCode } })
@@ -134,8 +134,8 @@ export async function gameList(req: HonoRequest) {}
 
 export async function gamesWithPattern(req: HonoRequest) {
   const { Game } = req.app.db
-  let results = await Game.findAll()
-  let games = results.map((item) => ({
+  const results = await Game.findAll()
+  const games = results.map((item) => ({
     id: item.id,
     banner: item.banner,
     status: item.status,
@@ -145,7 +145,7 @@ export async function gamesWithPattern(req: HonoRequest) {
     memo: item.memo,
   }))
 
-  var dto = {}
+  const dto = {}
   dto.draw = Number(req.body.draw)
   dto.recordsTotal = games.length
   dto.recordsFiltered = games.length
@@ -164,6 +164,6 @@ export async function changeGameStatus(req: HonoRequest) {
   const retObj = await game.update({ status: Number(status) })
   res.json({
     status: !!retObj,
-    msg: !!retObj ? '      ' : '      ',
+    msg: retObj ? '      ' : '      ',
   })
 }

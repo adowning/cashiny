@@ -1,30 +1,30 @@
 // useLoading.js
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 export function useLoading() {
-    const isLoading = ref(false);
+  const isLoading = ref(false)
 
-    const startLoading = () => {
-        isLoading.value = true;
-    };
+  const startLoading = () => {
+    isLoading.value = true
+  }
 
-    const stopLoading = () => {
-        isLoading.value = false;
-    };
+  const stopLoading = () => {
+    isLoading.value = false
+  }
 
-    const withLoading = async (promise) => {
-        startLoading();
-        try {
-            return await promise;
-        } finally {
-            stopLoading();
-        }
-    };
+  const withLoading = async (promise) => {
+    startLoading()
+    try {
+      return await promise
+    } finally {
+      stopLoading()
+    }
+  }
 
-    return {
-        isLoading,
-        startLoading,
-        stopLoading,
-        withLoading,
-    };
+  return {
+    isLoading,
+    startLoading,
+    stopLoading,
+    withLoading,
+  }
 }

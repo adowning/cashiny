@@ -10,15 +10,15 @@ import {
   WebSocketBroadcastPayload,
   UserEventPayload,
   WithdrawalProcessedPayload,
-} from '@cashflow/types';
-import { EventEmitter } from 'node:events'; // Using Node.js built-in EventEmitter
+} from '@cashflow/types'
+import { EventEmitter } from 'node:events' // Using Node.js built-in EventEmitter
 
 // --------------- Event Emitter Instance ---------------
 /**
  * Global application event emitter.
  * Use this to emit and listen to domain events across the application.
  */
-export const appEventEmitter = new EventEmitter();
+export const appEventEmitter = new EventEmitter()
 
 // --------------- Event Definitions (Enum) ---------------
 /**
@@ -84,57 +84,57 @@ export enum AppEvents {
  * });
  */
 export interface EventPayloads {
-  [AppEvents.USER_CREATED]: UserCreatedPayload;
-  [AppEvents.USER_UPDATED]: UserProfileUpdatedPayload; // Assuming UserProfileUpdatedPayload is generic enough
-  [AppEvents.USER_EMAIL_VERIFIED]: UserEventPayload; // Basic payload
-  [AppEvents.USER_PASSWORD_RESET_REQUESTED]: UserEventPayload & { email: string };
-  [AppEvents.USER_PASSWORD_CHANGED]: UserEventPayload;
-  [AppEvents.USER_LOGIN_SUCCESS]: UserEventPayload & { ipAddress?: string };
-  [AppEvents.USER_LOGIN_FAILURE]: { emailOrUserId?: string; reason: string; ipAddress?: string };
-  [AppEvents.USER_LOGOUT]: UserEventPayload;
-  [AppEvents.USER_PROFILE_UPDATED]: UserProfileUpdatedPayload;
+  [AppEvents.USER_CREATED]: UserCreatedPayload
+  [AppEvents.USER_UPDATED]: UserProfileUpdatedPayload // Assuming UserProfileUpdatedPayload is generic enough
+  [AppEvents.USER_EMAIL_VERIFIED]: UserEventPayload // Basic payload
+  [AppEvents.USER_PASSWORD_RESET_REQUESTED]: UserEventPayload & { email: string }
+  [AppEvents.USER_PASSWORD_CHANGED]: UserEventPayload
+  [AppEvents.USER_LOGIN_SUCCESS]: UserEventPayload & { ipAddress?: string }
+  [AppEvents.USER_LOGIN_FAILURE]: { emailOrUserId?: string; reason: string; ipAddress?: string }
+  [AppEvents.USER_LOGOUT]: UserEventPayload
+  [AppEvents.USER_PROFILE_UPDATED]: UserProfileUpdatedPayload
 
-  [AppEvents.USER_XP_GAINED]: UserXpGainedPayload;
-  [AppEvents.USER_LEVELED_UP]: UserLeveledUpPayload;
+  [AppEvents.USER_XP_GAINED]: UserXpGainedPayload
+  [AppEvents.USER_LEVELED_UP]: UserLeveledUpPayload
 
   [AppEvents.USER_REWARD_CREATED]: UserEventPayload & {
-    rewardId: string;
-    rewardType: string;
-    description: string;
-  };
-  [AppEvents.USER_REWARD_CLAIMED]: UserRewardClaimedPayload;
+    rewardId: string
+    rewardType: string
+    description: string
+  }
+  [AppEvents.USER_REWARD_CLAIMED]: UserRewardClaimedPayload
   [AppEvents.VIP_BENEFIT_UNLOCKED]: UserEventPayload & {
-    benefitId: string;
-    benefitName: string;
-    level: number;
-  };
+    benefitId: string
+    benefitName: string
+    level: number
+  }
 
-  [AppEvents.TRANSACTION_CREATED]: TransactionStatusChangedPayload; // Or a more specific CreatePayload
-  [AppEvents.TRANSACTION_COMPLETED]: TransactionStatusChangedPayload;
-  [AppEvents.TRANSACTION_CHANGED]: TransactionStatusChangedPayload;
-  [AppEvents.TRANSACTION_FAILED]: TransactionStatusChangedPayload & { reason?: string };
-  [AppEvents.DEPOSIT_SUCCESSFUL]: DepositSuccessfulPayload;
-  [AppEvents.WITHDRAWAL_PROCESSED]: WithdrawalProcessedPayload;
+  [AppEvents.TRANSACTION_CREATED]: TransactionStatusChangedPayload // Or a more specific CreatePayload
+  [AppEvents.TRANSACTION_COMPLETED]: TransactionStatusChangedPayload
+  [AppEvents.TRANSACTION_CHANGED]: TransactionStatusChangedPayload
+  [AppEvents.TRANSACTION_FAILED]: TransactionStatusChangedPayload & { reason?: string }
+  [AppEvents.DEPOSIT_SUCCESSFUL]: DepositSuccessfulPayload
+  [AppEvents.WITHDRAWAL_PROCESSED]: WithdrawalProcessedPayload
 
   [AppEvents.WITHDRAWAL_REQUESTED]: UserEventPayload & {
-    transactionId: string;
-    amount: number;
-    currencyId: string;
-  };
+    transactionId: string
+    amount: number
+    currencyId: string
+  }
 
   [AppEvents.ACHIEVEMENT_UNLOCKED]: UserEventPayload & {
-    achievementId: string;
-    achievementName: string;
-  };
+    achievementId: string
+    achievementName: string
+  }
 
-  [AppEvents.WEBSOCKET_MESSAGE_TO_USER]: WebSocketMessageToUserPayload;
-  [AppEvents.WEBSOCKET_BROADCAST]: WebSocketBroadcastPayload;
+  [AppEvents.WEBSOCKET_MESSAGE_TO_USER]: WebSocketMessageToUserPayload
+  [AppEvents.WEBSOCKET_BROADCAST]: WebSocketBroadcastPayload
 
   [AppEvents.SYSTEM_NOTIFICATION]: {
-    message: string;
-    level: 'info' | 'warn' | 'error';
-    details?: any;
-  };
+    message: string
+    level: 'info' | 'warn' | 'error'
+    details?: any
+  }
 
   // Add other event types and their corresponding payload interfaces here
   // ...
@@ -146,31 +146,31 @@ interface TypedEventEmitter<TEvents extends Record<string, any>> {
   on<TEventName extends keyof TEvents>(
     eventName: TEventName,
     listener: (payload: TEvents[TEventName]) => void
-  ): EventEmitter;
+  ): EventEmitter
 
   once<TEventName extends keyof TEvents>(
     eventName: TEventName,
     listener: (payload: TEvents[TEventName]) => void
-  ): EventEmitter;
+  ): EventEmitter
 
   emit<TEventName extends keyof TEvents>(
     eventName: TEventName,
     payload: TEvents[TEventName]
-  ): boolean;
+  ): boolean
 
   off<TEventName extends keyof TEvents>(
     eventName: TEventName,
     listener: (payload: TEvents[TEventName]) => void
-  ): EventEmitter;
+  ): EventEmitter
 
-  removeAllListeners<TEventName extends keyof TEvents>(eventName?: TEventName): EventEmitter;
+  removeAllListeners<TEventName extends keyof TEvents>(eventName?: TEventName): EventEmitter
 
   // Add other EventEmitter methods if needed, correctly typed
-  listenerCount(eventName: keyof TEvents): number;
+  listenerCount(eventName: keyof TEvents): number
 }
 
 // Cast your appEventEmitter to the typed version for better DX
-export const typedAppEventEmitter = appEventEmitter as TypedEventEmitter<EventPayloads>;
+export const typedAppEventEmitter = appEventEmitter as TypedEventEmitter<EventPayloads>
 
 // --------------- Example Usage (for illustration, not part of this file) ---------------
 /*

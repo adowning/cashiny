@@ -1,4 +1,4 @@
-import { ev } from './utils/env';
+import { ev } from './utils/env'
 
 export default {
   DEBUG: false, //['false', true].includes(ev('DEBUG')),
@@ -15,4 +15,4 @@ export default {
     MAX_BUFFER_SIZE: 1000,
     TABLE_SCHEMA: 'public',
   },
-};
+}

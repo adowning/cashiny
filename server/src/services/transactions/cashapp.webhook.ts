@@ -1,23 +1,23 @@
 // Instantiate PrismaClient
-import {db} from '@cashflow/database';
-import { User, } from '@cashflow/types';
-import { BunRequest } from 'bun';
+import { db } from '@cashflow/database'
+import { User } from '@cashflow/types'
+import { BunRequest } from 'bun'
 
-import { calculateXpBonus } from './deposit-xp';
-import { updateUserDepositXp } from './deposit-xp';
-import { TransactionStatus, TransactionType } from '@cashflow/database/';
+import { calculateXpBonus } from './deposit-xp'
+import { updateUserDepositXp } from './deposit-xp'
+import { TransactionStatus, TransactionType } from '@cashflow/database/'
 
 // Configure the same shared secret used in the Cloudflare Worker
-const WEBHOOK_SECRET = 'asdfasdfasdfasdf1234xxx'; // Use the exact same secret as in the Worker
+const WEBHOOK_SECRET = 'asdfasdfasdfasdf1234xxx' // Use the exact same secret as in the Worker
 
 // Interface for the expected payload from the Cloudflare Worker
 interface CashAppWebhookPayload {
-  transactionId: string; // The transaction number extracted from the email (e.g., 'D-NP3JP2J9')
-  amount: number; // The amount received
-  senderName: string; // The sender's name
-  timestamp: string; // ISO string timestamp from the email date
-  rawEmailSubject: string; // Original email subject for logging
-  cashtag: string;
+  transactionId: string // The transaction number extracted from the email (e.g., 'D-NP3JP2J9')
+  amount: number // The amount received
+  senderName: string // The sender's name
+  timestamp: string // ISO string timestamp from the email date
+  rawEmailSubject: string // Original email subject for logging
+  cashtag: string
 }
 
 /**
@@ -30,41 +30,41 @@ export async function handleCashAppWebhook(req: BunRequest) {
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ message: 'Method Not Allowed' }), {
       status: 405,
-    });
+    })
   }
 
   // 2. Validate the shared secret for basic security
-  console.log(req.headers);
-  const sharedSecret = req.headers.get('x-webhook-secret');
-  console.log(WEBHOOK_SECRET);
-  console.log(sharedSecret);
+  console.log(req.headers)
+  const sharedSecret = req.headers.get('x-webhook-secret')
+  console.log(WEBHOOK_SECRET)
+  console.log(sharedSecret)
   if (!sharedSecret || sharedSecret !== WEBHOOK_SECRET) {
-    console.warn('Webhook received with invalid or missing secret.');
+    console.warn('Webhook received with invalid or missing secret.')
     return new Response(JSON.stringify({ message: 'Unauthorized' }), {
       status: 401,
-    });
+    })
   }
 
   // 3. Parse the request body
-  let payload: CashAppWebhookPayload;
+  let payload: CashAppWebhookPayload
   try {
-    payload = (await req.json()) as CashAppWebhookPayload;
+    payload = (await req.json()) as CashAppWebhookPayload
 
     // Basic payload validation
     if (!payload.transactionId || typeof payload.amount !== 'number' || payload.amount <= 0) {
-      console.error('Webhook received with invalid payload:', payload);
+      console.error('Webhook received with invalid payload:', payload)
       return new Response(JSON.stringify({ message: 'Invalid payload' }), {
         status: 400,
-      });
+      })
     }
   } catch (error) {
-    console.error('Error parsing webhook payload:', error);
+    console.error('Error parsing webhook payload:', error)
     return new Response(JSON.stringify({ message: 'Invalid JSON' }), {
       status: 400,
-    });
+    })
   }
 
-  console.log('Received Cash App webhook:', payload);
+  console.log('Received Cash App webhook:', payload)
 
   // 4. Find the corresponding pending transaction in the database
   // You need a way to link the Cash App transactionId from the email
@@ -94,12 +94,12 @@ export async function handleCashAppWebhook(req: BunRequest) {
           select: { userId: true },
         },
       },
-    });
+    })
 
     if (!pendingTransaction) {
       console.warn(
-        `No pending deposit transaction found for transactionId: ${payload.transactionId}`,
-      );
+        `No pending deposit transaction found for transactionId: ${payload.transactionId}`
+      )
       // It's possible the transaction was already processed or doesn't exist.
       // Return success to avoid unnecessary retries from the worker, but log the event.
       return new Response(
@@ -108,8 +108,8 @@ export async function handleCashAppWebhook(req: BunRequest) {
         }),
         {
           status: 200,
-        },
-      );
+        }
+      )
     }
 
     // 5. Update the transaction status and credit the user's balance
@@ -128,7 +128,7 @@ export async function handleCashAppWebhook(req: BunRequest) {
             cashAppWebhook: JSON.stringify(payload), // Store the full webhook payload for auditing
           },
         },
-      });
+      })
 
       // Credit the user's balance and calculate XP bonus
       // Find the user and their VIP info
@@ -202,7 +202,7 @@ export async function handleCashAppWebhook(req: BunRequest) {
             },
           },
         },
-      })) as unknown as User;
+      })) as unknown as User
 
       if (user) {
         // Update balance
@@ -213,13 +213,13 @@ export async function handleCashAppWebhook(req: BunRequest) {
               increment: Math.round(payload.amount), // Increment user balance by the received amount
             },
           },
-        });
+        })
 
         // Calculate and update XP if user has VIP info
         if (user.vipInfo) {
-          const vipInfo = user.vipInfo as VipInfo;
-          const xpBonus = calculateXpBonus(payload.amount, vipInfo);
-          await updateUserDepositXp(user, vipInfo, xpBonus);
+          const vipInfo = user.vipInfo as VipInfo
+          const xpBonus = calculateXpBonus(payload.amount, vipInfo)
+          await updateUserDepositXp(user, vipInfo, xpBonus)
 
           // Save updated XP values
           await db.user.update({
@@ -227,21 +227,21 @@ export async function handleCashAppWebhook(req: BunRequest) {
             data: {
               totalXp: user.totalXp,
             },
-          });
+          })
           await db.vipInfo.update({
             where: { id: vipInfo.id },
             data: {
               deposit_exp: vipInfo.deposit_exp,
             },
-          });
+          })
         }
         console.log(
-          `Successfully credited user ${user.id} with amount ${payload.amount} for transaction ${pendingTransaction.id}`,
-        );
+          `Successfully credited user ${user.id} with amount ${payload.amount} for transaction ${pendingTransaction.id}`
+        )
       } else {
         console.error(
-          `User not found for profile ID ${pendingTransaction.profileId} associated with transaction ${pendingTransaction.id}`,
-        );
+          `User not found for profile ID ${pendingTransaction.profileId} associated with transaction ${pendingTransaction.id}`
+        )
         // This indicates a data inconsistency, needs investigation
       }
 
@@ -252,18 +252,18 @@ export async function handleCashAppWebhook(req: BunRequest) {
         // await prisma.user.update({  });
         // await prisma.transaction.create({  });
       }
-    });
+    })
 
     // 6. Return a success response
     return new Response(JSON.stringify({ message: 'Deposit confirmed and user balance updated' }), {
       status: 200,
-    });
+    })
   } catch (error) {
-    console.error('Error processing Cash App webhook:', error);
+    console.error('Error processing Cash App webhook:', error)
     // Return a 500 error to indicate failure, which might prompt the worker to retry
     return new Response(JSON.stringify({ message: 'Internal Server Error' }), {
       status: 500,
-    });
+    })
   }
 }
 

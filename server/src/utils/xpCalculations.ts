@@ -1,14 +1,14 @@
-import { Prisma } from '@cashflow/database'; // For Prisma.Decimal
-import type { VipInfo, VipTask, Achievement } from '@cashflow/database'; // Prisma-generated types
-import type { LevelConfig, SignInReward } from '../config/leveling.config'; // Assuming these are in leveling.config
+import { Prisma } from '@cashflow/database' // For Prisma.Decimal
+import type { VipInfo, VipTask, Achievement } from '@cashflow/database' // Prisma-generated types
+import type { SignInReward } from '../config/leveling.config' // Assuming these are in leveling.config
 
 // --- Constants for Base XP & Multipliers (configurable here or via env/DB config) ---
 
-const BASE_XP_PER_DEPOSIT_UNIT = 1;
-const VIP_LEVEL_XP_MULTIPLIER_INCREMENT = 0.1; // 10% per VIP level for deposits
+const BASE_XP_PER_DEPOSIT_UNIT = 1
+const VIP_LEVEL_XP_MULTIPLIER_INCREMENT = 0.1 // 10% per VIP level for deposits
 
-const BASE_XP_PER_WAGER_UNIT = 0.1; // Example: 0.1 XP per unit wagered
-const XP_PER_WIN_UNIT_MULTIPLIER = 0.05; // Example: Additional 0.05 XP per unit won on top of wager XP
+const BASE_XP_PER_WAGER_UNIT = 0.1 // Example: 0.1 XP per unit wagered
+const XP_PER_WIN_UNIT_MULTIPLIER = 0.05 // Example: Additional 0.05 XP per unit won on top of wager XP
 
 // --- Helper for VIP Multiplier ---
 
@@ -24,10 +24,10 @@ function getVipXpMultiplier(
   baseMultiplierIncrement: number = 0.05 // Default 5% general XP boost per level
 ): Prisma.Decimal {
   if (vipLevel <= 0) {
-    return new Prisma.Decimal(1); // No bonus for level 0 or less
+    return new Prisma.Decimal(1) // No bonus for level 0 or less
   }
   // Level 1 gets 1 + (1 * increment), Level 2 gets 1 + (2 * increment)
-  return new Prisma.Decimal(1).add(new Prisma.Decimal(vipLevel).mul(baseMultiplierIncrement));
+  return new Prisma.Decimal(1).add(new Prisma.Decimal(vipLevel).mul(baseMultiplierIncrement))
 }
 
 // --- Deposit XP Calculation ---
@@ -45,32 +45,32 @@ export function calculateXpBonusForDeposit(
   depositAmount: number,
   vipInfo: Pick<VipInfo, 'level'> | null
 ): number {
-  const amountAsDecimal = new Prisma.Decimal(depositAmount);
+  const amountAsDecimal = new Prisma.Decimal(depositAmount)
 
   if (amountAsDecimal.isNegative() || amountAsDecimal.isZero()) {
     console.warn(
       '[XP Calc] calculateXpBonusForDeposit: Invalid or zero deposit amount:',
       amountAsDecimal.toNumber()
-    );
-    return 0;
+    )
+    return 0
   }
 
-  const userVipLevel = vipInfo?.level ?? 0;
+  const userVipLevel = vipInfo?.level ?? 0
 
-  const baseXp = amountAsDecimal.mul(BASE_XP_PER_DEPOSIT_UNIT);
+  const baseXp = amountAsDecimal.mul(BASE_XP_PER_DEPOSIT_UNIT)
 
   // Specific VIP multiplier for deposits
   const depositVipMultiplier = new Prisma.Decimal(1).add(
     new Prisma.Decimal(userVipLevel).mul(VIP_LEVEL_XP_MULTIPLIER_INCREMENT)
-  );
+  )
 
-  const totalXpDecimal = baseXp.mul(depositVipMultiplier);
-  const totalXpInteger = totalXpDecimal.floor().toNumber();
+  const totalXpDecimal = baseXp.mul(depositVipMultiplier)
+  const totalXpInteger = totalXpDecimal.floor().toNumber()
 
   console.log(
     `[XP Calc] Deposit XP: Amount=${amountAsDecimal.toNumber()}, VIP Level=${userVipLevel}, BaseXP=${baseXp.toNumber()}, Multiplier=${depositVipMultiplier.toNumber()}, TotalXP=${totalXpInteger}`
-  );
-  return totalXpInteger;
+  )
+  return totalXpInteger
 }
 
 // --- Game/Betting XP Calculation ---
@@ -89,20 +89,20 @@ export function calculateXpForWager(
   vipInfo: Pick<VipInfo, 'level'> | null,
   gameConfig?: { baseXpRate?: number; vipMultiplierOverride?: number } // Example game-specific config
 ): number {
-  const amountAsDecimal = new Prisma.Decimal(wagerAmount);
-  if (amountAsDecimal.isNegative() || amountAsDecimal.isZero()) return 0;
+  const amountAsDecimal = new Prisma.Decimal(wagerAmount)
+  if (amountAsDecimal.isNegative() || amountAsDecimal.isZero()) return 0
 
-  const userVipLevel = vipInfo?.level ?? 0;
-  const baseXpRate = gameConfig?.baseXpRate ?? BASE_XP_PER_WAGER_UNIT;
-  let baseXp = amountAsDecimal.mul(baseXpRate);
+  const userVipLevel = vipInfo?.level ?? 0
+  const baseXpRate = gameConfig?.baseXpRate ?? BASE_XP_PER_WAGER_UNIT
+  const baseXp = amountAsDecimal.mul(baseXpRate)
 
   // Apply general VIP multiplier
   const vipMultiplier = gameConfig?.vipMultiplierOverride
     ? new Prisma.Decimal(gameConfig.vipMultiplierOverride)
-    : getVipXpMultiplier(userVipLevel); // Using the general VIP multiplier
+    : getVipXpMultiplier(userVipLevel) // Using the general VIP multiplier
 
-  const totalXpDecimal = baseXp.mul(vipMultiplier);
-  return totalXpDecimal.floor().toNumber();
+  const totalXpDecimal = baseXp.mul(vipMultiplier)
+  return totalXpDecimal.floor().toNumber()
 }
 
 /**
@@ -121,19 +121,19 @@ export function calculateXpForWin(
   vipInfo: Pick<VipInfo, 'level'> | null,
   gameConfig?: { winXpMultiplier?: number }
 ): number {
-  const winAsDecimal = new Prisma.Decimal(winAmount);
-  if (winAsDecimal.isNegative() || winAsDecimal.isZero()) return 0;
+  const winAsDecimal = new Prisma.Decimal(winAmount)
+  if (winAsDecimal.isNegative() || winAsDecimal.isZero()) return 0
 
-  const userVipLevel = vipInfo?.level ?? 0;
+  const userVipLevel = vipInfo?.level ?? 0
 
   // XP based on win amount
-  let winXp = winAsDecimal.mul(gameConfig?.winXpMultiplier ?? XP_PER_WIN_UNIT_MULTIPLIER);
+  const winXp = winAsDecimal.mul(gameConfig?.winXpMultiplier ?? XP_PER_WIN_UNIT_MULTIPLIER)
 
   // Apply general VIP multiplier to the win-based XP
-  const vipMultiplier = getVipXpMultiplier(userVipLevel);
-  const totalXpDecimal = winXp.mul(vipMultiplier);
+  const vipMultiplier = getVipXpMultiplier(userVipLevel)
+  const totalXpDecimal = winXp.mul(vipMultiplier)
 
-  return totalXpDecimal.floor().toNumber();
+  return totalXpDecimal.floor().toNumber()
 }
 
 // --- Achievement XP Calculation ---
@@ -151,17 +151,17 @@ export function calculateXpForAchievement(
   vipInfo: Pick<VipInfo, 'level'> | null
 ): number {
   if (!achievement.xpReward || achievement.xpReward <= 0) {
-    return 0;
+    return 0
   }
 
-  const baseXp = new Prisma.Decimal(achievement.xpReward);
-  const userVipLevel = vipInfo?.level ?? 0;
+  const baseXp = new Prisma.Decimal(achievement.xpReward)
+  const userVipLevel = vipInfo?.level ?? 0
 
   // Optional: Apply a (potentially smaller) VIP multiplier to achievement XP
-  const vipMultiplier = getVipXpMultiplier(userVipLevel, 0.02); // Example: 2% bonus per VIP level for achievements
+  const vipMultiplier = getVipXpMultiplier(userVipLevel, 0.02) // Example: 2% bonus per VIP level for achievements
 
-  const totalXpDecimal = baseXp.mul(vipMultiplier);
-  return totalXpDecimal.floor().toNumber();
+  const totalXpDecimal = baseXp.mul(vipMultiplier)
+  return totalXpDecimal.floor().toNumber()
 }
 
 // --- VIP Task Completion XP Calculation ---
@@ -179,17 +179,17 @@ export function calculateXpForVipTask(
   vipInfo: Pick<VipInfo, 'level'> | null
 ): number {
   if (!vipTask.xpReward || vipTask.xpReward < 0 || vipTask.xpReward == 0) {
-    return 0;
+    return 0
   }
 
-  const baseXp = new Prisma.Decimal(vipTask.xpReward); // Assuming xpReward is Decimal
-  const userVipLevel = vipInfo?.level ?? 0;
+  const baseXp = new Prisma.Decimal(vipTask.xpReward) // Assuming xpReward is Decimal
+  const userVipLevel = vipInfo?.level ?? 0
 
   // Optional: Apply a general VIP multiplier to task XP
-  const vipMultiplier = getVipXpMultiplier(userVipLevel, 0.03); // Example: 3% bonus per VIP level for tasks
+  const vipMultiplier = getVipXpMultiplier(userVipLevel, 0.03) // Example: 3% bonus per VIP level for tasks
 
-  const totalXpDecimal = baseXp.mul(vipMultiplier);
-  return totalXpDecimal.floor().toNumber();
+  const totalXpDecimal = baseXp.mul(vipMultiplier)
+  return totalXpDecimal.floor().toNumber()
 }
 
 // --- Daily Sign-In / Streaks XP Calculation ---
@@ -207,17 +207,17 @@ export function calculateXpForSignIn(
   vipInfo: Pick<VipInfo, 'level'> | null
 ): number {
   if (!signInRewardConfig.xp || signInRewardConfig.xp <= 0) {
-    return 0;
+    return 0
   }
 
-  const baseXp = new Prisma.Decimal(signInRewardConfig.xp);
-  const userVipLevel = vipInfo?.level ?? 0;
+  const baseXp = new Prisma.Decimal(signInRewardConfig.xp)
+  const userVipLevel = vipInfo?.level ?? 0
 
   // Optional: Apply a general VIP multiplier to sign-in XP
-  const vipMultiplier = getVipXpMultiplier(userVipLevel, 0.01); // Example: 1% bonus per VIP level for sign-ins
+  const vipMultiplier = getVipXpMultiplier(userVipLevel, 0.01) // Example: 1% bonus per VIP level for sign-ins
 
-  const totalXpDecimal = baseXp.mul(vipMultiplier);
-  return totalXpDecimal.floor().toNumber();
+  const totalXpDecimal = baseXp.mul(vipMultiplier)
+  return totalXpDecimal.floor().toNumber()
 }
 
 // --- Promotional Event XP ---
@@ -236,27 +236,27 @@ export function calculateXpForPromotion(
   userActivityMetric: 0,
   vipInfo: Pick<VipInfo, 'level'> | null
 ): number {
-  let baseXp = new Prisma.Decimal(0);
+  let baseXp = new Prisma.Decimal(0)
 
   if (promoConfig.baseXp) {
-    baseXp = baseXp.add(promoConfig.baseXp);
+    baseXp = baseXp.add(promoConfig.baseXp)
   }
 
   if (promoConfig.activityToXpRatio && userActivityMetric > 0) {
-    baseXp = baseXp.add(new Prisma.Decimal(userActivityMetric).mul(promoConfig.activityToXpRatio));
+    baseXp = baseXp.add(new Prisma.Decimal(userActivityMetric).mul(promoConfig.activityToXpRatio))
   }
 
-  if (baseXp.isNegative() || baseXp.isZero()) return 0;
+  if (baseXp.isNegative() || baseXp.isZero()) return 0
 
-  const userVipLevel = vipInfo?.level ?? 0;
-  let effectiveMultiplier = new Prisma.Decimal(promoConfig.xpMultiplier || 1);
+  const userVipLevel = vipInfo?.level ?? 0
+  let effectiveMultiplier = new Prisma.Decimal(promoConfig.xpMultiplier || 1)
 
   // Optionally, let VIP multiplier stack with promo multiplier or choose one
-  const vipMultiplier = getVipXpMultiplier(userVipLevel);
-  effectiveMultiplier = effectiveMultiplier.mul(vipMultiplier); // Example: stack them
+  const vipMultiplier = getVipXpMultiplier(userVipLevel)
+  effectiveMultiplier = effectiveMultiplier.mul(vipMultiplier) // Example: stack them
 
-  const totalXpDecimal = baseXp.mul(effectiveMultiplier);
-  return totalXpDecimal.floor().toNumber();
+  const totalXpDecimal = baseXp.mul(effectiveMultiplier)
+  return totalXpDecimal.floor().toNumber()
 }
 
 // --- XP for Content Interaction (Future Potential) ---
@@ -272,31 +272,31 @@ export function calculateXpForContentInteraction(
   interactionType: string,
   vipInfo: Pick<VipInfo, 'level'> | null
 ): number {
-  let baseXpAmount = 0;
+  let baseXpAmount = 0
   switch (interactionType.toUpperCase()) {
     case 'LIKE_POST':
-      baseXpAmount = 1;
-      break;
+      baseXpAmount = 1
+      break
     case 'CREATE_COMMENT':
-      baseXpAmount = 5;
-      break;
+      baseXpAmount = 5
+      break
     case 'SHARE_CONTENT':
-      baseXpAmount = 10;
-      break;
+      baseXpAmount = 10
+      break
     case 'COMPLETE_PROFILE_SECTION': // This might be better as a VIP Task
-      baseXpAmount = 20;
-      break;
+      baseXpAmount = 20
+      break
     default:
-      baseXpAmount = 0;
+      baseXpAmount = 0
   }
 
-  if (baseXpAmount <= 0) return 0;
+  if (baseXpAmount <= 0) return 0
 
-  const userVipLevel = vipInfo?.level ?? 0;
-  const vipMultiplier = getVipXpMultiplier(userVipLevel); // General VIP multiplier
-  const totalXpDecimal = new Prisma.Decimal(baseXpAmount).mul(vipMultiplier);
+  const userVipLevel = vipInfo?.level ?? 0
+  const vipMultiplier = getVipXpMultiplier(userVipLevel) // General VIP multiplier
+  const totalXpDecimal = new Prisma.Decimal(baseXpAmount).mul(vipMultiplier)
 
-  return totalXpDecimal.floor().toNumber();
+  return totalXpDecimal.floor().toNumber()
 }
 
 // --- XP for Referrals (Future Potential) ---
@@ -310,16 +310,16 @@ export function calculateXpForReferral(
   referralTier: number, // e.g., number of successful referrals made by user so far
   vipInfoOfReferrer: Pick<VipInfo, 'level'> | null
 ): number {
-  let baseXpAmount = 50; // Base for first referral
+  let baseXpAmount = 50 // Base for first referral
   if (referralTier > 1 && referralTier <= 5) {
-    baseXpAmount = 75;
+    baseXpAmount = 75
   } else if (referralTier > 5) {
-    baseXpAmount = 100;
+    baseXpAmount = 100
   }
 
-  const userVipLevel = vipInfoOfReferrer?.level ?? 0;
-  const vipMultiplier = getVipXpMultiplier(userVipLevel);
-  const totalXpDecimal = new Prisma.Decimal(baseXpAmount).mul(vipMultiplier);
+  const userVipLevel = vipInfoOfReferrer?.level ?? 0
+  const vipMultiplier = getVipXpMultiplier(userVipLevel)
+  const totalXpDecimal = new Prisma.Decimal(baseXpAmount).mul(vipMultiplier)
 
-  return totalXpDecimal.floor().toNumber();
+  return totalXpDecimal.floor().toNumber()
 }

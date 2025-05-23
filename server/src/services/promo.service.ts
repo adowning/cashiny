@@ -1,22 +1,14 @@
 // Your Prisma client
-import type {
-  GetPromoListResponse,
-  PromoData,
-  PromoGroupData,
-  PromoListData,
-  UserWithProfile,
-} from '@cashflow/types';
-import type { HonoRequest } from 'hono';
+import type { PromoData, PromoGroupData, PromoListData } from '@cashflow/types'
 
 //
-import { createErrorResponse, createSuccessResponse } from '../routes';
-import { db } from './prisma.service';
+import { createErrorResponse, createSuccessResponse } from '../routes'
 
 /**
  * Get user activity/promo list.
  * Corresponds to `dispatchUserActivityList` in the Pinia store.
  */
-export async function getUserActivityList(req: HonoRequest, user: Partial<UserWithProfile> | null) {
+export async function getUserActivityList() {
   try {
     // Mocked data - Replace with actual Prisma queries to fetch promotions/activities
     // This data should be structured according to the PromoGroupData interface.
@@ -48,7 +40,7 @@ export async function getUserActivityList(req: HonoRequest, user: Partial<UserWi
         button_path: '/promotions/weekend-reload',
         button_text: 'Learn More',
       },
-    ];
+    ]
 
     const mockedPromoData: PromoData[] = [
       {
@@ -61,11 +53,11 @@ export async function getUserActivityList(req: HonoRequest, user: Partial<UserWi
         group_name: 'Regular Promotions',
         list_data: [mockedPromoListData[1]],
       },
-    ];
+    ]
 
     const promoGroupData: PromoGroupData = {
       group_data: mockedPromoData,
-    };
+    }
 
     // TODO: Replace with actual database logic.
     // Example (highly simplified):
@@ -100,9 +92,9 @@ export async function getUserActivityList(req: HonoRequest, user: Partial<UserWi
     // }
     // promoGroupData.group_data = Object.values(groups);
 
-    return createSuccessResponse(promoGroupData);
+    return createSuccessResponse(promoGroupData)
   } catch (e: any) {
-    console.error('Error fetching user activity list:', e);
-    return createErrorResponse(e.message || 'Failed to fetch activity list', 500);
+    console.error('Error fetching user activity list:', e)
+    return createErrorResponse(e.message || 'Failed to fetch activity list', 500)
   }
 }

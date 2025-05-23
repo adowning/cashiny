@@ -1,8 +1,7 @@
-/* eslint-disable style/operator-linebreak */
-import type { ErrorHandler } from 'hono';
+import type { ErrorHandler } from 'hono'
 
-import { HTTPException } from 'hono/http-exception';
-import { INTERNAL_SERVER_ERROR } from 'stoker/http-status-codes';
+import { HTTPException } from 'hono/http-exception'
+import { INTERNAL_SERVER_ERROR } from 'stoker/http-status-codes'
 
 const onError: ErrorHandler = (err, c) => {
   if (err instanceof HTTPException) {
@@ -13,22 +12,24 @@ const onError: ErrorHandler = (err, c) => {
           success: false,
           error: err.message,
           isFormError:
-            err.cause && typeof err.cause === 'object' && 'json' in err.cause ? err.cause.json === true : false,
+            err.cause && typeof err.cause === 'object' && 'json' in err.cause
+              ? err.cause.json === true
+              : false,
         },
-        err.status,
-      );
+        err.status
+      )
 
-    return errResponse;
+    return errResponse
   }
 
   return c.json(
     {
       success: false,
-      // eslint-disable-next-line node/no-process-env
-      error: process.env.NODE_ENV === 'production' ? 'Interal Server Error' : err.stack ?? err.message,
+      error:
+        process.env.NODE_ENV === 'production' ? 'Interal Server Error' : (err.stack ?? err.message),
     },
-    INTERNAL_SERVER_ERROR,
-  );
-};
+    INTERNAL_SERVER_ERROR
+  )
+}
 
-export default onError;
+export default onError

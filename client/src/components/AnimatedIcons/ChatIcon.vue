@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import * as AllJson from '@/assets/anim/part3.json'
-import AllImg from '@/assets/anim/part3.png'
+  import * as AllJson from '@/assets/anim/part3.json'
+  import AllImg from '@/assets/anim/part3.png'
 
-// const { setFilterBar } = useAppStore()
+  // const { setFilterBar } = useAppStore()
 
-// const filterBar = computed(() => {
-//   const { getFilterBar } = storeToRefs(useAppStore())
-//   return getFilterBar.value
-// })
-const backing = ref('standard')
+  // const filterBar = computed(() => {
+  //   const { getFilterBar } = storeToRefs(useAppStore())
+  //   return getFilterBar.value
+  // })
+  const backing = ref('standard')
 
-// currentUser.value = getCurrentUser()
-const sprite = ref()
-function doBattles() {
-  // useAppStore().setFilterBar('standard')
-  // $bus.$emit(eventTypes.sort_games, 'standard')
-}
+  // currentUser.value = getCurrentUser()
+  const sprite = ref()
+  function doBattles() {
+    // useAppStore().setFilterBar('standard')
+    // $bus.$emit(eventTypes.sort_games, 'standard')
+  }
 
-// $bus.$on(eventTypes.sort_games, changeBack)
+  // $bus.$on(eventTypes.sort_games, changeBack)
 </script>
 
 <template>
@@ -61,51 +61,51 @@ function doBattles() {
 </template>
 
 <style scoped>
-.shake {
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-}
-
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
+  .shake {
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: translate3d(0, 0, 0);
   }
 
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
+  @keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+      transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+      transform: translate3d(4px, 0, 0);
+    }
   }
 
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
+  #spriteAnim {
+    width: 399px;
+
+    height: 200px;
+
+    margin: 2em auto;
+
+    background: transparent url('') 0 0 no-repeat;
+
+    animation: spriteAnim 1s steps(12) infinite;
   }
 
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
+  /* Animation keyframes */
+
+  @keyframes spriteAnim {
+    100% {
+      background-position: 0 -2393px;
+    }
   }
-}
-
-#spriteAnim {
-  width: 399px;
-
-  height: 200px;
-
-  margin: 2em auto;
-
-  background: transparent url('') 0 0 no-repeat;
-
-  animation: spriteAnim 1s steps(12) infinite;
-}
-
-/* Animation keyframes */
-
-@keyframes spriteAnim {
-  100% {
-    background-position: 0 -2393px;
-  }
-}
 </style>

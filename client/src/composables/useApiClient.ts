@@ -50,7 +50,7 @@ import { ClientClaimVipRewardPayload, VipBenefitItem } from '@/interface'
 //
 
 // --- Configuration ---
-var BASE_URL = import.meta.env.VITE_API_BASE_URL + '/api' || '/api' // Fallback to /api if not set
+let BASE_URL = import.meta.env.VITE_API_BASE_URL + '/api' || '/api' // Fallback to /api if not set
 
 // --- ApiError Class ---
 

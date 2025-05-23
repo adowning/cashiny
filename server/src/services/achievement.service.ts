@@ -1,16 +1,15 @@
 // Assuming db is your enhanced Prisma client
-import type { GetAchievementItem, UserWithProfile } from '@cashflow/types';
-import type { HonoRequest } from 'hono';
+import type { GetAchievementItem, UserWithProfile } from '@cashflow/types'
+import type { HonoRequest } from 'hono'
 
 //
-import { createErrorResponse, createSuccessResponse } from '../routes';
-import { db } from './prisma.service';
+import { createErrorResponse, createSuccessResponse } from '../routes'
 
 /**
  * Get achievement list for the user.
  * Corresponds to `dispatchAchievementList` in the Pinia store.
  */
-export async function getAchievementList(req: HonoRequest, user: Partial<UserWithProfile>) {
+export async function getAchievementList() {
   try {
     // Mocked data - Replace with actual Prisma queries
     const achievementData: GetAchievementItem = {
@@ -22,17 +21,17 @@ export async function getAchievementList(req: HonoRequest, user: Partial<UserWit
       award_progress: 30,
       award_explain: [{ index: 1, num: 5, award: 50, status: 1, rate: 0.6 }],
       rate: 0.4,
-    };
+    }
     // TODO: Replace with actual logic to fetch user's achievement data
     // Example:
     // const userAchievements = await db.userAchievement.findMany({ where: { userId: user.id } });
     // const achievements = await db.achievement.findMany();
     // Then map this data to GetAchievementItem structure
 
-    return createSuccessResponse(achievementData);
+    return createSuccessResponse(achievementData)
   } catch (e: any) {
-    console.error('Error fetching achievement list:', e);
-    return createErrorResponse(e.message || 'Failed to fetch achievement list', 500);
+    console.error('Error fetching achievement list:', e)
+    return createErrorResponse(e.message || 'Failed to fetch achievement list', 500)
   }
 }
 
@@ -41,7 +40,7 @@ export async function getAchievementList(req: HonoRequest, user: Partial<UserWit
  * Corresponds to `dispatchAchievementConfig` in the Pinia store.
  * This might be a generic config or user-specific if achievements vary.
  */
-export async function getAchievementConfig(req: HonoRequest, user: Partial<UserWithProfile>) {
+export async function getAchievementConfig() {
   try {
     // Mocked data - Replace with actual Prisma queries for achievement configuration
     const achievementConfigData: GetAchievementItem = {
@@ -58,17 +57,17 @@ export async function getAchievementConfig(req: HonoRequest, user: Partial<UserW
         { index: 2, num: 10, award: 100, status: 0, rate: 1 },
       ],
       rate: 1, // Default rate or global rate
-    };
+    }
     // TODO: Replace with actual logic to fetch achievement configuration
     // Example:
     // const achievementDefinitions = await db.achievementDefinition.findMany();
     // Map to GetAchievementItem structure. This might require adjustments to GetAchievementItem
     // or a new type if the config structure is significantly different.
 
-    return createSuccessResponse(achievementConfigData);
+    return createSuccessResponse(achievementConfigData)
   } catch (e: any) {
-    console.error('Error fetching achievement config:', e);
-    return createErrorResponse(e.message || 'Failed to fetch achievement config', 500);
+    console.error('Error fetching achievement config:', e)
+    return createErrorResponse(e.message || 'Failed to fetch achievement config', 500)
   }
 }
 
@@ -78,14 +77,14 @@ export async function getAchievementConfig(req: HonoRequest, user: Partial<UserW
  */
 export async function claimStageAward(req: HonoRequest, user: Partial<UserWithProfile>) {
   try {
-    const body = await req.json();
-    const { awardId } = body; // Assuming awardId or similar identifier is passed
+    const body = await req.json()
+    const { awardId } = body // Assuming awardId or similar identifier is passed
 
     if (!user || !user.id) {
-      return createErrorResponse('User not authenticated', 401);
+      return createErrorResponse('User not authenticated', 401)
     }
     if (!awardId) {
-      return createErrorResponse('Award ID is required', 400);
+      return createErrorResponse('Award ID is required', 400)
     }
 
     // TODO: Implement logic to:
@@ -106,10 +105,10 @@ export async function claimStageAward(req: HonoRequest, user: Partial<UserWithPr
     // // Add currency/items to user's profile based on awardDefinition.reward
 
     // For now, returning a generic success response
-    return createSuccessResponse({ message: `Stage award ${awardId} claimed successfully` });
+    return createSuccessResponse({ message: `Stage award ${awardId} claimed successfully` })
   } catch (e: any) {
-    console.error('Error claiming stage award:', e);
-    return createErrorResponse(e.message || 'Failed to claim stage award', 500);
+    console.error('Error claiming stage award:', e)
+    return createErrorResponse(e.message || 'Failed to claim stage award', 500)
   }
 }
 
@@ -119,14 +118,14 @@ export async function claimStageAward(req: HonoRequest, user: Partial<UserWithPr
  */
 export async function claimAchievementAward(req: HonoRequest, user: Partial<UserWithProfile>) {
   try {
-    const body = await req.json();
-    const { achievementId } = body; // Assuming achievementId or similar is passed
+    const body = await req.json()
+    const { achievementId } = body // Assuming achievementId or similar is passed
 
     if (!user || !user.id) {
-      return createErrorResponse('User not authenticated', 401);
+      return createErrorResponse('User not authenticated', 401)
     }
     if (!achievementId) {
-      return createErrorResponse('Achievement ID is required', 400);
+      return createErrorResponse('Achievement ID is required', 400)
     }
 
     // TODO: Implement logic similar to claimStageAward:
@@ -148,9 +147,9 @@ export async function claimAchievementAward(req: HonoRequest, user: Partial<User
 
     return createSuccessResponse({
       message: `Achievement award ${achievementId} claimed successfully`,
-    });
+    })
   } catch (e: any) {
-    console.error('Error claiming achievement award:', e);
-    return createErrorResponse(e.message || 'Failed to claim achievement award', 500);
+    console.error('Error claiming achievement award:', e)
+    return createErrorResponse(e.message || 'Failed to claim achievement award', 500)
   }
 }

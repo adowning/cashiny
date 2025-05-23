@@ -1,12 +1,8 @@
-<!-- eslint-disable ts/ban-ts-comment -->
 <script lang="ts" setup>
-  // import { useOperatorStore } from '@/stores/operator'
   import { useUserStore } from '@/stores/user.store'
   import { useDepositStore } from '@/stores/deposit.store'
   import { currency } from '@/utils/currency'
-  // import { AppLauncher } from '@capacitor/app-launcher'
   import { nextTick, onMounted, ref } from 'vue'
-  // import { Transaction } from "@cashflow/database";
   import { useAuthStore } from '@/stores/auth.store'
   import { InitializeDepositDto } from '@cashflow/types'
 
@@ -17,17 +13,11 @@
   const { operatorData, getSelectedPaymentMethod, getSelectedProduct } = storeToRefs(depositStore)
 
   const {
-    // isAuthenticated, // Computed property from authStore (single source of truth)
     currentUser, // isLoading: authLoading, // If you need to show auth-specific loading in App.vue
-    // error: authError, // Auth store errors
   } = storeToRefs(authStore)
-  // const shopStore = useOperatorStore()
-  // const shop = shopStore.currentShop
   const _cashtag = ref()
   const changeStores = ref(false)
   const storeId = ref()
-  // if (operatorData === undefined) return
-  // if (currentUser === undefined) return
   const showKeyboard = ref(false)
   if (currentUser?.value?.cashtag !== undefined) {
     _cashtag.value = currentUser.value?.cashtag
@@ -117,9 +107,8 @@
       }, 3000)
       return
     }
-    // @ts-ignore
     // paymentMethods.value = store.acceptedPayments
-    if (paymentMethods.value.includes(props.paymentMethod)) {
+    if (operatorData.value?.acceptedPayments.includes(getSelectedPaymentMethod.value)) {
       paymentMethodCorrect.value = true
     } else {
       paymentMethodCorrect.value = false
@@ -133,39 +122,22 @@
     // console.log('Can open url: ', value)
   }
 
-  async function confirm(method: string) {
-    console.log(method)
+  async function confirm(paymentMethod: string) {
+    console.log(paymentMethod)
+    const product = getSelectedProduct.value
+    const payment = getSelectedPaymentMethod.value
+
     const data: InitializeDepositDto = {
-      // operatorId: depositStore.operatorData?.id as string,
-      // userId: currentUser.value?.id as string,
-      currency_id: 'USD',
-      method,
-      // type: "DEPOSIT",
-      // channel: method.toLowerCase() === 'cashapp' ? 'CASHAPP' : 'INSTORE',
-      // amount: depositStore.getSelectedProduct?.priceInCents,
-      // amount: depositStore.getSelectedProduct?.priceInCents,
-      amount: depositStore.getSelectedProduct?.amountToReceiveInCredits as number,
-      // buyerCashtag: currentUser?.cashtag,
-      // userAvatar: currentUser.avatar,
-      // username: currentUser?.username,
-      // bonusType: depositStore.getSelectedProduct?.bonusType,
-      // cashierAvatar: "",
-      // cashiername: "",
-      // paymentMethod: props.paymentMethod,
-      // buyerUserId: currentUser?.id,
-      // cashierId: "",
-      // status: "PENDING",
-      // productid: depositStore.getSelectedProduct?.id,
-      // @ts-ignore
-      // selectedProduct: state.value.selectedProduct,
-      // shopId: depositStore.operatorData.id
-      channels_id: '1',
+      amount: product?.amountToReceiveInCredits as number, // Amount user wants to deposit
+      currencyId: 'USD', // Currency of the deposit
+      paymentMethodId: payment, // Identifier for the chosen payment method (e.g., 'cashapp', 'stripe_card')
+      productId: product?.id, // Optional ID of a deposit package/product being purchased
     }
-    if (method === 'CASHAPP') {
+    if (payment === 'CASHAPP') {
       // data.paymentMethod = "CASHAPP";
     }
 
-    if (method === 'INSTORE') {
+    if (payment === 'INSTORE') {
       // data.paymentMethod = "INSTORE";
     }
     // data.productid = depositStore.getSelectedProduct?.id;
@@ -177,7 +149,7 @@
     // console.log(tran)
     // //console.log(sse)
     // await transactionStore.dispatchGetTransactions()
-    if (method === 'CASHAPP') {
+    if (payment === 'CASHAPP') {
       checkCanOpenUrl()
     }
     // queryClient.invalidateQueries({ queryKey: ['user'] })

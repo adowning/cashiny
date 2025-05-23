@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useAppBarStore } from '@/stores/appBar.store'
 import { useAuthStore } from '@/stores/auth.store'
-import { GameType, NETWORK_CONFIG, PaginatedResponse, Category } from '@cashflow/types'
+import { GameCategory } from '@cashflow/types'
 import { defineStore } from 'pinia'
 
 import { handleException } from './exception'
 
 type dialogType = 'login' | 'signup'
-
-namespace Game {}
 
 export const useGameStore = defineStore(
   'game',
@@ -25,12 +23,12 @@ export const useGameStore = defineStore(
     /**
      * @state gameCategories - An array of game categories.
      */
-    const gameCategories = ref<Array<Category>>([])
+    const gameCategories = ref<Array<GameCategory>>([])
 
     /**
      * @state gamedevelopers - An array of game developers.
      */
-    const gamedevelopers = ref<Array<Category>>([])
+    const gamedevelopers = ref<Array<GameCategory>>([])
 
     /**
      * @state gameSearchList - Contains the list of searched games and the total count.
@@ -149,7 +147,7 @@ export const useGameStore = defineStore(
      * @action setGameCategories - Sets the gameCategories state.
      * @param gameCategories - The new game categories.
      */
-    function setGameCategories(_gameCategories: Array<Category>) {
+    function setGameCategories(_gameCategories: Array<GameCategory>) {
       gameCategories.value = _gameCategories
     }
 
@@ -157,7 +155,7 @@ export const useGameStore = defineStore(
      * @action setGamedevelopers - Sets the gamedevelopers state.
      * @param gamedevelopers - The new game developers.
      */
-    function setGamedevelopers(_gamedevelopers: Array<Category>) {
+    function setGamedevelopers(_gamedevelopers: Array<GameCategory>) {
       gamedevelopers.value = _gamedevelopers
     }
 

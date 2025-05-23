@@ -15,28 +15,28 @@ const proxy: Record<string, string | any> = {
     target: 'http://localhost:6589',
     secure: false,
     // rewrite: (path: string) => path.replace(/^\/api/, '\/api/'),
-    rewrite: (path: string) => path.replace(/^\/api/, '\/'),
+    rewrite: (path: string) => path.replace(/^\/api/, '/'),
 
     headers: { Connection: 'keep-alive' },
   },
   '/auth/session': {
     target: 'http://localhost:6589',
     secure: false,
-    rewrite: (path: string) => path.replace(/^\/api/, '\/'),
+    rewrite: (path: string) => path.replace(/^\/api/, '/'),
 
     headers: { Connection: 'keep-alive' },
   },
   '/auth/google': {
     target: 'http://localhost:6589',
     secure: false,
-    rewrite: (path: string) => path.replace(/^\/api/, '\/'),
+    rewrite: (path: string) => path.replace(/^\/api/, '/'),
 
     headers: { Connection: 'keep-alive' },
   },
   '/auth/register': {
     target: 'http://localhost:6589',
     secure: false,
-    rewrite: (path: string) => path.replace(/^\/api/, '\/'),
+    rewrite: (path: string) => path.replace(/^\/api/, '/'),
 
     headers: { Connection: 'keep-alive' },
   },
@@ -63,11 +63,20 @@ export default defineConfig({
     // vueDevTools({ launchEditor: 'code' }),
 
     AutoImport({
-      imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
+      imports: [
+        'vue',
+        'vue-router',
+        'pinia',
+        '@vueuse/core',
+        {
+          '@/composables/useDisplay': ['useDisplay'],
+        },
+      ],
       dts: 'src/types/auto/auto-imports.d.ts',
       dirs: ['src/composables', 'src/stores'],
       eslintrc: {
-        enabled: true, // <-- this
+        enabled: true,
+        globalsPropValue: true,
       },
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/],
     }),

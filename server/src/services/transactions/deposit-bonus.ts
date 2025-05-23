@@ -10,14 +10,11 @@ import { BonusItem as DepositBonusConfig } from '@cashflow/types' // Assuming Bo
  */
 export function calculateBonus(
   depositAmount: number,
-  bonusConfigs: DepositBonusConfig[], // Using the imported interface for type safety
+  bonusConfigs: DepositBonusConfig[] // Using the imported interface for type safety
 ): number {
   // Ensure depositAmount is a positive number
   if (typeof depositAmount !== 'number' || depositAmount <= 0) {
-    console.warn(
-      'calculateBonus: Invalid deposit amount provided:',
-      depositAmount,
-    )
+    console.warn('calculateBonus: Invalid deposit amount provided:', depositAmount)
     return 0
   }
 
@@ -25,7 +22,7 @@ export function calculateBonus(
   if (!Array.isArray(bonusConfigs)) {
     console.warn(
       'calculateBonus: Invalid bonus configurations provided. Expected an array.',
-      bonusConfigs,
+      bonusConfigs
     )
     return 0
   }
@@ -44,10 +41,7 @@ export function calculateBonus(
         typeof bonusConfig.max !== 'number' &&
         typeof bonusConfig.rate !== 'number')
     ) {
-      console.warn(
-        'calculateBonus: Skipping invalid bonus configuration entry:',
-        bonusConfig,
-      )
+      console.warn('calculateBonus: Skipping invalid bonus configuration entry:', bonusConfig)
       continue // Skip this entry and check the next one
     }
 
@@ -61,14 +55,12 @@ export function calculateBonus(
         // Type 0: Fixed amount bonus
         // Ensure bonusConfig.award is a number for this type
         if (typeof bonusConfig.award === 'number') {
-          console.log(
-            `Applied fixed bonus: ${bonusConfig.award} for deposit ${depositAmount}`,
-          )
+          console.log(`Applied fixed bonus: ${bonusConfig.award} for deposit ${depositAmount}`)
           return bonusConfig.award
         } else {
           console.warn(
             "calculateBonus: Bonus config type 0 is missing 'award' property or it's not a number:",
-            bonusConfig,
+            bonusConfig
           )
           return 0 // Invalid config for this type, return 0 bonus
         }
@@ -78,31 +70,26 @@ export function calculateBonus(
         if (typeof bonusConfig.rate === 'number') {
           const calculatedBonus = depositAmount * bonusConfig.rate
           console.log(
-            `Applied percentage bonus: ${bonusConfig.rate * 100}% (${calculatedBonus}) for deposit ${depositAmount}`,
+            `Applied percentage bonus: ${bonusConfig.rate * 100}% (${calculatedBonus}) for deposit ${depositAmount}`
           )
           return calculatedBonus
         } else {
           console.warn(
             "calculateBonus: Bonus config type 1 is missing 'rate' property or it's not a number:",
-            bonusConfig,
+            bonusConfig
           )
           return 0 // Invalid config for this type, return 0 bonus
         }
       } else {
         // Unknown bonus type
-        console.warn(
-          'calculateBonus: Encountered unknown bonus type:',
-          bonusConfig.type,
-        )
+        console.warn('calculateBonus: Encountered unknown bonus type:', bonusConfig.type)
         return 0 // Unknown type, return 0 bonus
       }
     }
   }
 
   // If no matching bonus rule is found
-  console.log(
-    `No matching bonus rule found for deposit amount: ${depositAmount}`,
-  )
+  console.log(`No matching bonus rule found for deposit amount: ${depositAmount}`)
   return 0
 }
 

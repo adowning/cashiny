@@ -36,6 +36,9 @@
     "src/**/*.vue",
     "vite.config.ts"
   ],
+  "exclude": [
+    ".eslintrc.cjs"
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

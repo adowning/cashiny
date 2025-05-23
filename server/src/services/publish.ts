@@ -1,10 +1,10 @@
 /* SPDX-FileCopyrightText: 2025-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import type { ServerWebSocket } from "bun";
-import type { ZodType } from "zod";
-import { z } from "zod";
-import type { MessageSchemaType } from "./types";
+import type { ServerWebSocket } from 'bun'
+import type { ZodType } from 'zod'
+import { z } from 'zod'
+import type { MessageSchemaType } from './types'
 
 /**
  * Validates a message against its schema and publishes it to a WebSocket topic.
@@ -21,16 +21,16 @@ export function publish<Schema extends MessageSchemaType>(
   ws: ServerWebSocket<{ clientId: string } & Record<string, unknown>>,
   topic: string,
   schema: Schema,
-  payload: Schema["shape"] extends { payload: infer P }
+  payload: Schema['shape'] extends { payload: infer P }
     ? P extends ZodType
       ? z.infer<P>
       : unknown
     : unknown,
-  meta: Schema["shape"] extends { meta: infer M }
+  meta: Schema['shape'] extends { meta: infer M }
     ? M extends ZodType<any, any, any>
       ? Partial<z.infer<M>>
       : Record<string, never>
-    : Record<string, never> = {} as Schema["shape"] extends { meta: infer M }
+    : Record<string, never> = {} as Schema['shape'] extends { meta: infer M }
     ? M extends ZodType<any, any, any>
       ? Partial<z.infer<M>>
       : Record<string, never>
@@ -38,13 +38,13 @@ export function publish<Schema extends MessageSchemaType>(
 ): boolean {
   try {
     // Extract the message type from the schema
-    const typeDef = schema.shape.type._def;
+    const typeDef = schema.shape.type._def
     const messageType =
-      "value" in typeDef
+      'value' in typeDef
         ? typeDef.value
-        : typeof schema.shape.type === "object" && "value" in schema.shape.type
+        : typeof schema.shape.type === 'object' && 'value' in schema.shape.type
           ? (schema.shape.type as any).value
-          : undefined;
+          : undefined
 
     // Create the message object with the required structure
     const message = {
@@ -55,24 +55,24 @@ export function publish<Schema extends MessageSchemaType>(
         ...meta,
       },
       ...(payload !== undefined && { payload }),
-    };
+    }
 
     // Validate the constructed message against the schema
-    const validationResult = schema.safeParse(message);
+    const validationResult = schema.safeParse(message)
 
     if (!validationResult.success) {
       console.error(
         `[ws] Failed to publish message of type "${messageType}" to topic "${topic}": Validation error`,
         validationResult.error.errors
-      );
-      return false;
+      )
+      return false
     }
 
     // Publish the validated message to the topic
-    ws.publish(topic, JSON.stringify(validationResult.data));
-    return true;
+    ws.publish(topic, JSON.stringify(validationResult.data))
+    return true
   } catch (error) {
-    console.error(`[ws] Error publishing message to topic "${topic}":`, error);
-    return false;
+    console.error(`[ws] Error publishing message to topic "${topic}":`, error)
+    return false
   }
 }

@@ -1,7 +1,7 @@
-import { auth } from '@/auth';
-import { UserWithProfile, db } from '@cashflow/database';
+import { auth } from '@/auth'
+import { UserWithProfile, db } from '@cashflow/database'
 // import type { User as Partial<User> } from 'better-auth';
-import { HonoRequest } from 'hono';
+import { HonoRequest } from 'hono'
 
 // import { getUserFromPartial<User> } from './auth.service';
 
@@ -23,15 +23,15 @@ export async function getUserAmount(req: HonoRequest, user: Partial<UserWithProf
     },
     withdraw: 0, // Placeholder - needs implementation based on withdrawal logic/history
     rate: 1, // Placeholder - needs implementation based on exchange rates or internal logic
-  };
+  }
 
   const response = {
     code: 200,
     data: userAmountData,
     message: 'User amount fetched successfully',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 // GET /user/info - get user profile
@@ -88,27 +88,27 @@ export async function getUserBalance(req: HonoRequest, user: Partial<UserWithPro
     availabe_balance: user.profile!.balance, // Assuming available is same as total balance for now
     real: user.profile!.balance, // Assuming real is same as total balance for now
     bonus: 0, // Placeholder - needs implementation if bonus balances exist
-  };
+  }
 
   const response = {
     code: 200,
     data: userBalanceData,
     message: 'User balance fetched successfully',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 // POST /user/currency - set user currency
 export async function setUserCurrency(
   req: HonoRequest,
   user: Partial<UserWithProfile>,
-  currencyType: string,
+  currencyType: string
 ) {
   //const user = await getUserFromPartial<User>(_user);
 
-  const body = await req.json();
-  const { currency_type } = body; // Assuming the body contains { currency_type: string }
+  const body = await req.json()
+  const { currency_type } = body // Assuming the body contains { currency_type: string }
 
   if (!currency_type) {
     return new Response(
@@ -118,8 +118,8 @@ export async function setUserCurrency(
       }),
       {
         status: 400,
-      },
-    );
+      }
+    )
   }
 
   // Find the bank with the specified currency type and linked to the user's operator
@@ -133,8 +133,8 @@ export async function setUserCurrency(
   if (user === null) {
     return new Response(
       JSON.stringify({ message: 'user not available for your operator', code: 404 }),
-      { status: 404 },
-    );
+      { status: 404 }
+    )
   }
 
   // Update the user's active profile to use this bank
@@ -146,33 +146,33 @@ export async function setUserCurrency(
       data: {
         activeCurrencyType: currencyType,
       },
-    });
+    })
 
     return new Response(
       JSON.stringify({
         code: 200,
         message: 'User currency updated successfully',
-      }),
-    );
+      })
+    )
   } catch (error: any) {
-    console.error('Error updating user currency:', error);
+    console.error('Error updating user currency:', error)
     return new Response(
       JSON.stringify({
         message: `Failed to update user currency: ${error.message}`,
         code: 500,
       }),
-      { status: 500 },
-    );
+      { status: 500 }
+    )
   }
 }
 
 // POST /user/change - update user info
 export async function updateUserInfo(req: HonoRequest, user: Partial<UserWithProfile>) {
   //const user = await getUserFromPartial<User>(_user);
-  const body = await req.json();
+  const body = await req.json()
   // Extract fields that are allowed to be updated.
   // Be cautious about which fields you allow users to change directly.
-  const { username, avatar /* add other updatable fields */ } = body;
+  const { username, avatar /* add other updatable fields */ } = body
 
   try {
     const updatedUser: any = await db.user.update({
@@ -188,7 +188,7 @@ export async function updateUserInfo(req: HonoRequest, user: Partial<UserWithPro
         // operator: true,
         // vipInfo: true,
       },
-    });
+    })
 
     // Return the updated user info, similar to the GET /user/info endpoint
     // const userInfoData: GetUserInfo = {
@@ -221,11 +221,11 @@ export async function updateUserInfo(req: HonoRequest, user: Partial<UserWithPro
       code: 200,
       data: updatedUser,
       message: 'User info updated successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response))
   } catch (error: any) {
-    console.error('Error updating user info:', error);
+    console.error('Error updating user info:', error)
     return new Response(
       JSON.stringify({
         message: `Failed to update user info: ${error.message}`,
@@ -233,16 +233,16 @@ export async function updateUserInfo(req: HonoRequest, user: Partial<UserWithPro
       }),
       {
         status: 500,
-      },
-    );
+      }
+    )
   }
 }
 
 // POST /user/email - update email
 export async function updateUserEmail(req: HonoRequest, user: Partial<UserWithProfile>) {
   //const user = await getUserFromPartial<User>(_user);
-  const body = await req.json();
-  const { email, password } = body;
+  const body = await req.json()
+  const { email, password } = body
 
   if (!email || !password) {
     return new Response(
@@ -252,8 +252,8 @@ export async function updateUserEmail(req: HonoRequest, user: Partial<UserWithPr
       }),
       {
         status: 400,
-      },
-    );
+      }
+    )
   }
 
   // TODO: Implement password verification before changing email
@@ -261,11 +261,11 @@ export async function updateUserEmail(req: HonoRequest, user: Partial<UserWithPr
 
   try {
     // Check if the new email is already in use by another user
-    const existingUser = await db.user.findFirst({ where: { email } });
+    const existingUser = await db.user.findFirst({ where: { email } })
     if (existingUser && existingUser.id !== user.id) {
       return new Response(JSON.stringify({ message: 'Email already in use', code: 400 }), {
         status: 400,
-      });
+      })
     }
 
     await db.user.update({
@@ -276,16 +276,16 @@ export async function updateUserEmail(req: HonoRequest, user: Partial<UserWithPr
         // emailVerified: false, // Mark email as unverified after change
         // You might want to generate a new verification token here
       },
-    });
+    })
 
     return new Response(
       JSON.stringify({
         code: 200,
         message: 'User email updated successfully. Verification required.',
-      }),
-    );
+      })
+    )
   } catch (error: any) {
-    console.error('Error updating user email:', error);
+    console.error('Error updating user email:', error)
     return new Response(
       JSON.stringify({
         message: `Failed to update user email: ${error.message}`,
@@ -293,16 +293,16 @@ export async function updateUserEmail(req: HonoRequest, user: Partial<UserWithPr
       }),
       {
         status: 500,
-      },
-    );
+      }
+    )
   }
 }
 
 // POST /user/email - update cashtag
 export async function updateUserCashtag(req: HonoRequest, user: Partial<UserWithProfile>) {
   //const user = await getUserFromPartial<User>(_user);
-  const body = await req.json();
-  const { cashtag } = body;
+  const body = await req.json()
+  const { cashtag } = body
 
   if (!cashtag) {
     return new Response(
@@ -312,8 +312,8 @@ export async function updateUserCashtag(req: HonoRequest, user: Partial<UserWith
       }),
       {
         status: 400,
-      },
-    );
+      }
+    )
   }
 
   // TODO: Implement password verification before changing email
@@ -321,11 +321,11 @@ export async function updateUserCashtag(req: HonoRequest, user: Partial<UserWith
 
   try {
     // Check if the new email is already in use by another user
-    const existingUser = await db.user.findFirst({ where: { cashtag } });
+    const existingUser = await db.user.findFirst({ where: { cashtag } })
     if (existingUser && existingUser.id !== user.id) {
       return new Response(JSON.stringify({ message: 'cashtag already in use', code: 400 }), {
         status: 400,
-      });
+      })
     }
 
     await db.user.update({
@@ -335,17 +335,17 @@ export async function updateUserCashtag(req: HonoRequest, user: Partial<UserWith
         // emailVerified: false, // Mark email as unverified after change
         // You might want to generate a new verification token here
       },
-    });
+    })
 
     return new Response(
       JSON.stringify({
         code: 200,
         cashtag: cashtag,
         message: 'User cashtag updated successfully. Verification required.',
-      }),
-    );
+      })
+    )
   } catch (error: any) {
-    console.error('Error updating user cashtag:', error);
+    console.error('Error updating user cashtag:', error)
     return new Response(
       JSON.stringify({
         message: `Failed to update user cashtag: ${error.message}`,
@@ -353,16 +353,16 @@ export async function updateUserCashtag(req: HonoRequest, user: Partial<UserWith
       }),
       {
         status: 500,
-      },
-    );
+      }
+    )
   }
 }
 
 // POST /user/password - update password
 export async function updateUserPassword(req: HonoRequest, user: Partial<UserWithProfile>) {
   //const user = await getUserFromPartial<User>(_user);
-  const body = await req.json();
-  const { now_password, new_password } = body;
+  const body = await req.json()
+  const { now_password, new_password } = body
 
   if (!now_password || !new_password) {
     return new Response(
@@ -370,8 +370,8 @@ export async function updateUserPassword(req: HonoRequest, user: Partial<UserWit
         message: 'Missing current or new password in request body',
         code: 400,
       }),
-      { status: 400 },
-    );
+      { status: 400 }
+    )
   }
 
   // TODO: Implement verification of now_password against user.passwordHash
@@ -385,29 +385,29 @@ export async function updateUserPassword(req: HonoRequest, user: Partial<UserWit
       data: {
         passwordHash: 'hashed_new_password', // Hash new_password here
       },
-    });
+    })
 
     // Assuming better-auth provides a method for this, use that instead.
     // Example (replace with actual better-auth method):
     // await auth.changePassword(user.id, now_password, new_password);
     await auth.api.changePassword({
       body: { newPassword: new_password, currentPassword: new_password },
-    });
+    })
     return new Response(
       JSON.stringify({
         code: 200,
         message: 'User password updated successfully',
-      }),
-    );
+      })
+    )
   } catch (error: any) {
-    console.error('Error updating user password:', error);
+    console.error('Error updating user password:', error)
     return new Response(
       JSON.stringify({
         message: `Failed to update user password: ${error.message}`,
         code: 500,
       }),
-      { status: 500 },
-    );
+      { status: 500 }
+    )
   }
 }
 
@@ -433,11 +433,11 @@ export async function suspendUser(req: HonoRequest, user: Partial<UserWithProfil
         // If you need to store suspension duration, add a field like 'suspendedUntil: DateTime?'
         // suspendedUntil: time ? new Date(Date.now() + time * 1000) : null, // Example using 'time'
       },
-    });
+    })
 
-    return new Response(JSON.stringify({ code: 200, message: 'User suspended successfully' }));
+    return new Response(JSON.stringify({ code: 200, message: 'User suspended successfully' }))
   } catch (error: any) {
-    console.error('Error suspending user:', error);
+    console.error('Error suspending user:', error)
     return new Response(
       JSON.stringify({
         message: `Failed to suspend user: ${error.message}`,
@@ -445,8 +445,8 @@ export async function suspendUser(req: HonoRequest, user: Partial<UserWithProfil
       }),
       {
         status: 500,
-      },
-    );
+      }
+    )
   }
 }
 
@@ -456,14 +456,14 @@ export async function checkUser() {
   // Could be checking user status, permissions, etc.
 
   // For now, just return a success message
-  return new Response(JSON.stringify({ code: 200, message: 'User check successful' }));
+  return new Response(JSON.stringify({ code: 200, message: 'User check successful' }))
 }
 
 // POST /user/verifyemail - user email verify
 export async function verifyUserEmail(req: HonoRequest, user: Partial<UserWithProfile>) {
   // //const user = await getUserFromPartial<User>(_user);
-  const body = await req.json();
-  const { token } = body; // Assuming the verification token is sent in the body
+  const body = await req.json()
+  const { token } = body // Assuming the verification token is sent in the body
 
   if (!token) {
     return new Response(
@@ -473,8 +473,8 @@ export async function verifyUserEmail(req: HonoRequest, user: Partial<UserWithPr
       }),
       {
         status: 400,
-      },
-    );
+      }
+    )
   }
 
   try {
@@ -485,7 +485,7 @@ export async function verifyUserEmail(req: HonoRequest, user: Partial<UserWithPr
         // verificationToken: token,
         // emailVerified: false, // Only verify if not already verified
       },
-    });
+    })
 
     if (!userToVerify) {
       return new Response(
@@ -495,8 +495,8 @@ export async function verifyUserEmail(req: HonoRequest, user: Partial<UserWithPr
         }),
         {
           status: 400,
-        },
-      );
+        }
+      )
     }
 
     // Mark email as verified and clear the token
@@ -514,11 +514,11 @@ export async function verifyUserEmail(req: HonoRequest, user: Partial<UserWithPr
       code: 200,
       time: Math.floor(Date.now() / 1000), // Placeholder timestamp
       message: 'Email verified successfully',
-    };
+    }
 
-    return new Response(JSON.stringify(responseData));
+    return new Response(JSON.stringify(responseData))
   } catch (error: any) {
-    console.error('Error verifying user email:', error);
+    console.error('Error verifying user email:', error)
     return new Response(
       JSON.stringify({
         message: `Failed to verify email: ${error.message}`,
@@ -526,7 +526,7 @@ export async function verifyUserEmail(req: HonoRequest, user: Partial<UserWithPr
       }),
       {
         status: 500,
-      },
-    );
+      }
+    )
   } // Main user router function
 }

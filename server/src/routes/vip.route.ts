@@ -15,7 +15,6 @@ import {
   fetchVipTasks,
   getVipSignInInfo,
 } from '../services/vip.service'
-import { type } from 'node:os'
 import { createSuccessResponse, createErrorResponse } from '.'
 
 // import { getVipInfo, getVipLevelAward, getVipLevels } from '../services/vip.service';
@@ -27,42 +26,50 @@ router.get(NETWORK_CONFIG.VIP_INFO.USER_VIP_INFO, async (c) => {
   try {
     result = await fetchUserVipInfo(c.get('user_with_profile')!.id)
     return createSuccessResponse(result)
-  } catch (e: any) {
-    return createErrorResponse(e.message, 403)
+  } catch (e) {
+    return createErrorResponse((e as Error).message, 403)
   }
 })
 router.get(NETWORK_CONFIG.VIP_INFO.USER_VIP_LEVEL, async () => {
-  return await fetchAllVipLevels()
+  return createSuccessResponse(await fetchAllVipLevels())
 })
 router.get(NETWORK_CONFIG.VIP_INFO.VIP_LEVEL_AWARD, async (c) => {
-  return await claimCycleReward(c.get('user_with_profile').id, type)
+  return createSuccessResponse(
+    await claimCycleReward(c.get('user_with_profile')!.id, 'daily', 'daily')
+  )
 })
 router.get(NETWORK_CONFIG.VIP_INFO.VIP_SIGNIN, async (c) => {
-  return await getVipSignInInfo(c.get('user_with_profile').id)
+  return createSuccessResponse(await getVipSignInInfo(c.get('user_with_profile')!.id))
 })
 router.get(NETWORK_CONFIG.VIP_INFO.VIP_SIGNINAWARD_RECEIVE, async (c) => {
-  return await claimDailySignIn(c.get('user_with_profile').id)
+  return createSuccessResponse(await claimDailySignIn(c.get('user_with_profile')!.id))
 })
 router.get(NETWORK_CONFIG.VIP_INFO.VIP_SIGNIN_REWARDS, async (c) => {
-  return await claimDailySignIn(c.get('user_with_profile').id)
+  return createSuccessResponse(await claimDailySignIn(c.get('user_with_profile')!.id))
 })
 router.get(NETWORK_CONFIG.VIP_INFO.VIP_TASKS, async (c) => {
-  return await fetchVipTasks(c.get('user_with_profile').id)
+  return createSuccessResponse(await fetchVipTasks(c.get('user_with_profile')!.id))
 })
 router.get(NETWORK_CONFIG.VIP_INFO.VIP_REBATE_HISTORY, async (c) => {
-  return await fetchRebateHistory(c.get('user_with_profile').id, c.get('pagination'))
+  return createSuccessResponse(
+    await fetchRebateHistory(c.get('user_with_profile')!.id, c.get('pagination'))
+  )
 })
 router.get(NETWORK_CONFIG.VIP_INFO.VIP_TIMES_HISTORY, async (c) => {
-  return await fetchTimesHistory(c.get('user_with_profile').id, c.get('pagination'))
+  return createSuccessResponse(
+    await fetchTimesHistory(c.get('user_with_profile')!.id, c.get('pagination'))
+  )
 })
 router.get(NETWORK_CONFIG.VIP_INFO.VIP_LEVELUP_LIST, async (c) => {
-  return await fetchVipLevelUpList(c.get('user_with_profile').id)
+  return createSuccessResponse(await fetchVipLevelUpList(c.get('user_with_profile')!.id))
 })
 router.get(NETWORK_CONFIG.VIP_INFO.USER_VIP_LEVELAWARD_LIST, async (c) => {
-  return await fetchVipBetAwardList(c.get('user_with_profile').id)
+  return createSuccessResponse(await fetchVipBetAwardList(c.get('user_with_profile')!.id))
 })
 router.get(NETWORK_CONFIG.VIP_INFO.USER_VIP_LEVELAWARD_RECEIVE, async (c) => {
-  return await fetchLevelRewardHistory(c.get('user_with_profile').id, c.get('pagination'))
+  return createSuccessResponse(
+    await fetchLevelRewardHistory(c.get('user_with_profile')!.id, c.get('pagination'))
+  )
 })
 // router.get(NETWORK_CONFIG.VIP_INFO.USER_VIP_BETAWARD_LIST, async (c) => {
 //   return await getVipBetawardList(c.get('user_with_profile').id);

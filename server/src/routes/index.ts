@@ -1,12 +1,8 @@
-import { auth } from '@/auth'
 import { BASE_PATH } from '@/constans'
 import { HonoEnv } from '@/create-app'
 import type { OpenAPIHono } from '@hono/zod-openapi'
-import type { User as BetterAuthUser } from 'better-auth'
-import type { Context as HonoContext } from 'hono'
 
 import createRouter from '../create-router'
-import isAuthenticated from '../middlewares/is-authenticated'
 import achievementRoute from './achievement.route'
 import authRoute from './auth.route'
 import bonusRoute from './bonus.route'
@@ -107,7 +103,7 @@ router
   })
 
   .use('/*', logger())
-  .use(async (c, next) => {
+  .use(async (c) => {
     if (c.req.method === 'OPTIONS') {
       return c.text('ok', 200, {
         'Access-Control-Allow-Origin':
@@ -127,16 +123,21 @@ export type AppType = typeof router
 
 const JSON_HEADERS = { 'Content-Type': 'application/json' }
 
-export function createSuccessResponse(data: any, status: number = 200) {
+export function createSuccessResponse(data: unknown, status: number = 200) {
   if (status === 204) {
     return new Response(null, { status })
   }
   return new Response(JSON.stringify(data), { status, headers: JSON_HEADERS })
 }
 
-export function createErrorResponse(message: string, status: number, errors?: any) {
-  return new Response(JSON.stringify({ message, ...(errors && { errors }) }), {
-    status,
-    headers: JSON_HEADERS,
-  })
+export function createErrorResponse(message: string, status: number, errors?: unknown) {
+  return new Response(
+    JSON.stringify(
+      typeof errors === 'object' && errors !== null ? { message, errors } : { message }
+    ),
+    {
+      status,
+      headers: JSON_HEADERS,
+    }
+  )
 }

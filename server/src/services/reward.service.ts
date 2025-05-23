@@ -1,14 +1,8 @@
-import type { UserWithProfile } from '@cashflow/database';
-import type {
-  GetBonusResponse,
-  GetRewardCenterList,
-  GetRewardCenterListResponse,
-} from '@cashflow/types';
-import type { HonoRequest } from 'hono';
+import type { GetRewardCenterList, UserWithProfile } from '@cashflow/types'
+import type { HonoRequest } from 'hono'
 
 //
-import { createErrorResponse, createSuccessResponse } from '../routes';
-import { db } from './prisma.service';
+import { createErrorResponse, createSuccessResponse } from '../routes'
 
 /**
  * Get the reward center list for the user.
@@ -17,7 +11,7 @@ import { db } from './prisma.service';
 export async function getRewardCenterList(req: HonoRequest, user: Partial<UserWithProfile>) {
   try {
     if (!user || !user.id) {
-      return createErrorResponse('User not authenticated', 401);
+      return createErrorResponse('User not authenticated', 401)
     }
 
     // Mocked data - Replace with actual Prisma queries
@@ -27,7 +21,7 @@ export async function getRewardCenterList(req: HonoRequest, user: Partial<UserWi
       cash_back: '15.00 USD', // Cashback available
       week: 'Weekly Bonus Ready', // Weekly bonus status
       level_up_num: 2, // Number of level-up rewards available
-    };
+    }
 
     // TODO: Replace with actual logic. This will likely involve multiple queries:
     // 1. Fetch user's achievement progress and claimable achievements.
@@ -44,10 +38,10 @@ export async function getRewardCenterList(req: HonoRequest, user: Partial<UserWi
     // This data structure (GetRewardCenterList) is quite high-level, so you'll need to
     // aggregate data from various sources into these summary fields.
 
-    return createSuccessResponse(rewardCenterData);
+    return createSuccessResponse(rewardCenterData)
   } catch (e: any) {
-    console.error('Error fetching reward center list:', e);
-    return createErrorResponse(e.message || 'Failed to fetch reward center list', 500);
+    console.error('Error fetching reward center list:', e)
+    return createErrorResponse(e.message || 'Failed to fetch reward center list', 500)
   }
 }
 
@@ -60,7 +54,7 @@ export async function getRewardCenterList(req: HonoRequest, user: Partial<UserWi
 export async function receiveAchievementBonus(req: HonoRequest, user: Partial<UserWithProfile>) {
   try {
     if (!user || !user.id) {
-      return createErrorResponse('User not authenticated', 401);
+      return createErrorResponse('User not authenticated', 401)
     }
 
     // TODO: Implement logic to:
@@ -103,11 +97,11 @@ export async function receiveAchievementBonus(req: HonoRequest, user: Partial<Us
     const responseData = {
       claimedCount: 0, // Placeholder
       totalReward: '0 USD', // Placeholder
-    };
+    }
 
-    return createSuccessResponse(responseData, 200);
+    return createSuccessResponse(responseData, 200)
   } catch (e: any) {
-    console.error('Error receiving achievement bonus:', e);
-    return createErrorResponse(e.message || 'Failed to receive achievement bonus', 500);
+    console.error('Error receiving achievement bonus:', e)
+    return createErrorResponse(e.message || 'Failed to receive achievement bonus', 500)
   }
 }

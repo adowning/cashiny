@@ -31,7 +31,7 @@ router.post(NETWORK_CONFIG.LOGIN.LOGIN, async (c) => {
   try {
     result = await login(c.req)
     return createSuccessResponse(result)
-  } catch (e: any) {
+  } catch (e: Error) {
     return createErrorResponse(e.message, 403)
   }
 })
@@ -42,7 +42,7 @@ router.post(NETWORK_CONFIG.LOGIN.GOOGLE, async (c) => {
     result = await findOrCreateUserByGoogleProfile(c.req)
 
     return createSuccessResponse(result)
-  } catch (e: any) {
+  } catch (e: Error) {
     return createErrorResponse(e.message, 403)
   }
 })
@@ -59,7 +59,7 @@ router.get(NETWORK_CONFIG.LOGIN.GET_SESSION, async (c) => {
     result = await getSession(c.req)
 
     return createSuccessResponse(result)
-  } catch (e: any) {
+  } catch (e: Error) {
     return createErrorResponse(e.message, 403)
   }
 })
@@ -81,7 +81,7 @@ router.post(NETWORK_CONFIG.LOGIN.REFRESH_TOKEN, async (c) => {
       user: user, // Send updated user info if necessary
       message: 'Session refreshed successfully',
     })
-  } catch (e: any) {
+  } catch (e: Error) {
     // Log the error for debugging
     console.error('Refresh token error:', e)
     return createErrorResponse(e.message || 'Token refresh failed', 401)

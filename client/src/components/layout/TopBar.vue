@@ -5,7 +5,7 @@
   import { useAuthStore } from '@/stores/auth.store'
   import { useDepositStore } from '@/stores/deposit.store'
   import { useEventManager } from '@/composables/EventManager' // Assuming this path
-  import type { DepositHistoryItem, User } from '@cashflow/types' // Assuming User type is available
+  import type { DepositHistoryItem } from '@cashflow/types' // Assuming User type is available
   import PlayerAvatar from './PlayerAvatar.vue' // Explicitly import the child component
 
   const PENDING_DEPOSIT_TIMEOUT_MS = 3600000 // 1 hour in milliseconds
@@ -32,7 +32,7 @@
 
   const remainingMinutes = ref(0)
   const remainingSecondsDisplay = ref(0)
-  let countdownInterval: number | undefined | NodeJS.Timeout = undefined // More specific type
+  let countdownInterval: number | undefined = undefined // Browser-compatible type
 
   // Computed Properties
   const userBalance = computed(() => {

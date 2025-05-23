@@ -1,29 +1,23 @@
 <script setup lang="ts">
-  const sparks = ref<any[]>([]);
-  let z = 1;
+  const sparks = ref<any[]>([])
+  let z = 1
   for (var i = 0; i < 20; i++) {
-    z = z + 1;
+    z = z + 1
     let spark = {
-      top: Math.floor(Math.random() * 90) + 5 + "%",
-      left: Math.floor(Math.random() * 90) + 5 + "%",
-      animationDelay: Math.floor(Math.random() * 5 + z) + "s",
+      top: Math.floor(Math.random() * 90) + 5 + '%',
+      left: Math.floor(Math.random() * 90) + 5 + '%',
+      animationDelay: Math.floor(Math.random() * 5 + z) + 's',
       image: Math.floor(z),
-    };
-    if (z >= 3) z = 0;
-    sparks.value.push(spark);
+    }
+    if (z >= 3) z = 0
+    sparks.value.push(spark)
   }
-  const { isMobile } = useDisplay();
+  const { isMobile } = useDisplay()
 </script>
 <template>
-  <div
-    class="home h-full position absolute"
-    :style="`width: ${isMobile ? '100%' : '50%'}`"
-  >
+  <div class="home h-full position absolute" :style="`width: ${isMobile ? '100%' : '50%'}`">
     <div class="sparkle" style="top: 15%; left: 20%"></div>
-    <div
-      class="sparkle"
-      style="top: 25%; left: 40%; animation-delay: 0.5s"
-    ></div>
+    <div class="sparkle" style="top: 25%; left: 40%; animation-delay: 0.5s"></div>
     <div class="sparkle" style="top: 10%; left: 60%; animation-delay: 1s"></div>
     <div
       class="sparkle-image"
@@ -31,22 +25,19 @@
         top: 30%;
         left: 80%;
         animation-delay: 1.5s;
-        background-image: url(&quot;/images/stars/star1.avif&quot;);
+        background-image: url('/images/stars/star1.avif');
       "
     />
 
     <div class="sparkle" style="top: 50%; left: 30%; animation-delay: 2s"></div>
-    <div
-      class="sparkle-image"
-      style="top: 60%; left: 70%; animation-delay: 2.5s"
-    ></div>
+    <div class="sparkle-image" style="top: 60%; left: 70%; animation-delay: 2.5s"></div>
     <div
       class="sparkle-fadeout"
       style="
         top: 60%;
         left: 20%;
         animation-delay: 1.2s;
-        background-image: url(&quot;/images/stars/star.png&quot;);
+        background-image: url('/images/stars/star.png');
       "
     ></div>
     <div
@@ -55,34 +46,28 @@
         top: 50%;
         left: 10%;
         animation-delay: 1.2s;
-        background-image: url(&quot;/images/stars/star0.png&quot;);
+        background-image: url('/images/stars/star0.png');
       "
     ></div>
-    <div
-      class="sparkle"
-      style="top: 70%; left: 50%; animation-delay: 0.7s"
-    ></div>
+    <div class="sparkle" style="top: 70%; left: 50%; animation-delay: 0.7s"></div>
     <div
       class="sparkle-pop"
       style="
         top: 70%;
         left: 50%;
         animation-delay: 1s;
-        background-image: url(&quot;/images/stars/star1.avif&quot;);
+        background-image: url('/images/stars/star1.avif');
       "
     ></div>
 
-    <div
-      class="sparkle"
-      style="top: 90%; left: 80%; animation-delay: 1.7s"
-    ></div>
+    <div class="sparkle" style="top: 90%; left: 80%; animation-delay: 1.7s"></div>
     <div
       class="sparkle-image"
       style="
         top: 70%;
         left: 20%;
         animation-delay: 1.9s;
-        background-image: url(&quot;/images/stars/star1.avif&quot;);
+        background-image: url('/images/stars/star1.avif');
       "
     />
     <div
@@ -91,7 +76,7 @@
         top: 40%;
         left: 30%;
         animation-delay: 1.9s;
-        background-image: url(&quot;/images/stars/star1.avif&quot;);
+        background-image: url('/images/stars/star1.avif');
       "
     />
 
@@ -121,7 +106,7 @@
         top: 10%;
         left: 10%;
         animation-delay: 0.2s;
-        background-image: url(&quot;/images/stars/star3.avif&quot;);
+        background-image: url('/images/stars/star3.avif');
       "
     />
     <div
@@ -130,7 +115,7 @@
         top: 20%;
         left: 20%;
         animation-delay: 0.4s;
-        background-image: url(&quot;/images/stars/star2.avif&quot;);
+        background-image: url('/images/stars/star2.avif');
       "
     />
     <div
@@ -139,7 +124,7 @@
         top: 40%;
         left: 40%;
         animation-delay: 0.5s;
-        background-image: url(&quot;/images/stars/star1.avif&quot;);
+        background-image: url('/images/stars/star1.avif');
       "
     />
     <div
@@ -148,7 +133,7 @@
         top: 60%;
         left: 70%;
         animation-delay: 0.1s;
-        background-image: url(&quot;/images/stars/star2.avif&quot;);
+        background-image: url('/images/stars/star2.avif');
       "
     />
   </div>

@@ -1,21 +1,6 @@
 
 [0m[2m[35m$[0m [2m[1meslint . --ext .ts,.js --report-unused-disable-directives --max-warnings 0 --fix[0m
-
-Oops! Something went wrong! :(
-
-ESLint: 9.27.0
-
-Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'typescript-eslint' imported from /home/ash/Documents/cashflow/packages/database/eslint.config.js
-    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:268:9)
-    at packageResolve (node:internal/modules/esm/resolve:768:81)
-    at moduleResolve (node:internal/modules/esm/resolve:854:18)
-    at defaultResolve (node:internal/modules/esm/resolve:984:11)
-    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
-    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
-    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
-    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
-    at ModuleJob._link (node:internal/modules/esm/module_job:135:49)
-(node:35598) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/ash/Documents/cashflow/packages/database/eslint.config.js?mtime=1747891397803 is not specified and it doesn't parse as CommonJS.
+(node:372162) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/ash/Documents/cashflow/packages/database/eslint.config.js?mtime=1747891397803 is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/ash/Documents/cashflow/packages/database/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)

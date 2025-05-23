@@ -46,12 +46,12 @@ export * from '../client'
 export { createDbClient } from './create-db-client'
 
 declare global {
-  // eslint-disable-next-line no-var
+   
   var db: PrismaClient | undefined
   var basePrisma: PrismaClient
-  // eslint-disable-next-line no-var
+   
   // var createDbClient: Kysely<DB> | undefined;
-  // eslint-disable-next-line no-var
+   
 }
 
 export const basePrisma = new PrismaClient({

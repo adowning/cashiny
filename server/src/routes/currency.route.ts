@@ -1,11 +1,11 @@
-import { NETWORK_CONFIG, User } from "@cashflow/types";
-import { getCurrencyList } from "../services/currency.service";
-import createRouter from "../create-router";
+import { NETWORK_CONFIG, User } from '@cashflow/types'
+import { getCurrencyList } from '../services/currency.service'
+import createRouter from '../create-router'
 
-const router = createRouter();
+const router = createRouter()
 router.get(NETWORK_CONFIG.CURRENCY.CURRENCY_LIST, async (c) => {
-  const user = c.get("user") as User;
-  return await getCurrencyList(c.req, user);
-});
+  const user = c.get('user') as User
+  return await getCurrencyList(c.req, user)
+})
 
-export default router;
+export default router

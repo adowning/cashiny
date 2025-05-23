@@ -1,44 +1,56 @@
-import type { Server, ServerWebSocket } from 'bun';
-import { z, ZodObject, ZodType, ZodTypeAny, ZodLiteral } from 'zod';
-import { messageSchema, type MessageMetadataSchema } from './schema'; // Assuming schema.ts is in the same directory
+import type { HeadersInit, Server, ServerWebSocket } from 'bun'
+import { z, ZodObject, ZodType, ZodTypeAny, ZodLiteral } from 'zod'
+import { type MessageMetadataSchema } from './schema' // Assuming schema.ts is in the same directory
 
 // Context object passed to message handlers
 export type MessageHandlerContext<
   Schema extends MessageSchemaType,
-  Data extends WsData = WsData,
+  Data extends AppWsData = AppWsData, // Changed WsData to AppWsData
 > = {
-  ws: ServerWebSocket<Data>;
-  meta: z.infer<Schema['shape']['meta']>;
-  send: SendFunction;
-  server: Server; // Keep the server instance
-} & (Schema['shape'] extends { payload: infer P } // If payload exists in schema shape
-  ? P extends ZodTypeAny // And it's a Zod type
-    ? { payload: z.infer<P> } // Then add { payload: <inferred type> }
-    : {} // Otherwise (e.g., payload shape exists but isn't Zod), add empty object
-  : {}); // If no payload shape in schema, add empty object
+  ws: ServerWebSocket<Data>
+  meta: z.infer<Schema['shape']['meta']>
+  send: SendFunction
+  server: Server
+} & (Schema['shape'] extends { payload: infer P }
+  ? P extends ZodTypeAny
+    ? { payload: z.infer<P> }
+    : {}
+  : {})
 
-// Define the data structure attached to each WebSocket connection
-// Ensure this includes everything needed, like userId obtained during auth.
+// Base WsData structure
 export interface WsData {
-  clientId: string; // Automatically added by the router
-  userId?: string;
-  key?: string;
+  clientId: string // Automatically added by the router
+  userId?: string // Made optional for flexibility (e.g. proxy before auth)
+  key?: string // Generic key, purpose defined by handler (e.g. client's original 'data' param)
+  currentRoomId?: string
+  [key: string]: unknown // Allow other properties
+}
 
-  currentRoomId?: string; // Example: track the room the user is in
-  // Add other relevant session data associated with the connection
-  [key: string]: unknown;
+// Application-specific WebSocket data, extending WsData
+export type AppWsData = WsData & {
+  // userId: string; // If userId is always expected after auth for non-proxy
+
+  // NoLimit Proxy specific fields
+  isNoLimitProxy?: boolean
+  nolimitSessionKey?: string // Key from NLC FS for RC4
+  nolimitRemoteWs?: WebSocket // WebSocket connection to NLC server
+  nolimitMessageCounter?: number
+  nolimitRememberedData?: { extPlayerKey?: string }
+  // Parameters passed from client for NLC FS request
+  nolimitGameCodeString?: string
+  nolimitClientString?: string
+  nolimitLanguage?: string
+  nolimitToken?: string // For real money play
 }
 
 // Base type for Zod message schemas used in the router
-// Enforces structure: type literal, meta object, optional payload
 export type MessageSchemaType = ZodObject<{
-  type: ZodLiteral<string>;
-  meta: ZodType<z.infer<typeof MessageMetadataSchema>>; // Ensure meta schema is compatible
-  payload?: ZodTypeAny;
-}>;
+  type: ZodLiteral<string>
+  meta: ZodType<z.infer<typeof MessageMetadataSchema>>
+  payload?: ZodTypeAny
+}>
 
 // Type for the 'send' function provided to handlers
-// It ensures messages sent back match their Zod schemas
 export type SendFunction = <Schema extends MessageSchemaType>(
   schema: Schema,
   payload: Schema['shape'] extends { payload: infer P }
@@ -46,55 +58,54 @@ export type SendFunction = <Schema extends MessageSchemaType>(
       ? z.infer<P>
       : unknown
     : unknown,
-  // Allow overriding parts of the meta, clientId/timestamp are added automatically
   meta?: Partial<Omit<z.infer<Schema['shape']['meta']>, 'clientId' | 'timestamp'>>
-) => void;
+) => void
 
 // Type signature for a message handler function
-export type MessageHandler<Schema extends MessageSchemaType, Data extends WsData = WsData> = (
+export type MessageHandler<Schema extends MessageSchemaType, Data extends AppWsData = AppWsData> = (
   context: MessageHandlerContext<Schema, Data>
-) => void | Promise<void>;
+) => void | Promise<void>
 
 // Context for the 'open' event handler
-export interface OpenHandlerContext<Data extends WsData = WsData> {
-  ws: ServerWebSocket<Data>;
-  send: SendFunction;
+export interface OpenHandlerContext<Data extends AppWsData = AppWsData> {
+  ws: ServerWebSocket<Data>
+  send: SendFunction
 }
 
 // Type signature for the 'open' handler
-export type OpenHandler<Data extends WsData = WsData> = (
+export type OpenHandler<Data extends AppWsData = AppWsData> = (
   context: OpenHandlerContext<Data>
-) => void | Promise<void>;
+) => void | Promise<void>
 
 // Context for the 'close' event handler
-export interface CloseHandlerContext<Data extends WsData = WsData> {
-  ws: ServerWebSocket<Data>;
-  code: number;
-  reason?: string;
-  send: SendFunction; // Might be less useful here, but potentially for last words
+export interface CloseHandlerContext<Data extends AppWsData = AppWsData> {
+  ws: ServerWebSocket<Data>
+  code: number
+  reason?: string
+  send: SendFunction
 }
 
 // Type signature for the 'close' handler
-export type CloseHandler<Data extends WsData = WsData> = (
+export type CloseHandler<Data extends AppWsData = AppWsData> = (
   context: CloseHandlerContext<Data>
-) => void | Promise<void>;
+) => void | Promise<void>
 
 // Structure to hold schema and handler pairs internally in the router
-export interface MessageHandlerEntry<Data extends WsData = WsData> {
-  schema: MessageSchemaType;
-  handler: MessageHandler<MessageSchemaType, Data>;
+export interface MessageHandlerEntry<Data extends AppWsData = AppWsData> {
+  schema: MessageSchemaType
+  handler: MessageHandler<MessageSchemaType, Data>
 }
 
 // Options for the WebSocketRouter constructor
 export interface WebSocketRouterOptions {
-  server?: Server; // Optional: Pass Bun server instance if needed (e.g., for pub/sub)
-  // Add any other router-level config if necessary
+  server?: Server
 }
 
 // Options specifically for the upgrade request handling
-export interface UpgradeRequestOptions<T extends Omit<WsData, 'clientId'>> {
-  server: Server;
-  request: Request;
-  data?: T; // Data to attach to the connection (userId MUST be included here)
-  headers?: HeadersInit;
+export interface UpgradeRequestOptions<T extends Omit<AppWsData, 'clientId'>> {
+  // Changed to AppWsData
+  server: Server
+  request: Request
+  data?: T
+  headers?: HeadersInit
 }

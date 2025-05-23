@@ -1,10 +1,10 @@
-import type { UserWithProfile } from '@cashflow/database';
-import type { BonusItem, GetBonusList, GetUserBonusResponse } from '@cashflow/types';
-import type { HonoRequest } from 'hono';
+import type { UserWithProfile } from '@cashflow/database'
+import type { BonusItem, GetBonusList, GetUserBonusResponse } from '@cashflow/types'
+import type { HonoRequest } from 'hono'
 
 //
-import { createErrorResponse, createSuccessResponse } from '../routes';
-import { db } from './prisma.service';
+import { createErrorResponse, createSuccessResponse } from '../routes'
+import { db } from './prisma.service'
 
 /**
  * Get user's bonus list.
@@ -13,7 +13,7 @@ import { db } from './prisma.service';
 export async function getUserBonusList(req: HonoRequest, user: Partial<UserWithProfile>) {
   try {
     if (!user || !user.id) {
-      return createErrorResponse('User not authenticated', 401);
+      return createErrorResponse('User not authenticated', 401)
     }
 
     // Mocked data - Replace with actual Prisma queries
@@ -38,7 +38,7 @@ export async function getUserBonusList(req: HonoRequest, user: Partial<UserWithP
           children: [], // For hierarchical bonuses if any
         },
       ],
-    };
+    }
 
     // TODO: Replace with actual logic to fetch user's active/available bonuses
     // Example:
@@ -51,10 +51,10 @@ export async function getUserBonusList(req: HonoRequest, user: Partial<UserWithP
     // });
     // Map this data to the BonusItem structure.
 
-    return createSuccessResponse(bonusListData);
+    return createSuccessResponse(bonusListData)
   } catch (e: any) {
-    console.error('Error fetching user bonus list:', e);
-    return createErrorResponse(e.message || 'Failed to fetch user bonus list', 500);
+    console.error('Error fetching user bonus list:', e)
+    return createErrorResponse(e.message || 'Failed to fetch user bonus list', 500)
   }
 }
 
@@ -64,14 +64,14 @@ export async function getUserBonusList(req: HonoRequest, user: Partial<UserWithP
  */
 export async function cancelUserBonus(req: HonoRequest, user: Partial<UserWithProfile>) {
   try {
-    const body = await req.json();
-    const { bonusId } = body; // Assuming bonusId (or userBonusId) is passed
+    const body = await req.json()
+    const { bonusId } = body // Assuming bonusId (or userBonusId) is passed
 
     if (!user || !user.id) {
-      return createErrorResponse('User not authenticated', 401);
+      return createErrorResponse('User not authenticated', 401)
     }
     if (!bonusId) {
-      return createErrorResponse('Bonus ID is required', 400);
+      return createErrorResponse('Bonus ID is required', 400)
     }
 
     // TODO: Implement logic to:
@@ -92,9 +92,9 @@ export async function cancelUserBonus(req: HonoRequest, user: Partial<UserWithPr
     //   data: { status: 'CANCELLED' }, // Adjust based on your actual status values
     // });
 
-    return createSuccessResponse({ message: `Bonus ${bonusId} cancelled successfully` });
+    return createSuccessResponse({ message: `Bonus ${bonusId} cancelled successfully` })
   } catch (e: any) {
-    console.error('Error cancelling user bonus:', e);
-    return createErrorResponse(e.message || 'Failed to cancel bonus', 500);
+    console.error('Error cancelling user bonus:', e)
+    return createErrorResponse(e.message || 'Failed to cancel bonus', 500)
   }
 }

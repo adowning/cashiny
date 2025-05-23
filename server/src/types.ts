@@ -17,7 +17,6 @@ export type AppEnv = {
   }
 } & Env
 
-// eslint-disable-next-line ts/no-empty-object-type
 export type AppApi = Hono<AppEnv, {}, typeof BASE_PATH>
 
 export type ErrorResponse = {
@@ -29,5 +28,4 @@ export type ErrorResponse = {
 export type SuccessResponse<T = void> = {
   success: true
   message: string
-  // eslint-disable-next-line ts/no-empty-object-type
-} & (T extends void ? {} : { data: T })
+} & (T extends void ? object : { data: T })

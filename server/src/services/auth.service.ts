@@ -2,7 +2,6 @@ import {
   KeyMode, // Role,
   UserStatus,
   basePrisma,
-  createDbClient,
   db,
 } from '@cashflow/database'
 import { GoogleSignInResponse, UserWithProfile } from '@cashflow/types'
@@ -15,7 +14,6 @@ import { auth } from '../auth'
 import { decodeToken } from '../utils/jwt'
 
 const prisma = basePrisma
-const kysely = createDbClient()
 // const getRandomElement = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 const getRandomSubset = <T>(arr: T[], count?: number): T[] =>
   faker.helpers.arrayElements(
@@ -186,13 +184,13 @@ export async function createUserWithProfileAndAccount(userData: {
           name: `house`,
           operator_secret: await Bun.password.hash(secret),
           operator_access: 'ip_whitelist',
-          callback_url: faker.internet.url() + '/callback',
+          callbackUrl: faker.internet.url() + '/callback',
           active: faker.datatype.boolean(0.9),
           ownedById: defaultOwnerUser.id,
           permissions: getRandomSubset(Object.values(KeyMode), 3),
           ips: [faker.internet.ip(), faker.internet.ip()],
           description: faker.lorem.sentence(),
-          last_used_at: faker.datatype.boolean(0.5) ? faker.date.recent({ days: 10 }) : null,
+          lastUsedAt: faker.datatype.boolean(0.5) ? faker.date.recent({ days: 10 }) : null,
         },
       })
       console.log(
@@ -217,50 +215,56 @@ export async function createUserWithProfileAndAccount(userData: {
     try {
       const { headers, response } = await auth.api.signUpEmail({
         returnHeaders: true,
-        //@ts-ignore
         body: {
-          // id: clientId,
+          id: faker.string.uuid(),
           email: userData.email,
           password: userData.password,
-          name: userData.username, // Assuming username is used as name for signup
+          name: userData.username,
           username: userData.username,
-          displayUsername: userData.username,
-          // passwordHash: hashedPassword,
-          emailVerified: true,
-          image: 'avatar-1',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          // totalXp: 0,
-          // balance: 0,
-          // isVerified: true,
-          // role: Role.MEMBER,
-          // status: UserStatus.ACTIVE,
-          lastLogin: new Date(),
-          // verificationToken: '',
-          // avatar: '',
-          // activeProfileId: '',
-          // gender: 'BOY',
-          // status: 'ACTIVE',
-          // cashtag: '',
-          // phpId: Math.random() * 10000,
-          // accessToken: '',
-          // twoFactorEnabled: true,
-          // banned: true,
-          // banReason: '',
-          // banExpires: new Date(),
-          // lastDailySpin: new Date(),
-        },
+        } as any,
       })
       console.log('response', response)
       console.log('headers', headers)
-      const newUser = response.user
+      const betterAuthUser = response.user
       const token = response.token
       console.log(response)
+
+      // Remove the prisma.user.create call
+      // const newUser = await prisma.user.create({
+      //   data: {
+      //     id: betterAuthUser.id,
+      //     email: userData.email,
+      //     passwordHash: hashedPassword,
+      //     name: userData.username,
+      //     username: userData.username,
+      //     displayUsername: userData.username,
+      //     emailVerified: true,
+      //     image: '',
+      //     createdAt: new Date(),
+      //     updatedAt: new Date(),
+      //     totalXp: 0,
+      //     // balance: 0, // Remove balance here
+      //     isVerified: false,
+      //     active: true,
+      //     lastLogin: new Date(),
+      //     verificationToken: '',
+      //     avatar: '',
+      //     activeProfileId: '',
+      //     cashtag: '',
+      //     phpId: 0,
+      //     accessToken: '',
+      //     twoFactorEnabled: false,
+      //     banned: false,
+      //     banReason: '',
+      //     banExpires: new Date(),
+      //     lastDailySpin: new Date(),
+      //   } as any,
+      // })
+
       // Create the profile linked to the new user and the default operator/bank
       const newProfile = await prisma.profile.create({
         data: {
-          // profileNumber: profileData.profileNumber,
-          userId: newUser.id,
+          userId: betterAuthUser.id, // Use betterAuthUser.id here
           balance: 0,
           activeCurrencyType: 'USD',
 
@@ -286,9 +290,9 @@ export async function createUserWithProfileAndAccount(userData: {
       // Create the account linked to the new user
       const newAccount = await prisma.account.create({
         data: {
-          accountId: newUser.id,
+          accountId: betterAuthUser.id, // Use betterAuthUser.id here
           providerId: 'credential',
-          userId: newUser.id,
+          userId: betterAuthUser.id, // Use betterAuthUser.id here
           // accessToken: accountData.accessToken,
           // refreshToken: accountData.refreshToken,
           // idToken: accountData.idToken,
@@ -303,11 +307,11 @@ export async function createUserWithProfileAndAccount(userData: {
       })
 
       console.log(
-        `Created user: ${newUser.name}, profile: ${newProfile.id}, and account for provider: ${newAccount.id}`
+        `Created user: ${betterAuthUser.name}, profile: ${newProfile.id}, and account for provider: ${newAccount.id}`
       )
 
       return {
-        user: newUser,
+        user: betterAuthUser, // Return betterAuthUser here
         profile: newProfile,
         account: newAccount,
         operator: defaultOperator, // Return the operator used
@@ -484,10 +488,6 @@ export async function getSession(req: HonoRequest): Promise<GetSessionResponse> 
           create: {
             balance: 0,
             totalXpFromOperator: 0,
-            // isActive: true,
-            // lastPlayed: new Date(),
-            // phpId: 0,
-            // shopId: 'cmaldhvn8000cliybhdhfy2b1',
             activeCurrencyType: 'USD', // Ensure these match Currency enum
           },
         },
@@ -496,6 +496,13 @@ export async function getSession(req: HonoRequest): Promise<GetSessionResponse> 
         profile: true,
       },
     })
+
+  if (!userWprofile.profile) {
+    return {
+      message: 'Failed to create profile',
+      code: 500,
+    }
+  }
 
   return {
     user: userWprofile as UserWithProfile,
@@ -513,7 +520,6 @@ export async function register(req: HonoRequest) {
   const username = email.split('@')[0]
 
   // const email = `${username}@cashflow.com`;
-  //@ts-ignore
   // const cookies = req.cookies;
   // if (email === undefined || password === undefined) {
   //   return new Response(
@@ -523,136 +529,39 @@ export async function register(req: HonoRequest) {
 
   const response = await createUserWithProfileAndAccount({
     email,
-    password,
     username,
+    password,
   })
-  console.log('response', response)
-  // const clientId = randomUUIDv7();
-
-  // console.log(headers)
-  console.log(response)
-  // const token = await generateAccessToken(user.user.id)
-  if (!response || response == null) {
-    return new Response(JSON.stringify({ message: 'Registration failed', code: 500 }), {
-      status: 500,
-    })
-  }
-  // const token = response.token;
-  const user = response.user
-  // cookies.set('cookie', token)
-  //@ts-ignore
-  // delete user.user.passwordHash
-  // return new Response(
-  //   JSON.stringify({ authenticated: true, token, user: user, code: 200 }),
-  // )
-  // const cookieOptions = {
-  //   httpOnly: true,
-  //   secure: true,
-  //   sameSite: 'strict',
-  //   maxAge: 60 * 60 * 24 * 7, // 1 week
-  //   path: '/',
-  // };
-  return new Response(JSON.stringify({ authenticated: true, user, code: 200 }), {
+  return new Response(JSON.stringify({ authenticated: true, user: response, code: 200 }), {
     status: 200,
-    // headers: {
-    //   'Set-Cookie': `token=${token}; ${Object.entries(cookieOptions)
-    //     .map(([k, v]) => `${k}=${v}`)
-    //     .join('; ')}`,
-    // },
   })
-  // }
 }
 
 export async function login(req: HonoRequest) {
   console.log('login')
-  let { username, password, email } = await req.json()
-  password = password || ''
-  if (password === undefined || password === '') {
-    return new Response(JSON.stringify({ message: 'Missing password', code: 401 }), {
-      status: 401,
-    })
+  const { username, password } = await req.json()
+  if (username === undefined || password === undefined) {
+    return new Response(JSON.stringify({ message: 'Missing username or password', code: 402 }))
   }
-  if (username === undefined && email === undefined) {
-    return new Response(JSON.stringify({ message: 'Missing username or email', code: 401 }), {
-      status: 401,
-    })
-  }
-  if (username === undefined) {
-    username = email.split('@')[0]
-  }
-  if (email === undefined) {
-    email = `${username}@cashflowcasino.com`
-  }
-
   let signInUsername
-
-  // const salt = crypto.randomBytes(16).toString('hex')
-  console.log(password, username)
   try {
     signInUsername = await auth.api.signInUsername({
       body: { password, username },
     })
-  } catch (e: any) {
-    throw new Error(e)
-    // console.log(e)
-    // const email = `${username}@asdf.com`
-    // signInUsername = await auth.api.signInEmail({
-    //   body: { password, email },
-    // })
-    // console.log(e)
-    return (
-      JSON.stringify(e),
-      {
-        status: 403,
-        statusText: '403',
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    )
+  } catch (e) {
+    console.log(e)
   }
-  console.log('signInUsername', signInUsername)
-  // const user = await validateUser(username, password)
-  const user = signInUsername && 'user' in signInUsername ? signInUsername.user : null
-  const token = signInUsername && 'token' in signInUsername ? signInUsername.token : undefined
-  if (user == null) {
-    return new Response(JSON.stringify({ message: 'Invalid credentials', code: 401 }), {
-      status: 401,
-    })
-  }
-  const ruser = await db.user.update({
-    where: { id: user.id },
-    include: { profile: true },
-    data: { lastLogin: new Date(), isOnline: true },
-  })
-  // const token = generateAccessToken(user.id)
-
-  const cookieOptions = {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    maxAge: 60 * 60 * 24 * 7, // 1 week
-    path: '/',
-  }
-
+  console.log(signInUsername)
+  const token = (signInUsername as any)?.token
+  const ruser = (signInUsername as any)?.user
   return new Response(
     JSON.stringify({ authenticated: true, access_token: token, ruser, code: 200 }),
     {
       status: 200,
-      headers: {
-        'Set-Cookie': `token=${token}; ${Object.entries(cookieOptions)
-          .map(([k, v]) => `${k}=${v}`)
-          .join('; ')}`,
-      },
     }
   )
 }
+
 export async function logout() {
-  return new Response(JSON.stringify('ok'), {
-    status: 200,
-    headers: {
-      'Set-Cookie': `token=;`,
-    },
-  })
+  console.log('logout')
 }
-// export default app

@@ -8,23 +8,23 @@ import {
   RewardStatus,
   UserStatus,
   Role, // Import Prisma for transaction client type
-} from '@cashflow/database'; // Adjusted import path
+} from '@cashflow/database' // Adjusted import path
 import {
   getVipLevelByTotalXp,
   getVipLevelConfiguration,
   LevelConfig, // Assuming LevelConfig is exported from leveling.config.ts
-} from '../config/leveling.config'; // Your leveling configuration
-import { appEventEmitter, AppEvents } from '../events'; // Your event emitter and types
-import { UserLeveledUpPayload, UserXpGainedPayload } from '@cashflow/types';
+} from '../config/leveling.config' // Your leveling configuration
+import { appEventEmitter, AppEvents } from '../events' // Your event emitter and types
+import { UserLeveledUpPayload, UserXpGainedPayload } from '@cashflow/types'
 // import { createLevelUpUserRewards } from './vip.service'; // Potentially for creating level-up UserReward entries
 
 // Define the type for the Prisma transaction client
 type PrismaTransactionClient = Omit<
   PrismaClient,
   '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
->;
+>
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 /**
  * Awards XP to a user, updates their VipInfo (total XP, current level XP, level),
@@ -46,15 +46,15 @@ export async function addXpToUser(
   meta?: Record<string, any>
   // existingTx?: PrismaTransactionClient
 ): Promise<{
-  user: User;
-  vipInfo: VipInfo;
-  xpEvent: XpEvent;
-  leveledUp: boolean;
-  previousLevelConfig?: LevelConfig;
-  newLevelConfig?: LevelConfig;
+  user: User
+  vipInfo: VipInfo
+  xpEvent: XpEvent
+  leveledUp: boolean
+  previousLevelConfig?: LevelConfig
+  newLevelConfig?: LevelConfig
 }> {
   if (points <= 0) {
-    throw new Error('XP points to award must be positive.');
+    throw new Error('XP points to award must be positive.')
   }
 
   // const db = existingTx || prisma;
@@ -65,20 +65,20 @@ export async function addXpToUser(
     const userWithVip = await tx.user.findUnique({
       where: { id: userId },
       include: { vipInfo: true },
-    });
+    })
 
     if (!userWithVip) {
-      throw new Error(`User with ID ${userId} not found.`);
+      throw new Error(`User with ID ${userId} not found.`)
     }
 
-    let vipInfo = userWithVip.vipInfo;
-    const now = new Date();
+    let vipInfo = userWithVip.vipInfo
+    const now = new Date()
 
     // If user has no VipInfo, create a default one (simplified from vip.service.ts)
     if (!vipInfo) {
-      const defaultLevelConfig = getVipLevelConfiguration(1); // Assuming level 1 is the default
+      const defaultLevelConfig = getVipLevelConfiguration(1) // Assuming level 1 is the default
       if (!defaultLevelConfig) {
-        throw new Error('Default VIP level configuration (level 1) not found.');
+        throw new Error('Default VIP level configuration (level 1) not found.')
       }
       vipInfo = await tx.vipInfo.create({
         data: {
@@ -96,8 +96,8 @@ export async function addXpToUser(
           createdAt: now,
           updatedAt: now,
         },
-      });
-      console.log(`Created default VipInfo for user ${userId} during XP award.`);
+      })
+      console.log(`Created default VipInfo for user ${userId} during XP award.`)
     }
 
     // 1. Create the XpEvent record
@@ -109,40 +109,40 @@ export async function addXpToUser(
         sourceId,
         meta: meta || undefined, // Prisma expects JsonValue or undefined
       },
-    });
+    })
 
-    const previousTotalXp = vipInfo.totalXp;
-    const newTotalXp = previousTotalXp + points;
-    const previousLevelConfig = getVipLevelConfiguration(vipInfo.level);
+    const previousTotalXp = vipInfo.totalXp
+    const newTotalXp = previousTotalXp + points
+    const previousLevelConfig = getVipLevelConfiguration(vipInfo.level)
     if (!previousLevelConfig) {
-      throw new Error(`Configuration for user's current level ${vipInfo.level} not found.`);
+      throw new Error(`Configuration for user's current level ${vipInfo.level} not found.`)
     }
 
     // 2. Calculate new level based on newTotalXp
-    const newLevelConfig = getVipLevelByTotalXp(newTotalXp); // This function should return the full LevelConfig
-    let leveledUp = false;
+    const newLevelConfig = getVipLevelByTotalXp(newTotalXp) // This function should return the full LevelConfig
+    let leveledUp = false
 
     const vipDataToUpdate: Prisma.VipInfoUpdateInput = {
       totalXp: newTotalXp,
       updatedAt: now,
-    };
+    }
 
     if (newLevelConfig.level > previousLevelConfig.level) {
-      leveledUp = true;
-      vipDataToUpdate.level = newLevelConfig.level;
+      leveledUp = true
+      vipDataToUpdate.level = newLevelConfig.level
       // Update denormalized benefits from the new level's config
-      vipDataToUpdate.cashbackPercentage = newLevelConfig.cashbackPercentage;
-      vipDataToUpdate.prioritySupport = newLevelConfig.prioritySupport;
+      vipDataToUpdate.cashbackPercentage = newLevelConfig.cashbackPercentage
+      vipDataToUpdate.prioritySupport = newLevelConfig.prioritySupport
       // Add initial special bonuses if defined for the new level
       // This assumes specialBonusesAvailable is a counter that can be incremented
       if (newLevelConfig.initialSpecialBonuses) {
         vipDataToUpdate.specialBonusesAvailable = {
           increment: newLevelConfig.initialSpecialBonuses,
-        };
+        }
       }
       // XP within the new level
-      vipDataToUpdate.currentLevelXp = newTotalXp - newLevelConfig.cumulativeXpToReach;
-      vipDataToUpdate.nextLevelXpRequired = newLevelConfig.xpRequired; // XP bar for the new level
+      vipDataToUpdate.currentLevelXp = newTotalXp - newLevelConfig.cumulativeXpToReach
+      vipDataToUpdate.nextLevelXpRequired = newLevelConfig.xpRequired // XP bar for the new level
 
       // TODO: More sophisticated reward granting for level up
       // This might involve creating UserReward entries, similar to vip.service.ts
@@ -161,19 +161,19 @@ export async function addXpToUser(
               status: RewardStatus.AVAILABLE,
               vipLevelRequirement: newLevelConfig.level,
             },
-          });
+          })
         }
       }
     } else {
       // Still in the same level, just update currentLevelXp
-      vipDataToUpdate.currentLevelXp = { increment: points };
+      vipDataToUpdate.currentLevelXp = { increment: points }
     }
 
     // 3. Update VipInfo model
     const updatedVipInfo = await tx.vipInfo.update({
       where: { userId },
       data: vipDataToUpdate,
-    });
+    })
 
     // 4. Fire events
     const xpGainedPayload: UserXpGainedPayload = {
@@ -185,8 +185,8 @@ export async function addXpToUser(
       xpInLevel: updatedVipInfo.currentLevelXp, // Send XP within the current level
       xpForNextLevel: updatedVipInfo.nextLevelXpRequired, // Send XP bar length for current level
       xpEventId: xpEvent.id,
-    };
-    appEventEmitter.emit(AppEvents.USER_XP_GAINED, xpGainedPayload);
+    }
+    appEventEmitter.emit(AppEvents.USER_XP_GAINED, xpGainedPayload)
 
     if (leveledUp) {
       const levelUpPayload: UserLeveledUpPayload = {
@@ -196,8 +196,8 @@ export async function addXpToUser(
         newLevelTitle: newLevelConfig.name, // Assuming LevelConfig has a 'name' or 'title'
         totalXp: newTotalXp,
         // Add any specific rewards granted on level up if needed by listeners
-      };
-      appEventEmitter.emit(AppEvents.USER_LEVELED_UP, levelUpPayload);
+      }
+      appEventEmitter.emit(AppEvents.USER_LEVELED_UP, levelUpPayload)
 
       // Optional: Create an in-app notification for level up directly here if simple
       // await tx.notification.create({ data: { ... } });
@@ -205,7 +205,7 @@ export async function addXpToUser(
 
     // Fetch the updated user (though userWithVip is likely still valid if only VipInfo changed)
     // For consistency, return the user record as well.
-    const finalUser = await tx.user.findUniqueOrThrow({ where: { id: userId } });
+    const finalUser = await tx.user.findUniqueOrThrow({ where: { id: userId } })
 
     return {
       user: {
@@ -219,8 +219,8 @@ export async function addXpToUser(
       leveledUp,
       previousLevelConfig: leveledUp ? previousLevelConfig : undefined,
       newLevelConfig: leveledUp ? newLevelConfig : undefined,
-    };
-  });
+    }
+  })
 }
 
 /**
@@ -243,11 +243,11 @@ export async function awardXpForAchievement(
   if (xpRewardAmount <= 0) {
     console.warn(
       `Achievement ${achievementName} (${achievementId}) has no positive XP reward. No XP awarded.`
-    );
-    return;
+    )
+    return
   }
 
-  const db = existingTx || prisma;
+  const db = existingTx || prisma
 
   // If not part of a larger transaction, create one here.
   // If it IS part of a larger one, existingTx will be used by addXpToUser.
@@ -258,7 +258,7 @@ export async function awardXpForAchievement(
 
     console.log(
       `Attempting to award ${xpRewardAmount} XP to user ${userId} for achievement: ${achievementName} (${achievementId})`
-    );
+    )
 
     await addXpToUser(
       userId,
@@ -267,14 +267,14 @@ export async function awardXpForAchievement(
       achievementId,
       { achievementName }
       // tx // Pass the transaction client
-    );
-    console.log(`Successfully processed XP award for achievement: ${achievementName}`);
-  };
+    )
+    console.log(`Successfully processed XP award for achievement: ${achievementName}`)
+  }
 
   if (existingTx) {
-    await operation(existingTx);
+    await operation(existingTx)
   } else {
-    await prisma.$transaction(operation);
+    await prisma.$transaction(operation)
   }
 }
 

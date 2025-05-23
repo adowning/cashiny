@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-  const display = ref(true);
-  const shakeIt = ref(false);
+  const display = ref(true)
+  const shakeIt = ref(false)
 </script>
 
 <template>
@@ -27,29 +27,19 @@
         class="mr-2 flex"
         style="text-align: center"
       />
-      <div
-        class="animate__animated animate__slideInUp bottomDropper ml-2 flex p-0"
-      >
+      <div class="animate__animated animate__slideInUp bottomDropper ml-2 flex p-0">
         <AllIcon :shake="shakeIt" />
       </div>
       <div class="animate__animated animate__slideInUp bottomDropper flex">
         <FishIcon :shake="shakeIt" />
       </div>
-      <div
-        class="animate__animated animate__slideInUp bottomDropper flex"
-        @click=""
-      >
+      <div class="animate__animated animate__slideInUp bottomDropper flex">
         <SlotsIcon :shake="shakeIt" />
       </div>
       <div
         class="animate__animated animate__slideInUp bottomDropper flex justify-center align-middle"
-        @click=""
       />
-      <img
-        src="/images/filterbar/side-arrow.avif"
-        class="ml-2 flex"
-        style="text-align: center"
-      />
+      <img src="/images/filterbar/side-arrow.avif" class="ml-2 flex" style="text-align: center" />
     </div>
   </div>
 </template>
@@ -72,6 +62,6 @@
 
   .van-tabbar {
     height: 42px;
-    font-family: "bungeecolor";
+    font-family: 'bungeecolor';
   }
 </style>

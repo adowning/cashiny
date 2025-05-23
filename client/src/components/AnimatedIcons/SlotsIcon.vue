@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import * as SlotsJson from "@/assets/anim/part1.json";
-  import SlotsImg from "@/assets/anim/part1.png";
-  import VSprite from "../common/VSprite.vue";
+  import * as SlotsJson from '@/assets/anim/part1.json'
+  import SlotsImg from '@/assets/anim/part1.png'
+  import VSprite from '../common/VSprite.vue'
 
   // import { eventTypes, useEventsBus } from '@/hooks/events'
   // import { useAppStore } from '@/store/app.store'
@@ -12,7 +12,7 @@
   // const appStore = useAppStore()
   // const { getCurrentUser } = useUserStore()
   // const { setFilterBar } = useAppStore()
-  const backing = ref("standard");
+  const backing = ref('standard')
   // const currentUser = ref<IUser>()
   // const filterBar = computed(() => {
   //     const { getFilterBar } = storeToRefs(useAppStore())
@@ -21,7 +21,7 @@
 
   // currentUser.value = getCurrentUser()
   // const $bus = useEventsBus()
-  const sprite = ref();
+  const sprite = ref()
   function doBattles() {
     // useAppStore().setFilterBar('slots')
     // $bus.$emit(eventTypes.sort_games, 'slots')
@@ -34,10 +34,7 @@
 </script>
 
 <template>
-  <div
-    style="margin: auto; margin-bottom: 10px"
-    class="flex grow-1 flex-col justify-between"
-  >
+  <div style="margin: auto; margin-bottom: 10px" class="flex grow-1 flex-col justify-between">
     <div
       :style="{
         backgroundImage: `url(${backing === 'slots' ? '/images/filterbar/button-on.png' : '/images/filterbar/button-dead.png'})`,
@@ -112,7 +109,7 @@
 
     margin: 2em auto;
 
-    background: transparent url("") 0 0 no-repeat;
+    background: transparent url('') 0 0 no-repeat;
 
     animation: spriteAnim 1s steps(12) infinite;
   }

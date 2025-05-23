@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import * as FishJson from "@/assets/anim/part2.json";
-  import FishImg from "@/assets/anim/part2.png";
-  import VSprite from "../common/VSprite.vue";
+  import * as FishJson from '@/assets/anim/part2.json'
+  import FishImg from '@/assets/anim/part2.png'
+  import VSprite from '../common/VSprite.vue'
   // import { eventTypes, useEventsBus } from '@/hooks/events'
   // import { useAppStore } from '@/store/app.store'
 
@@ -13,14 +13,14 @@
   //   const { getFilterBar } = storeToRefs(useAppStore())
   //   return getFilterBar.value
   // })
-  const backing = ref("standard");
+  const backing = ref('standard')
 
   // const { setFilterBar } = useAppStore()
 
   // const currentUser = ref<IUser>()
   // currentUser.value = getCurrentUser()
   // const $bus = useEventsBus()
-  const sprite = ref();
+  const sprite = ref()
   function doBattles() {
     // useAppStore().setFilterBar('fish')
     // $bus.$emit(eventTypes.sort_games, 'fish')
@@ -32,10 +32,7 @@
 </script>
 
 <template>
-  <div
-    style="margin: auto; margin-bottom: 10px"
-    class="flex grow-1 flex-col justify-between"
-  >
+  <div style="margin: auto; margin-bottom: 10px" class="flex grow-1 flex-col justify-between">
     <div
       :style="{
         backgroundImage: `url(${backing === 'fish' ? '/images/button-on.png' : '/images/button-dead.png'})`,
@@ -110,7 +107,7 @@
 
     margin: 2em auto;
 
-    background: transparent url("") 0 0 no-repeat;
+    background: transparent url('') 0 0 no-repeat;
 
     animation: spriteAnim 1s steps(12) infinite;
   }

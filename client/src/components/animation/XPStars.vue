@@ -18,7 +18,7 @@
     }
     console.warn(
       'Using MOCK Pinia store. Replace with your actual store. ' +
-        'You can trigger animation for testing by calling `increaseXp()` in the console.',
+        'You can trigger animation for testing by calling `increaseXp()` in the console.'
     )
     return store.value
   }
@@ -106,14 +106,14 @@
     () => {
       calculateMainPathParameters()
     },
-    { deep: true },
+    { deep: true }
   )
 
   function createSpellElement(
     type: 'star' | 'particle',
     delay = 0,
     spawnOffsetX: number, // Offset relative to props.from.x
-    spawnOffsetY: number, // Offset relative to props.from.y
+    spawnOffsetY: number // Offset relative to props.from.y
   ) {
     if (!animationContainerRef.value) return
 
@@ -161,8 +161,7 @@
     animationContainerRef.value.appendChild(element)
 
     const startTime = performance.now() + delay
-    const baseDuration =
-      type === 'star' ? 1700 + Math.random() * 600 : 1750 + Math.random() * 650
+    const baseDuration = type === 'star' ? 1700 + Math.random() * 600 : 1750 + Math.random() * 650
     const duration = baseDuration / 2
 
     const amplitude = 12 + Math.random() * 18
@@ -231,10 +230,7 @@
 
       // Perpendicular undulation
       const oscillation =
-        amplitude *
-        Math.sin(
-          frequency * elapsedTime + (type === 'particle' ? Math.PI / 3.5 : 0),
-        )
+        amplitude * Math.sin(frequency * elapsedTime + (type === 'particle' ? Math.PI / 3.5 : 0))
       const undulationOffsetX = perpDX * oscillation
       const undulationOffsetY = perpDY * oscillation
 
@@ -310,23 +306,18 @@
       const numParticlesForThisStar = i < 2 ? 3 : 2
 
       for (let j = 0; j < numParticlesForThisStar; j++) {
-        const particleOverallDelay =
-          starDelay + PARTICLE_DELAY_AFTER_STAR + j * PARTICLE_STAGGER
+        const particleOverallDelay = starDelay + PARTICLE_DELAY_AFTER_STAR + j * PARTICLE_STAGGER
         // Particles spawn near their star's spawn point, slightly behind
         const particleSpawnOffsetX =
-          starSpawnOffsetX +
-          mainPathParams.normalizedPathDX * -5 +
-          (Math.random() - 0.5) * 6 // Spawn slightly "behind" along path
+          starSpawnOffsetX + mainPathParams.normalizedPathDX * -5 + (Math.random() - 0.5) * 6 // Spawn slightly "behind" along path
         const particleSpawnOffsetY =
-          starSpawnOffsetY +
-          mainPathParams.normalizedPathDY * -5 +
-          (Math.random() - 0.5) * 6
+          starSpawnOffsetY + mainPathParams.normalizedPathDY * -5 + (Math.random() - 0.5) * 6
 
         createSpellElement(
           'particle',
           particleOverallDelay,
           particleSpawnOffsetX,
-          particleSpawnOffsetY,
+          particleSpawnOffsetY
         )
       }
     }
@@ -340,17 +331,11 @@
   watch(
     () => userStore.totalXp,
     (newXp, oldXp) => {
-      if (
-        typeof newXp === 'number' &&
-        typeof oldXp === 'number' &&
-        newXp > oldXp
-      ) {
-        console.log(
-          `XP changed from ${oldXp} to ${newXp}, triggering animation.`,
-        )
+      if (typeof newXp === 'number' && typeof oldXp === 'number' && newXp > oldXp) {
+        console.log(`XP changed from ${oldXp} to ${newXp}, triggering animation.`)
         castSpell()
       }
-    },
+    }
   )
 
   onBeforeUnmount(() => {

@@ -1,92 +1,89 @@
 <script setup>
-  import Autoplay from "embla-carousel-autoplay";
-  import emblaCarouselVue from "embla-carousel-vue";
+  import Autoplay from 'embla-carousel-autoplay'
+  import emblaCarouselVue from 'embla-carousel-vue'
 
-  const [emblaRef, emblaApi] = emblaCarouselVue({ loop: false, delay: 5000 }, [
-    Autoplay(),
-  ]);
+  const [emblaRef, emblaApi] = emblaCarouselVue({ loop: false, delay: 5000 }, [Autoplay()])
 
-  const TWEEN_FACTOR_BASE = 0.52;
-  let tweenFactor = 0;
-  let tweenNodes = [];
-  const { height } = useWindowSize();
-  const numberWithinRange = (number, min, max) =>
-    Math.min(Math.max(number, min), max);
+  const TWEEN_FACTOR_BASE = 0.52
+  let tweenFactor = 0
+  let tweenNodes = []
+  const { height } = useWindowSize()
+  const numberWithinRange = (number, min, max) => Math.min(Math.max(number, min), max)
 
   function setTweenNodes(emblaApi) {
     if (emblaApi) {
       tweenNodes = emblaApi.slideNodes().map((slideNode) => {
         // return slideNode.querySelector('.embla__slide')
-        return slideNode;
-      });
+        return slideNode
+      })
     }
   }
 
   function setTweenFactor(emblaApi) {
     if (emblaApi) {
-      tweenFactor = TWEEN_FACTOR_BASE * emblaApi.scrollSnapList().length;
+      tweenFactor = TWEEN_FACTOR_BASE * emblaApi.scrollSnapList().length
     }
   }
 
   function tweenScale(emblaApi, eventName) {
     if (emblaApi) {
-      const engine = emblaApi.internalEngine();
-      const scrollProgress = emblaApi.scrollProgress();
-      const slidesInView = emblaApi.slidesInView();
-      const isScrollEvent = eventName === "scroll";
+      const engine = emblaApi.internalEngine()
+      const scrollProgress = emblaApi.scrollProgress()
+      const slidesInView = emblaApi.slidesInView()
+      const isScrollEvent = eventName === 'scroll'
       emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
-        let diffToTarget = scrollSnap - scrollProgress;
-        const slidesInSnap = engine.slideRegistry[snapIndex];
+        let diffToTarget = scrollSnap - scrollProgress
+        const slidesInSnap = engine.slideRegistry[snapIndex]
 
         slidesInSnap.forEach((slideIndex) => {
-          if (isScrollEvent && !slidesInView.includes(slideIndex)) return;
+          if (isScrollEvent && !slidesInView.includes(slideIndex)) return
 
           if (engine.options.loop) {
             engine.slideLooper.loopPoints.forEach((loopItem) => {
-              const target = loopItem.target();
+              const target = loopItem.target()
 
               if (slideIndex === loopItem.index && target !== 0) {
-                const sign = Math.sign(target);
+                const sign = Math.sign(target)
 
                 if (sign === -1) {
-                  diffToTarget = scrollSnap - (1 + scrollProgress);
+                  diffToTarget = scrollSnap - (1 + scrollProgress)
                 }
                 if (sign === 1) {
-                  diffToTarget = scrollSnap + (1 - scrollProgress);
+                  diffToTarget = scrollSnap + (1 - scrollProgress)
                 }
               }
-            });
+            })
           }
-          const tweenValue = 1 - Math.abs(diffToTarget * tweenFactor);
-          const scale = numberWithinRange(tweenValue, 0, 1).toString();
-          const tweenNode = tweenNodes[slideIndex];
-          tweenNode.style.transform = `scale(${scale})`;
-        });
-      });
+          const tweenValue = 1 - Math.abs(diffToTarget * tweenFactor)
+          const scale = numberWithinRange(tweenValue, 0, 1).toString()
+          const tweenNode = tweenNodes[slideIndex]
+          tweenNode.style.transform = `scale(${scale})`
+        })
+      })
     }
   }
 
   function setupTweenScale(emblaApi) {
     if (emblaApi.value) {
-      setTweenNodes(emblaApi.value);
-      setTweenFactor(emblaApi.value);
-      tweenScale(emblaApi.value);
+      setTweenNodes(emblaApi.value)
+      setTweenFactor(emblaApi.value)
+      tweenScale(emblaApi.value)
 
       emblaApi.value
-        .on("reInit", setTweenNodes)
-        .on("reInit", setTweenFactor)
-        .on("reInit", tweenScale)
-        .on("scroll", tweenScale)
-        .on("slideFocus", tweenScale);
+        .on('reInit', setTweenNodes)
+        .on('reInit', setTweenFactor)
+        .on('reInit', tweenScale)
+        .on('scroll', tweenScale)
+        .on('slideFocus', tweenScale)
 
       return () => {
-        tweenNodes.forEach((slide) => slide.removeAttribute("style"));
-      };
+        tweenNodes.forEach((slide) => slide.removeAttribute('style'))
+      }
     }
   }
   onMounted(() => {
-    setupTweenScale(emblaApi);
-  });
+    setupTweenScale(emblaApi)
+  })
 </script>
 
 <template>
@@ -103,58 +100,34 @@
             <img src="/images/ads/casinoadfreechips.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
-            <img
-              src="/images/ads/casinoClubBonusContestV2PCA2023.png"
-              style="height: 100%"
-            />
+            <img src="/images/ads/casinoClubBonusContestV2PCA2023.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
-            <img
-              src="/images/ads/casinoSales2024PopUprevamped.png"
-              style="height: 100%"
-            />
+            <img src="/images/ads/casinoSales2024PopUprevamped.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
             <img src="/images/ads/casinoadfreechips.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
-            <img
-              src="/images/ads/casinoClubBonusContestV2PCA2023.png"
-              style="height: 100%"
-            />
+            <img src="/images/ads/casinoClubBonusContestV2PCA2023.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
-            <img
-              src="/images/ads/casinoSales2024PopUprevamped.png"
-              style="height: 100%"
-            />
+            <img src="/images/ads/casinoSales2024PopUprevamped.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
-            <img
-              src="/images/ads/casinoClubBonusContestV2PCA2023.png"
-              style="height: 100%"
-            />
+            <img src="/images/ads/casinoClubBonusContestV2PCA2023.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
-            <img
-              src="/images/ads/casinoSales2024PopUprevamped.png"
-              style="height: 100%"
-            />
+            <img src="/images/ads/casinoSales2024PopUprevamped.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
             <img src="/images/ads/casinoadfreechips.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
-            <img
-              src="/images/ads/casinoClubBonusContestV2PCA2023.png"
-              style="height: 100%"
-            />
+            <img src="/images/ads/casinoClubBonusContestV2PCA2023.png" style="height: 100%" />
           </div>
           <div class="embla__slide">
-            <img
-              src="/images/ads/casinoSales2024PopUprevamped.png"
-              style="height: 100%"
-            />
+            <img src="/images/ads/casinoSales2024PopUprevamped.png" style="height: 100%" />
           </div>
         </div>
       </div>
@@ -172,7 +145,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url("/images/ads/promo-dock.png");
+    background-image: url('/images/ads/promo-dock.png');
     background-size: 90% 50%;
     background-repeat: no-repeat;
     background-position-x: center;

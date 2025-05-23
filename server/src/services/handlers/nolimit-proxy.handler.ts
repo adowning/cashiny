@@ -1,219 +1,340 @@
-import { JoinRoom, NewMessage, SendMessage, UserJoined } from '@/sockets/schema';
-import { MessageHandlerContext, OpenHandlerContext, WsData } from '@/sockets/types';
-import { publish } from '@/utils';
-import { ClientOptionDef } from '@prisma/client/runtime/library';
-import { uuid } from 'short-uuid';
-import { communication } from './nolimit/communication.js';
-const packageJson = require('../../../package.json');
+import type { BufferSource, ServerWebSocket } from 'bun'
+import type { OpenHandlerContext, CloseHandlerContext, WsData } from '@/sockets/types' // Adjust path as per your project
 
-const protocol = packageJson.name + '@' + packageJson.version;
-const INIT_PAYLOAD = {
-  type: 'init',
-  content: {
-    type: 'init',
-  },
-  protocol,
-};
+// --- Configuration & Constants ---
+const NOLIMIT_FS_URL = 'https://demo.nolimitcity.com/EjsFrontWeb/fs'
+const packageInfo = {
+  name: 'your-proxy-app', // From your package.json
+  version: '1.0.0', // From your package.json
+}
+const protocol = `${packageInfo.name}@${packageInfo.version}`
 
-function lzwDecode(input) {
-  if (input.startsWith('lzw:')) {
-    input = input.substr('lzw:'.length);
-  } else {
-    return input;
+interface InitPayloadContent {
+  type: string
+  bet?: any
+}
+interface InitPayload {
+  id: string
+  type: string
+  content: InitPayloadContent
+  protocol: string
+  gameClientVersion?: string
+  data?: { extPlayerKey?: string }
+}
+
+// --- RC4 Implementation ---
+const HEX_CHARACTERS = '0123456789abcdef'
+function toHex(byteArray: number[]): string {
+  const hex: string[] = []
+  byteArray.forEach((b) => {
+    hex.push(HEX_CHARACTERS.charAt((b >> 4) & 0xf))
+    hex.push(HEX_CHARACTERS.charAt(b & 0xf))
+  })
+  return hex.join('')
+}
+function fromHex(str: string): number[] {
+  if (typeof str !== 'string') return []
+  const byteArray: number[] = []
+  for (let i = 0; i < str.length; i += 2) {
+    byteArray.push(parseInt(str.substring(i, i + 2), 16))
   }
-  const dict = {};
-  let currChar = input.substr(0, 1);
-  let oldPhrase = currChar;
-  let code = 256;
-  const out = [currChar];
-  for (let i = 1; i < input.length; i++) {
-    const currentCode = input.charCodeAt(i);
-    let phrase;
-    if (currentCode < 256) {
-      phrase = input.substr(i, 1);
-    } else if (dict[currentCode]) {
-      phrase = dict[currentCode];
+  return byteArray
+}
+function rc4Logic(keyByteArray: number[], inputByteArray: number[]): number[] {
+  const s: number[] = [],
+    outputByteArray: number[] = []
+  let i: number, j: number, x: number
+  for (i = 0; i < 256; i++) s[i] = i
+  for (i = 0, j = 0; i < 256; i++) {
+    j = (j + s[i] + keyByteArray[i % keyByteArray.length]) % 256
+    x = s[i]
+    s[i] = s[j]
+    s[j] = x
+  }
+  for (let y = 0, i = 0, j = 0; y < inputByteArray.length; y++) {
+    i = (i + 1) % 256
+    j = (j + s[i]) % 256
+    x = s[i]
+    s[i] = s[j]
+    s[j] = x
+    outputByteArray.push(inputByteArray[y] ^ s[(s[i] + s[j]) % 256])
+  }
+  return outputByteArray
+}
+function stringToByteArray(str: string): number[] {
+  const encoded = encodeURIComponent(str)
+  const byteArray: number[] = []
+  for (let i = 0; i < encoded.length; i++) {
+    if (encoded[i] === '%') {
+      byteArray.push(parseInt(encoded.substring(i + 1, i + 3), 16))
+      i += 2
     } else {
-      phrase = oldPhrase + currChar;
+      byteArray.push(encoded.charCodeAt(i))
     }
-    out.push(phrase);
-    currChar = phrase.substr(0, 1);
-    dict[code] = oldPhrase + currChar;
-    code++;
-    oldPhrase = phrase;
-    //console.log(code, out.join('').substr(out.join('').length - 100));
   }
-  return out.join('');
+  return byteArray
 }
-
-class NolimitProxyHandler {
-  static clients = new Map();
-}
-// Handler for JOIN_ROOM
-export async function handleOpenProxy(context: OpenHandlerContext) {
-  // const url = 'https://demo.nolimitcity.com/EjsFrontWeb/fs';
-  // const headers = new Headers({
-  //   authority: 'casino.nolimitcity.com',
-  //   accept: 'application/json',
-  //   host: 'demo.nolimitcity.com',
-  //   origin: 'https://nolimitcity.com',
-  //   'accept-language': 'en-ZA,en;q=0.9',
-  //   'cache-control': 'no-cache',
-  //   'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-  //   // origin: 'https://casino.nolimitcdn.com',
-  //   pragma: 'no-cache',
-  //   'sec-ch-ua-mobile': '?0',
-  //   'sec-fetch-dest': 'empty',
-  //   'sec-fetch-mode': 'cors',
-  //   'sec-fetch-site': 'cross-site',
-  //   'user-agent':
-  //     'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36',
-  // });
-  // const resp = await fetch(url, {
-  //   method: 'POST',
-  //   headers: headers,
-  //   body: JSON.stringify({
-  //     action: 'open_game',
-  //     clientString: 'FANPAGE_DEMO',
-  //     language: 'en',
-  //     gameCodeString: 'BruteForce%40mobile',
-  //   }),
-  // });
-  const data = context.ws.data;
-  console.log('xxxxx here xxxxx');
-  console.log(data);
-  const resp = await fetch('https://demo.nolimitcity.com/EjsFrontWeb/fs', {
-    headers: {
-      accept: 'application/json',
-      'accept-language': 'en-US,en;q=0.9,es;q=0.8,pt;q=0.7',
-      'cache-control': 'no-cache',
-      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      pragma: 'no-cache',
-      priority: 'u=1, i',
-      'sec-ch-ua': '"Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99"',
-      'sec-ch-ua-mobile': '?1',
-      'sec-ch-ua-platform': '"Android"',
-      'sec-fetch-dest': 'empty',
-      'sec-fetch-mode': 'cors',
-      'sec-fetch-site': 'same-site',
-    },
-    referrerPolicy: 'strict-origin-when-cross-origin',
-    body: 'action=open_game&clientString=FANPAGE_DEMO&language=en&gameCodeString=BruteForce%40mobile',
-    method: 'POST',
-  });
-  console.log(resp);
-  const body = (await resp.json()) as { key: string; [key: string]: any };
-  const url = body.key;
-  const key = body.key;
-
-  const { ws } = context;
-  // const proxyClient = new WebSocket('wss://nolimit');
-  const socket = new WebSocket('ws://demo.nolimitcity.com/EjsGameWeb/ws/game?data=', data.key);
-
-  // Executes when the connection is successfully established.
-  socket.addEventListener('open', (event) => {
-    console.log('WebSocket connection established!');
-    // Sends a message to the WebSocket server.
-    // socket.send('Hello Server!');
-  });
-  // Listen for messages and executes when a message is received from the server.
-  socket.addEventListener('message', (event) => {
-    console.log('Message from server: ', event.data);
-  });
-  // Executes when the connection is closed, providing the close code and reason.
-  socket.addEventListener('close', (event) => {
-    console.log('WebSocket connection closed:', event.code, event.reason);
-  });
-  // Executes if an error occurs during the WebSocket communication.
-  socket.addEventListener('error', (error) => {
-    console.error('WebSocket error:', error);
-  });
-  NolimitProxyHandler.clients.set(ws.data.clientId, { client: ws, socket });
-  const clientId = ws.data.clientId;
-  // const clientUrl = `wss://demo.nolimitcity.com/EjsGameWeb/ws/game?data=38a5236d026377c0951d73c72994054a2c4ee21abf03c232551c90722960b22e9100ceb1730abaeaa5eb3ac825ad7895df105766a33da37e9f349ba71c5ff4a25cfb9b0b164f96a00cfe262a6e7bc1d3bcddc6458571ee86f8bc12df026a24a16b8aa6fd49d6a42896664706d42a03db4b3a1327d1e6a16423fc7c2ce0a092fc0a78fb1ca280a2dbebd1ca043ba7658f9da8482af894db16cb9d9042f7d36fba4c043dd841bda3b5b6553a280e8be353eab2410842a463930a0dacf79f4e1c460f97d259b4cf7ea58111e56bebf056c096842dc6b287aaf1e47d98639c10884dc823841ecd8745496a59069cafcd9246e7bf3cd4f3ac44afdebca96da0e45d46c25ab61d5cef5dee8fdbd14e10c900d0f51d343ca0766db334d009df7af952fd984d72b57ae086ceb10f6f2a04d480a93c8cf30d2283cece7e0133f276e293d69357a546788048193452429d78c0309ed327409b1c6797745bd1cb6b28906f22b1e64cf59c45ad2afbdc56426de2`;
-  // // const clientUrl = useSubdomains
-  // //   ? `${new URL(baseUrl).protocol}//${clientId}.${new URL(baseUrl).host}`
-  // //   : `${baseUrl}/${clientId}`;
-  // proxyClient.on
-  // ws.send(JSON.stringify({ type: 'id', clientId, key }));
-  const protocol = packageJson.name + '@' + packageJson.version;
-  const INIT_PAYLOAD = {
-    type: 'init',
-    content: {
-      type: 'init',
-    },
-    protocol,
-  };
-  // const response = JSON.parse(data.toString());
-  const response = data;
-
-  if (response.error) {
-    communication.trigger('error', response);
-  } else if (response.url && response.key) {
-    // trigger('connected', response);
-
-    // serverUrl = response.url + '?data=' + response.key;
-    // serverKey = response.key;
-
-    // const websocketUrl = serverUrl.replace(/^http/, 'ws').replace('/gs?data=', '/ws/game?data=');
-
-    // history.init(response.url.replace(/\/gs$/, '/history'), response.key);
-
-    let websocket: any = eventSocket(websocketUrl);
-    websocket.on('message', (message) => trigger('debug', { 'communication.game': message }));
-    websocket.on('message', (message) => emitEvents(message));
-    websocket.on('error', (error) => trigger('error', error));
-
-    const payload = Object.assign({}, INIT_PAYLOAD);
-    payload.id = options.uuid + '-' + counter;
-    payload.content.bet = options.lastBet;
-    payload.gameClientVersion = options.version;
-    payload.data = rememberedData;
-
-    // trigger('id', payload.id);
-
-    // websocket.send(rc4.encrypt(serverKey, JSON.stringify(payload)));
-  } else {
-    // communication.trigger('error', 'No url and/or key from server: ' + request.responseText);
-  }
-  ws.data.pendingRequests = new Map();
-}
-
-// Handler for SEND_MESSAGE
-export function handleSendMessage(context: MessageHandlerContext<typeof NolimitSendMessage>) {
-  const { ws, payload, server } = context; // Get server from context
-  let { roomId, text } = payload;
-  const userId = ws.data.userId;
-
-  if (!userId || !server) {
-    // Check server existence
-    console.warn('[WS SEND_MESSAGE] Missing userId or server instance.');
-    return;
-  }
-  if (text.startsWith('lzw:')) {
-    text = lzwDecode(text);
+function byteArrayToString(byteArray: number[]): string {
+  let encoded = ''
+  for (let i = 0; i < byteArray.length; i++) {
+    encoded += '%' + ('0' + byteArray[i].toString(16)).slice(-2)
   }
   try {
-    ws.trigger('message', JSON.parse(text));
+    return decodeURIComponent(encoded)
   } catch (e) {
-    ws.trigger('error', {
-      message: '' + e,
-    });
+    console.error('Error decoding URI component in byteArrayToString', e)
+    // Fallback or re-throw, depending on how you want to handle malformed sequences
+    return 'DECODING_ERROR'
   }
-
-  //  ws.onmessage = e => {
-  // let incoming = e.data;
-
-  // connected = true;
-  // };
-  console.log(`[WS] Message from ${userId} in room ${roomId}: ${text}`);
-  publish(ws, server, roomId, NewMessage, {
-    // Pass server to publish
-    roomId,
-    userId,
-    text,
-    timestamp: Date.now(),
-  });
+}
+const rc4Api = {
+  encrypt: (key: string, str: string): string =>
+    toHex(rc4Logic(stringToByteArray(key), stringToByteArray(str))),
+  decrypt: (key: string, hexStr: string): string =>
+    byteArrayToString(rc4Logic(stringToByteArray(key), fromHex(hexStr))),
 }
 
-// Add other chat-related handlers here (e.g., handleLeaveRoom, handleRoomList)
+// --- LZW Decoding ---
+function lzwDecode(input: string): string {
+  if (!input.startsWith('lzw:')) return input
+  input = input.substring('lzw:'.length)
+  const dict: { [key: number]: string } = {}
+  let currChar = input.substring(0, 1)
+  let oldPhrase = currChar
+  let code = 256
+  const out = [currChar]
+  for (let i = 1; i < input.length; i++) {
+    const currentCode = input.charCodeAt(i)
+    let phrase: string
+    if (currentCode < 256) phrase = input.substring(i, 1)
+    else if (dict[currentCode]) phrase = dict[currentCode]
+    else phrase = oldPhrase + currChar
+    out.push(phrase)
+    currChar = phrase.substring(0, 1)
+    dict[code++] = oldPhrase + currChar
+    oldPhrase = phrase
+  }
+  return out.join('')
+}
+
+// --- App specific WsData extension for NoLimit Proxy ---
+// Ensure this is compatible or merged with your global AppWsData in types.ts
+export interface NoLimitProxyWsData extends WsData {
+  isNoLimitProxy?: boolean
+  nolimitSessionKey?: string
+  nolimitRemoteWs?: WebSocket
+  nolimitMessageCounter?: number
+  nolimitRememberedData?: { extPlayerKey?: string }
+  // Add gameCodeString, clientString, language if passed during upgrade
+  nolimitGameCodeString?: string
+  nolimitClientString?: string
+  nolimitLanguage?: string
+  nolimitToken?: string // For real money play
+}
+
+// --- Proxy Handlers ---
+export async function nolimitProxyOpenHandler(context: OpenHandlerContext<NoLimitProxyWsData>) {
+  const { ws } = context
+  const { clientId, userId } = ws.data // clientId is from router, userId from auth
+  ws.data.nolimitMessageCounter = 0 // Initialize counter
+
+  console.log(`[NLC Proxy][${clientId}] Connection opened for user ${userId}.`)
+
+  try {
+    const gameCodeString = ws.data.nolimitGameCodeString || 'BruteForce%40mobile'
+    const clientString = ws.data.nolimitClientString || 'FANPAGE_DEMO'
+    const language = ws.data.nolimitLanguage || 'en'
+    const token = ws.data.nolimitToken // For real money play
+
+    const fsRequestBodyParams = new URLSearchParams({
+      action: 'open_game',
+      clientString: clientString,
+      language: language,
+      gameCodeString: gameCodeString,
+    })
+    if (token) {
+      fsRequestBodyParams.append('tokenString', token)
+    }
+    const fsRequestBody = fsRequestBodyParams.toString()
+
+    console.log(`[NLC Proxy][${clientId}] Fetching NLC session key. Body: ${fsRequestBody}`)
+    const fsResponse = await fetch(NOLIMIT_FS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        Accept: 'application/json',
+        Origin: 'https://nolimitcity.com', // Adjust if necessary
+        'User-Agent': 'BunProxy/1.0',
+      },
+      body: fsRequestBody,
+    })
+
+    if (!fsResponse.ok) {
+      const errorText = await fsResponse.text()
+      throw new Error(`NLC FS request failed: ${fsResponse.status} - ${errorText}`)
+    }
+
+    const fsData = (await fsResponse.json()) as {
+      key: string
+      url?: string
+      extPlayerKey?: string
+      [key: string]: any
+    }
+    if (!fsData.key) {
+      throw new Error('No session key from NLC FS endpoint.')
+    }
+
+    ws.data.nolimitSessionKey = fsData.key
+    ws.data.nolimitRememberedData = { extPlayerKey: fsData.extPlayerKey }
+
+    const wsUrlPath = fsData.url
+      ? fsData.url.replace(/^http(s?):\/\/[^/]+/, '').replace('/gs?data=', '/ws/game?data=')
+      : '/EjsGameWeb/ws/game?data='
+    const remoteWsDomain = fsData.url
+      ? new URL(fsData.url).origin.replace(/^http/, 'ws')
+      : 'wss://demo.nolimitcity.com' // Default domain
+    const remoteWsUrl = remoteWsDomain + wsUrlPath + ws.data.nolimitSessionKey
+
+    console.log(`[NLC Proxy][${clientId}] Connecting to NLC WebSocket: ${remoteWsUrl}`)
+    const remoteWs = new WebSocket(remoteWsUrl)
+    ws.data.nolimitRemoteWs = remoteWs
+
+    remoteWs.onopen = () => {
+      console.log(`[NLC Proxy][${clientId}] Connected to NLC remote server.`)
+      if (!ws.data.nolimitSessionKey || ws.data.nolimitMessageCounter === undefined) return
+
+      ws.data.nolimitMessageCounter++
+      const initialPayload: InitPayload = {
+        id: `${clientId}-${ws.data.nolimitMessageCounter}`,
+        type: 'init',
+        content: { type: 'init' /* bet: ws.data.lastBet */ }, // Pass lastBet if available
+        protocol,
+        data: ws.data.nolimitRememberedData,
+        // gameClientVersion: ws.data.gameClientVersion // Pass if available
+      }
+      try {
+        const stringifiedPayload = JSON.stringify(initialPayload)
+        console.log(
+          `[NLC Proxy][${clientId}] Sending INIT to NLC (plain): ${stringifiedPayload.substring(0, 100)}...`
+        )
+        const encryptedPayload = rc4Api.encrypt(ws.data.nolimitSessionKey, stringifiedPayload)
+        remoteWs.send(encryptedPayload)
+        console.log(`[NLC Proxy][${clientId}] Sent INIT to NLC (encrypted).`)
+      } catch (e: any) {
+        console.error(`[NLC Proxy][${clientId}] Error sending INIT to NLC:`, e.message)
+      }
+    }
+
+    remoteWs.onmessage = (event: MessageEvent) => {
+      if (ws.readyState !== 1 /* OPEN */) return
+      const rawMessage = event.data.toString()
+      console.log(`[NLC Proxy][${clientId}] From NLC (raw): ${rawMessage.substring(0, 100)}...`)
+      if (!ws.data.nolimitSessionKey) return
+
+      try {
+        const decrypted = rc4Api.decrypt(ws.data.nolimitSessionKey, rawMessage)
+        const lzwDecoded = lzwDecode(decrypted)
+        console.log(
+          `[NLC Proxy][${clientId}] From NLC (processed for log): ${lzwDecoded.substring(0, 100)}...`
+        )
+
+        // Update rememberedData if extPlayerKey is in the response
+        try {
+          const parsedPayload = JSON.parse(lzwDecoded)
+          if (parsedPayload && parsedPayload.extPlayerKey && ws.data.nolimitRememberedData) {
+            ws.data.nolimitRememberedData.extPlayerKey = parsedPayload.extPlayerKey
+            console.log(
+              `[NLC Proxy][${clientId}] Updated NLC extPlayerKey: ${parsedPayload.extPlayerKey}`
+            )
+          }
+        } catch (parseError) {
+          /* Not JSON or no extPlayerKey */
+          console.log(parseError)
+        }
+      } catch (e: any) {
+        console.error(`[NLC Proxy][${clientId}] Error processing message from NLC:`, e.message)
+      }
+      ws.send(event.data as string | BufferSource) // Forward original raw message to client
+    }
+
+    remoteWs.onclose = (event: CloseEvent) => {
+      console.log(
+        `[NLC Proxy][${clientId}] NLC remote WS closed. Code: ${event.code}, Reason: ${event.reason}`
+      )
+      if (ws.readyState === 1 /* OPEN */) {
+        ws.close(event.code, event.reason)
+      }
+    }
+
+    remoteWs.onerror = (event: Event) => {
+      // Bun's WebSocket error event is just 'Event', not specific ErrorEvent
+      console.error(`[NLC Proxy][${clientId}] NLC remote WS error:`, event)
+      if (ws.readyState === 1 /* OPEN */) {
+        ws.close(1011, 'NLC remote connection error')
+      }
+    }
+  } catch (error: any) {
+    console.error(`[NLC Proxy][${clientId}] Error in open handler:`, error.message, error.stack)
+    if (ws.readyState === 1 /* OPEN */) {
+      ws.close(1011, 'Proxy setup error')
+    }
+  }
+}
+
+export function nolimitProxyMessageHandler(
+  ws: ServerWebSocket<NoLimitProxyWsData>,
+  message: string | Buffer
+) {
+  const {
+    clientId,
+    nolimitRemoteWs,
+    nolimitSessionKey,
+    nolimitMessageCounter,
+    // nolimitRememberedData,
+  } = ws.data
+  if (!nolimitRemoteWs || !nolimitSessionKey || nolimitMessageCounter === undefined) {
+    console.warn(
+      `[NLC Proxy][${clientId}] Received message, but NLC proxy not fully initialized. Ignoring.`
+    )
+    return
+  }
+
+  const rawClientMessage = message.toString()
+  console.log(
+    `[NLC Proxy][${clientId}] To NLC (raw from client): ${rawClientMessage.substring(0, 100)}...`
+  )
+
+  try {
+    // Decrypt for logging, assuming client sends RC4 encrypted JSON string
+    const decryptedForLog = rc4Api.decrypt(nolimitSessionKey, rawClientMessage)
+    console.log(
+      `[NLC Proxy][${clientId}] To NLC (decrypted for log): ${decryptedForLog.substring(0, 100)}...`
+    )
+  } catch (e: any) {
+    console.error(`[NLC Proxy][${clientId}] Error decrypting client message for log:`, e.message)
+  }
+
+  if (nolimitRemoteWs.readyState === WebSocket.OPEN) {
+    // Forward the original raw message (assumed to be already RC4 encrypted by client)
+    nolimitRemoteWs.send(message as string | BufferSource)
+    console.log(`[NLC Proxy][${clientId}] Forwarded client message to NLC.`)
+  } else {
+    console.warn(`[NLC Proxy][${clientId}] NLC remote WS not open. Cannot forward client message.`)
+  }
+}
+
+export function nolimitProxyCloseHandler(context: CloseHandlerContext<NoLimitProxyWsData>) {
+  const { ws, code, reason } = context
+  const { clientId, nolimitRemoteWs } = ws.data
+  console.log(`[NLC Proxy][${clientId}] Client WS closed. Code: ${code}, Reason: ${reason}`)
+
+  if (nolimitRemoteWs && nolimitRemoteWs.readyState === WebSocket.OPEN) {
+    console.log(`[NLC Proxy][${clientId}] Closing NLC remote WS.`)
+    nolimitRemoteWs.close(code, reason)
+  }
+  // Clear data
+  delete ws.data.nolimitRemoteWs
+  delete ws.data.nolimitSessionKey
+  delete ws.data.nolimitMessageCounter
+  delete ws.data.nolimitRememberedData
+}

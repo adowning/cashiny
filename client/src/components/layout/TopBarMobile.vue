@@ -196,11 +196,11 @@
     <div class="w-100 flex flex-row justify-start">
       <!-- <PlayerAvatar @click="router.push('/client/profile')" style="z-index: 99; max-height: 60px" /> -->
       <PlayerAvatar
-        @click="router.push('/client/profile')"
         style="z-index: 99; width: 55px"
-        :currentExp="currentExp"
+        :current-exp="currentExp"
         :sparkle="sparkle"
-        :maxExp="100"
+        :max-exp="100"
+        @click="router.push('/client/profile')"
       />
       <div id="PlayerCredits" class="color-white flex flex-col pb-1 pl-1 text-center">
         <div
@@ -259,7 +259,6 @@
       </div>
     </div>
     <div
-      @click="openSettings"
       style="
         height: 50px;
         width: 50px;
@@ -272,6 +271,7 @@
         background-size: cover;
         z-index: 999999;
       "
+      @click="openSettings"
     >
       <img
         style="

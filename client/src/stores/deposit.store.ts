@@ -1,7 +1,6 @@
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
 
-import useApiClient from '@/composables/useApiClient';
-import { IProduct } from '@cashflow/database';
+import useApiClient from '@/composables/useApiClient'
 // Assuming this path is correct
 import {
   DepositHistoryResponse,
@@ -9,16 +8,16 @@ import {
   InitializeDepositDto,
   OperatorData,
   Product,
-} from '@cashflow/types';
-import { defineStore } from 'pinia';
+} from '@cashflow/types'
+import { defineStore } from 'pinia'
 
 // Import reactive functions
-import { handleException } from './exception';
+import { handleException } from './exception'
 
 export const useDepositStore = defineStore('deposit', () => {
   // State properties converted to reactive references
-  const success = ref(false);
-  const errMessage = ref('');
+  const success = ref(false)
+  const errMessage = ref('')
   const depositConfig = ref<any>({
     // Keeping 'any' type as in original
     bonus: [
@@ -26,72 +25,72 @@ export const useDepositStore = defineStore('deposit', () => {
         type: 0,
       },
     ],
-  });
-  const depositSubmit = ref<any>({}); // Keeping 'any' type as in original
-  const pixInfo = ref<GetPixInfo>({} as GetPixInfo); // Keeping type assertion as in original
-  const pixInfoToggle = ref(false);
-  const shopOpen = ref(false);
-  const products = ref<Omit<IProduct, 'operator' | 'transactions'>[]>([]);
-  const selectedPaymentMethod = ref<string>('');
-  const selectedProduct = ref<Omit<IProduct, 'operator' | 'transactions'>>();
-  const operatorData = ref<OperatorData>();
-  const depositHistoryItem = ref<DepositHistoryResponse>({} as DepositHistoryResponse); // Keeping type assertion as in original
+  })
+  const depositSubmit = ref<any>({}) // Keeping 'any' type as in original
+  const pixInfo = ref<GetPixInfo>({} as GetPixInfo) // Keeping type assertion as in original
+  const pixInfoToggle = ref(false)
+  const shopOpen = ref(false)
+  const products = ref<Omit<Product, 'operator' | 'transactions'>[]>([])
+  const selectedPaymentMethod = ref<string>('')
+  const selectedProduct = ref<Omit<Product, 'operator' | 'transactions'>>()
+  const operatorData = ref<OperatorData>()
+  const depositHistoryItem = ref<DepositHistoryResponse>({} as DepositHistoryResponse) // Keeping type assertion as in original
 
   // Getters converted to computed properties
-  const getSuccess = computed(() => success.value);
-  const getErrMessage = computed(() => errMessage.value);
-  const getDepositCfg = computed(() => depositConfig.value);
-  const getDepositSubmit = computed(() => depositSubmit.value);
-  const getPixInfo = computed(() => pixInfo.value);
-  const getPixInfoToggle = computed(() => pixInfoToggle.value);
-  const getDepositHistoryItems = computed(() => depositHistoryItem.value.record);
-  const getProducts = computed(() => products.value);
-  const getOperatorData = computed(() => operatorData.value);
-  const getSelectedPaymentMethod = computed(() => selectedPaymentMethod.value);
-  const getSelectedProduct = computed(() => selectedProduct.value);
+  const getSuccess = computed(() => success.value)
+  const getErrMessage = computed(() => errMessage.value)
+  const getDepositCfg = computed(() => depositConfig.value)
+  const getDepositSubmit = computed(() => depositSubmit.value)
+  const getPixInfo = computed(() => pixInfo.value)
+  const getPixInfoToggle = computed(() => pixInfoToggle.value)
+  const getDepositHistoryItems = computed(() => depositHistoryItem.value.record)
+  const getProducts = computed(() => products.value)
+  const getOperatorData = computed(() => operatorData.value)
+  const getSelectedPaymentMethod = computed(() => selectedPaymentMethod.value)
+  const getSelectedProduct = computed(() => selectedProduct.value)
 
   // Actions converted to regular functions
   const setSuccess = (isSuccess: boolean) => {
-    success.value = isSuccess;
-  };
+    success.value = isSuccess
+  }
   const toggleShopOpen = () => {
-    shopOpen.value = !shopOpen.value;
-    console.log(shopOpen.value);
-  };
+    shopOpen.value = !shopOpen.value
+    console.log(shopOpen.value)
+  }
   const setSelectedPaymentMethod = (method: string) => {
-    selectedPaymentMethod.value = method;
-  };
-  const setSelectedProduct = (product: Omit<IProduct, 'operator' | 'transactions'>) => {
-    selectedProduct.value = product;
-  };
+    selectedPaymentMethod.value = method
+  }
+  const setSelectedProduct = (product: Omit<Product, 'operator' | 'transactions'>) => {
+    selectedProduct.value = product
+  }
   const setErrorMessage = (message: string) => {
-    errMessage.value = message;
-  };
+    errMessage.value = message
+  }
 
   const setDepositCfg = (config: any) => {
     // Keeping 'any' type as in original
-    depositConfig.value = config;
-  };
+    depositConfig.value = config
+  }
 
   const setDepositSubmit = (submit: any) => {
     // Keeping 'any' type as in original
-    depositSubmit.value = submit;
-  };
+    depositSubmit.value = submit
+  }
 
   const setPixInfo = (info: GetPixInfo) => {
-    pixInfo.value = info;
-  };
+    pixInfo.value = info
+  }
 
   const setPixInfoToggle = (toggle: boolean) => {
-    pixInfoToggle.value = toggle;
-  };
+    pixInfoToggle.value = toggle
+  }
 
   const setDepositHistoryItem = (item: DepositHistoryResponse) => {
-    depositHistoryItem.value = item;
-  };
+    depositHistoryItem.value = item
+  }
 
   const setProducts = (items: Product[]) => {
-    const mappedProducts: Omit<IProduct, 'operator' | 'transactions'>[] = items.map((product) => ({
+    const mappedProducts: Omit<Product, 'operator' | 'transactions'>[] = items.map((product) => ({
       id: product.id,
       title: product.title,
       description: product.description,
@@ -109,84 +108,84 @@ export const useDepositStore = defineStore('deposit', () => {
       shopId: product.shopId,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
-    }));
-    products.value = mappedProducts;
-  };
+    }))
+    products.value = mappedProducts
+  }
   const setOperatorData = (item: OperatorData) => {
-    operatorData.value = item;
-  };
-  const { deposit: depositApi } = useApiClient();
+    operatorData.value = item
+  }
+  const { deposit: depositApi } = useApiClient()
   const dispatchProducts = async () => {
-    setSuccess(false);
+    setSuccess(false)
     try {
-      const response = await depositApi.getProducts();
-      setSuccess(true);
-      setProducts(response);
+      const response = await depositApi.getProducts()
+      setSuccess(true)
+      setProducts(response)
     } catch (error: any) {
-      setErrorMessage(handleException(error.code));
+      setErrorMessage(handleException(error.code))
     }
-  };
+  }
   const dispatchCancelPending = async () => {
-    setSuccess(false);
+    setSuccess(false)
     try {
-      const response = await depositApi.cancelPending();
-      console.log(response);
-      setSuccess(true);
-      if (response > 0) await dispatchUserDepositHistory();
+      const response = await depositApi.cancelPending()
+      console.log(response)
+      setSuccess(true)
+      if (response > 0) await dispatchUserDepositHistory()
     } catch (error: any) {
-      setErrorMessage(handleException(error.code));
+      setErrorMessage(handleException(error.code))
     }
-  };
+  }
 
   const dispatchOperatorData = async () => {
-    setSuccess(false);
+    setSuccess(false)
     try {
-      const response = await depositApi.getOperatorData();
-      console.log(response.operator.products);
-      setSuccess(true);
-      setOperatorData(response.operator);
+      const response = await depositApi.getOperatorData()
+      console.log(response.operator.products)
+      setSuccess(true)
+      setOperatorData(response.operator)
     } catch (error: any) {
-      setErrorMessage(handleException(error.code));
+      setErrorMessage(handleException(error.code))
     }
-  };
+  }
   // user deposit configuration
   const dispatchUserDepositCfg = async () => {
-    setSuccess(false);
+    setSuccess(false)
     try {
-      const response = await depositApi.getDepositMethods();
-      setSuccess(true);
-      setDepositCfg(response);
+      const response = await depositApi.getDepositMethods()
+      setSuccess(true)
+      setDepositCfg(response)
     } catch (error: any) {
-      setErrorMessage(handleException(error.code));
+      setErrorMessage(handleException(error.code))
     }
-  };
+  }
 
   // user deposit submit
   const dispatchUserDepositSubmit = async (data: InitializeDepositDto) => {
-    setSuccess(false);
+    setSuccess(false)
     try {
-      const response = await depositApi.initializeDeposit(data);
-      console.log(response);
-      setDepositSubmit(response);
-      setSuccess(true);
+      const response = await depositApi.initializeDeposit(data)
+      console.log(response)
+      setDepositSubmit(response)
+      setSuccess(true)
     } catch (error: any) {
-      setErrorMessage(handleException(error.code));
+      setErrorMessage(handleException(error.code))
     }
-  };
+  }
 
   // user deposit history
   const dispatchUserDepositHistory = async () => {
-    setSuccess(false);
+    setSuccess(false)
     try {
-      const info = await depositApi.getDepositHistory();
-      setSuccess(true);
-      setDepositHistoryItem(info);
+      const info = await depositApi.getDepositHistory()
+      setSuccess(true)
+      setDepositHistoryItem(info)
     } catch (e: any) {
-      console.log(e);
-      setSuccess(false);
-      setErrorMessage(handleException(e.code));
+      console.log(e)
+      setSuccess(false)
+      setErrorMessage(handleException(e.code))
     }
-  };
+  }
 
   // Return all state, getters, and actions
   return {
@@ -226,7 +225,7 @@ export const useDepositStore = defineStore('deposit', () => {
     dispatchUserDepositCfg,
     dispatchUserDepositSubmit,
     dispatchUserDepositHistory,
-  };
-});
+  }
+})
 
 // export const depositStore = useDepositStore()

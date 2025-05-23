@@ -13,7 +13,7 @@ export const getUserFromBetterAuthUser = async (
     include: { profile: true },
   })
 
-  return user as any
+  return user as UserWithProfile
 }
 
 export default createMiddleware<HonoEnv>(async (c, next) => {

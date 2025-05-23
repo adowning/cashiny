@@ -1,4 +1,4 @@
-import { UserWithProfile, db } from '@cashflow/database'
+import { db, Product } from '@cashflow/database'
 import { TransactionStatus, TransactionType } from '@cashflow/database'
 import {
   DepositHistoryItem,
@@ -10,19 +10,18 @@ import {
   GetProductsResponse,
   InitializeDepositDto,
   OperatorData,
+  UserWithProfile,
   ProductWithoutTransactions,
   SubmitDepositResponse,
-  User,
 } from '@cashflow/types'
 import { HonoRequest } from 'hono'
-
-import { Product } from '../../../../../packages/types/src/prisma/interfaces'
+// import { Cron } from "croner";
 
 // Import PrismaClient
 
 export async function getDepositMethods(
-  req: Request | HonoRequest,
-  user: Partial<User>
+  _req: Request | HonoRequest,
+  _user: Partial<UserWithProfile>
 ): Promise<Response> {
   const methods: GetPaymentItem[] = [
     {
@@ -45,8 +44,8 @@ export async function getDepositMethods(
 }
 
 export async function createDeposit(
-  req: Request | HonoRequest,
-  user: Partial<UserWithProfile>
+  _req: Request | HonoRequest,
+  _user: Partial<UserWithProfile>
 ): Promise<Response> {
   return new Response(
     JSON.stringify({
@@ -59,7 +58,7 @@ export async function createDeposit(
 // Assuming NETWORK_CONFIG is defined in a shared module
 // Assuming getUserFromHeader is a utility function for authentication
 
-export async function getProducts(req: HonoRequest): Promise<Response> {
+export async function getProducts(): Promise<Response> {
   const products = await db.product.findMany({
     orderBy: { priceInCents: 'asc' },
     include: {
@@ -67,7 +66,6 @@ export async function getProducts(req: HonoRequest): Promise<Response> {
       // transactions: true,
     },
   })
-  const user = req.get('user')
 
   // const products = await db.product.findMany({
   //   orderBy: { priceInCents: "asc" },
@@ -86,7 +84,7 @@ export async function getProducts(req: HonoRequest): Promise<Response> {
 }
 
 export async function getOperatorData(
-  req: HonoRequest,
+  _req: HonoRequest,
   user: Partial<UserWithProfile>
 ): Promise<Response> {
   await db.profile.findUnique({
@@ -123,9 +121,12 @@ export async function getOperatorData(
         isPromo: product.isPromo,
         totalDiscountInCents: product.totalDiscountInCents,
         shopId: product.shopId,
-        createdAt: product.createdAt,
+        createdAt: product.createdAt as Date,
         updatedAt: product.updatedAt,
-        operator: null,
+        isActive: true,
+        currencyId: '',
+        iconUrl: null,
+        transactionId: null,
       }
     }
   )
@@ -145,7 +146,7 @@ export async function getOperatorData(
 }
 
 // Helper function to fetch deposit configuration
-export async function getDepositConfig(req: HonoRequest, user: User) {
+export async function getDepositConfig(_req: HonoRequest, _user: UserWithProfile) {
   // Authenticate the user
 
   // --- Database Logic for Fetching Configuration ---
@@ -251,7 +252,6 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
   console.log('Received deposit submission:', depositData)
 
   let submissionResult: any = {} // Placeholder for the result from payment gateway
-  let newTransaction
 
   try {
     // 1. Validate deposit data (basic example)
@@ -260,7 +260,7 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
         status: 400,
       })
     }
-    if (!depositData.method) {
+    if (!depositData.paymentMethodId) {
       return new Response(JSON.stringify({ message: 'Payment channel not specified', code: 400 }), {
         status: 400,
       })
@@ -285,7 +285,7 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
       const wallet = await db.wallet.create({
         data: {
           userId: user.id as string,
-          currencyCode: 'USD',
+          currencyId: 'USD',
         },
       })
       const updatedUser = await db.user.update({
@@ -299,10 +299,10 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
     // 2. Create a new 'transaction' record with status PENDING
     submissionResult = await db.transaction.create({
       data: {
-        currencyCode: 'USD', // Assuming USD for now
+        currencyId: 'USD', // Assuming USD for now
         productId: '',
-        userId: user.id as string,
-        targetUserId: user.id,
+        originatorUserId: user.id as string,
+        receiverUserId: user.id,
         walletId: walletId ? walletId : '',
 
         type: TransactionType.DEPOSIT, // Use the enum
@@ -415,7 +415,7 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
 export async function cancelPendingDeposits(userId: string): Promise<number> {
   const result = await db.transaction.updateMany({
     where: {
-      userId,
+      receiverUserId: userId,
       status: TransactionStatus.PENDING,
       type: TransactionType.DEPOSIT,
     },
@@ -560,17 +560,16 @@ export async function expireOldDeposits(): Promise<number> {
 
 // Initialize cron job to expire old deposits
 export function initDepositExpirationJob() {
-  const cron = require('node-cron')
-
+  // const cron = require('node-cron')
   // Run every hour at minute 0
-  cron.schedule('0 * * * *', async () => {
-    try {
-      const expiredCount = await expireOldDeposits()
-      console.log(`Expired ${expiredCount} pending deposits`)
-    } catch (error) {
-      console.error('Failed to expire deposits:', error)
-    }
-  })
+  // cron.schedule('0 * * * *', async () => {
+  //   try {
+  //     const expiredCount = await expireOldDeposits()
+  //     console.log(`Expired ${expiredCount} pending deposits`)
+  //   } catch (error) {
+  //     console.error('Failed to expire deposits:', error)
+  //   }
+  // })
 }
 
 // Main async function to handle deposit routes

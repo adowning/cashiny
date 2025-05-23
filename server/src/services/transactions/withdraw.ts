@@ -1,14 +1,14 @@
-import db from '@cashflow/database';
+import db from '@cashflow/database'
 import {
   GetWithdrawResponse,
   GetWithdrawalHistoryResponse,
   NETWORK_CONFIG,
   SubmitWithdrawResponse,
   User,
-} from '@cashflow/types';
-import { HonoRequest } from 'hono';
+} from '@cashflow/types'
+import { HonoRequest } from 'hono'
 
-import { getUserFromHeader } from '../auth.service';
+import { getUserFromHeader } from '../auth.service'
 
 export async function getWithdrawConfig(req: HonoRequest): Promise<Response> {
   const config = {
@@ -20,19 +20,19 @@ export async function getWithdrawConfig(req: HonoRequest): Promise<Response> {
         max: 5000,
       },
     ],
-  };
+  }
 
   const response: GetWithdrawResponse = {
     code: 200,
     data: config,
     message: 'Success',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 export async function submitWithdrawal(req: HonoRequest, user: User): Promise<Response> {
-  const data = await req.json();
+  const data = await req.json()
 
   const withdrawal = await db.transaction.create({
     data: {
@@ -43,7 +43,7 @@ export async function submitWithdrawal(req: HonoRequest, user: User): Promise<Re
       paymentMethod: data.method,
       metadata: data.details,
     },
-  });
+  })
 
   const response: SubmitWithdrawResponse = {
     code: 200,
@@ -52,15 +52,15 @@ export async function submitWithdrawal(req: HonoRequest, user: User): Promise<Re
       status: withdrawal.status,
     },
     message: 'Withdrawal submitted',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 export async function getWithdrawalHistory(req: HonoRequest, user: User): Promise<Response> {
-  const params = new URL(req.url).searchParams;
-  const page = Number(params.get('page')) || 1;
-  const limit = Number(params.get('limit')) || 10;
+  const params = new URL(req.url).searchParams
+  const page = Number(params.get('page')) || 1
+  const limit = Number(params.get('limit')) || 10
 
   const [count, records] = await Promise.all([
     db.transaction.count({
@@ -78,7 +78,7 @@ export async function getWithdrawalHistory(req: HonoRequest, user: User): Promis
       skip: (page - 1) * limit,
       take: limit,
     }),
-  ]);
+  ])
 
   const response: GetWithdrawalHistoryResponse = {
     code: 200,
@@ -96,17 +96,17 @@ export async function getWithdrawalHistory(req: HonoRequest, user: User): Promis
       })),
     },
     message: 'Success',
-  };
+  }
 
-  return new Response(JSON.stringify(response));
+  return new Response(JSON.stringify(response))
 }
 
 export async function withdrawalRoutes(
   req: HonoRequest,
-  route: string,
+  route: string
 ): Promise<Response | boolean> {
   try {
-    const user = await getUserFromHeader(req);
+    const user = await getUserFromHeader(req)
     if (!user || !user.activeProfile) {
       return new Response(
         JSON.stringify({
@@ -114,28 +114,28 @@ export async function withdrawalRoutes(
           message: 'Unauthorized',
           data: { total_pages: 0, record: [] },
         }),
-        { status: 401 },
-      );
+        { status: 401 }
+      )
     }
 
     switch (route) {
       case NETWORK_CONFIG.WITHDRAW_PAGE.WITHDRAWAL_CONFIG:
-        return await getWithdrawConfig(req);
+        return await getWithdrawConfig(req)
       case NETWORK_CONFIG.WITHDRAW_PAGE.WITHDRAWAL_SUBMIT:
-        return await submitWithdrawal(req, user);
+        return await submitWithdrawal(req, user)
       case NETWORK_CONFIG.WITHDRAW_PAGE.WITHDRAWAL_HISTORY:
-        return await getWithdrawalHistory(req, user);
+        return await getWithdrawalHistory(req, user)
       default:
-        return false;
+        return false
     }
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return new Response(
       JSON.stringify({
         message: `Internal server error: ${error}`,
         code: 500,
       }),
-      { status: 500 },
-    );
+      { status: 500 }
+    )
   }
 }

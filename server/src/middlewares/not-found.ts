@@ -1,13 +1,10 @@
 import { HonoEnv } from '@/create-app'
 import { createMiddleware } from 'hono/factory'
-
-import type { NotFoundHandler } from 'hono'
-
 import { NOT_FOUND } from 'stoker/http-status-codes'
 import { NOT_FOUND as NOT_FOUND_MESSAGE } from 'stoker/http-status-phrases'
 
 // export default notFound;
-export default createMiddleware<HonoEnv>(async (c, next) => {
+export default createMiddleware<HonoEnv>(async (c) => {
   // const notFound: NotFoundHandler = (c) => {
   return c.json(
     {

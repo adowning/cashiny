@@ -1,7 +1,7 @@
 // apps/server/src/services/operator.service.ts
 // Ensure these types align with your Zod schemas
 // import { OperatorCreatePayload, OperatorInvitePayload, OperatorUpdatePayload } from '@/routes/schema';
-import { PrismaClient, Profile } from '@cashflow/database';
+import { PrismaClient, Profile } from '@cashflow/database'
 
 // import { randomUUID } from 'crypto';
 
@@ -11,19 +11,19 @@ import { PrismaClient, Profile } from '@cashflow/database';
 
 // A utility for creating a Prisma-style error for 'not found'
 class RecordNotFoundError extends Error {
-  public code: string;
+  public code: string
   constructor(message: string) {
-    super(message);
-    this.name = 'RecordNotFoundError';
-    this.code = 'P2025'; // Mimic Prisma's record not found error code
+    super(message)
+    this.name = 'RecordNotFoundError'
+    this.code = 'P2025' // Mimic Prisma's record not found error code
   }
 }
 
 export class OperatorService {
-  private prisma: PrismaClient;
+  private prisma: PrismaClient
 
   constructor({ prisma }: { prisma: PrismaClient }) {
-    this.prisma = prisma;
+    this.prisma = prisma
   }
 
   /**
@@ -231,7 +231,7 @@ export class OperatorService {
         owner: { select: { id: true, name: true, email: true } },
         _count: { select: { profiles: true } },
       },
-    });
+    })
   }
 
   /**
@@ -325,22 +325,22 @@ export class OperatorService {
         },
         owner: { select: { id: true, name: true, email: true } },
       },
-    });
+    })
 
     if (!operator) {
-      throw new RecordNotFoundError('Operator not found.');
+      throw new RecordNotFoundError('Operator not found.')
     }
     // If requestingUserId is provided, ensure they are a member (or implement other access rules)
     if (requestingUserId) {
       const isMember = operator.profiles.some(
-        (profile: Profile) => profile.userId === requestingUserId,
-      );
+        (profile: Profile) => profile.userId === requestingUserId
+      )
       if (!isMember && operator.ownerId !== requestingUserId) {
         // Also check if they are the direct owner if not in members list explicitly
-        throw new Error('Access Denied: You are not a member of this operator.');
+        throw new Error('Access Denied: You are not a member of this operator.')
       }
     }
-    return operator;
+    return operator
   }
 
   /**
@@ -407,9 +407,9 @@ export class OperatorService {
         id: operatorId,
         OR: [{ ownerId: requestingUserId }, { profiles: { some: { userId: requestingUserId } } }],
       },
-    });
+    })
     if (!operator) {
-      throw new Error('Access Denied: You are not an active member of this operator.');
+      throw new Error('Access Denied: You are not an active member of this operator.')
     }
 
     return this.prisma.profile.findMany({
@@ -428,7 +428,7 @@ export class OperatorService {
         },
         // role is already on UserOperator
       },
-    });
+    })
   }
 
   /**
@@ -455,14 +455,14 @@ export class OperatorService {
         // isActive: true,
       },
       select: { role: true, user: { select: { id: true, email: true, name: true } } },
-    });
+    })
 
     if (!membership) {
       throw new RecordNotFoundError(
-        'User is not an active member of this operator or does not exist.',
-      );
+        'User is not an active member of this operator or does not exist.'
+      )
     }
-    return membership;
+    return membership
   }
 
   /**

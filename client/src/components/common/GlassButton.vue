@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-  const props = defineProps(["to", "type", "w", "text", "shine", "color"]);
+  import { router } from '@/router'
+
+  const props = defineProps(['to', 'type', 'w', 'text', 'shine', 'color'])
 
   function handleClick() {
     if (props.to) {
-      navigateTo(props.to);
+      router.push(props.to)
     }
   }
-  const buttonStyle = ref();
+  const buttonStyle = ref()
   if (props.w) {
     // buttonStyle.value = `min-width: ${props.w || 0}px; max-width: ${props.w || 0}px`
   }
@@ -16,13 +18,7 @@
   <div
     :id="type"
     class="button glass relative flex items-center justify-center text-lg"
-    :class="
-      color === 'blue'
-        ? 'blueGlass'
-        : color === 'red'
-          ? 'redGlass'
-          : 'greenGlass'
-    "
+    :class="color === 'blue' ? 'blueGlass' : color === 'red' ? 'redGlass' : 'greenGlass'"
     :style="buttonStyle"
     @click="handleClick"
   >
@@ -39,7 +35,7 @@
 
 <style scoped>
   .primary-text {
-    font-family: "Broznier";
+    font-family: 'Broznier';
     font-size: 22px;
     font-weight: 400;
     color: white;
@@ -53,17 +49,17 @@
   }
 
   .honk {
-    font-family: "Broznier";
+    font-family: 'Broznier';
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
     font-variation-settings:
-      "MORF" 15,
-      "SHLN" 50;
+      'MORF' 15,
+      'SHLN' 50;
   }
 
   .fira-code {
-    font-family: "Broznier";
+    font-family: 'Broznier';
     font-optical-sizing: auto;
     font-weight: 900;
     font-style: normal;
@@ -117,7 +113,7 @@
   .shine-box:before {
     position: absolute;
     left: -800px;
-    content: "";
+    content: '';
     width: 30%;
     height: 97%;
     background: rgba(255, 255, 255, 0.6);
@@ -144,15 +140,12 @@
 
   .glass:after {
     border-radius: 6px;
-    content: "";
+    content: '';
     position: absolute;
     top: 2px;
     left: 4px;
     width: calc(100% - 8px);
     height: 40%;
-    background: linear-gradient(
-      rgba(255, 255, 255, 0.7),
-      rgba(255, 255, 255, 0.2)
-    );
+    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.2));
   }
 </style>

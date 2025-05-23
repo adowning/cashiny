@@ -34,7 +34,9 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'warn', // Warn instead of error for 'any'
     '@typescript-eslint/explicit-module-boundary-types': 'off', // Explicit return types can be verbose, TS infers them well.
     '@typescript-eslint/no-inferrable-types': 'off', // Allows explicit types when they could be inferred.
-
+    'eslint-disable @typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-empty-object-type': 'off',
     // Node/Bun specific preferences (examples)
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // Allow console in dev
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

@@ -48,7 +48,7 @@
     id: '0  ',
     amountToReceiveInCredits: 0,
     description: '',
-    type: '',
+    productType: '',
     shopId: '1',
     bonusSpins: 0,
     selected: false,
@@ -136,12 +136,12 @@
     // Fetch initial deposit configuration
     await dispatchUserDepositHistory()
     await dispatchOperatorData()
-    await authStore.refreshUser()
+    // await authStore.refreshUser()
     console.log(depositStore.getOperatorData)
     console.log(depositStore.getProducts)
     products.value = depositStore.getOperatorData?.products
     console.log(depositStore.depositHistoryItem)
-    for (const item of depositStore.depositHistoryItem.data.record) {
+    for (const item of depositStore.depositHistoryItem.record) {
       console.log(item)
       if (item.status === 'PENDING') {
         activeName.value = 'pendingTransaction'

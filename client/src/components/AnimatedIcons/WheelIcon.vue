@@ -180,8 +180,8 @@
                 "
             > -->
     <div
-      :class="{ shake: shakeIt }"
       v-if="!complete"
+      :class="{ shake: shakeIt }"
       style="
         position: absolute;
         bottom: 8px;

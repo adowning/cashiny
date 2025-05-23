@@ -1,24 +1,24 @@
-import { basePrisma } from '@cashflow/database';
-import { betterAuth } from 'better-auth';
-import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { bearer, oneTap, username, anonymous } from 'better-auth/plugins';
+import { basePrisma } from '@cashflow/database'
+import { betterAuth } from 'better-auth'
+import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { bearer, oneTap, username, anonymous } from 'better-auth/plugins'
 
-import { resend } from './utils/email';
+import { resend } from './utils/email'
 
-const { JWT_SECRET, ALLOWED_ORIGINS } = process.env;
+const { JWT_SECRET, ALLOWED_ORIGINS } = process.env
 
 export const auth = betterAuth({
   baseURL: process.env.AUTH_BASE_URL || `http://localhost:6589`,
   secret: JWT_SECRET || 'a_very_secure_and_random_jwt_secret_for_development_12345!@#$%',
   password: {
     hash: async (password: string) => {
-      return await Bun.password.hash(password);
+      return await Bun.password.hash(password)
     },
-    verifyPassword: async (data: any) => {
-      return await Bun.password.verify(data.password, data.hash);
+    verifyPassword: async (data: { password: string; hash: string }) => {
+      return await Bun.password.verify(data.password, data.hash)
     },
-    verify: async (data: any) => {
-      return await Bun.password.verify(data.password, data.hash);
+    verify: async (data: { password: string; hash: string }) => {
+      return await Bun.password.verify(data.password, data.hash)
     },
   },
   trustedOrigins: JSON.parse(ALLOWED_ORIGINS || '[]'),
@@ -27,10 +27,10 @@ export const auth = betterAuth({
     autoSignIn: false,
     minPasswordLength: 6,
     resetPasswordTokenExpiresIn: 10 * 60 * 1000, // 10 minutes
-    sendResetPassword: async ({ user, token }, request) => {
-      const url = new URL(process.env.AUTH_BASE_URL || `http://localhost:6589`);
-      url.pathname = '/reset-password';
-      url.searchParams.append('token', token);
+    sendResetPassword: async ({ user, token }) => {
+      const url = new URL(process.env.AUTH_BASE_URL || `http://localhost:6589`)
+      url.pathname = '/reset-password'
+      url.searchParams.append('token', token)
 
       await resend.emails.send({
         from: 'onboarding@resend.dev',
@@ -63,7 +63,7 @@ export const auth = betterAuth({
             </p>
           </div>
           `,
-      });
+      })
     },
   },
   database: prismaAdapter(basePrisma, {
@@ -123,4 +123,4 @@ export const auth = betterAuth({
       },
     },
   },
-});
+})

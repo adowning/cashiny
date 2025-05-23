@@ -1,2 +1,2 @@
 export const ev = (name: string, fallback: any = null) =>
-    process.env.hasOwnProperty(name) ? process.env[name] : fallback
+  Object.prototype.hasOwnProperty.call(process.env, name) ? process.env[name] : fallback

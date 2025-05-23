@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
-import { useUserStore, useUserStoreOutside } from '@/stores/user.store'
-import { storageLocal, isString, isIncludeAllChildren } from '@pureadmin/utils'
+import { useUserStore } from '@/stores/user.store'
+import { storageLocal, isString } from '@pureadmin/utils'
 
 export interface DataInfo<T> {
   /** token */
@@ -36,7 +36,9 @@ export const multipleTabsKey = 'multiple-tabs'
 /** 获取`token` */
 export function getToken(): DataInfo<number> {
   // 此处与`TokenKey`相同，此写法解决初始化时`Cookies`中不存在`TokenKey`报错
-  return Cookies.get(TokenKey) ? JSON.parse(Cookies.get(TokenKey)) : storageLocal().getItem(userKey)
+  return Cookies.get(TokenKey)
+    ? JSON.parse(Cookies.get(TokenKey) as string)
+    : storageLocal().getItem(userKey)
 }
 
 /**
@@ -52,11 +54,14 @@ export function setToken(data: DataInfo<Date>) {
   expires = new Date(data.expires).getTime() // 如果后端直接设置时间戳，将此处代码改为expires = data.expires，然后把上面的DataInfo<Date>改成DataInfo<number>即可
   const cookieString = JSON.stringify({ accessToken, expires, refreshToken })
 
-  expires > 0
-    ? Cookies.set(TokenKey, cookieString, {
-        expires: (expires - Date.now()) / 86400000,
-      })
-    : Cookies.set(TokenKey, cookieString)
+  const cookieOptions =
+    expires > 0
+      ? {
+          expires: (expires - Date.now()) / 86400000,
+        }
+      : undefined
+
+  Cookies.set(TokenKey, cookieString, cookieOptions)
 
   Cookies.set(
     multipleTabsKey,
@@ -67,14 +72,28 @@ export function setToken(data: DataInfo<Date>) {
     //     }
     //   : {}
   )
-
-  function setUserKey({ id, avatar, username, nickname, roles, permissions }) {
-    useUserStoreOutside().SET_ID(id)
-    useUserStoreOutside().SET_AVATAR(avatar)
-    useUserStoreOutside().SET_USERNAME(username)
-    useUserStoreOutside().SET_NICKNAME(nickname)
-    useUserStoreOutside().SET_ROLES(roles)
-    useUserStoreOutside().SET_PERMS(permissions)
+  function setUserKey(
+    // id: {
+    //   id: number
+    //   avatar: string
+    //   username: string
+    //   nickname: string
+    //   roles: string[]
+    //   permissions: string[]
+    // },
+    id: number,
+    avatar: string,
+    username: string,
+    nickname: string,
+    roles: string[],
+    permissions: string[]
+  ) {
+    // userStore.SET_ID(id)
+    // useUserStoreOutside().SET_AVATAR(avatar)
+    // useUserStoreOutside().SET_USERNAME(username)
+    // useUserStoreOutside().SET_NICKNAME(nickname)
+    // useUserStoreOutside().SET_ROLES(roles)
+    // useUserStoreOutside().SET_PERMS(permissions)
     storageLocal().setItem(userKey, {
       id,
       refreshToken,
@@ -92,14 +111,14 @@ export function setToken(data: DataInfo<Date>) {
   if (data.username && data.roles) {
     const { username, roles } = data
 
-    setUserKey({
-      id: data?.id ?? 0,
-      avatar: data?.avatar ?? '',
+    setUserKey(
+      data?.id ?? 0,
+      data?.avatar ?? '',
       username,
-      nickname: data?.nickname ?? '',
+      data?.nickname ?? '',
       roles,
-      permissions: data?.permissions ?? [],
-    })
+      data?.permissions ?? []
+    )
   } else {
     const id = storageLocal().getItem<DataInfo<number>>(userKey)?.id ?? 0
     const avatar = storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? ''
@@ -107,14 +126,7 @@ export function setToken(data: DataInfo<Date>) {
     const nickname = storageLocal().getItem<DataInfo<number>>(userKey)?.nickname ?? ''
     const roles = storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? []
     const permissions = storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? []
-    setUserKey({
-      id,
-      avatar,
-      username,
-      nickname,
-      roles,
-      permissions,
-    })
+    setUserKey(id, avatar, username, nickname, roles, permissions)
   }
 }
 
@@ -133,12 +145,11 @@ export const formatToken = (token: string): string => {
 /** 是否有按钮级别的权限（根据登录接口返回的`permissions`字段进行判断）*/
 export const hasPerms = (value: string | Array<string>): boolean => {
   if (!value) return false
-  const allPerms = '*:*:*'
-  const { permissions } = useUserStoreOutside()
-  if (!permissions) return false
-  if (permissions.length === 1 && permissions[0] === allPerms) return true
+  // const { permissions } = useUserStoreOutside()
+  // if (!permissions) return false
+  // if (permissions.length === 1 && permissions[0] === allPerms) return true
   const isAuths = isString(value)
-    ? permissions.includes(value)
-    : isIncludeAllChildren(value, permissions)
+  // ? permissions.includes(value)
+  // : isIncludeAllChildren(value, permissions)
   return isAuths ? true : false
 }

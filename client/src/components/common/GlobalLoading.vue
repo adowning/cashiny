@@ -25,145 +25,145 @@
 </template>
 
 <script setup lang="ts">
-// export default {
-//     data() {
-//         return {
-//             loading: true,
-//             showBackdrop: true,
-//         };
-//     },
-//     mounted() {
-//         // setTimeout(() => {
-//         //     this.loading = false;
-//         // }, 2000);
-//     },
-// };
-const showLoading = ref(false);
-onMounted(() => {
-  setTimeout(() => {
-    showLoading.value = true;
-  }, 300);
-});
+  // export default {
+  //     data() {
+  //         return {
+  //             loading: true,
+  //             showBackdrop: true,
+  //         };
+  //     },
+  //     mounted() {
+  //         // setTimeout(() => {
+  //         //     this.loading = false;
+  //         // }, 2000);
+  //     },
+  // };
+  const showLoading = ref(false)
+  onMounted(() => {
+    setTimeout(() => {
+      showLoading.value = true
+    }, 300)
+  })
 </script>
 
 <style scoped>
-.container {
-  z-index: 999;
-  margin: 0;
-  top: 0px;
-  left: 0px;
-  z-index: 999999999;
-  display: flex;
-  position: fixed;
-  align-items: center;
-  justify-content: center;
-  background-image: url('/images/common/loading.png');
-  background-size: 100% 100%;
-  min-height: 100vh;
-  height: 100vh;
-  max-width: 580px;
-  width: 100vw;
-  width: 100vw;
-}
-
-.logo {
-  z-index: 99099;
-  position: absolute;
-  width: 200px;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  justify-content: center;
-}
-
-.loader {
-  z-index: 9909;
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  top: 55%;
-  left: 25%;
-  transform: translate(-50%, -50%);
-  justify-content: center;
-  animation: animateColor 5.2s linear infinite;
-}
-
-@keyframes animateColor {
-  0% {
-    filter: hue-rotate(0deg);
+  .container {
+    z-index: 999;
+    margin: 0;
+    top: 0px;
+    left: 0px;
+    z-index: 999999999;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    background-image: url('/images/common/loading.png');
+    background-size: 100% 100%;
+    min-height: 100vh;
+    height: 100vh;
+    max-width: 580px;
+    width: 100vw;
+    width: 100vw;
   }
 
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-
-.loader span {
-  position: absolute;
-  transform-origin: 150px;
-  transform: translateX(-150px) rotate(calc(var(--i) * 30deg));
-  filter: drop-shadow(0 0 5px #3cc2ff) drop-shadow(0 0 15px #3cc2ff) drop-shadow(0 0 30px #3cc2ff);
-}
-
-.loader span i {
-  position: relative;
-  color: #3cc2ff;
-  animation: rotate-stars 2.4s linear infinite;
-  animation-delay: calc(var(--i) * -0.2s);
-}
-
-@keyframes rotate-stars {
-  0% {
-    transform: rotate(0deg) scale(0);
+  .logo {
+    z-index: 99099;
+    position: absolute;
+    width: 200px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
   }
 
-  50% {
-    transform: rotate(180deg) scale(3);
+  .loader {
+    z-index: 9909;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    top: 55%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    animation: animateColor 5.2s linear infinite;
   }
 
-  100% {
-    transform: rotate(360deg) scale(0);
-  }
-}
+  @keyframes animateColor {
+    0% {
+      filter: hue-rotate(0deg);
+    }
 
-.loader span::before {
-  content: '\f005';
-  position: absolute;
-  font-family: fontAwesome;
-  font-size: 0.75em;
-  color: #131a1c;
-  animation: rotate-particle 2.4s linear infinite;
-  animation-delay: calc(var(--i) * -0.2s);
-}
-
-@keyframes rotate-particle {
-  0% {
-    scale: 1;
-    opacity: 0;
-    rotate: 0deg;
+    100% {
+      filter: hue-rotate(360deg);
+    }
   }
 
-  50% {
-    scale: 1;
-    opacity: 1;
-    rotate: 180deg;
+  .loader span {
+    position: absolute;
+    transform-origin: 150px;
+    transform: translateX(-150px) rotate(calc(var(--i) * 30deg));
+    filter: drop-shadow(0 0 5px #3cc2ff) drop-shadow(0 0 15px #3cc2ff) drop-shadow(0 0 30px #3cc2ff);
   }
 
-  100% {
-    scale: 0;
-    opacity: 0;
-    rotate: 360deg;
-    filter: drop-shadow(-150px 0 #3cc2ff) drop-shadow(150px 0 #3cc2ff) drop-shadow(0 150px #3cc2ff)
-      drop-shadow(0 -150px #3cc2ff);
+  .loader span i {
+    position: relative;
+    color: #3cc2ff;
+    animation: rotate-stars 2.4s linear infinite;
+    animation-delay: calc(var(--i) * -0.2s);
   }
-}
 
-/* .container {
+  @keyframes rotate-stars {
+    0% {
+      transform: rotate(0deg) scale(0);
+    }
+
+    50% {
+      transform: rotate(180deg) scale(3);
+    }
+
+    100% {
+      transform: rotate(360deg) scale(0);
+    }
+  }
+
+  .loader span::before {
+    content: '\f005';
+    position: absolute;
+    font-family: fontAwesome;
+    font-size: 0.75em;
+    color: #131a1c;
+    animation: rotate-particle 2.4s linear infinite;
+    animation-delay: calc(var(--i) * -0.2s);
+  }
+
+  @keyframes rotate-particle {
+    0% {
+      scale: 1;
+      opacity: 0;
+      rotate: 0deg;
+    }
+
+    50% {
+      scale: 1;
+      opacity: 1;
+      rotate: 180deg;
+    }
+
+    100% {
+      scale: 0;
+      opacity: 0;
+      rotate: 360deg;
+      filter: drop-shadow(-150px 0 #3cc2ff) drop-shadow(150px 0 #3cc2ff)
+        drop-shadow(0 150px #3cc2ff) drop-shadow(0 -150px #3cc2ff);
+    }
+  }
+
+  /* .container {
         position: absolute;
         width: 100vw;
         height: 100vh;

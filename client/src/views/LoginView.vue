@@ -5,11 +5,11 @@
     <div
       class="auth-mode-toggle mb-5"
       :class="{ 'is-signup-active': isSignUpMode }"
-      @click="toggleMode"
-      @keydown="toggleMode"
       tabindex="0"
       role="switch"
       aria-label="Toggle Sign Up Mode"
+      @click="toggleMode"
+      @keydown="toggleMode"
     >
       <span class="lab login-label" :class="{ active: !isSignUpMode }">Log In</span>
       <div class="switch-visual-container">
@@ -26,10 +26,10 @@
 
     <div v-if="!isAuthLoading" class="mt-14 flex flex-col justify-center items-center pt-16">
       <label class="switch mt-4">
-        <div class="flip-card__inner" ref="flipCardInner">
+        <div ref="flipCardInner" class="flip-card__inner">
           <div class="flip-card__front flex-col flex">
             <div class="title">Log In</div>
-            <form @submit.prevent="handleSignIn" class="flip-card__form">
+            <form class="flip-card__form" @submit.prevent="handleSignIn">
               <input
                 v-model="formData.username"
                 type="username"
@@ -58,10 +58,10 @@
                 class="google-signin-container flex grow-1 w-full m-auto"
               >
                 <button
-                  :disabled="isAuthLoading || showError"
                   id="googleSignInButtonContainer"
-                  class="google-signin-button"
                   ref="googleLoginBtn"
+                  :disabled="isAuthLoading || showError"
+                  class="google-signin-button"
                   googleSignInButtonContainer
                   @click="handleGoogleSignIn"
                 />
@@ -78,7 +78,7 @@
 
           <div class="flip-card__back">
             <div class="title">Sign Up</div>
-            <form @submit.prevent="handleSignUp" class="flip-card__form">
+            <form class="flip-card__form" @submit.prevent="handleSignUp">
               <input
                 v-model="formData.username"
                 type="text"
@@ -350,7 +350,7 @@
         } else {
           console.error('Google GSI library not fully available after script load.')
           notificationStore.addNotification('error', 'Could not initialize Google Sign-In.')
-          authStore.setError({
+          authStore.setAuthError({
             message: 'Could not initialize Google Sign-In.',
             code: 500,
           })
@@ -359,7 +359,7 @@
       script.onerror = () => {
         console.error('Failed to load Google GSI script.')
         notificationStore.addNotification('error', 'Failed to load Google Sign-In script.')
-        authStore.setError({
+        authStore.setAuthError({
           message: 'Failed to load Google Sign-In script.',
           code: 500,
         })

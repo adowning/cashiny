@@ -17,7 +17,6 @@
     "@cashflow/types": "workspace:*",
     "@lukeed/uuid": "^2.0.1",
     "@pureadmin/utils": "^2.6.0",
-    "@tanstack/vue-query": "^5.75.5",
     "@types/lodash": "^4.17.16",
     "@vueuse/core": "^13.1.0",
     "app-loading": "^0.0.51",

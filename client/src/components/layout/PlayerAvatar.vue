@@ -128,14 +128,14 @@
         />
 
         <CircleProgressBar
-          strokeWidth="10"
+          stroke-width="10"
           :value="currentUserTotalXp"
           :max="nextXpThreshold"
-          colorUnfilled="yellow"
-          animationDuration="1s"
-          colorFilled="green"
-          colorBack="red"
-          :startAngle="280"
+          color-unfilled="yellow"
+          animation-duration="1s"
+          color-filled="green"
+          color-back="red"
+          :start-angle="280"
           class="absolute inset-[-2px] w-[calc(100%+4px)] h-[calc(100%+4px)] z-[1]"
         />
       </div>

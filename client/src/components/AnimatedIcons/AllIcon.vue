@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import * as AllJson from "@/assets/anim/part0.json";
-  import AllImg from "@/assets/anim/part0.png";
-  import VSprite from "../common/VSprite.vue";
+  import * as AllJson from '@/assets/anim/part0.json'
+  import AllImg from '@/assets/anim/part0.png'
+  import VSprite from '../common/VSprite.vue'
 
-  const backing = ref("standard");
-  const sprite = ref();
+  const backing = ref('standard')
+  const sprite = ref()
   function doBattles() {
     // useAppStore().setFilterBar('standard')
     // $bus.$emit(eventTypes.sort_games, 'standard')
@@ -13,10 +13,7 @@
 </script>
 
 <template>
-  <div
-    style="margin: auto; margin-bottom: 10px"
-    class="flex grow-1 flex-col justify-between"
-  >
+  <div style="margin: auto; margin-bottom: 10px" class="flex grow-1 flex-col justify-between">
     <div
       :style="{
         backgroundImage: `url(${backing === 'standard' ? '/images/button-on.png' : '/images/button-dead.png'})`,
@@ -91,7 +88,7 @@
 
     margin: 2em auto;
 
-    background: transparent url("") 0 0 no-repeat;
+    background: transparent url('') 0 0 no-repeat;
 
     animation: spriteAnim 1s steps(12) infinite;
   }

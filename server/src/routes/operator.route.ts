@@ -2,15 +2,15 @@
 // import { PrismaClient } from '@cashflow/database';
 // Or your specific import if using a central instance
 // import { ZodError } from 'zod';
-import { PrismaClient } from '@cashflow/database';
-import { NETWORK_CONFIG } from '@cashflow/types';
+import { PrismaClient } from '@cashflow/database'
+import { NETWORK_CONFIG } from '@cashflow/types'
 
-import { createErrorResponse, createSuccessResponse } from '.';
-import createRouter from '../create-router';
-import { OperatorService } from '../services/operator.service';
+import { createErrorResponse, createSuccessResponse } from '.'
+import createRouter from '../create-router'
+import { OperatorService } from '../services/operator.service'
 
 //
-const router = createRouter();
+const router = createRouter()
 
 // import {
 //   OperatorAcceptInvitationPayload,
@@ -254,27 +254,27 @@ const router = createRouter();
 //     return createErrorResponse(err.message || 'Internal Server Error', 500);
 //   }
 // }
-const prisma = new PrismaClient(); // For standalone example simplicity
+const prisma = new PrismaClient() // For standalone example simplicity
 
-const operatorService = new OperatorService({ prisma });
+const operatorService = new OperatorService({ prisma })
 
 router.post(NETWORK_CONFIG.OPERATOR.GET_ALL, async (c) => {
-  console.log('herfe baby');
+  console.log('herfe baby')
   try {
-    const operators = await operatorService.getAllOperators(c.req.param('userId') as string);
-    return createSuccessResponse(operators);
-  } catch (e: any) {
-    return createErrorResponse(e.message, 500);
+    const operators = await operatorService.getAllOperators(c.req.param('userId') as string)
+    return createSuccessResponse(operators)
+  } catch (e) {
+    return createErrorResponse(e.message, 500)
   }
   // return operators;
-});
+})
 router.get(NETWORK_CONFIG.OPERATOR.PROFILES_BY_OPERATOR, async (c) => {
-  console.log('herfe baby');
+  console.log('herfe baby')
   const operators = await operatorService.getProfilesByOperator(
     c.req.param('operatorId') as string,
-    c.req.param('userId') as string,
-  );
-  return createSuccessResponse(operators);
+    c.req.param('userId') as string
+  )
+  return createSuccessResponse(operators)
   // return operators;
-});
-export default router;
+})
+export default router

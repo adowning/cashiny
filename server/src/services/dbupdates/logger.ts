@@ -1,17 +1,17 @@
-import config from './config';
+import config from './config'
 
 class Logger {
   info(...args: any[]) {
-    config.DEBUG && console.log(...args);
+    config.DEBUG && console.log(...args)
   }
   warn(...args: any[]) {
-    config.DEBUG && console.warn(...args);
+    config.DEBUG && console.warn(...args)
   }
   error(...args: any[]) {
-    console.error(...args);
+    console.error(...args)
   }
 }
 
-const logger: Logger = new Logger();
+const logger: Logger = new Logger()
 
-export default logger;
+export default logger

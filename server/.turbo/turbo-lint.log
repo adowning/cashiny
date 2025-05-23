@@ -1,2 +1,74 @@
 
-[0m[2m[35m$[0m [2m[1meslint . --ext .ts --report-unused-disable-directives --max-warnings 0 --fix[0m
+[0m[2m[35m$[0m [2m[1meslint . --ext .ts --report-unused-disable-directives --max-warnings 10000 --fix[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/create-app.ts[24m[0m
+[0m  [2m9:26[22m  [33mwarning[39m  'router' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/bonus.service.ts[24m[0m
+[0m  [2m2:15[22m  [33mwarning[39m  'BonusItem' is defined but never used. Allowed unused vars must match /^_/u             [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m2:40[22m  [33mwarning[39m  'GetUserBonusResponse' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m7:10[22m  [33mwarning[39m  'db' is defined but never used. Allowed unused vars must match /^_/u                    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/buildjson.ts[24m[0m
+[0m  [2m132:3[22m  [33mwarning[39m  'balance' is defined but never used. Allowed unused args must match /^_/u          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m133:3[22m  [33mwarning[39m  'stake' is defined but never used. Allowed unused args must match /^_/u            [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m134:3[22m  [33mwarning[39m  'originalBalance' is defined but never used. Allowed unused args must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m135:3[22m  [33mwarning[39m  'balance2' is defined but never used. Allowed unused args must match /^_/u         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m199:9[22m  [33mwarning[39m  'pretty' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/currency.service.ts[24m[0m
+[0m  [2m1:10[22m  [33mwarning[39m  'NETWORK_CONFIG' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m1:26[22m  [33mwarning[39m  'User' is defined but never used. Allowed unused vars must match /^_/u            [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/dbupdates/config.ts[24m[0m
+[0m  [2m1:10[22m  [33mwarning[39m  'ev' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/dbupdates/table.ts[24m[0m
+[0m  [2m21:13[22m  [33mwarning[39m  'err' is defined but never used. Allowed unused args must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/handlers/realtime.handler.ts[24m[0m
+[0m  [2m191:13[22m  [33mwarning[39m  'publishedBytes' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/handlers/x.ts[24m[0m
+[0m  [2m39:9[22m   [33mwarning[39m  'responseData' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m59:36[22m  [33mwarning[39m  'event' is defined but never used. Allowed unused args must match /^_/u                  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/php.service.ts[24m[0m
+[0m  [2m202:23[22m  [33mwarning[39m  'resolve' is defined but never used. Allowed unused args must match /^_/u              [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m202:32[22m  [33mwarning[39m  'reject' is defined but never used. Allowed unused args must match /^_/u               [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m205:9[22m   [33mwarning[39m  'stderrData' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m206:11[22m  [33mwarning[39m  'stdoutData' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/pragmatic.service.ts[24m[0m
+[0m    [2m1:10[22m  [33mwarning[39m  'auth' is defined but never used. Allowed unused vars must match /^_/u                       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m    [2m4:23[22m  [33mwarning[39m  'BetterAuthUser' is defined but never used. Allowed unused vars must match /^_/u             [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m    [2m7:10[22m  [33mwarning[39m  'getUserFromBetterAuthUser' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m11:37[22m  [33mwarning[39m  'userId' is defined but never used. Allowed unused args must match /^_/u                     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m70:9[22m   [33mwarning[39m  'token' is assigned a value but never used. Allowed unused vars must match /^_/u             [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m133:32[22m  [33mwarning[39m  'req' is defined but never used. Allowed unused args must match /^_/u                        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m156:33[22m  [33mwarning[39m  'req' is defined but never used. Allowed unused args must match /^_/u                        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/transactions/cashapp.webhook.ts[24m[0m
+[0m  [2m117:34[22m  [33mwarning[39m  'prisma' is defined but never used. Allowed unused args must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/transactions/deposit-xp.ts[24m[0m
+[0m  [2m1:8[22m  [33mwarning[39m  'db' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/transactions/withdraw.ts[24m[0m
+[0m  [2m13:41[22m  [33mwarning[39m  'req' is defined but never used. Allowed unused args must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/update.service.ts[24m[0m
+[0m  [2m26:13[22m  [33mwarning[39m  'err' is defined but never used. Allowed unused args must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/services/xp.service.ts[24m[0m
+[0m  [2m250:9[22m   [33mwarning[39m  'db' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m254:28[22m  [33mwarning[39m  'tx' is defined but never used. Allowed unused args must match /^_/u           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/utils/index.ts[24m[0m
+[0m  [2m2:13[22m  [33mwarning[39m  'ZodType' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/server/src/utils/jwt.ts[24m[0m
+[0m  [2m1:18[22m  [33mwarning[39m  'decode' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 35 problems (0 errors, 35 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m

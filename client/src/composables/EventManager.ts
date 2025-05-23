@@ -21,25 +21,21 @@ export interface IEventManagerService {
    * @param target The context (e.g., component instance) to which the callback is bound.
    * This target is also used to identify the listener for removal.
    */
-  on: (
-    eventName: string,
-    callback: (...args: any[]) => void,
-    target?: any
-  ) => void;
+  on: (eventName: string, callback: (...args: any[]) => void, target?: any) => void
 
   /**
    * Emits an event, triggering all registered callback functions for that event.
    * @param eventName The name of the event to emit.
    * @param args Optional arguments to pass to each listener's callback function.
    */
-  emit: (eventName: string, ...args: any[]) => void;
+  emit: (eventName: string, ...args: any[]) => void
 
   /**
    * Removes event listeners associated with a specific event name and target.
    * @param eventName The name of the event from which to remove listeners.
    * @param target The target object whose listeners for the specified event should be removed.
    */
-  off: (eventName: string, target: any) => void;
+  off: (eventName: string, target: any) => void
 
   /**
    * Removes multiple event listeners based on the provided criteria.
@@ -50,17 +46,17 @@ export interface IEventManagerService {
    * - If `undefined` (or no argument is passed), all event listeners for all events
    * are removed (use with caution).
    */
-  removeAllEvent: (remove?: string | object) => void;
+  removeAllEvent: (remove?: string | object) => void
 }
 
 // Your existing eventobject interface
 export interface eventobject {
-  call: Function;
-  target: any;
+  call: Function
+  target: any
 }
 
 // This will be shared across all uses of the composable, effectively making it a global event bus.
-const baseEventList: { [key: string]: eventobject[] } = {};
+const baseEventList: { [key: string]: eventobject[] } = {}
 
 export function useEventManager(): IEventManagerService {
   // Specify the return type here
@@ -73,7 +69,7 @@ export function useEventManager(): IEventManagerService {
   const on = (eventName: string, callback: Function, target?: any) => {
     // ... (rest of your existing implementation)
     if (!baseEventList[eventName]) {
-      baseEventList[eventName] = [];
+      baseEventList[eventName] = []
     }
     if (
       baseEventList[eventName].findIndex(
@@ -83,14 +79,12 @@ export function useEventManager(): IEventManagerService {
       const eventObj: eventobject = {
         call: callback,
         target: target,
-      };
-      baseEventList[eventName].push(eventObj);
+      }
+      baseEventList[eventName].push(eventObj)
     } else {
-      console.warn(
-        `EventManager: Listener for event "${eventName}" and target already exists.`
-      );
+      console.warn(`EventManager: Listener for event "${eventName}" and target already exists.`)
     }
-  };
+  }
 
   /**
    * Emits an event, calling all registered listeners.
@@ -100,19 +94,16 @@ export function useEventManager(): IEventManagerService {
   const emit = (eventName: string, ...args: any[]) => {
     // ... (rest of your existing implementation)
     if (baseEventList[eventName]) {
-      const listeners = [...baseEventList[eventName]];
+      const listeners = [...baseEventList[eventName]]
       listeners.forEach((element) => {
         try {
-          element.call.apply(element.target, args);
+          element.call.apply(element.target, args)
         } catch (error) {
-          console.error(
-            `EventManager: Error in event listener for "${eventName}":`,
-            error
-          );
+          console.error(`EventManager: Error in event listener for "${eventName}":`, error)
         }
-      });
+      })
     }
-  };
+  }
 
   /**
    * Removes event listeners for a specific event and target.
@@ -122,21 +113,21 @@ export function useEventManager(): IEventManagerService {
   const off = (eventName: string, target: any) => {
     // ... (rest of your existing implementation)
     if (!baseEventList[eventName]) {
-      return;
+      return
     }
-    const initialLength = baseEventList[eventName].length;
+    const initialLength = baseEventList[eventName].length
     baseEventList[eventName] = baseEventList[eventName].filter(
       (element) => element.target !== target
-    );
+    )
 
     if (baseEventList[eventName].length === initialLength) {
       // console.warn(`EventManager: No listeners found for target on event "${eventName}" to remove.`);
     }
 
     if (baseEventList[eventName].length === 0) {
-      delete baseEventList[eventName];
+      delete baseEventList[eventName]
     }
-  };
+  }
 
   /**
    * Removes all event listeners.
@@ -148,26 +139,26 @@ export function useEventManager(): IEventManagerService {
     // Your implementation uses 'any' for target here
     // ... (rest of your existing implementation)
     if (remove == null) {
-      Object.keys(baseEventList).forEach((key) => delete baseEventList[key]);
-    } else if (typeof remove === "string") {
-      delete baseEventList[remove];
-    } else if (typeof remove === "object") {
+      Object.keys(baseEventList).forEach((key) => delete baseEventList[key])
+    } else if (typeof remove === 'string') {
+      delete baseEventList[remove]
+    } else if (typeof remove === 'object') {
       // This check correctly identifies targets
       for (const eventName in baseEventList) {
         baseEventList[eventName] = baseEventList[eventName].filter(
           (element) => element.target !== remove
-        );
+        )
         if (baseEventList[eventName].length === 0) {
-          delete baseEventList[eventName];
+          delete baseEventList[eventName]
         }
       }
     }
-  };
+  }
 
   return {
     on,
     emit,
     off,
     removeAllEvent,
-  };
+  }
 }
