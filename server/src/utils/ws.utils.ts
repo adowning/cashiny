@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Server, ServerWebSocket } from 'bun'
 import { z } from 'zod'
 

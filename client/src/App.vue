@@ -42,47 +42,30 @@
 
 <script setup lang="ts">
   import { computed, onMounted, watch } from 'vue'
-
   import { setupGlobalAnimations } from '@/utils/setupAnimations'
-  // Import necessary Vue 3 APIs
   import { storeToRefs } from 'pinia'
-  // NOTE: Ensure these component paths are correct for your project or that they are auto-imported.
   import { loadingFadeOut } from 'virtual:app-loading'
-  // Import storeToRefs
   import { useRouter } from 'vue-router'
-
   import { useDisplay } from './composables/useDisplay'
-  // import { useAuthStore } from './stores/auth.store'
-  // import { useDepositStore } from './stores/deposit.store'
-  // import { useGameStore } from './stores/game.store'
-  // // Import useRouter
-  // import { useGlobalStore } from './stores/global.store'
-  // import { useSocketStore } from './stores/socket.store'
-  // import { useUserStore } from './stores/user.store'
-  // import { useVipStore } from './stores/vip.store'
   import LoginView from './views/LoginView.vue'
 
   // --- Stores ---
   const authStore = useAuthStore()
-  const userStore = useUserStore()
   const socketStore = useSocketStore()
   const globalStore = useGlobalStore()
   const depositStore = useDepositStore()
   const { isMobile } = useDisplay()
-  // const { status, connect, send, close, onMessage, data } = useAppWebSocket();
-  const { status, connect, onMessage } = useAppWebSocket()
+  const { onMessage } = useAppWebSocket()
 
   // --- State & Getters from Stores (using storeToRefs for reactivity) ---
   const {
     isAuthenticated,
     currentUser,
     initialAuthCheckComplete,
-    error: authError, // Renamed for clarity if used directly in template logic for isAppLoading
+    error: authError,
   } = storeToRefs(authStore)
 
-  // const {
-  //   userError, // Renamed for clarity
-  // } = storeToRefs(userStore);
+  const { status } = storeToRefs(socketStore)
 
   // isLoading from globalStore is used for secondary loading indicators, not primary app load.
   // const { isLoading: globalIsLoading } = storeToRefs(globalStore); // Already available via globalStore.isLoading

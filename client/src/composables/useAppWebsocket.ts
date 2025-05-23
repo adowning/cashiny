@@ -2,6 +2,7 @@ import { type Ref, computed, readonly, ref, watch } from 'vue'
 
 // Ensure this path is correct
 import { useEventManager } from '@/composables/EventManager'
+import { useAnimationController } from '@/composables/useAnimationController'
 import { useAuthStore } from '@/stores/auth.store'
 // Ensure this path is correct
 import { useNotificationStore } from '@/stores/notification.store'
@@ -36,12 +37,13 @@ if (!VITE_HONO_WEBSOCKET_URL) {
 // is run only once, and its returned values are shared across all calls to useAppWebSocket().
 export const useAppWebSocket = createGlobalState(() => {
   const authStore = useAuthStore()
+  const animationController = useAnimationController()
   const notificationStore = useNotificationStore()
   const eventManager = useEventManager()
 
   const online = useOnline()
   const visibility = useDocumentVisibility()
-
+  const attempt = ref(0)
   // Holds the reactive UseWebSocketReturn object from @vueuse/core
   const wsInstanceRef: Ref<UseWebSocketReturn<any> | null> = ref(null)
   const messageQueue = ref<any[]>([])
@@ -104,7 +106,7 @@ export const useAppWebSocket = createGlobalState(() => {
 
     const wsURL = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${VITE_HONO_WEBSOCKET_URL}/ws?token=${encodeURIComponent(token)}`
     console.log(`WebSocket: Attempting to connect to ${wsURL}`)
-
+    attempt.value = attempt.value + 1
     // Create a new WebSocket connection instance using @vueuse/core
     const newWs = useWebSocket(wsURL, {
       heartbeat: {
@@ -114,7 +116,7 @@ export const useAppWebSocket = createGlobalState(() => {
       },
       autoReconnect: {
         retries: 5, // Number of automatic reconnection attempts
-        delay: (attempt: number) => Math.min(attempt * 2000, 30000), // Exponential backoff, max 30s
+        delay: Math.min(attempt.value * 2000, 30000), // Exponential backoff, max 30s
         onFailed: () => {
           notificationStore.addNotification(
             'error',
@@ -160,6 +162,7 @@ export const useAppWebSocket = createGlobalState(() => {
         try {
           const parsedMessage: WsMessage = destr(messageData) // Safely parse JSON
           console.log('WebSocket: Message received <-', parsedMessage)
+          animationController.handleWebSocketMessage(parsedMessage)
           eventManager.emit('wsMessage', parsedMessage) // Broadcast the parsed message
         } catch (error) {
           console.error(
@@ -174,11 +177,11 @@ export const useAppWebSocket = createGlobalState(() => {
     })
 
     // Watch for WebSocket errors
-    watch(newWs.error, (errorEvent) => {
-      console.error('WebSocket: An error occurred ->', errorEvent)
-      eventManager.emit('wsError', errorEvent?.message || 'An unknown WebSocket error occurred.')
-      // Note: `autoReconnect` in `useWebSocket` will typically handle reconnection on errors.
-    })
+    // watch(newWs.error, (errorEvent) => {
+    //   console.error('WebSocket: An error occurred ->', errorEvent)
+    //   eventManager.emit('wsError', errorEvent?.message || 'An unknown WebSocket error occurred.')
+    //   // Note: `autoReconnect` in `useWebSocket` will typically handle reconnection on errors.
+    // })
 
     // Explicitly open the connection if it's currently closed and not a user-initiated close
     if (newWs.status.value === 'CLOSED' && !userClosedConnection.value) {
@@ -216,7 +219,6 @@ export const useAppWebSocket = createGlobalState(() => {
 
   // Method for components to subscribe to WebSocket messages
   const onMessage = (callback: (message: WsMessage) => void) => {
-    // `eventManager.on` should return an unsubscribe function
     const unsubscribe = eventManager.on('wsMessage', callback)
     // It's the responsibility of the component calling `onMessage`
     // to call this unsubscribe function during its `onUnmounted` lifecycle hook.

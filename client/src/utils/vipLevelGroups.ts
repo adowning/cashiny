@@ -7,7 +7,7 @@ import img_vipemblem_100_149 from '@/assets/vip/image/img_vipemblem_100-149.png'
 import img_vipemblem_159_199 from '@/assets/vip/image/img_vipemblem_159-199.png'
 import img_vipemblem_200 from '@/assets/vip/image/img_vipemblem_200.png'
 
-const vipLevelGroups: Array<any> = [
+const vipLevelGroups: Array<string> = [
   img_vipemblem_2,
   img_vipemblem_1_24,
   img_vipemblem_25_49,

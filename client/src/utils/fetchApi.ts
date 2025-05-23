@@ -1,19 +1,18 @@
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth.store'
 import { useUserStore } from '@/stores/user.store'
-import { ApiAuthError } from '@cashflow/types'
+// import { ApiAuthError } from '@cashflow/types'
 import { logToPage } from './logger'
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}): Promise<any> {
   const authStore = useAuthStore()
-  const useStore = useUserStore()
-  authStore.setLoading(true)
-  authStore.setError(null)
+  authStore.isLoading = true
+  authStore.error = null
   console.log(endpoint)
   const completeUrl = endpoint.startsWith('http') ? endpoint : `${endpoint}` // Assuming /api prefix for Hono
   logToPage('debug', `WorkspaceApi: Calling ${options.method || 'GET'} ${completeUrl}`)
 
   try {
-    const token = authStore.session?.token
+    const token = authStore.accessToken
     const headers = new Headers(options.headers || {})
     if (token && !headers.has('Authorization')) {
       headers.set('Authorization', `Bearer ${token}`)
@@ -25,7 +24,7 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}): Pro
     const response = await fetch(completeUrl, { ...options, headers })
 
     if (!response.ok) {
-      let errorData: ApiAuthError = {
+      let errorData = {
         message: `HTTP error! Status: ${response.status} ${response.statusText}`,
         code: response.status,
       }
@@ -36,7 +35,7 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}): Pro
         /* Ignore if response is not JSON */
       }
       logToPage('error', `WorkspaceApi: Error on ${completeUrl}:`, errorData)
-      authStore.setError(errorData)
+      authStore.error = errorData
       throw errorData
     }
 
@@ -52,14 +51,14 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}): Pro
     logToPage('error', `WorkspaceApi: Exception during call to ${completeUrl}:`, e)
     // Ensure error in store is an ApiAuthError
     if (e.message && e.code) {
-      authStore.setError(e as ApiAuthError)
+      authStore.error = e
     } else {
-      authStore.setError({
+      authStore.error = {
         message: e.message || 'Network or unexpected error during API call',
-      })
+      }
     }
     throw e // Re-throw for the calling function to handle
   } finally {
-    authStore.setLoading(false)
+    authStore.isLoading = false
   }
 }

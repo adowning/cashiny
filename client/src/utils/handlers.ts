@@ -38,7 +38,6 @@ export function setupWebSocketHandlers(): void {
     // If it is a chat message, forward it directly to the chat component for processing
     if (message.type === 'text' || message.type === 'image' || message.type === 'file') {
       // 直接转发原始消息
-      //@ts-ignore
       emitter.emit('chatMessage', message as ChatMessage)
       return
     }
@@ -58,7 +57,7 @@ export function setupWebSocketHandlers(): void {
       text: '系统消息',
     }
 
-    const notification = notificationStore.addComplexNotification('info', {
+    notificationStore.addComplexNotification('info', {
       title: typeInfo.text,
       message: h('div', { class: 'flex flex-col gap-1' }, [
         h('div', { class: 'text-[var(--el-text-color-primary)]' }, message.title),

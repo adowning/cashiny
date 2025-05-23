@@ -128,11 +128,11 @@ export function buildJson(
 }
 
 export function buildJsonForSpin(
-  jsonBase: any,
-  balance: number,
-  stake: number,
-  originalBalance: number,
-  balance2: number
+  jsonBase: any
+  // balance: number,
+  // stake: number,
+  // originalBalance: number,
+  // balance2: number
 ): string {
   // //console.log(jsonBase.result.user.balance.cash, ' -- ', balance)
   // const start = jsonBase.result.user.balance.cash.atStart
@@ -196,7 +196,7 @@ export function buildJson2(
     }
   })
   jsonBase.result.user.stakes.types = newTypes
-  const pretty = JSON.stringify(jsonBase)
+  // const pretty = JSON.stringify(jsonBase)
 
   return jsonBase
 }

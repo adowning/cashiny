@@ -1,10 +1,10 @@
 import { onMounted, onUnmounted, readonly, ref } from 'vue'
 
-import { type EventManagerInstance, useEventManager } from '@/composables/EventManager'
+import { type IEventManagerService, useEventManager } from '@/composables/EventManager'
 //
 import { type WsMessage, useAppWebSocket } from '@/composables/useAppWebsocket'
 //
-import type { AnimationConfig, AnimationControlPayload, SpriteData } from '@/types/animation'
+import type { AnimationConfig, AnimationControlPayload, SpriteData } from '@cashflow/types'
 
 // Adjust path
 
@@ -18,19 +18,11 @@ export const ANIMATION_PLAY_EVENT = 'animation:play'
 export const ANIMATION_STOP_EVENT = 'animation:stop'
 export const ANIMATION_STOP_ALL_EVENT = 'animation:stopAll' // New event
 
-let eventManagerInstance: EventManagerInstance | null = null
+let eventManagerInstance: IEventManagerService | null = null
 
 export function useAnimationController() {
-  if (!eventManagerInstance) {
-    eventManagerInstance = useEventManager()
-  }
-  const {
-    data: wsData,
-    status: wsStatus,
-    send: wsSend,
-    open: wsOpen,
-    close: wsClose,
-  } = useAppWebSocket()
+  eventManagerInstance = useEventManager()
+  // const {} = useAppWebSocket()
 
   const registerAnimation = async (config: AnimationConfig) => {
     animationRegistry.value[config.name] = config
@@ -116,11 +108,11 @@ export function useAnimationController() {
   // The current `useAppWebsocket.ts` (from file upload) directly uses eventManager.emit('wsMessage', parsedMessage).
   // So, we should listen to 'wsMessage' from the eventManager.
 
-  const processWsEventMessage = (rawMessage: any) => {
-    // Assuming rawMessage is already the parsed WsMessage object
-    // because useAppWebSocket emits it that way via eventManager.
-    handleWebSocketMessage(rawMessage as WsMessage)
-  }
+  // const processWsEventMessage = (rawMessage: any) => {
+  //   // Assuming rawMessage is already the parsed WsMessage object
+  //   // because useAppWebSocket emits it that way via eventManager.
+  //   handleWebSocketMessage(rawMessage as WsMessage)
+  // }
 
   onMounted(() => {
     // Ensure WebSocket connection is managed (e.g., connected)
@@ -133,7 +125,7 @@ export function useAnimationController() {
   })
 
   onUnmounted(() => {
-    eventManagerInstance?.off('wsMessage', processWsEventMessage, 'AnimationController')
+    eventManagerInstance?.off('wsMessage', processWsEventMessage)
     console.log('AnimationController: Unmounted, stopped listening for WebSocket messages.')
   })
 
@@ -148,5 +140,6 @@ export function useAnimationController() {
     stopAllAnimations: () => eventManagerInstance?.emit(ANIMATION_STOP_ALL_EVENT),
     animationRegistry: readonly(animationRegistry),
     loadedSpriteDataCache: readonly(loadedSpriteDataCache),
+    handleWebSocketMessage,
   }
 }

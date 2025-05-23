@@ -128,18 +128,9 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue' // Import necessary Vue 3 APIs
+  import { ref, reactive, onMounted, onUnmounted, watch } from 'vue' // Import necessary Vue 3 APIs
   import { storeToRefs } from 'pinia' // Import storeToRefs
   import { useRouter } from 'vue-router' // For navigation (though handled elsewhere now)
-
-  // import { useAuthStore } from '@/stores/auth.store'
-  // import { useUserStore } from '@/stores/user.store' // Keep if needed for user data display (unlikely in LoginView)
-  // import { useNotificationStore } from '@/stores/notification.store'
-  // import { useGlobalStore } from '@/stores/global.store' // Keep if needed for global loading toggle (unlikely here now)
-
-  // Assuming you have these components/utilities
-  // import Logo from "@/components/icons/Logo.vue";
-  // import GlobalLoading from '@/components/GlobalLoading.vue';
   import { loadingFadeOut } from 'virtual:app-loading' // Assuming this utility exists
 
   // --- Google Identity Services (GSI) ---
@@ -152,26 +143,20 @@
   // --- Composables & Stores ---
   const router = useRouter() // Router might still be needed for direct push in specific cases, but main auth nav is in App.vue
   const authStore = useAuthStore()
-  const userStore = useUserStore() // Keep if you need to access user details AFTER login but BEFORE redirect
   const notificationStore = useNotificationStore()
-  const globalStore = useGlobalStore() // Keep if used
 
   // Use storeToRefs for reactive state from stores
   const {
     currentUser,
     isLoading: isAuthLoading, // Auth store's loading state
-    error: authError, // Auth store's error state
     isAuthenticated, // Auth store's authentication status
   } = storeToRefs(authStore)
-  // const {
-  // currentUser
-  // } = storeToRefs(userStore)
+
   const showError = ref<boolean>(false)
   // Destructure actions directly (they are not reactive)
-  const { signInWithPassword, signUpNewUser, signInWithGoogleIdToken, clearAuthError } = authStore
+  const { signInWithPassword, signUpNewUser, signInWithGoogleIdToken } = authStore
 
   // --- Component State ---
-  const uiMode = ref<'signIn' | 'signUp'>('signIn') // To toggle between sign-in and sign-up forms
   const formData = reactive({
     email: '',
     password: '',

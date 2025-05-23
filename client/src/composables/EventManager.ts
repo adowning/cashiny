@@ -59,7 +59,6 @@ export interface eventobject {
 const baseEventList: { [key: string]: eventobject[] } = {}
 
 export function useEventManager(): IEventManagerService {
-  // Specify the return type here
   /**
    * Adds an event listener.
    * @param eventName The name of the event.

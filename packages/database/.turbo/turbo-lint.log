@@ -1,6 +1,6 @@
 
 [0m[2m[35m$[0m [2m[1meslint . --ext .ts,.js --report-unused-disable-directives --max-warnings 0 --fix[0m
-(node:372162) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/ash/Documents/cashflow/packages/database/eslint.config.js?mtime=1747891397803 is not specified and it doesn't parse as CommonJS.
+(node:393454) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/ash/Documents/cashflow/packages/database/eslint.config.js?mtime=1747891397803 is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/ash/Documents/cashflow/packages/database/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)

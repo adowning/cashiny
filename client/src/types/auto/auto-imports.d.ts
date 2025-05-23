@@ -353,9 +353,6 @@ declare global {
   export type { SSROptions } from '../../composables/useDisplay'
   import('../../composables/useDisplay')
   // @ts-ignore
-  export type { Category, GameSearchResponse, GameEnterResponse, Search, GameHistoryResponse, GameBigWinData, GetGameCategoriesResponse, GetGameSearchResponse, GameUserBody, GetGameEnterResponse, GetGameHistoryResponse, GetGameBigWinResponse, GetGameFavoriteListResponse, GameEnterBody } from '../../stores/game.store'
-  import('../../stores/game.store')
-  // @ts-ignore
   export type { Notification, INotificationStore } from '../../stores/notification.store'
   import('../../stores/notification.store')
   // @ts-ignore

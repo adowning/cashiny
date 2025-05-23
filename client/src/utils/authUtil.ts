@@ -1,7 +1,5 @@
 import Cookies from 'js-cookie'
-import { useUserStore } from '@/stores/user.store'
-import { storageLocal, isString } from '@pureadmin/utils'
-
+import { storageLocal } from '@pureadmin/utils'
 export interface DataInfo<T> {
   /** token */
   accessToken: string
@@ -50,7 +48,7 @@ export function getToken(): DataInfo<number> {
 export function setToken(data: DataInfo<Date>) {
   let expires = 0
   const { accessToken, refreshToken } = data
-  //   const {isRemembered, loginDay} = useUserStore();
+  //   const {isRemembered, loginDay} = useUserStore(); // eslint-disable-line @typescript-eslint/no-unused-vars
   expires = new Date(data.expires).getTime() // 如果后端直接设置时间戳，将此处代码改为expires = data.expires，然后把上面的DataInfo<Date>改成DataInfo<number>即可
   const cookieString = JSON.stringify({ accessToken, expires, refreshToken })
 
@@ -70,8 +68,8 @@ export function setToken(data: DataInfo<Date>) {
     //   ? {
     //       expires: loginDay
     //     }
-    //   : {}
   )
+
   function setUserKey(
     // id: {
     //   id: number
@@ -88,7 +86,7 @@ export function setToken(data: DataInfo<Date>) {
     roles: string[],
     permissions: string[]
   ) {
-    // userStore.SET_ID(id)
+    // Store ID logic would go here
     // useUserStoreOutside().SET_AVATAR(avatar)
     // useUserStoreOutside().SET_USERNAME(username)
     // useUserStoreOutside().SET_NICKNAME(nickname)
@@ -143,13 +141,12 @@ export const formatToken = (token: string): string => {
 }
 
 /** 是否有按钮级别的权限（根据登录接口返回的`permissions`字段进行判断）*/
+function isString(value: unknown): value is string {
+  return typeof value === 'string'
+}
+
+/** 是否有按钮级别的权限（根据登录接口返回的`permissions`字段进行判断）*/
 export const hasPerms = (value: string | Array<string>): boolean => {
   if (!value) return false
-  // const { permissions } = useUserStoreOutside()
-  // if (!permissions) return false
-  // if (permissions.length === 1 && permissions[0] === allPerms) return true
-  const isAuths = isString(value)
-  // ? permissions.includes(value)
-  // : isIncludeAllChildren(value, permissions)
-  return isAuths ? true : false
+  return isString(value)
 }

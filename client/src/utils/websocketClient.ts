@@ -227,7 +227,7 @@ export class WebSocketClient {
     }
   }
 
-  public send(data: any): void {
+  public send(data: unknown): void {
     if (this.wsClient?.status.value === 'OPEN') {
       this.wsClient.send(JSON.stringify(data))
     } else {
@@ -292,17 +292,5 @@ export class WebSocketClient {
   private handleMessage(message: WsMessage): void {
     console.log('handleMessage', message)
     this.emitter.emit('wsMessage', message)
-
-    // console.log('handleMessage', this.tick);
-    // switch (message.type) {
-    //   case 'PONG':
-    //     this.resetCountdown();
-    //     break;
-    //   case 'DATABASE_UPDATE':
-    //     // this.handleDatabaseUpdate(message);
-    //     break;
-    //   default:
-    //     console.log(message);
-    // }
   }
 }

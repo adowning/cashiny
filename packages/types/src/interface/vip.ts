@@ -1,40 +1,41 @@
-// import { VipInfo as IVipInfo } from "../index";
+export type { VipInfo as PrismaVipInfo, UserReward as PrismaUserReward } from '../prisma/types'
+
 export interface VipInfo {
-  id: string; // ID of the VipInfo record
-  userId: string;
-  level: number;
-  currentLevelXp: number;
-  totalXp: number;
-  nextLevelXpRequired: number; // XP needed to reach the next level from 0 XP of current level
+  id: string // ID of the VipInfo record
+  userId: string
+  level: number
+  currentLevelXp: number
+  totalXp: number
+  nextLevelXpRequired: number // XP needed to reach the next level from 0 XP of current level
   // Daily/Weekly/Monthly claims or limits
-  dailyBonusClaimedAt?: Date | null;
-  weeklyBonusClaimedAt?: Date | null;
-  monthlyBonusClaimedAt?: Date | null;
+  dailyBonusClaimedAt?: Date | null
+  weeklyBonusClaimedAt?: Date | null
+  monthlyBonusClaimedAt?: Date | null
   // Other VIP specific benefits or states
-  cashbackPercentage: number;
-  prioritySupport: boolean;
-  specialBonusesAvailable: number; // e.g., count of special bonuses
-  createdAt: Date;
-  updatedAt: Date;
+  cashbackPercentage: number
+  prioritySupport: boolean
+  specialBonusesAvailable: number // e.g., count of special bonuses
+  createdAt: Date
+  updatedAt: Date
 }
 export interface LevelBenefit {
-  id: string; // e.g., 'increased_withdrawal_limit', 'special_avatar_frame'
-  name: string;
-  description: string;
+  id: string // e.g., 'increased_withdrawal_limit', 'special_avatar_frame'
+  name: string
+  description: string
 }
 
 export interface LevelConfig {
-  level: number; // The numeric level
-  name: string; // e.g., "Bronze I", "Silver Elite"
-  xpRequired: number; // XP needed to complete THIS level (length of this level's XP bar)
-  cumulativeXpToReach: number; // Total XP from level 0 needed to ENTER this level
-  cashbackPercentage: number;
-  prioritySupport: boolean;
-  initialSpecialBonuses?: number; // Bonuses granted upon reaching this level
-  dailyBonusMultiplier?: number;
-  weeklyBonusAmount?: number;
-  monthlyBonusPackage?: string; // Identifier for a package of items
-  benefits: LevelBenefit[]; // Array of specific benefits unlocked
+  level: number // The numeric level
+  name: string // e.g., "Bronze I", "Silver Elite"
+  xpRequired: number // XP needed to complete THIS level (length of this level's XP bar)
+  cumulativeXpToReach: number // Total XP from level 0 needed to ENTER this level
+  cashbackPercentage: number
+  prioritySupport: boolean
+  initialSpecialBonuses?: number // Bonuses granted upon reaching this level
+  dailyBonusMultiplier?: number
+  weeklyBonusAmount?: number
+  monthlyBonusPackage?: string // Identifier for a package of items
+  benefits: LevelBenefit[] // Array of specific benefits unlocked
   // ... any other properties specific to a level
 }
 
@@ -47,117 +48,116 @@ export interface LevelConfig {
 // }
 
 // Re-export or define Prisma types if not directly imported in service
-export type { VipInfo as PrismaVipInfo, UserReward as PrismaUserReward } from '@cashflow/database';
 
 export interface UserVipDetails {
-  level: number;
-  currentLevelXp: number;
-  totalXp: number;
-  xpToNextLevel: number;
-  nextLevelXpRequired: number; // XP bar length for current level
-  cashbackPercentage: number;
-  prioritySupport: boolean;
-  specialBonusesAvailable: number;
-  lastDailyBonusClaim?: Date | null;
-  lastWeeklyBonusClaim?: Date | null;
-  lastMonthlyBonusClaim?: Date | null;
+  level: number
+  currentLevelXp: number
+  totalXp: number
+  xpToNextLevel: number
+  nextLevelXpRequired: number // XP bar length for current level
+  cashbackPercentage: number
+  prioritySupport: boolean
+  specialBonusesAvailable: number
+  lastDailyBonusClaim?: Date | null
+  lastWeeklyBonusClaim?: Date | null
+  lastMonthlyBonusClaim?: Date | null
 }
 
 export interface LevelBenefitInfo {
   // For client-side display of benefits
-  id: string;
-  name: string;
-  description: string;
+  id: string
+  name: string
+  description: string
 }
 
 export interface SharedLevelConfig {
   // Client-friendly version of LevelConfig
-  level: number;
-  name: string;
-  xpRequiredToComplete: number; // XP needed for this level's bar
-  cumulativeXpToEnter: number;
-  cashbackPercentage: number;
-  prioritySupport: boolean;
-  benefits: LevelBenefitInfo[];
+  level: number
+  name: string
+  xpRequiredToComplete: number // XP needed for this level's bar
+  cumulativeXpToEnter: number
+  cashbackPercentage: number
+  prioritySupport: boolean
+  benefits: LevelBenefitInfo[]
   // Potentially simplified reward descriptions for display
-  levelUpRewardDescription?: string;
-  dailyRewardDescription?: string;
-  weeklyRewardDescription?: string;
-  monthlyRewardDescription?: string;
+  levelUpRewardDescription?: string
+  dailyRewardDescription?: string
+  weeklyRewardDescription?: string
+  monthlyRewardDescription?: string
 }
 
 export interface SignInRewardConfig {
   // Matches your leveling.config.ts structure
-  day: number;
-  description: string;
-  amount?: number;
-  currencyId?: string;
-  xp?: number;
+  day: number
+  description: string
+  amount?: number
+  currencyId?: string
+  xp?: number
 }
 
 export interface VipSignInStatusInfo {
-  currentStreak: number;
-  todayClaimed: boolean;
-  rewards: SignInRewardConfig[]; // Full list of possible daily rewards
-  nextRewardForToday?: SignInRewardConfig; // The reward applicable if claimed now
+  currentStreak: number
+  todayClaimed: boolean
+  rewards: SignInRewardConfig[] // Full list of possible daily rewards
+  nextRewardForToday?: SignInRewardConfig // The reward applicable if claimed now
 }
 
 // For VipTask (client-side representation)
 export interface VipTaskInfo {
-  id: string;
-  taskType: string; // Consider using the VipTaskType enum string values
-  description: string;
-  xpReward?: number | null;
-  targetValue?: number | null;
-  currentProgress: number;
-  isCompleted: boolean;
-  isClaimed: boolean;
+  id: string
+  taskType: string // Consider using the VipTaskType enum string values
+  description: string
+  xpReward?: number | null
+  targetValue?: number | null
+  currentProgress: number
+  isCompleted: boolean
+  isClaimed: boolean
   // Add item/bonus reward details if needed for display
 }
 
 export interface RebateHistoryEntry {
-  id: string;
-  date: Date;
-  originalTransactionId: string;
-  rebateAmount: number;
-  currencyId: string;
-  status: string; // RewardStatus enum string value
-  paidOutAt?: Date | null;
+  id: string
+  date: Date
+  originalTransactionId: string
+  rebateAmount: number
+  currencyId: string
+  status: string // RewardStatus enum string value
+  paidOutAt?: Date | null
 }
 
 export interface LevelUpRewardInfo {
-  level: number;
-  description: string;
-  amount?: number | null;
-  currencyId?: string | null;
-  status: string; // RewardStatus
-  claimedAt?: Date | null;
+  level: number
+  description: string
+  amount?: number | null
+  currencyId?: string | null
+  status: string // RewardStatus
+  claimedAt?: Date | null
   // Potentially item details if applicable
 }
 
 // You might also want a shared UserReward type if you expose the PrismaUserReward directly or a mapped version
-export interface UserRewardItem {
-  id: string;
-  rewardType: string; // RewardType enum string value
-  description: string;
-  status: string; // RewardStatus enum string value
-  amount?: number | null;
-  currencyId?: string | null;
-  metaData?: any; // Json
-  claimedAt?: Date | null;
-  expiresAt?: Date | null;
-  availableFrom: Date;
-  vipLevelRequirement?: number | null;
+export interface UserReward {
+  id: string
+  rewardType: string // RewardType enum string value
+  description: string
+  status: string // RewardStatus enum string value
+  amount?: number | null
+  currencyId?: string | null
+  metaData?: any // Json
+  claimedAt?: Date | null
+  expiresAt?: Date | null
+  availableFrom: Date
+  vipLevelRequirement?: number | null
 }
 
 export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page?: number;
-  limit?: number;
-  totalPages?: number; // Calculated: Math.ceil(total / limit)
-  hasNextPage?: boolean; // Calculated: page * limit < total
-  hasPrevPage?: boolean; // Calculated: page > 1
+  items: T[]
+  total: number
+  page?: number
+  limit?: number
+  totalPages?: number // Calculated: Math.ceil(total / limit)
+  hasNextPage?: boolean // Calculated: page * limit < total
+  hasPrevPage?: boolean // Calculated: page > 1
 }
 // A simplified version for the function's return, focusing on what's needed
 // We can call this UserVipProfile or similar

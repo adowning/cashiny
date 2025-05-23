@@ -133,16 +133,17 @@ export interface EventPayloads {
   [AppEvents.SYSTEM_NOTIFICATION]: {
     message: string
     level: 'info' | 'warn' | 'error'
-    details?: any
+    details?: unknown
   }
 
   // Add other event types and their corresponding payload interfaces here
   // ...
+  [key: string]: unknown
 }
 
 // Typed EventEmitter (Optional, but provides better type safety for .on, .emit)
 // This gives you type checking for event names and their corresponding payload types.
-interface TypedEventEmitter<TEvents extends Record<string, any>> {
+interface TypedEventEmitter<TEvents extends Record<string, unknown>> {
   on<TEventName extends keyof TEvents>(
     eventName: TEventName,
     listener: (payload: TEvents[TEventName]) => void

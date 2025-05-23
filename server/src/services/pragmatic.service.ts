@@ -1,14 +1,11 @@
-import { auth } from '@/auth'
 import { db } from '@cashflow/database'
 // import { GetUserAmount, GetUserAmountResponseData, GetUserBalance, GetUserBalanceResponseData, GetUserEmailVerifyResponseData, GetUserInfoResponseData, UpdateCashtag, UpdateEmail, UpdatePassword, UpdateSuspendUser, User } from '@cashflow/types';
-import type { User as BetterAuthUser } from 'better-auth'
 import { Context, HonoRequest } from 'hono'
 
-import { getUserFromBetterAuthUser } from './auth.service'
 import { UserWithProfile } from '@cashflow/types'
 
 // GET /user/amount - get user amount
-export async function getUserAmount(userId: string) {
+export async function getUserAmount() {
   // Fetch user's main balance and potentially other relevant data
   // Based on the GetUserAmount interface, we need amount, currency, withdraw, rate.
   // Schema has user.balance (Decimal). Withdraw and rate are not directly available.
@@ -107,7 +104,7 @@ export async function miniLobbyGameRun(req: HonoRequest) {
   }
 }
 
-export async function gameDemo(user: UserWithProfile, req: HonoRequest) {
+export async function gameDemo(_user: UserWithProfile, req: HonoRequest) {
   const gameCode = req.query.game
   const token = req.query.token
 
@@ -130,7 +127,7 @@ export async function gameDemo(user: UserWithProfile, req: HonoRequest) {
   })
 }
 
-export async function gameList(req: HonoRequest) {}
+export async function gameList(_req: HonoRequest) {}
 
 export async function gamesWithPattern(req: HonoRequest) {
   const { Game } = req.app.db
@@ -153,7 +150,7 @@ export async function gamesWithPattern(req: HonoRequest) {
   return res.json(dto)
 }
 
-export function gameMaintenance(req: HonoRequest) {
+export function gameMaintenance(_req: HonoRequest) {
   res.render(`game/maintenancing.ejs`)
 }
 

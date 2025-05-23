@@ -7,8 +7,10 @@ import type {
   Profile as PrismaProfile,
   Profile,
   User,
+  UserReward as PrismaUserReward,
 } from '../prisma/types'
-
+// import { PrismaUserReward } from './vip'
+// export { UserReward } from '../prisma/types'
 // Adjust path if needed, e.g., to "../prisma/interfaces"
 
 // --- Type Aliases for Readability or Branding ---
@@ -77,6 +79,9 @@ export interface UpdatePasswordDto {
   password: string // User's new plain text password
 }
 
+export interface ClientClaimVipRewardPayload {
+  benefit_id: string // The unique identifier of the VIP benefit to be claimed.
+}
 /**
  * DTO for client to set their referrer.
  */
@@ -176,7 +181,7 @@ export interface UserVipStatus {
   nextLevel?: number // The number of the next VIP level (if one exists)
   nextLevelName?: string
   progressPercentage?: number // Percentage towards the next level (0-100)
-  // benefits: PrismaVipBenefit[]; // List of VipBenefit objects for the current level
+  benefits: PrismaUserReward[] // List of VipBenefit objects for the current level
 }
 
 // --- Real-time Update Types (Keep if used for WebSockets) ---

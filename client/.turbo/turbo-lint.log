@@ -1,2 +1,195 @@
 
-[0m[2m[35m$[0m [2m[1mESLINT_USE_FLAT_CONFIG=false eslint . --ext .vue,.ts,.js,.cjs --report-unused-disable-directives --max-warnings 0 --fix[0m
+[0m[2m[35m$[0m [2m[1mESLINT_USE_FLAT_CONFIG=false eslint . --ext .vue,.ts,.js,.cjs --report-unused-disable-directives --max-warnings 1000 --fix[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/App.vue[24m[0m
+[0m  [2m65:12[22m  [33mwarning[39m  'authError' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/common/AuroraText.vue[24m[0m
+[0m  [2m3:5[22m  [33mwarning[39m  Prop 'className' requires default value to be set  [2mvue/require-default-prop[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/common/CloseButton.vue[24m[0m
+[0m  [2m5:5[22m  [33mwarning[39m  Prop 'label' requires default value to be set         [2mvue/require-default-prop[22m[0m
+[0m  [2m6:5[22m  [33mwarning[39m  Prop 'idleImage' requires default value to be set     [2mvue/require-default-prop[22m[0m
+[0m  [2m7:5[22m  [33mwarning[39m  Prop 'pressedImage' requires default value to be set  [2mvue/require-default-prop[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/common/GlassButton.vue[24m[0m
+[0m  [2m4:30[22m  [33mwarning[39m  Prop "to" should define at least its type     [2mvue/require-prop-types[22m[0m
+[0m  [2m4:36[22m  [33mwarning[39m  Prop "type" should define at least its type   [2mvue/require-prop-types[22m[0m
+[0m  [2m4:44[22m  [33mwarning[39m  Prop "w" should define at least its type      [2mvue/require-prop-types[22m[0m
+[0m  [2m4:49[22m  [33mwarning[39m  Prop "text" should define at least its type   [2mvue/require-prop-types[22m[0m
+[0m  [2m4:57[22m  [33mwarning[39m  Prop "shine" should define at least its type  [2mvue/require-prop-types[22m[0m
+[0m  [2m4:66[22m  [33mwarning[39m  Prop "color" should define at least its type  [2mvue/require-prop-types[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/common/Loading.vue[24m[0m
+[0m  [2m1:1[22m  [33mwarning[39m  Component name "Loading" should always be multi-word  [2mvue/multi-word-component-names[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/common/Logo.vue[24m[0m
+[0m  [2m1:1[22m  [33mwarning[39m  Component name "Logo" should always be multi-word  [2mvue/multi-word-component-names[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/common/VGSprite.vue[24m[0m
+[0m  [2m137:7[22m  [33mwarning[39m  Forbidden non-null assertion  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/common/VSprite.vue[24m[0m
+[0m   [2m2:33[22m  [33mwarning[39m  'onUnmounted' is defined but never used. Allowed unused vars must match /^_/u         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m19:9[22m   [33mwarning[39m  'direction' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m36:7[22m   [33mwarning[39m  'x' is defined but never used. Allowed unused vars must match /^_/u                   [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m37:7[22m   [33mwarning[39m  'y' is defined but never used. Allowed unused vars must match /^_/u                   [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/home/LiveWin.vue[24m[0m
+[0m    [2m7:10[22m  [33mwarning[39m  'InlineSvg' is defined but never used. Allowed unused vars must match /^_/u                             [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m10:10[22m  [33mwarning[39m  'iconPublic91' is defined but never used. Allowed unused vars must match /^_/u                          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m41:13[22m  [33mwarning[39m  'AssumedGameBigWinData' is defined but never used. Allowed unused vars must match /^_/u                 [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m118:9[22m   [33mwarning[39m  'desktopLuckyBets' is assigned a value but never used. Allowed unused vars must match /^_/u             [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m162:9[22m   [33mwarning[39m  'svgIconTransformer' is assigned a value but never used. Allowed unused vars must match /^_/u           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m182:9[22m   [33mwarning[39m  'getRandomDesktopPlaceholder' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/home/SettingsView.vue[24m[0m
+[0m   [2m5:12[22m  [33mwarning[39m  'useUserStore' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m54:12[22m  [33mwarning[39m  'logOutz' is defined but never used. Allowed unused vars must match /^_/u       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/layout/FooterBar.vue[24m[0m
+[0m  [2m26:11[22m  [33mwarning[39m  'isMobile' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m31:12[22m  [33mwarning[39m  'toggleChat' is defined but never used. Allowed unused vars must match /^_/u         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m35:12[22m  [33mwarning[39m  'toggleBonusDrawer' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/layout/FooterBarMobile.vue[24m[0m
+[0m  [2m20:11[22m  [33mwarning[39m  'isMobile' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m25:12[22m  [33mwarning[39m  'toggleChat' is defined but never used. Allowed unused vars must match /^_/u         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m29:12[22m  [33mwarning[39m  'toggleBonusDrawer' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/layout/PlayerAvatar.vue[24m[0m
+[0m   [2m2:45[22m  [33mwarning[39m  'toRefs' is defined but never used. Allowed unused vars must match /^_/u                            [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m54:9[22m   [33mwarning[39m  'xpPercentageToNextLevel' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m56:11[22m  [33mwarning[39m  'expTowardsNext' is assigned a value but never used. Allowed unused vars must match /^_/u           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m62:9[22m   [33mwarning[39m  'betRatePercentage' is assigned a value but never used. Allowed unused vars must match /^_/u        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/layout/SparklesSprite.vue[24m[0m
+[0m  [2m15:5[22m  [33mwarning[39m  Prop 'text' requires default value to be set   [2mvue/require-default-prop[22m[0m
+[0m  [2m21:5[22m  [33mwarning[39m  Prop 'class' requires default value to be set  [2mvue/require-default-prop[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/layout/TopBarMobile.vue[24m[0m
+[0m   [2m10:12[22m  [33mwarning[39m  'useUserStore' is defined but never used. Allowed unused vars must match /^_/u                                       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m153:35[22m  [33mwarning[39m  'newVal' is defined but never used. Allowed unused args must match /^_/u                                             [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m178:5[22m   [33mwarning[39m  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  [2m@typescript-eslint/ban-ts-comment[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/shop/SelectProduct.vue[24m[0m
+[0m  [2m23:3[22m  [33mwarning[39m  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  [2m@typescript-eslint/ban-ts-comment[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/shop/ShopConfirm.vue[24m[0m
+[0m  [2m74:11[22m  [33mwarning[39m  'val' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m76:11[22m  [33mwarning[39m  'api' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/shop/ShopView.vue[24m[0m
+[0m   [2m14:9[22m  [33mwarning[39m  'api' is assigned a value but never used. Allowed unused vars must match /^_/u                                       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m123:5[22m  [33mwarning[39m  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  [2m@typescript-eslint/ban-ts-comment[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/shop/StoreId.vue[24m[0m
+[0m   [2m2:12[22m  [33mwarning[39m  'inject' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m17:29[22m  [33mwarning[39m  'val' is defined but never used. Allowed unused args must match /^_/u     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m20:9[22m   [33mwarning[39m  Forbidden non-null assertion                                              [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/vip/components/benefits/index.vue[24m[0m
+[0m  [2m1:1[22m   [33mwarning[39m  Component name "index" should always be multi-word                     [2mvue/multi-word-component-names[22m[0m
+[0m  [2m2:12[22m  [33mwarning[39m  'ref' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/vip/components/progress/index.vue[24m[0m
+[0m  [2m1:1[22m  [33mwarning[39m  Component name "index" should always be multi-word  [2mvue/multi-word-component-names[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/vip/components/vip_bonus/index.vue[24m[0m
+[0m  [2m1:1[22m  [33mwarning[39m  Component name "index" should always be multi-word  [2mvue/multi-word-component-names[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/vip/components/vip_upgrade_dialog/index.vue[24m[0m
+[0m   [2m1:1[22m  [33mwarning[39m  Component name "index" should always be multi-word                                         [2mvue/multi-word-component-names[22m[0m
+[0m  [2m12:9[22m  [33mwarning[39m  'vipCheckboxVal' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m15:9[22m  [33mwarning[39m  'vipInfo' is assigned a value but never used. Allowed unused vars must match /^_/u         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/vip/components/vip_uprank_dialog/index.vue[24m[0m
+[0m   [2m1:1[22m  [33mwarning[39m  Component name "index" should always be multi-word                                         [2mvue/multi-word-component-names[22m[0m
+[0m  [2m20:9[22m  [33mwarning[39m  'vipCheckboxVal' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m23:9[22m  [33mwarning[39m  'vipInfo' is assigned a value but never used. Allowed unused vars must match /^_/u         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/vip/mobile/MBonusDashboard.vue[24m[0m
+[0m   [2m4:17[22m  [33mwarning[39m  'GetGameOriginalData' is defined but never used. Allowed unused vars must match /^_/u                     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m5:12[22m  [33mwarning[39m  'setLang' is defined but never used. Allowed unused vars must match /^_/u                                 [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m19:11[22m  [33mwarning[39m  'setRouletteBonusDialogVisible' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m20:11[22m  [33mwarning[39m  'setLoginBonusDialogVisible' is assigned a value but never used. Allowed unused vars must match /^_/u     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m21:11[22m  [33mwarning[39m  'setRefferalDialogShow' is assigned a value but never used. Allowed unused vars must match /^_/u          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m23:11[22m  [33mwarning[39m  'setSearchGameDialogShow' is assigned a value but never used. Allowed unused vars must match /^_/u        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m24:11[22m  [33mwarning[39m  'setHeaderBlurEffectShow' is assigned a value but never used. Allowed unused vars must match /^_/u        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m25:11[22m  [33mwarning[39m  'setMenuBlurEffectShow' is assigned a value but never used. Allowed unused vars must match /^_/u          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m28:9[22m   [33mwarning[39m  'open' is assigned a value but never used. Allowed unused vars must match /^_/u                           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m29:9[22m   [33mwarning[39m  'language' is assigned a value but never used. Allowed unused vars must match /^_/u                       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m31:9[22m   [33mwarning[39m  'languageMenu' is assigned a value but never used. Allowed unused vars must match /^_/u                   [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m32:9[22m   [33mwarning[39m  'originalMenu' is assigned a value but never used. Allowed unused vars must match /^_/u                   [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m33:9[22m   [33mwarning[39m  'navDrawer' is assigned a value but never used. Allowed unused vars must match /^_/u                      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m37:9[22m   [33mwarning[39m  'transactionTabs' is assigned a value but never used. Allowed unused vars must match /^_/u                [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m41:9[22m   [33mwarning[39m  'selectedTab' is assigned a value but never used. Allowed unused vars must match /^_/u                    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m43:9[22m   [33mwarning[39m  'mobileVersion' is assigned a value but never used. Allowed unused vars must match /^_/u                  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m51:9[22m   [33mwarning[39m  'refferalAppBarShow' is assigned a value but never used. Allowed unused vars must match /^_/u             [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m61:9[22m   [33mwarning[39m  'loginBonusDialog' is assigned a value but never used. Allowed unused vars must match /^_/u               [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/vip/mobile/index.vue[24m[0m
+[0m  [2m1:1[22m  [33mwarning[39m  Component name "index" should always be multi-word  [2mvue/multi-word-component-names[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/components/vip/mobile/index1.vue[24m[0m
+[0m   [2m1:1[22m   [33mwarning[39m  Component name "index1" should always be multi-word                           [2mvue/multi-word-component-names[22m[0m
+[0m  [2m28:11[22m  [33mwarning[39m  't' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/composables/useAnimationController.ts[24m[0m
+[0m  [2m5:26[22m  [33mwarning[39m  'useAppWebSocket' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/composables/useAppWebsocket.ts[24m[0m
+[0m  [2m229:64[22m  [33mwarning[39m  'wasOnline' is defined but never used. Allowed unused args must match /^_/u   [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m229:75[22m  [33mwarning[39m  'wasVisible' is defined but never used. Allowed unused args must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/main.ts[24m[0m
+[0m  [2m18:10[22m  [33mwarning[39m  'initializeApiClient' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m28:10[22m  [33mwarning[39m  'resetAllStores' is defined but never used. Allowed unused vars must match /^_/u       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/router/index.ts[24m[0m
+[0m  [2m67:9[22m  [33mwarning[39m  'globalStore' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m73:9[22m  [33mwarning[39m  'globalStore' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/stores/index.ts[24m[0m
+[0m  [2m17:9[22m  [33mwarning[39m  'namespace' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/stores/vip.store.ts[24m[0m
+[0m   [2m14:18[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m167:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m180:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m206:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m219:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m233:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m245:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m262:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m279:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m296:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m327:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m346:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m375:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m394:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m423:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m443:22[22m  [33mwarning[39m  'vipApi' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/utils/browser-test-client.ts[24m[0m
+[0m    [2m2:28[22m  [33mwarning[39m  'onMounted' is defined but never used. Allowed unused vars must match /^_/u                   [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m    [2m2:39[22m  [33mwarning[39m  'onUnmounted' is defined but never used. Allowed unused vars must match /^_/u                 [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m    [2m2:52[22m  [33mwarning[39m  'nextTick' is defined but never used. Allowed unused vars must match /^_/u                    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m10:34[22m  [33mwarning[39m  'ZilaMessagePayload' is defined but never used. Allowed unused vars must match /^_/u          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m16:3[22m   [33mwarning[39m  'AuthCredentials' is defined but never used. Allowed unused vars must match /^_/u             [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m24:10[22m  [33mwarning[39m  'createPersistedState' is defined but never used. Allowed unused vars must match /^_/u        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m27:7[22m   [33mwarning[39m  'HONO_API_BASE_URL' is assigned a value but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m62:18[22m  [33mwarning[39m  'e' is defined but never used                                                                 [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m96:9[22m   [33mwarning[39m  Forbidden non-null assertion                                                                  [2m@typescript-eslint/no-non-null-assertion[22m[0m
+[0m  [2m124:9[22m   [33mwarning[39m  'userStore' is assigned a value but never used. Allowed unused vars must match /^_/u          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m125:9[22m   [33mwarning[39m  'profileStore' is assigned a value but never used. Allowed unused vars must match /^_/u       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m127:9[22m   [33mwarning[39m  'clientId' is assigned a value but never used. Allowed unused vars must match /^_/u           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/home/ash/Documents/cashflow/client/src/utils/fetchApi.ts[24m[0m
+[0m   [2m2:10[22m  [33mwarning[39m  'useUserStore' is defined but never used. Allowed unused vars must match /^_/u  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m34:16[22m  [33mwarning[39m  'e' is defined but never used                                                   [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[33m[1m✖ 118 problems (0 errors, 118 warnings)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
+(node:393452) ESLintRCWarning: You are using an eslintrc configuration file, which is deprecated and support will be removed in v10.0.0. Please migrate to an eslint.config.js file. See https://eslint.org/docs/latest/use/configure/migration-guide for details. An eslintrc configuration file is used because you have the ESLINT_USE_FLAT_CONFIG environment variable set to false. If you want to use an eslint.config.js file, remove the environment variable. If you want to find the location of the eslintrc configuration file, use the --debug flag.
+(Use `node --trace-warnings ...` to show where the warning was created)
