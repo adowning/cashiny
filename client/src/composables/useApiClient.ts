@@ -90,14 +90,11 @@ function useApiClient() {
   ): Promise<TResponseData> => {
     const authStore = useAuthStore()
     const token = authStore.accessToken
-    console.log(`${endpoint}`)
-    console.log(BASE_URL)
     if (endpoint.startsWith('/auth')) {
       BASE_URL = BASE_URL.replace('/api', '')
     } else {
       if (!BASE_URL.includes('/api')) BASE_URL = BASE_URL + '/api'
     }
-    console.log(BASE_URL)
     const headers: Record<string, string> = {
       ...(customHeaders as Record<string, string>),
     }

@@ -2,7 +2,7 @@ import { NETWORK_CONFIG } from '@cashflow/types'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 import {
   findOrCreateUserByGoogleProfile,
   getSession,

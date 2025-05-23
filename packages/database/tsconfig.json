@@ -14,8 +14,8 @@
     "declaration": true,
     "allowJs": true,
     "declarationMap": true,
-    "emitDeclarationOnly": false,
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "declarationDir": "./dist/types"
   },
   "include": [
     "src/**/*.ts"

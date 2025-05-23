@@ -1,6 +1,6 @@
 import { NETWORK_CONFIG } from '@cashflow/types'
 
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 import { getUserActivityList } from '../services/promo.service'
 
 //

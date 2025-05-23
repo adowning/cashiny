@@ -11,58 +11,27 @@ import { createI18n } from 'vue-i18n'
 const i18n = createI18n({
   // something vue-i18n options here ...
 })
-import App from './App.vue'
 import './assets/main.css'
 // Import Tailwind CSS base styles
-import { router } from './router/index'
-import { initializeApiClient } from './sdk/apiClient'
-// Example usage of a shared type (for demonstration)
-// const exampleUser: User = {
-//   id: '1',
-//   email: 'test@example.com',
-//   name: 'Test User',
-//   username: 'testuser',
-//   // balance and other fields would come from your actual User type definition
-// }
-// console.log('Example user from shared types:', exampleUser)
-import { resetAllStores, setupStore } from './stores'
+// Path: client/src/main.ts (Example)
+import App from './App.vue'
+import { createPinia } from 'pinia' // Import createPinia
+import { router } from './router' // Assuming your router setup
+// import { GlobalAnimationsPlugin } from ...
+// import { i18n } from ...
+import { setupStore } from './stores' // If you have this function to register all stores
 
-// const app = createApp(App)
 const app = createApp(App)
-app.use(i18n)
 
-// const POSTHOG_API_KEY = import.meta.env.VITE_POSTHOG_API_KEY
-// const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST
+const pinia = createPinia() // Create Pinia instance
+app.use(pinia) // Use Pinia
 
-// posthog.init(POSTHOG_API_KEY, {
-//   api_host: POSTHOG_HOST,
-//   // Other PostHog options can be added here
-// })
-// // export  posthog
-// export { posthog }
+// If you have a setupStore function, ensure it's called after app.use(pinia),
+// or that it handles the Pinia instance internally.
+await setupStore(app) // For example
 
-// posthog.init(POSTHOG_API_KEY, {
-//   api_host: POSTHOG_HOST,
-//   // Other PostHog options can be added here
-// })
-// app.use(VueQueryPlugin)
-// ;(window as any).posthog = posthog
-await setupStore(app)
-try {
-  // initializeApiClient();
-} catch (error) {
-  console.error('Failed to initialize API client:', error)
-  // Handle critical initialization failure if necessary
-}
+// app.use(GlobalAnimationsPlugin);
+// app.use(i18n);
+app.use(router) // Use router
 
-// app.component('inline-svg', InlineSvg)
-// resetAllStores()
-app.use(router)
-// app.use(Vue3Marquee)
-// app.mount("#app");
-// const playerId = ''
-// startSubscriptions()
-router.isReady().then(() => {
-  app.mount('#app')
-  // loadingFadeOut(); // If you want to call this after router is ready and app is mounted
-})
+app.mount('#app')

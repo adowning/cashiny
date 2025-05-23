@@ -400,7 +400,7 @@ async function seedUsersInternal(): Promise<void> {
     const lastName = faker.person.lastName()
     const userName = tangNamesList[i] //getRandomItem(tangNamesList)
     console.log(userName)
-    const avatarUrl = `avatar-${Math.random() * 30}.webp`
+    const avatarUrl = `avatar-${Math.floor(Math.random() * 30)}.webp`
     const regularUser = await createFullUser({
       email: faker.internet.email({ firstName, lastName }).toLowerCase(),
       username: userName,

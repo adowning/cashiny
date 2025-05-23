@@ -1,37 +1,28 @@
 <template>
   <div id="app" class="roxdisplay">
-    <GlobalLoading v-if="isAppLoading" />
+    <Transition name="fade-loader">
+      <GlobalLoading v-if="isAppLoading" />
+    </Transition>
 
-    <div v-else>
-      <!-- <div class="aboslute top-0 left-0">
-        <UserBlock class="relative" />
-      </div> -->
+    <div v-if="!isAppLoading">
+      <!-- Content shown after loading is complete -->
       <div v-if="isAuthenticated && currentUser">
         <DesktopSection v-if="!isMobile">
           <RouterView />
         </DesktopSection>
         <MobileSection v-if="isMobile">
-          <GlobalLoading v-if="globalStore.isLoading"></GlobalLoading>
-          <RouterView v-else />
+          <RouterView />
         </MobileSection>
       </div>
-
+      <!-- Fallback to LoginView if not authenticated or user data not available after initial checks -->
       <div v-else>
         <DesktopSection v-if="!isMobile">
           <LoginView />
         </DesktopSection>
         <MobileSection v-if="isMobile">
-          <GlobalLoading v-if="globalStore.isLoading"></GlobalLoading>
-          <LoginView v-else />
+          <LoginView />
         </MobileSection>
       </div>
-
-      <!-- <div v-if="authError" class="error-message">
-        <p>Authentication Error: {{ authError.message }}</p>
-      </div>
-      <div v-if="userStore.profileUpdate.error" class="error-message">
-        <p>User Data Error: {{ userStore.profileUpdate.error }}</p>
-      </div> -->
     </div>
   </div>
 
@@ -41,155 +32,202 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, watch } from 'vue'
-  import { setupGlobalAnimations } from '@/utils/setupAnimations'
+  import { ref, onMounted, computed, watch, nextTick } from 'vue'
   import { storeToRefs } from 'pinia'
-  import { loadingFadeOut } from 'virtual:app-loading'
   import { useRouter } from 'vue-router'
-  import { useDisplay } from './composables/useDisplay'
-  import LoginView from './views/LoginView.vue'
+  import LoginView from '@/views/LoginView.vue' // Explicit import for view
 
-  // --- Stores ---
+  // Pinia Stores
+  import { useAuthStore } from '@/stores/auth.store'
+  import { useDepositStore } from '@/stores/deposit.store'
+  import { useImageLoadingStore } from '@/stores/imageLoading.store'
+  import { useVipStore } from '@/stores/vip.store'
+  import { useGameStore } from '@/stores/game.store'
+
+  // Composables
+  import { useDisplay } from '@/composables/useDisplay'
+
+  // Optional: Utility function to hide a very early, non-Vue loading screen (e.g., from index.html)
+  // import { loadingFadeOut } from '@/utils/initialLoader';
+
+  // --- Initialize Stores ---
   const authStore = useAuthStore()
-  const socketStore = useSocketStore()
-  const globalStore = useGlobalStore()
   const depositStore = useDepositStore()
+  const imageLoadingStore = useImageLoadingStore()
+  const router = useRouter()
+
+  // --- Composables ---
   const { isMobile } = useDisplay()
-  const { onMessage } = useAppWebSocket()
 
-  // --- State & Getters from Stores (using storeToRefs for reactivity) ---
-  const {
-    isAuthenticated,
-    currentUser,
-    initialAuthCheckComplete,
-    error: authError,
-  } = storeToRefs(authStore)
+  // --- Configuration ---
+  const MIN_LOADING_DISPLAY_TIME_MS = 700 // Minimum time the loader should be visible (in milliseconds)
 
-  const { status } = storeToRefs(socketStore)
+  // --- Reactive State from Stores ---
+  const { isAuthenticated, currentUser, initialAuthCheckComplete } = storeToRefs(authStore)
+  const { areImagesLoading, initialScanPerformedOnView } = storeToRefs(imageLoadingStore)
 
-  // isLoading from globalStore is used for secondary loading indicators, not primary app load.
-  // const { isLoading: globalIsLoading } = storeToRefs(globalStore); // Already available via globalStore.isLoading
+  // --- Internal Loading State Management for Minimum Display Time ---
+  const underlyingOperationsLoading = computed(() => {
+    // Condition 1: Initial authentication check is pending.
+    if (!initialAuthCheckComplete.value) return true
+    // Condition 2: Authenticated, but currentUser data (from authStore) is pending.
+    if (isAuthenticated.value && !currentUser.value) return true
+    // Condition 3: The first image scan for the current view hasn't completed yet.
+    if (!initialScanPerformedOnView.value) return true
+    // Condition 4: Images are actively loading.
+    if (areImagesLoading.value) return true
 
-  // --- Computed property for primary application loading state ---
+    return false // All clear
+  })
+
+  const showLoaderDueToMinTime = ref(false)
+  let loadingStartTime: number | null = null
+  let minTimeTimeoutId: ReturnType<typeof setTimeout> | null = null
+
+  // --- Final Computed Property for GlobalLoading v-if ---
   const isAppLoading = computed(() => {
-    // If the initial authentication check hasn't completed, app is loading.
-    if (!initialAuthCheckComplete.value) {
-      return true
-    }
-    // If auth check is complete, and user is authenticated, but currentUser data is not yet loaded,
-    // and there are no errors that would halt the process (e.g. auth error, user fetch error),
-    // then the app is still effectively loading critical user data.
-    console.log(isAuthenticated.value)
-    console.log(currentUser)
-    if (isAuthenticated.value && !currentUser) {
-      return true
-    }
-    // Otherwise, critical loading is complete.
-    return false
+    return underlyingOperationsLoading.value || showLoaderDueToMinTime.value
   })
 
-  setupGlobalAnimations()
+  watch(
+    underlyingOperationsLoading,
+    (isLoadingNow, wasLoadingBefore) => {
+      if (isLoadingNow && !wasLoadingBefore) {
+        // Operations just started loading
+        loadingStartTime = Date.now()
+        showLoaderDueToMinTime.value = false // Reset any pending min time hold
+        if (minTimeTimeoutId) {
+          clearTimeout(minTimeTimeoutId)
+          minTimeTimeoutId = null
+        }
+        // Loader will show because underlyingOperationsLoading is true
+      } else if (!isLoadingNow && wasLoadingBefore) {
+        // Operations just finished loading
+        if (loadingStartTime) {
+          const elapsedTime = Date.now() - loadingStartTime
+          if (elapsedTime < MIN_LOADING_DISPLAY_TIME_MS) {
+            const remainingTime = MIN_LOADING_DISPLAY_TIME_MS - elapsedTime
+            showLoaderDueToMinTime.value = true // Keep loader visible to meet min time
+            minTimeTimeoutId = setTimeout(() => {
+              showLoaderDueToMinTime.value = false
+              minTimeTimeoutId = null
+            }, remainingTime)
+          } else {
+            // Minimum time already met, no need to hold
+            showLoaderDueToMinTime.value = false
+          }
+        }
+        loadingStartTime = null // Reset for the next loading cycle
+      }
+    },
+    { immediate: true }
+  ) // `immediate: true` ensures this runs on mount to set initial state
+
   // --- Initial App Bootstrap ---
-  let unsubscribe: (() => void) | undefined
-
   onMounted(async () => {
-    console.log('App mounted, calling initializeAuth...')
-    // Trigger the initial authentication check and setup
-    socketStore.startWatchToSubscribe()
+    console.log('App.vue onMounted: Initializing authentication...')
     await authStore.initializeAuth()
-    // Hide the initial loading screen provided by vite-plugin-vue-startup-loading
-    loadingFadeOut()
-
-    // Set up WebSocket message listener and store the unsubscribe function
-    const unsubscribeFn = onMessage((message: WsMessage) => {
-      console.log('Received message in component:', message)
-      // Handle the message based on its type and payload
-    })
-    unsubscribe = typeof unsubscribeFn === 'function' ? unsubscribeFn : undefined
+    // If you have a static loader in index.html, you might hide it here:
+    // loadingFadeOut();
   })
 
-  onUnmounted(() => {
-    if (typeof unsubscribe === 'function') {
-      unsubscribe() // Clean up the message listener
-    }
-    // close(); // Optionally close the WebSocket when the main app unmounts,
-    // though createGlobalState with autoClose:true in useWebSocket
-    // should handle WebSocket resource cleanup on app termination/reload.
-  })
+  // --- Watch for route changes to re-trigger image loading check ---
+  watch(
+    () => router.currentRoute.value,
+    async (newRoute, oldRoute) => {
+      // Trigger on actual path change or on initial load (where oldRoute might be undefined)
+      if (newRoute.path !== oldRoute?.path || oldRoute === undefined) {
+        console.log(
+          `App.vue Route Watcher: Route changed to ${newRoute.path}. Resetting and checking images.`
+        )
+        imageLoadingStore.resetImageLoadingState() // This sets initialScanPerformedOnView to false
+
+        await nextTick() // Wait for the DOM of the new route to be updated
+        imageLoadingStore.trackImagesInView() // This will scan and set initialScanPerformedOnView to true
+      }
+    },
+    { deep: true, immediate: true } // `immediate: true` ensures this runs on initial load
+  )
+
   // --- Watch for authentication state changes for side effects like navigation ---
-  const router = useRouter() // Initialize router instance
-  watch(status, (websocketStatus) => {
-    console.log('App.vue reacting to websocketStatus change:', websocketStatus)
-    if (websocketStatus === 'OPEN') {
-      // WebSocket connected
-      // Perform any necessary actions when the WebSocket connection is established
-    } else if (websocketStatus === 'CLOSED') {
-      // WebSocket disconnected
-      // Perform any necessary actions when the WebSocket connection is lost
-    }
-  })
   watch(
     isAuthenticated,
     (isNowAuthenticated) => {
-      console.log('App.vue reacting to isAuthenticated change:', isNowAuthenticated)
+      console.log(`App.vue Auth Watcher: isAuthenticated changed to ${isNowAuthenticated}.`)
       if (isNowAuthenticated) {
-        // User just became authenticated
-        // Redirect to home if they are currently on login page
-        // This handles cases where LoginView might be explicitly routed to.
+        // If user becomes authenticated and is on the Login page, redirect to Home
         if (router.currentRoute.value.name === 'Login') {
-          // Check by route name
           router.push({ name: 'Home' })
         }
       } else {
-        // User just became unauthenticated (logged out)
-        // Redirect to login page if they are currently on a protected route
-        if (router.currentRoute.value.meta.requiresAuth) {
+        // If user becomes unauthenticated (and initial auth check is complete)
+        // and is on a route that requires auth, redirect to Login.
+        if (initialAuthCheckComplete.value && router.currentRoute.value.meta.requiresAuth) {
           router.push({ name: 'Login' })
         }
       }
-    },
-    { immediate: true } // Run immediately to handle initial state, e.g., if starting on a protected route while not auth'd
+    }
+    // `immediate: true` is generally not needed here if authStore.initializeAuth() and route guards handle initial state.
   )
 
-  // Fetch initial data that depends on the user being loaded
+  // --- Fetch initial data that depends on the user being loaded ---
   watch(
     currentUser,
     (user) => {
       if (user) {
-        console.log('User data loaded in App.vue, fetching other initial data...')
+        console.log('App.vue User Watcher: currentUser is available. Fetching user-specific data.')
         const vipStore = useVipStore()
         const gameStore = useGameStore()
         vipStore.dispatchVipInfo()
-        // gameStore.dispatchGameBigWin();
-        gameStore.dispatchGameSearch()
-        // connect();
+        gameStore.dispatchGameBigWin()
+        gameStore.dispatchGameSearch('')
         // Potentially other data fetching dependent on the user
       }
     },
-    { immediate: true } // Run immediately if currentUser is already populated from store (e.g. on refresh with persisted state)
+    { immediate: true } // Run immediately if currentUser is already populated (e.g., from persisted state)
   )
-  onMounted(() => {
-    // Optionally connect automatically when the main app component mounts
-    // connect();
-  })
+
+  // Example for `loadingFadeOut` if you were using a static HTML loader:
+  // const loadingFadeOut = () => {
+  //   const loader = document.getElementById('initial-static-loader');
+  //   if (loader) {
+  //     loader.style.opacity = '0';
+  //     setTimeout(() => loader.remove(), 300); // Fade out then remove
+  //   }
+  // };
 </script>
 
 <style>
   /* Global styles */
   #app {
-    /* styles */
-    color: white;
+    color: white; /* Example global style */
+    /* Add other global application container styles here, e.g., min-height, display: flex, etc. */
   }
 
   .error-message {
-    position: fixed; /* Example: make errors noticeable */
+    position: fixed;
     bottom: 20px;
-    left: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: red;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
-    z-index: 10000;
-    /* styles for error messages */
+    z-index: 10000; /* Ensure it's above other content */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+
+  /* Transition for the Global Loader */
+  .fade-loader-enter-active,
+  .fade-loader-leave-active {
+    transition: opacity 0.3s ease; /* Duration and easing for fade */
+  }
+
+  .fade-loader-enter-from,
+  .fade-loader-leave-to {
+    opacity: 0;
+  }
+
+  /* Ensure your layout components like DesktopSection and MobileSection fill the viewport as needed */
+  /* Add any necessary global styles for .roxdisplay or other root elements */
 </style>

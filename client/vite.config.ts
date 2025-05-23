@@ -80,7 +80,8 @@ export default defineConfig({
       },
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/],
     }),
-    AppLoading(),
+    // AppLoading('loading.html'),
+
     // 自动按需导入组件
     Components({
       dts: 'src/types/auto/components.d.ts',

@@ -148,22 +148,21 @@ export function getAnimationData(
 }
 
 // If you want to use this as a Vue plugin to make animations globally accessible:
-/*
-import { App } from 'vue';
+
+import { App } from 'vue'
 
 export const GlobalAnimationsPlugin = {
   install: (app: App) => {
-    const animations = setupGlobalAnimations(); // Initialize and get the registry
+    const animations = setupGlobalAnimations() // Initialize and get the registry
     // Make animations available globally, e.g., via provide/inject or app.config.globalProperties
-    app.config.globalProperties.$animations = animations;
-    app.provide('globalAnimations', animations);
-    console.log('[Animations] GlobalAnimationsPlugin installed.');
-  }
-};
+    app.config.globalProperties.$animations = animations
+    app.provide('globalAnimations', animations)
+    console.log('[Animations] GlobalAnimationsPlugin installed.')
+  },
+}
 
 // Then in your main.ts:
-// import { GlobalAnimationsPlugin } from './config/animations';
+// import { GlobalAnimationsPlugin } from './utils/setupAnimations';
 // const app = createApp(App);
 // app.use(GlobalAnimationsPlugin);
 // app.mount('#app');
-*/

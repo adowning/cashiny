@@ -1,6 +1,6 @@
 import { NETWORK_CONFIG } from '@cashflow/types'
 
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 import { cancelUserBonus, getUserBonusList } from '../services/bonus.service'
 
 // Assuming NETWORK_CONFIG contains these new routes

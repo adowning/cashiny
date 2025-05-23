@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { useGameStore } from '@/stores/game.store'
-
   const { isMobile } = useDisplay()
   const eventBus = useEventManager()
   const settingsModal = ref(false)

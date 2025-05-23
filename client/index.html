@@ -2,16 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no" />
-    <title>Vite + Vue + TS</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+    <link rel="icon" href="/favicon.ico" />
+    <!-- Ensure your favicon path is correct -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cashflow Casino</title>
+    <!-- Replace with your actual app title -->
+
+    <!-- Add this style block to prevent the white flash -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        /*
+          Set a background color here.
+          Choose black or a dark color that matches the theme or
+          the dominant background of your '/images/common/loading.png'.
+        */
+        background: #6f0786;
+        background: linear-gradient(176deg, rgba(111, 7, 134, 1) 0%, rgba(13, 0, 29, 1) 100%);
+        /* You could also try to match your loading image if it's simple enough,
+           but a solid color is often more reliable for the initial paint.
+           e.g., if loading.png is predominantly a dark blue:
+           background-color: #0a0a23;
+        */
+      }
+
+      /* Optional: If you had a very simple static loader in HTML (e.g. a spinner SVG or text)
+         you could style it here too. For now, just the background color is the main goal.
+      #initial-static-loader {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white; // Or a color that contrasts with the body background
+        font-family: sans-serif;
+      }
+      */
+    </style>
+    <!-- Other head elements like meta tags, links to fonts, etc. -->
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <!--
+        Optional: You could place a very simple, non-Vue loader here that gets
+        replaced when Vue mounts. For example:
+        <div id="initial-static-loader">Loading App...</div>
+        Your App.vue's onMounted hook could then hide/remove this element.
+        The loadingFadeOut function you had commented out previously would be relevant here.
+        However, simply setting the body background color is often sufficient.
+      -->
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

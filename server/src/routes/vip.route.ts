@@ -1,7 +1,7 @@
 import { NETWORK_CONFIG } from '@cashflow/types'
 
 // import { OK } from 'stoker/http-status-codes';
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 import {
   claimCycleReward,
   claimDailySignIn,

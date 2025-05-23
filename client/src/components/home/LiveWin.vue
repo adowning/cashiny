@@ -7,12 +7,11 @@
   import InlineSvg from 'vue-inline-svg'
 
   // Local Assets
-  import iconPublic91 from '@/assets/bigwin/icon_public_91.svg' // Renamed for convention
+  // import iconPublic91 from "@/assets/bigwin/icon_public_91.svg"; // Renamed for convention
   import defaultGameLogo from '@/assets/logo.png' // Renamed for clarity
   import imgWinPlaceholder1 from '@/assets/bigwin/img_win_01.png'
   import imgWinPlaceholder2 from '@/assets/bigwin/img_win_02.png'
   import imgWinPlaceholder3 from '@/assets/bigwin/img_win_03.png'
-  import { useDisplay } from '@/composables/useDisplay' // Assuming this path
 
   // Stores & Composables
   import { useGameStore } from '@/stores/game.store'
@@ -38,12 +37,12 @@
   }
 
   // And the overall data structure assumption would have been:
-  interface AssumedGameBigWinData {
-    high_rollers: Array<AssumedGameWinItem>
-    lucky_bets: Array<AssumedGameWinItem>
-    // I also previously had jackpot_winners in my default structure,
-    // which I removed once you provided the more specific GameBigWinData.
-  }
+  // interface AssumedGameBigWinData {
+  //   high_rollers: Array<AssumedGameWinItem>;
+  //   lucky_bets: Array<AssumedGameWinItem>;
+  //   // I also previously had jackpot_winners in my default structure,
+  //   // which I removed once you provided the more specific GameBigWinData.
+  // }
   export interface GameBigWinItem {
     game_id: string
     game_name: string
@@ -185,7 +184,7 @@
 
   // --- Lifecycle Hooks ---
   onMounted(async () => {
-    await dispatchGameBigWin()
+    // await dispatchGameBigWin()
   })
 </script>
 
@@ -254,7 +253,11 @@ background-size: 3% 100%; */
           :slides-per-view="4.5"
           :space-between="4"
           :loop="true"
-          :autoplay="false"
+          :autoplay="{
+            delay: 800,
+
+            disableOnInteraction: false,
+          }"
           class="mx-2"
           style="height: auto"
         >

@@ -10,7 +10,7 @@ import {
   gamesWithPattern,
   changeGameStatus,
 } from '@/services/pragmatic.service'
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 
 export const LoginSchema = z.object({
   username: z.string(),

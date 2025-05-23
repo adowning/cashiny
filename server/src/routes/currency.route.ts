@@ -1,6 +1,6 @@
 import { NETWORK_CONFIG, User } from '@cashflow/types'
 import { getCurrencyList } from '../services/currency.service'
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 
 const router = createRouter()
 router.get(NETWORK_CONFIG.CURRENCY.CURRENCY_LIST, async (c) => {

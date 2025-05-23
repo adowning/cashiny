@@ -4,7 +4,7 @@
     <div class="backdrop"></div> -->
   <div class="container">
     <div class="loader" style="transform: translateY(-20px) scale(0.4) translateX(20px)">
-      <span style="font-size: 42px; font-weight: 700" class="glow">loading</span>
+      <span style="font-size: 42px; font-weight: 700" class="glow"> loading... </span>
       <span style="--i: 1"><i class="fa-solid fa-star"></i></span>
       <span style="--i: 2"><i class="fa-solid fa-star"></i></span>
       <span style="--i: 3"><i class="fa-solid fa-star"></i></span>
@@ -25,19 +25,6 @@
 </template>
 
 <script setup lang="ts">
-  // export default {
-  //     data() {
-  //         return {
-  //             loading: true,
-  //             showBackdrop: true,
-  //         };
-  //     },
-  //     mounted() {
-  //         // setTimeout(() => {
-  //         //     this.loading = false;
-  //         // }, 2000);
-  //     },
-  // };
   const showLoading = ref(false)
   onMounted(() => {
     setTimeout(() => {

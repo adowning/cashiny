@@ -3,7 +3,7 @@ import { NETWORK_CONFIG } from '@cashflow/types'
 import { User } from 'better-auth/types'
 
 import { createErrorResponse, createSuccessResponse } from '.'
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 import {
   cancelPendingDeposits, // createDeposit,
   getDepositHistory,

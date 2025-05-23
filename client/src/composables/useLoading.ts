@@ -2,29 +2,32 @@
 import { ref } from 'vue'
 
 export function useLoading() {
-  const isLoading = ref(false)
+  const activeLoaders = ref<string[]>([])
+  const isLoading = computed(() => activeLoaders.value.length > 0) // Last received message
 
-  const startLoading = () => {
-    isLoading.value = true
+  const addLoader = (name: string) => {
+    activeLoaders.value.push(name)
   }
 
-  const stopLoading = () => {
-    isLoading.value = false
+  const removeLoader = (name: string) => {
+    activeLoaders.value = activeLoaders.value.filter((myname) => myname !== name)
   }
 
-  const withLoading = async (promise) => {
-    startLoading()
+  const withLoading = async (promise: any) => {
+    console.log(promise.toString())
+    addLoader(promise.toString())
     try {
       return await promise
     } finally {
-      stopLoading()
+      removeLoader(promise.toString())
     }
   }
 
   return {
     isLoading,
-    startLoading,
-    stopLoading,
+    addLoader,
+    removeLoader,
     withLoading,
+    activeLoaders,
   }
 }

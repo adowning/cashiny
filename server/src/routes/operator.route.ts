@@ -6,7 +6,7 @@ import { PrismaClient } from '@cashflow/database'
 import { NETWORK_CONFIG } from '@cashflow/types'
 
 import { createErrorResponse, createSuccessResponse } from '.'
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 import { OperatorService } from '../services/operator.service'
 
 //

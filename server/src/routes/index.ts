@@ -2,7 +2,7 @@ import { BASE_PATH } from '@/constans'
 import { HonoEnv } from '@/create-app'
 import type { OpenAPIHono } from '@hono/zod-openapi'
 
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 import achievementRoute from './achievement.route'
 import authRoute from './auth.route'
 import bonusRoute from './bonus.route'

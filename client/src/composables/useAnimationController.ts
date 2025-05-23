@@ -108,11 +108,11 @@ export function useAnimationController() {
   // The current `useAppWebsocket.ts` (from file upload) directly uses eventManager.emit('wsMessage', parsedMessage).
   // So, we should listen to 'wsMessage' from the eventManager.
 
-  // const processWsEventMessage = (rawMessage: any) => {
-  //   // Assuming rawMessage is already the parsed WsMessage object
-  //   // because useAppWebSocket emits it that way via eventManager.
-  //   handleWebSocketMessage(rawMessage as WsMessage)
-  // }
+  const processWsEventMessage = (rawMessage: any) => {
+    // Assuming rawMessage is already the parsed WsMessage object
+    // because useAppWebSocket emits it that way via eventManager.
+    handleWebSocketMessage(rawMessage as WsMessage)
+  }
 
   onMounted(() => {
     // Ensure WebSocket connection is managed (e.g., connected)

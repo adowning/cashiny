@@ -367,6 +367,7 @@
     "useRefferalStore": true,
     "useSocketStore": true,
     "useUserStore": true,
-    "useVipStore": true
+    "useVipStore": true,
+    "useImageLoadingStore": true
   }
 }

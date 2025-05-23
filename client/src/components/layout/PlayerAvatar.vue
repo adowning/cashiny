@@ -42,7 +42,7 @@
   const currentRankBetExp = computed(() => vipInfo.value.rank_bet_exp || 0)
   const currentUserTotalXp = computed(() => currentUser.value?.totalXp || 0)
   const currentUsername = computed(() => currentUser.value?.username || '')
-  const currentUserImage = computed(() => currentUser.value?.image || 'default-avatar.webp') // Provide a default
+  const currentUserImage = computed(() => currentUser.value?.avatarUrl || 'avatar-10.webp') // Provide a default
 
   const nextXpThreshold = computed(() => {
     if (currentLevel.value >= 0 && currentLevel.value < XP_LEVEL_SCALE.length) {
@@ -51,19 +51,19 @@
     return Infinity // Or a very large number if level is out of bounds
   })
 
-  const xpPercentageToNextLevel = computed(() => {
-    if (nextXpThreshold.value === 0 || nextXpThreshold.value === Infinity) return 0
-    const expTowardsNext = currentBetExp.value % nextXpThreshold.value // XP accumulated within the current level
-    const requiredForLevel = nextXpThreshold.value - (XP_LEVEL_SCALE[currentLevel.value - 1] || 0) // Total XP needed for this specific level
-    if (requiredForLevel === 0) return 100 // Avoid division by zero if already at max XP for level 0 or error
-    return Math.min((currentBetExp.value / nextXpThreshold.value) * 100, 100) // Percentage of currentBetExp towards the next threshold
-  })
+  // const xpPercentageToNextLevel = computed(() => {
+  //   if (nextXpThreshold.value === 0 || nextXpThreshold.value === Infinity) return 0
+  //   const expTowardsNext = currentBetExp.value % nextXpThreshold.value // XP accumulated within the current level
+  //   const requiredForLevel = nextXpThreshold.value - (XP_LEVEL_SCALE[currentLevel.value - 1] || 0) // Total XP needed for this specific level
+  //   if (requiredForLevel === 0) return 100 // Avoid division by zero if already at max XP for level 0 or error
+  //   return Math.min((currentBetExp.value / nextXpThreshold.value) * 100, 100) // Percentage of currentBetExp towards the next threshold
+  // })
 
-  const betRatePercentage = computed(() => {
-    if (!currentRankBetExp.value) return 0 // Avoid division by zero
-    const rate = (currentBetExp.value / currentRankBetExp.value) * 100
-    return Math.min(rate, 100) // Cap at 100%
-  })
+  // const betRatePercentage = computed(() => {
+  //   if (!currentRankBetExp.value) return 0 // Avoid division by zero
+  //   const rate = (currentBetExp.value / currentRankBetExp.value) * 100
+  //   return Math.min(rate, 100) // Cap at 100%
+  // })
 
   const displayUsername = computed(() => {
     return currentUsername.value.substring(0, 8)

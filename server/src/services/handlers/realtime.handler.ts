@@ -188,7 +188,7 @@ export class RealtimeService {
     }
     const userTopic = `user_${userId}_updates`
     try {
-      const publishedBytes = this.server.publish(userTopic, JSON.stringify(validationResult.data))
+      this.server.publish(userTopic, JSON.stringify(validationResult.data))
     } catch (error) {
       console.error(`[RealtimeService] Error publishing to topic "${userTopic}":`, error)
     }

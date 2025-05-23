@@ -21,17 +21,17 @@ import type {
   WsData,
 } from '@/sockets/types' // Adjust path as needed
 
-import { publish } from '../utils' // Adjust path as needed
+import { publish } from './utils' // Adjust path as needed
 import {
   validateAndSend,
   safeJsonParse,
   subscribeToTopic,
   unsubscribeFromTopic,
-} from '../utils/ws.utils' // Adjust path as needed
+} from './utils/ws.utils' // Adjust path as needed
 import {
   NoLimitProxyWsData,
   nolimitProxyMessageHandler,
-} from '../services/handlers/nolimit-proxy.handler' // Import proxy specific types and message handler
+} from './services/handlers/nolimit-proxy.handler' // Import proxy specific types and message handler
 
 // Define a more specific type for AppWsData if it's consistent across your app
 // This should include fields added by auth (userId) and potentially by proxy (isNoLimitProxy, etc.)

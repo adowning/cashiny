@@ -43,15 +43,11 @@ export * from '../client'
 // export * from './schema';
 // export * from './generated/prisma/index';
 
-export { createDbClient } from './create-db-client'
-
 declare global {
-   
   var db: PrismaClient | undefined
   var basePrisma: PrismaClient
-   
+
   // var createDbClient: Kysely<DB> | undefined;
-   
 }
 
 export const basePrisma = new PrismaClient({

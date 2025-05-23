@@ -131,7 +131,7 @@
   import { ref, reactive, onMounted, onUnmounted, watch } from 'vue' // Import necessary Vue 3 APIs
   import { storeToRefs } from 'pinia' // Import storeToRefs
   import { useRouter } from 'vue-router' // For navigation (though handled elsewhere now)
-  import { loadingFadeOut } from 'virtual:app-loading' // Assuming this utility exists
+  // import { loadingFadeOut } from 'virtual:app-loading' // Assuming this utility exists
 
   // --- Google Identity Services (GSI) ---
   // Note: You can choose to use the 'better-auth' library OR the direct GSI script.
@@ -394,7 +394,7 @@
 
     // Remove the initial app loading overlay if it's still present
     // This might be redundant if App.vue already calls loadingFadeOut after its initial check
-    loadingFadeOut()
+    // loadingFadeOut()
   })
 
   onUnmounted(() => {

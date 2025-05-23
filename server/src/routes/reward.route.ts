@@ -1,6 +1,6 @@
 import { NETWORK_CONFIG } from '@cashflow/types'
 
-import createRouter from '../create-router'
+import createRouter from '../rest.router'
 import { getRewardCenterList, receiveAchievementBonus } from '../services/reward.service'
 
 // Assuming NETWORK_CONFIG contains these new routes

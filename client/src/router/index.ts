@@ -4,7 +4,6 @@ import type {
   RouteRecordRaw,
 } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
-import { useGlobalStore } from '@/stores/global.store'
 
 const whiteListByPath: string[] = ['/login']
 const whiteListByName: RouteRecordNameGeneric[] = []
@@ -64,12 +63,11 @@ export const router = createRouter({
   routes: [...routes],
 })
 router.beforeEach((_to, _from, next) => {
-  const globalStore = useGlobalStore()
   // globalStore.startLoading()
   next()
 })
 
 router.afterEach(() => {
-  const globalStore = useGlobalStore()
+  // const globalStore = useGlobalStore()
   // globalStore.finishLoading()
 })
