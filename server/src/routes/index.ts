@@ -18,6 +18,7 @@ import userRoute from './user.route'
 import vipRoute from './vip.route'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
+import { GenericApiResponse } from '@cashflow/types'
 
 export default [
   healthRoute,
@@ -130,14 +131,14 @@ export function createSuccessResponse(data: unknown, status: number = 200) {
   return new Response(JSON.stringify(data), { status, headers: JSON_HEADERS })
 }
 
-export function createErrorResponse(message: string, status: number, errors?: unknown) {
-  return new Response(
-    JSON.stringify(
-      typeof errors === 'object' && errors !== null ? { message, errors } : { message }
-    ),
-    {
-      status,
-      headers: JSON_HEADERS,
-    }
-  )
+export function createErrorResponse(error: any | null, code: number): Response {
+  // return {
+  //   error,
+  //   data,
+  //   code,
+  // }
+  return new Response(JSON.stringify(error), {
+    status: code,
+    headers: JSON_HEADERS,
+  })
 }

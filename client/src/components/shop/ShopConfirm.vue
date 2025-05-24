@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { useUserStore } from '@/stores/user.store'
-  import { useDepositStore } from '@/stores/deposit.store'
+  import { DepositScreenName, useDepositStore } from '@/stores/deposit.store'
   import { currency } from '@/utils/currency'
   import { nextTick, onMounted, ref } from 'vue'
   import { useAuthStore } from '@/stores/auth.store'
@@ -23,6 +23,7 @@
     _cashtag.value = currentUser.value?.cashtag
   }
   if (operatorData.value?.id !== undefined) {
+    console.log(operatorData.value)
     storeId.value = operatorData.value?.id
   }
   const errorMsg = ref('')
@@ -60,12 +61,13 @@
     // } else {
     // const updatedUser = await updateUserCashtag(accessToken.value, val)
     const updatedUser: any = await userStore.dispatchUserCashtag(val)
-
+    console.log(updatedUser)
     _cashtag_field.value = ''
     errorMsg.value = ''
     _cashtag.value = updatedUser.cashtag
     // router.push('/shop')
-    eventBus.emit('activeName', 'shopConfirm')
+    // eventBus.emit('activeName', 'shopConfirm')
+    depositStore.depositScreenName = DepositScreenName.CONFIRM
     // }
     //#27787-b
     method.value = 0
@@ -366,110 +368,120 @@
           </div>
         </div>
       </div>
-    </div>
-    <div
-      v-if="
-        _cashtag !== null &&
-        _cashtag !== undefined &&
-        _cashtag !== '' &&
-        storeId !== null &&
-        depositStore.operatorData?.acceptedPayments.includes('CASH_APP') &&
-        paymentMethodCorrect === true &&
-        getSelectedPaymentMethod === 'CASH_APP' &&
-        _cashtag !== null &&
-        depositStore.operatorData?.acceptedPayments.includes('CASH_APP')
-      "
-      class="flex flex-col"
-    >
-      <div class="glow font-small my-2" style="font-size: medium">
-        Click confirm to be taken to cashapp
-      </div>
       <div
-        class="margin-auto text-align-center mx-3 flex flex-row justify-start pt-2"
-        style="
-          height: 80px;
-          background: url('/images/input.avif') no-repeat;
-          background-size: 100% 100%;
-          background-position: center;
-          padding: 18px;
+        v-if="
+          _cashtag !== null &&
+          _cashtag !== undefined &&
+          _cashtag !== '' &&
+          storeId !== null &&
+          depositStore.operatorData?.acceptedPayments.includes('CASH_APP') &&
+          paymentMethodCorrect === true &&
+          getSelectedPaymentMethod === 'CASH_APP' &&
+          _cashtag !== null &&
+          depositStore.operatorData?.acceptedPayments.includes('CASH_APP')
         "
+        class="flex flex-col"
       >
+        <div class="glow font-small my-2" style="font-size: medium">
+          Click confirm to be taken to cashapp
+        </div>
         <div
-          class="text-align-center flex flex-row items-center justify-between pt-1"
-          style="margin: auto"
+          class="margin-auto text-align-center mx-3 flex flex-row justify-start pt-2"
+          style="
+            height: 80px;
+            background: url('/images/input.avif') no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+            padding: 18px;
+          "
         >
-          <img
-            src="/images/shop/shopcoin.avif"
-            color="green"
-            style="color: white; width: 35px; height: 35px"
-          />
-          <div class="bungee mt-0" style="font-weight: 700; font-size: x-large; color: white">
-            <h4 class="bungee" style="font-size: x-large">
-              &nbsp;&nbsp;{{ getSelectedProduct?.amountToReceiveInCredits }}
-            </h4>
-          </div>
-
-          <div class="grow-1 flex" style="width: 15px" />
-          <div />
-          <img src="/images/shop/shoparrow.avif" color="green" style="width: 20px; height: 20px" />
-          <div color="green" style="width: 15px; font-weight: 700" />
           <div
-            class="text-align-center mt-0"
-            style="font-weight: 700; font-size: small; color: white"
+            class="text-align-center flex flex-row items-center justify-between pt-1"
+            style="margin: auto"
           >
-            {{ currentUser.name }}
+            <img
+              src="/images/shop/shopcoin.avif"
+              color="green"
+              style="color: white; width: 35px; height: 35px"
+            />
+            <div class="bungee mt-0" style="font-weight: 700; font-size: x-large; color: white">
+              <h4 class="bungee" style="font-size: x-large">
+                &nbsp;&nbsp;{{ getSelectedProduct?.amountToReceiveInCredits }}
+              </h4>
+            </div>
+
+            <div class="grow-1 flex" style="width: 15px" />
+            <div />
+            <img
+              src="/images/shop/shoparrow.avif"
+              color="green"
+              style="width: 20px; height: 20px"
+            />
+            <div color="green" style="width: 15px; font-weight: 700" />
+            <div
+              class="text-align-center mt-0"
+              style="font-weight: 700; font-size: small; color: white"
+            >
+              {{ currentUser.name }}
+            </div>
           </div>
         </div>
-      </div>
-      <h3 class="margin-auto mt-2 text-center text-white" style="font-size: 18px; font-weight: 500">
-        Amount due:
-      </h3>
-      <div>
-        <h1 class="margin-auto glow my-1 text-center text-white" style="font-size: 32px">
-          {{ priceFormatted(getSelectedProduct?.priceInCents! / 100) }}
-        </h1>
-      </div>
-      <div
-        class="margin-auto w-100% mb-12 mt-3 flex flex-row justify-center"
-        style="
-          margin: auto;
-          margin-bottom: 89px;
-          margin-top: 16px;
-          width: 100%;
-          justify-content: center;
-          height: 40px;
-        "
-      >
-        <div class="color-white flex flex-col gap-3" @click="confirm('cashapp')">
-          <GlassButton
-            color="green"
-            style="
-              margin: auto;
-              margin-bottom: 12px;
-              max-width: 130px;
-              font-size: 24px;
-              font-weight: 700;
-            "
-          >
-            Confirm
-            <span class="loading loading-spinner loading-lg" />
-          </GlassButton>
-          <div
-            class="color-white-900 flex text-center"
-            style="
-              line-height: 1;
-
-              color: white;
-              font-size: 15px;
-              font-weight: 700;
-              margin: auto;
-              width: 80vw;
-            "
-          >
-            <span
-              >Purchase will be applied to the account with cashtag
-              <span style="color: yellow; line-height: 1.8">${{ currentUser.cashtag }}</span></span
+        <h3
+          class="margin-auto mt-2 text-center text-white"
+          style="font-size: 18px; font-weight: 500"
+        >
+          Amount due:
+        </h3>
+        <div>
+          <h1 class="margin-auto glow my-1 text-center text-white" style="font-size: 32px">
+            {{ priceFormatted(getSelectedProduct?.priceInCents! / 100) }}
+          </h1>
+        </div>
+        <div
+          class="margin-auto w-100% mb-12 mt-3 flex flex-row justify-center"
+          style="
+            margin: auto;
+            margin-bottom: 89px;
+            margin-top: 16px;
+            width: 100%;
+            justify-content: center;
+            height: 40px;
+          "
+        >
+          <div class="color-white flex flex-col gap-3" @click="confirm('cashapp')">
+            <GlassButton
+              color="green"
+              style="
+                margin: auto;
+                margin-bottom: 12px;
+                max-width: 130px;
+                font-size: 24px;
+                font-weight: 700;
+                padding: 8px 18px;
+              "
             >
+              Confirm
+              <span class="loading loading-spinner loading-lg" />
+            </GlassButton>
+            <div
+              class="color-white-900 flex text-center"
+              style="
+                line-height: 1;
+
+                color: white;
+                font-size: 15px;
+                font-weight: 700;
+                margin: auto;
+                width: 80vw;
+              "
+            >
+              <span
+                >Purchase will be applied to the account with cashtag
+                <span style="color: yellow; line-height: 1.8"
+                  >${{ currentUser.cashtag }}</span
+                ></span
+              >
+            </div>
           </div>
         </div>
       </div>

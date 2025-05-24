@@ -1,13 +1,7 @@
-<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script lang="ts" setup>
-  // import { useSocketStore } from '@/stores/socket'
   import { ref } from 'vue'
-
-  // import PlayerAvatar from "./PlayerAvatar.vue";
-  // import { useSocketStore } from "@/stores/socket";
   import { useAuthStore } from '@/stores/auth.store'
   import { useDepositStore } from '@/stores/deposit.store'
-  import { useUserStore } from '@/stores/user'
   import { DepositHistoryItem } from '@cashflow/types'
 
   const eventBus = useEventManager()
@@ -15,7 +9,6 @@
   const router = useRouter()
   const countdownActive = ref(false)
   const sparkle = ref(false)
-  // const { currentProfile } = useUserStore();
   const authStore = useAuthStore()
   const { currentUser } = storeToRefs(authStore)
   const depositStore = useDepositStore()

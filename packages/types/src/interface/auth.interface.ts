@@ -29,7 +29,9 @@ export interface RegisterPayload extends AuthCredentials {
  */
 export interface AuthResponseDto {
   accessToken: string
+  error: string | null
   refreshToken?: string // Optional: string | undefined
+  code: number
   user: UserWithProfile // The primary, comprehensive user object
 }
 

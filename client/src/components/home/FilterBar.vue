@@ -30,10 +30,10 @@
       <div class="animate__animated animate__slideInUp bottomDropper ml-2 flex p-0">
         <AllIcon :shake="shakeIt" />
       </div>
-      <div class="animate__animated animate__slideInUp bottomDropper flex">
+      <div class="animate__animated animate__slideInUp bottomDropper flex p-0">
         <FishIcon :shake="shakeIt" />
       </div>
-      <div class="animate__animated animate__slideInUp bottomDropper flex">
+      <div class="animate__animated animate__slideInUp bottomDropper flex p-0">
         <SlotsIcon :shake="shakeIt" />
       </div>
       <div

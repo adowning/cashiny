@@ -111,7 +111,10 @@
                 alt=""
                 class="card__banner-img"
               />
-              <div class="card__banner__text bungee pt-1" style="line-height: 1.7">
+              <div
+                class="card__banner__text Bronzier pt-1"
+                style="line-height: 1.7; letter-spacing: 1.2px"
+              >
                 <span :style="game.title.length > 12 ? 'font-size: .8rem; ' : 'font-size: 1rem'">
                   {{ game.title.substring(0, 16) }}
                 </span>

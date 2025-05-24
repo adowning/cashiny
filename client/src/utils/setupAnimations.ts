@@ -80,7 +80,7 @@ export const globalAnimations: Readonly<GlobalAnimationRegistry> = Object.freeze
   },
   PARTICLE_EFFECT_3: {
     name: 'ParticleEffect3',
-    path: animationAssetPath('part3.json'),
+    path: animationAssetPath('fireBlue.json'),
     type: 'none' as AnimationType,
     description: 'Generic particle effect 3.',
     loop: true,

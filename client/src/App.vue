@@ -1,13 +1,18 @@
 <template>
   <div id="app" class="roxdisplay">
-    <Transition name="fade-loader">
-      <GlobalLoading v-if="isAppLoading" />
-    </Transition>
+    <!-- <Transition name="fade-loader"> -->
+    <div class="animate__animated animate__fadeIn">
+      <GlobalLoading v-if="isAppLoading && isMobile" />
+    </div>
 
     <div v-if="!isAppLoading">
       <!-- Content shown after loading is complete -->
       <div v-if="isAuthenticated && currentUser">
         <DesktopSection v-if="!isMobile">
+          <div class="animate__animated animate__fadeIn">
+            <GlobalLoading v-if="isAppLoading" />
+          </div>
+
           <RouterView />
         </DesktopSection>
         <MobileSection v-if="isMobile">
@@ -35,7 +40,7 @@
   import { ref, onMounted, computed, watch, nextTick } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useRouter } from 'vue-router'
-  import LoginView from '@/views/LoginView.vue' // Explicit import for view
+  import LoginView from '@/views/auth/LoginView.vue' // Explicit import for view
 
   // Pinia Stores
   import { useAuthStore } from '@/stores/auth.store'

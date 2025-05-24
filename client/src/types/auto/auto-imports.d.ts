@@ -357,9 +357,6 @@ declare global {
   export type { Notification, INotificationStore } from '../../stores/notification.store'
   import('../../stores/notification.store')
   // @ts-ignore
-  export type { ProfileData } from '../../stores/profile.store'
-  import('../../stores/profile.store')
-  // @ts-ignore
   export type { UserState, UserActions, UserStore } from '../../stores/user.store'
   import('../../stores/user.store')
 }

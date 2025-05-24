@@ -6,11 +6,7 @@ import { createApp } from 'vue'
 // or import 'maz-ui/css/main.css'
 // import '@/css/path_to_your_main_file.css';
 import 'maz-ui/styles'
-import { createI18n } from 'vue-i18n'
 
-const i18n = createI18n({
-  // something vue-i18n options here ...
-})
 import './assets/main.css'
 // Import Tailwind CSS base styles
 // Path: client/src/main.ts (Example)
@@ -23,8 +19,8 @@ import { setupStore } from './stores' // If you have this function to register a
 
 const app = createApp(App)
 
-const pinia = createPinia() // Create Pinia instance
-app.use(pinia) // Use Pinia
+// const pinia = createPinia() // Create Pinia instance
+// app.use(pinia) // Use Pinia
 
 // If you have a setupStore function, ensure it's called after app.use(pinia),
 // or that it handles the Pinia instance internally.

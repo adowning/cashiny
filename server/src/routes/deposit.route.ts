@@ -1,5 +1,11 @@
 import { UserWithProfile } from '@cashflow/database'
-import { NETWORK_CONFIG } from '@cashflow/types'
+import {
+  DepositHistoryResponse,
+  GenericApiResponse,
+  GenericError,
+  NETWORK_CONFIG,
+  SubmitDepositResponse,
+} from '@cashflow/types'
 import { User } from 'better-auth/types'
 
 import { createErrorResponse, createSuccessResponse } from '.'
@@ -26,8 +32,14 @@ router.post(NETWORK_CONFIG.DEPOSIT_PAGE.HISTORY, async (c) => {
 
 router.post(NETWORK_CONFIG.DEPOSIT_PAGE.SUBMIT, async (c) => {
   const user = c.get('user_with_profile') as Partial<UserWithProfile>
-
-  return await submitDeposit(c.req, user)
+  let result: SubmitDepositResponse
+  try {
+    result = await submitDeposit(c.req, user)
+    console.log(result)
+    return createSuccessResponse(result)
+  } catch (e) {
+    return createErrorResponse(e, 403)
+  }
 })
 router.post(NETWORK_CONFIG.DEPOSIT_PAGE.OPERATOR_DATA, async (c) => {
   const user = c.get('user_with_profile')

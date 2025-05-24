@@ -32,7 +32,7 @@
 
   const remainingMinutes = ref(0)
   const remainingSecondsDisplay = ref(0)
-  let countdownInterval: number | undefined = undefined // Browser-compatible type
+  let countdownInterval: ReturnType<typeof setInterval> | undefined = undefined // Compatible with both Node.js and browser
 
   // Computed Properties
   const userBalance = computed(() => {
@@ -123,13 +123,16 @@
   watch(
     depositHistoryFromStore,
     (newItems) => {
-      localDepositItems.value = [...newItems] // Keep a local reactive copy
-      const pending = newItems.find((item) => item.status === 'PENDING')
-      if (pending) {
-        startOrUpdateCountdown(pending)
-      } else {
-        if (countdownInterval) clearInterval(countdownInterval)
-        countdownActive.value = false
+      console.log(localDepositItems)
+      if (newItems?.length > 0) {
+        localDepositItems.value = [...newItems] // Keep a local reactive copy
+        const pending = newItems.find((item) => item.status === 'PENDING')
+        if (pending) {
+          startOrUpdateCountdown(pending)
+        } else {
+          if (countdownInterval) clearInterval(countdownInterval)
+          countdownActive.value = false
+        }
       }
     },
     { deep: true, immediate: true }

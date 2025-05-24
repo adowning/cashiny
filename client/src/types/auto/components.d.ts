@@ -37,6 +37,7 @@ declare module 'vue' {
     OverlayLayer: typeof import('./../../components/common/OverlayLayer.vue')['default']
     PlayerAvatar: typeof import('./../../components/layout/PlayerAvatar.vue')['default']
     Progress: typeof import('./../../components/vip/components/progress/index.vue')['default']
+    RaceAnnouncement: typeof import('./../../components/races/RaceAnnouncement.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectPayment: typeof import('./../../components/shop/SelectPayment.vue')['default']
@@ -47,7 +48,7 @@ declare module 'vue' {
     ShowToasts: typeof import('./../../components/common/ShowToasts.vue')['default']
     SlotsIcon: typeof import('./../../components/AnimatedIcons/SlotsIcon.vue')['default']
     SparklesSprite: typeof import('./../../components/layout/SparklesSprite.vue')['default']
-    SpriteAnimation: typeof import('./../../components/animation/SpriteAnimation.vue')['default']
+    SpriteAnimation: typeof import('./../../components/common/SpriteAnimation.vue')['default']
     StoreId: typeof import('./../../components/shop/StoreId.vue')['default']
     TopBar: typeof import('./../../components/layout/TopBar.vue')['default']
     TopBarMobile: typeof import('./../../components/layout/TopBarMobile.vue')['default']
@@ -58,6 +59,6 @@ declare module 'vue' {
     Vip_uprank_dialog: typeof import('./../../components/vip/components/vip_uprank_dialog/index.vue')['default']
     VSprite: typeof import('./../../components/common/VSprite.vue')['default']
     WheelIcon: typeof import('./../../components/AnimatedIcons/WheelIcon.vue')['default']
-    XPStars: typeof import('./../../components/animation/XPStars.vue')['default']
+    XPStars: typeof import('./../../components/AnimatedIcons/XPStars.vue')['default']
   }
 }

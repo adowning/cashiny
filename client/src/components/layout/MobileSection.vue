@@ -27,7 +27,7 @@
       v-if="
         isAuthenticated &&
         !depositStore.shopOpen &&
-        currentUser != undefiend &&
+        currentUser != undefined &&
         currentUser !== null
       "
     />
@@ -37,7 +37,7 @@
       v-if="
         isAuthenticated &&
         !depositStore.shopOpen &&
-        currentUser != undefiend &&
+        currentUser != undefined &&
         currentUser !== null
       "
     />

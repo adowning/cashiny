@@ -2,7 +2,7 @@ import * as products from './products.json'
 
 interface ProductInput {
   id?: string
-  name: string
+  title: string
   priceInCents: number
   description?: string
   image?: string
@@ -17,14 +17,29 @@ export default async function loadProducts(
   key: { id: string },
   currencyID: string
 ): Promise<ProductInput[]> {
-  for (const product of products.default as ProductInput[]) {
-    product.shopId = key.id
-    product.totalDiscountInCents = 0
-    delete product.shop_id
-  }
+  // Map products to conform to ProductInput interface
+  console.log(products.default)
+  // const _products = JSON.parse(JSON.stringify(products))
+  // console.log(products[0])
+  const mappedProducts: ProductInput[] = (products.default as any[]).map((product) => ({
+    ...product,
+    title: product.title ?? product.title, // Map 'title' to 'name' if 'name' is missing
+    url: product.image ?? product.url, // Map 'url' to 'image' if 'image' is missing
+    // shopId: key,
+    operator: {
+      connect: {
+        id: key.id,
+      },
+    },
+    totalDiscountInCents: 0,
+    currency: {
+      connect: {
+        id: currencyID,
+      },
+    },
+  }))
 
-  for await (const product of products.default as ProductInput[]) {
-    product.currency_id
+  for await (const product of mappedProducts) {
     await prisma.product.create({
       data: { ...product, currency: { connect: { id: currencyID } } },
     })

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue' // Import reactive functions
-// import { over } from 'lodash-es'; // Removed lodash import as it wasn't used in the original logic
 
 export const useAppBarStore = defineStore('appBar', () => {
   // State properties converted to reactive references
@@ -24,6 +23,10 @@ export const useAppBarStore = defineStore('appBar', () => {
   const bonusDashboardDialogVisible = ref(false)
   const activeAccountIndex = ref(0)
 
+  // State from refferal.store.ts
+  const refferalAppBarShow = ref(true) //
+  const refferalDialogVisible = ref(false) //
+
   // Getters converted to computed properties
   const getSuccess = computed(() => success.value)
   const getErrMessage = computed(() => errMessage.value)
@@ -45,6 +48,10 @@ export const useAppBarStore = defineStore('appBar', () => {
   const getBonusDashboardDialogVisible = computed(() => bonusDashboardDialogVisible.value)
   const getActiveAccountIndex = computed(() => activeAccountIndex.value)
 
+  // Getters from refferal.store.ts
+  const getRefferalAppBarShow = computed(() => refferalAppBarShow.value) //
+  const getRefferalDialogVisible = computed(() => refferalDialogVisible.value) //
+
   // Actions converted to regular functions
   const setSuccess = (isSuccess: boolean) => {
     success.value = isSuccess
@@ -63,7 +70,7 @@ export const useAppBarStore = defineStore('appBar', () => {
   }
 
   const setDepositDialogToggle = (toggle: boolean) => {
-    console.log('rrrrrrrrrrrrrrrrrrrrrrrr', toggle) // Keeping original console log
+    console.log('rrrrrrrrrrrrrrrrrrrrrrrr', toggle)
     depositDialogToggle.value = toggle
   }
 
@@ -123,6 +130,17 @@ export const useAppBarStore = defineStore('appBar', () => {
     activeAccountIndex.value = index
   }
 
+  // Actions from refferal.store.ts
+  const setRefferalAppBarShow = (show: boolean) => {
+    //
+    refferalAppBarShow.value = show
+  }
+
+  const setRefferalDialogShow = (visible: boolean) => {
+    //
+    refferalDialogVisible.value = visible
+  }
+
   // Return all state, getters, and actions
   return {
     success,
@@ -144,6 +162,8 @@ export const useAppBarStore = defineStore('appBar', () => {
     depositWithdrawToggle,
     bonusDashboardDialogVisible,
     activeAccountIndex,
+    refferalAppBarShow, // Added from refferal.store.ts
+    refferalDialogVisible, // Added from refferal.store.ts
 
     getSuccess,
     getErrMessage,
@@ -164,6 +184,8 @@ export const useAppBarStore = defineStore('appBar', () => {
     getDepositWithdrawToggle,
     getBonusDashboardDialogVisible,
     getActiveAccountIndex,
+    getRefferalAppBarShow, // Added from refferal.store.ts
+    getRefferalDialogVisible, // Added from refferal.store.ts
 
     setSuccess,
     setErrorMessage,
@@ -184,7 +206,7 @@ export const useAppBarStore = defineStore('appBar', () => {
     setDepositWithdrawToggle,
     setBonusDashboardDialogVisible,
     setActiveAccountIndex,
+    setRefferalAppBarShow, // Added from refferal.store.ts
+    setRefferalDialogShow, // Added from refferal.store.ts
   }
 })
-
-// export const appBarStore = useAppBarStore()

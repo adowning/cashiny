@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-  // import { useUserStore } from '@/stores/user'
   import { useDepositStore } from '@/stores/deposit.store'
   import { currency } from '@/utils/currency'
-  // import { computed, ref } from 'vue'
-  import type { Product } from 'shared/prisma/interfaces'
-
+  import { DepositScreenName } from '@/stores/deposit.store'
+  import type { Product } from '@cashflow/types'
   import type { ProductWithSelected } from './ShopView.vue'
 
   const eventBus = useEventManager()
@@ -90,13 +88,15 @@
     // state.value.selectedProduct = val
     // console.log(state.value.selectedProduct)
   }
-  _productList.forEach((item: Product) => {
-    const pWithSel: ProductWithSelected = {
-      ...item,
-      selected: false,
-    }
-    productList.value.push(pWithSel)
-  })
+  if (_productList)
+    _productList.forEach((item) => {
+      const pWithSel: ProductWithSelected = {
+        ...item,
+        selected: false,
+        operator: item.shopId, // Ensure 'operator' is included
+      }
+      productList.value.push(pWithSel)
+    })
   // onMounted(() => {
 
   // })
@@ -202,7 +202,7 @@
           class="mt-12 flex flex-row justify-center"
           style="margin-bottom: 0px; margin-top: 12px"
         >
-          <div @click="eventBus.emit('activeName', 'selectPayment')">
+          <div @click="depositStore.depositScreenName = DepositScreenName.SELECT_PAYMENT">
             <GlassButton :disabled="tempDepositAmount <= 0" color="green"> Next </GlassButton>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { createPinia } from 'pinia'
 import type { Pinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import piniaPluginPersistedstate, { createPersistedState } from 'pinia-plugin-persistedstate'
 
 // import { useOperatorStore } from './operator'
 // import { useUserStore } from './user.store'
@@ -16,14 +16,14 @@ export async function setupStore(app: any) {
   const appVersion = import.meta.env.VITE_APP_VERSION
   const namespace = `${import.meta.env.VITE_APP_NAMESPACE}-${appVersion}-${env}`
   // const { namespace } = options
-  pinia.use(piniaPluginPersistedstate)
-  // pinia.use(
-  //   createPersistedState({
-  //     // key $appName-$store.id
-  //     key: (storeKey) => `${namespace}-${storeKey}`,
-  //     storage: localStorage,
-  //   }),
-  // )
+  // pinia.use(piniaPluginPersistedstate)
+  pinia.use(
+    createPersistedState({
+      // key $appName-$store.id
+      key: (storeKey) => `${namespace}-${storeKey}`,
+      storage: localStorage,
+    })
+  )
   app.use(pinia)
   return pinia
 }

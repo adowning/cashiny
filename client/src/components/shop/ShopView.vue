@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { onMounted } from 'vue'
-
+  import { DepositScreenName } from '@/stores/deposit.store'
   // import { getApiClient } from '@/sdk/apiClient';
   import { useAuthStore } from '@/stores/auth.store'
   import { useDepositStore } from '@/stores/deposit.store'
@@ -24,7 +24,7 @@
     currentUser, // isLoading: authLoading, // If you need to show auth-specific loading in App.vue
     // error: authError, // Auth store errors
   } = storeToRefs(authStore)
-  const { dispatchOperatorData } = depositStore
+  const { dispatchOperatorData, depositScreenName } = depositStore
   const { dispatchUserDepositHistory } = depositStore
 
   // const shop = store.shop
@@ -188,7 +188,6 @@
       <div
         class="mt-3 flex w-full flex-row items-center justify-center"
         style="
-          margin: auto;
           max-width: 480px;
           margin-top: 4px;
           margin-bottom: 0px;
@@ -196,8 +195,26 @@
           background-color: transparent;
         "
       >
-        <div class="pt-0" style="font-size: 50px">
-          <AuroraText>DEPOSIT</AuroraText>
+        <div class="pt-0 flex flex-row align-center justify-around w-full" style="font-size: 50px">
+          <div class="flex w-1/3 mt-7 pl-2 float" v-if="activeName !== 'selectProduct'">
+            <img
+              src="/images/filterbar/side-arrow-prev.avif"
+              style="height: 30px; z-index: 999"
+              @click="
+                depositScreenName === DepositScreenName.SELECT_PAYMENT
+                  ? (depositScreenName = DepositScreenName.SELECT_PRODUCT)
+                  : depositScreenName === DepositScreenName.CONFIRM
+                    ? (depositScreenName = DepositScreenName.SELECT_PAYMENT)
+                    : (depositScreenName = DepositScreenName.SELECT_PRODUCT)
+              "
+            />
+          </div>
+          <div v-else class="flex w-1/3"></div>
+
+          <div class="flex w-1/3 mr-8">
+            <AuroraText> DEPOSIT </AuroraText>
+          </div>
+          <div class="flex w-1/3"></div>
         </div>
         <div class="absolute right-0 top-1 flex">
           <img
@@ -217,7 +234,7 @@
         style="max-width: 100%"
       >
         <div class="flex w-full items-center justify-stretch px-1" style="width: 100vw">
-          <div class="top-13 absolute left-12 flex">
+          <!-- <div class="top-13 absolute left-12 flex">
             <img
               v-if="activeName !== 'selectProduct'"
               src="/images/filterbar/side-arrow-prev.avif"
@@ -230,7 +247,7 @@
                     : (activeName = 'selectProduct')
               "
             />
-          </div>
+          </div> -->
           <div
             style="margin: auto; font-size: 36px"
             class="glow flex items-center justify-center py-5 pl-5"
@@ -257,18 +274,23 @@
             </div>
           </div>
         </div>
-        <div v-if="activeName === 'selectProduct' && depositStore.getProducts !== undefined">
+        <div
+          v-if="
+            depositStore.depositScreenName == DepositScreenName.SELECT_PRODUCT &&
+            depositStore.getProducts !== undefined
+          "
+        >
           <SelectProduct :current-user="currentUser" />
         </div>
 
-        <div v-if="activeName === 'selectPayment'">
+        <div v-if="depositStore.depositScreenName == DepositScreenName.SELECT_PAYMENT">
           <SelectPayment :current-user="currentUser" />
         </div>
 
         <div v-if="activeName === 'enterStoreId'">
           <StoreId :current-user="currentUser" />
         </div>
-        <div v-if="activeName === 'shopConfirm'">
+        <div v-if="depositStore.depositScreenName == DepositScreenName.CONFIRM">
           <ShopConfirm :selected-product="selectedProduct" :current-user="currentUser" />
         </div>
 

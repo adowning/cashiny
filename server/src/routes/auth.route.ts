@@ -30,9 +30,13 @@ router.post(NETWORK_CONFIG.LOGIN.LOGIN, async (c) => {
   let result
   try {
     result = await login(c.req)
+    console.log(result)
     return createSuccessResponse(result)
-  } catch (e: Error) {
-    return createErrorResponse(e.message, 403)
+  } catch (e) {
+    if (e instanceof Error) {
+      return createErrorResponse(e, 403)
+    }
+    return createErrorResponse('An unknown error occurred', 403)
   }
 })
 router.post(NETWORK_CONFIG.LOGIN.GOOGLE, async (c) => {
@@ -42,15 +46,25 @@ router.post(NETWORK_CONFIG.LOGIN.GOOGLE, async (c) => {
     result = await findOrCreateUserByGoogleProfile(c.req)
 
     return createSuccessResponse(result)
-  } catch (e: Error) {
-    return createErrorResponse(e.message, 403)
+  } catch (e: unknown) {
+    if (e) {
+      return createErrorResponse(e, 403)
+    }
+    return createErrorResponse('An unknown error occurred', 403)
   }
 })
 router.post(NETWORK_CONFIG.LOGIN.LOGOUT, async () => {
   return await logout()
 })
 router.post(NETWORK_CONFIG.LOGIN.REGISTER, zValidator('json', RegisterSchema), async (c) => {
-  return await register(c.req)
+  let result
+  try {
+    result = await register(c.req)
+    console.log(result)
+    return createSuccessResponse(result)
+  } catch (e) {
+    return createErrorResponse(e, 403)
+  }
 })
 router.get(NETWORK_CONFIG.LOGIN.GET_SESSION, async (c) => {
   console.log('here in authroues')
@@ -59,8 +73,8 @@ router.get(NETWORK_CONFIG.LOGIN.GET_SESSION, async (c) => {
     result = await getSession(c.req)
 
     return createSuccessResponse(result)
-  } catch (e: Error) {
-    return createErrorResponse(e.message, 403)
+  } catch (e) {
+    return createErrorResponse(e, 403)
   }
 })
 router.post(NETWORK_CONFIG.LOGIN.REFRESH_TOKEN, async (c) => {
@@ -81,10 +95,10 @@ router.post(NETWORK_CONFIG.LOGIN.REFRESH_TOKEN, async (c) => {
       user: user, // Send updated user info if necessary
       message: 'Session refreshed successfully',
     })
-  } catch (e: Error) {
+  } catch (e) {
     // Log the error for debugging
     console.error('Refresh token error:', e)
-    return createErrorResponse(e.message || 'Token refresh failed', 401)
+    return createErrorResponse(e || 'Token refresh failed', 401)
   }
 })
 export default router

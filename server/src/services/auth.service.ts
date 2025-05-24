@@ -26,9 +26,6 @@ const getRandomSubset = <T>(arr: T[], count?: number): T[] =>
 // Define a more complete user type including relations expected by the client
 export type AppUserWithDetails = UserWithProfile & {
   Balance?: number | null
-  // VipInfo?: VipInfo | null;
-  // UserSettings?: UserSettings | null;
-  // Add any other relations your client's User object might need
 }
 
 // Auth utility stubs - TODO: Implement properly
@@ -40,28 +37,15 @@ export const getUserFromBetterAuthUser = async (
     where: { id },
     include: { profile: true },
   })
-  // const kuserArr = await kysely.selectFrom('User').where('User.id', '=', id).selectAll().execute();
-  // const kuser = kuserArr[0];
-  // const kProfileArr = await kysely
-  //   .selectFrom('Profile')
-  //   .where('User.activeProfileId', '=', kuser.activeProfileId)
-  //   .selectAll()
-  //   .execute();
-  // const kprofile = kProfileArr[0];
-  // if (!kuser) throw new Error('User not found');
-  // kuser.profile = kprofile;
-  // return kuser as any;
   return user as UserWithProfile
 }
-// async findOrCreateUserByGoogleProfile(
-//   req: Request
-// ): Promise<{ user: AppUserWithDetails; isNewUser: boolean }> {
+
 export async function findOrCreateUserByGoogleProfile(
   req: HonoRequest
 ): Promise<GoogleSignInResponse> {
-  console.log(req)
+  // console.log(req)
   const json = await req.json()
-  console.log(json.idToken)
+  // console.log(json.idToken)
   // if (username === undefined || password === undefined) {
   //   return new Response(
   //     JSON.stringify({ message: "Missing username or password", code: 401 }),
@@ -87,6 +71,7 @@ export async function findOrCreateUserByGoogleProfile(
     //   body: { password, email },
     // })
     console.log(e)
+    throw e
   }
   console.log(signInUsername)
   const isNewUser = false
@@ -99,6 +84,7 @@ export async function findOrCreateUserByGoogleProfile(
         profile: true,
       },
     })
+    console.log(user)
     if (user) {
       // User found by email, link Google ID and update info
       user = await db.user.update({
@@ -137,7 +123,7 @@ export async function findOrCreateUserByGoogleProfile(
     accessToken: token,
     refreshToken: token,
     code: 200,
-    user: user as unknown as UserWithProfile,
+    user: user as UserWithProfile,
   }
 
   return resp
@@ -145,21 +131,16 @@ export async function findOrCreateUserByGoogleProfile(
 }
 export async function createUserWithProfileAndAccount(userData: {
   email: string
-  // email: string
   username: string
   password: string
-  // name?: string
-  // avatar?: string
-  /// 800
 }) {
+  console.log('createUserWithProfileAndAccount')
   return prisma.$transaction(async () => {
     console.log('transaction')
     let defaultOperator: any = await prisma.operatorAccess.findFirst()
     let defaultOwnerUser: any = null
     const defaultBank: any = null
     const hashedPassword = await Bun.password.hash(userData.password)
-    console.log(defaultOperator)
-    console.log(hashedPassword)
 
     // Check if any operators exist
     if (!defaultOperator) {
@@ -197,95 +178,44 @@ export async function createUserWithProfileAndAccount(userData: {
         `Created default operator: ${defaultOperator.name} and owner: ${defaultOwnerUser.username} and bank: ${defaultBank.name}`
       )
     }
-    // Create the main user
-    // console.log('email ', userData.email);
-    // const newUser = await prisma.user.create({
-    //   data: {
-    //     username: userData.username,
-    //     email: `${userData.username}@asdf.com`, //`${userData.username}@asdf.com`,
-    //     passwordHash: hashedPassword,
-    //     name: userData.username,
-    //     avatar: `blahblah.username.webp`,
-    //     status: 'ACTIVE', // Set a default status
-    //     // balance: 0, // Initialize balance as Decimal
-    //     // Set activeProfileId later after creating the profile if needed, or handle separately
-    //     // Add any other required fields for User
-    //   },
-    // })
     try {
-      const { headers, response } = await auth.api.signUpEmail({
+      const { response } = await auth.api.signUpEmail({
         returnHeaders: true,
         body: {
-          id: faker.string.uuid(),
+          // id: faker.string.uuid(),
           email: userData.email,
           password: userData.password,
           name: userData.username,
           username: userData.username,
         } as any,
       })
-      console.log('response', response)
-      console.log('headers', headers)
-      const betterAuthUser = response.user
-      const token = response.token
-      console.log(response)
+      let signInUsername
+      const password = userData.password
+      const username = userData.username
+      signInUsername = await auth.api.signInUsername({
+        body: { password, username },
+      })
 
-      // Remove the prisma.user.create call
-      // const newUser = await prisma.user.create({
-      //   data: {
-      //     id: betterAuthUser.id,
-      //     email: userData.email,
-      //     passwordHash: hashedPassword,
-      //     name: userData.username,
-      //     username: userData.username,
-      //     displayUsername: userData.username,
-      //     emailVerified: true,
-      //     image: '',
-      //     createdAt: new Date(),
-      //     updatedAt: new Date(),
-      //     totalXp: 0,
-      //     // balance: 0, // Remove balance here
-      //     isVerified: false,
-      //     active: true,
-      //     lastLogin: new Date(),
-      //     verificationToken: '',
-      //     avatar: '',
-      //     activeProfileId: '',
-      //     cashtag: '',
-      //     phpId: 0,
-      //     accessToken: '',
-      //     twoFactorEnabled: false,
-      //     banned: false,
-      //     banReason: '',
-      //     banExpires: new Date(),
-      //     lastDailySpin: new Date(),
-      //   } as any,
-      // })
+      if (signInUsername == null) throw new Error('signInUsername is null')
+      console.log('response', response)
+      console.log('signInUsername', signInUsername)
+      // console.log('headers', headers)
+      const betterAuthUser = signInUsername.user
+      const accessToken = signInUsername.token
 
       // Create the profile linked to the new user and the default operator/bank
       const newProfile = await prisma.profile.create({
         data: {
-          userId: betterAuthUser.id, // Use betterAuthUser.id here
           balance: 0,
           activeCurrencyType: 'USD',
-
-          // shopId: defaultOperator.id, // Link to the default operator
-          // bankId: defaultBank.id, // Link to the default bank
-          // balance: profileData.balance ?? 0, // Use provided balance or default to 0 (Int)
-          // xpEarned: profileData.xpEarned ?? 0,
-          // isActive: profileData.isActive ?? true,
-          // lastPlayed: profileData.lastPlayed,
-          // phpId: profileData.phpId,
-          // Add any other required fields for Profile
+          user: {
+            connect: { id: betterAuthUser.id },
+          },
+          operator: {
+            connect: { id: defaultOperator.id },
+          },
         },
       })
-
-      // Optionally update the user's activeProfileId to the newly created profile's ID
-      // await prisma.user.update({
-      //   where: { id: newUser.id },
-      //   data: {
-      //     // activeProfileId: newProfile.id,
-      //   },
-      // });
 
       // Create the account linked to the new user
       const newAccount = await prisma.account.create({
@@ -293,34 +223,35 @@ export async function createUserWithProfileAndAccount(userData: {
           accountId: betterAuthUser.id, // Use betterAuthUser.id here
           providerId: 'credential',
           userId: betterAuthUser.id, // Use betterAuthUser.id here
-          // accessToken: accountData.accessToken,
-          // refreshToken: accountData.refreshToken,
-          // idToken: accountData.idToken,
-          // accessTokenExpiresAt: accountData.accessTokenExpiresAt,
-          // refreshTokenExpiresAt: accountData.refreshTokenExpiresAt,
-          // scope: accountData.scope,
           password: hashedPassword, // Again, consider security implications
           createdAt: new Date(),
           updatedAt: new Date(),
           // Add any other required fields for Account
         },
       })
-
+      const user = await prisma.user.findUnique({
+        where: { id: betterAuthUser.id },
+        include: {
+          profile: true,
+        },
+      })
+      if (user == null) {
+        throw new Error('User not found')
+      }
       console.log(
-        `Created user: ${betterAuthUser.name}, profile: ${newProfile.id}, and account for provider: ${newAccount.id}`
+        `Created user: ${user.name}, profile: ${newProfile.id}, and account for provider: ${newAccount.id}`
       )
 
       return {
-        user: betterAuthUser, // Return betterAuthUser here
-        profile: newProfile,
-        account: newAccount,
-        operator: defaultOperator, // Return the operator used
-        ownerUser: defaultOwnerUser, // Return the owner user if created
-        token,
+        accessToken,
+        user,
+        refreshToken: accessToken,
+        code: 200,
+        error: null,
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log(e)
-      return null
+      return { isAuthenticated: false, error: e.message, code: 500 }
     }
   })
 }
@@ -516,25 +447,16 @@ export async function getSession(req: HonoRequest): Promise<GetSessionResponse> 
 // app.post('/auth/register', async (c: Context) => {
 export async function register(req: HonoRequest) {
   console.log('register')
-  const { password, email } = await req.json()
-  const username = email.split('@')[0]
+  const { password, username } = await req.json()
+  const email = username + '@cashflow.com'
 
-  // const email = `${username}@cashflow.com`;
-  // const cookies = req.cookies;
-  // if (email === undefined || password === undefined) {
-  //   return new Response(
-  //     JSON.stringify({ message: 'Missing username or password', code: 402 }),
-  //   )
-  // }
-
-  const response = await createUserWithProfileAndAccount({
+  return await createUserWithProfileAndAccount({
     email,
     username,
     password,
   })
-  return new Response(JSON.stringify({ authenticated: true, user: response, code: 200 }), {
-    status: 200,
-  })
+
+  // return { refreshToken: accessToken, accessToken: accessToken, user, code: 200 }
 }
 
 export async function login(req: HonoRequest) {
@@ -552,14 +474,15 @@ export async function login(req: HonoRequest) {
     console.log(e)
   }
   console.log(signInUsername)
-  const token = (signInUsername as any)?.token
+  const accessToken = (signInUsername as any)?.token
   const ruser = (signInUsername as any)?.user
-  return new Response(
-    JSON.stringify({ authenticated: true, access_token: token, ruser, code: 200 }),
-    {
-      status: 200,
-    }
-  )
+  const user = await db.user.findUniqueOrThrow({
+    where: { id: ruser.id },
+    include: { profile: true },
+  })
+  console.log(user)
+
+  return { refreshToken: accessToken, accessToken: accessToken, user, code: 200 }
 }
 
 export async function logout() {

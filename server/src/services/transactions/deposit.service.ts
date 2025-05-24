@@ -83,16 +83,13 @@ export async function getProducts(): Promise<Response> {
   return new Response(JSON.stringify(response))
 }
 
-export async function getOperatorData(
-  _req: HonoRequest,
-  user: Partial<UserWithProfile>
-): Promise<Response> {
+export async function getOperatorData(_req: HonoRequest, user: UserWithProfile): Promise<Response> {
   console.log(user)
-  await db.profile.findUnique({
-    where: {
-      id: user.profile?.id as string,
-    },
-  })
+  // await db.profile.findUnique({
+  //   where: {
+  //     id: user.profile?.id as string,
+  //   },
+  // })
 
   const _operator = await db.operatorAccess.findUnique({
     where: {
@@ -235,7 +232,10 @@ export async function getDepositConfig(_req: HonoRequest, _user: UserWithProfile
 }
 
 // Helper function to submit a deposit
-export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProfile>) {
+export async function submitDeposit(
+  req: HonoRequest,
+  user: Partial<UserWithProfile>
+): Promise<SubmitDepositResponse> {
   // Authenticate the user
 
   // Parse the request body to get deposit details
@@ -257,14 +257,10 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
   try {
     // 1. Validate deposit data (basic example)
     if (typeof depositData.amount !== 'number' || depositData.amount <= 0) {
-      return new Response(JSON.stringify({ message: 'Invalid deposit amount', code: 400 }), {
-        status: 400,
-      })
+      return { data: [], error: 'Invalid deposit amount', code: 500 }
     }
     if (!depositData.paymentMethodId) {
-      return new Response(JSON.stringify({ message: 'Payment channel not specified', code: 400 }), {
-        status: 400,
-      })
+      return { data: [], error: 'Payment channel not specified', code: 500 }
     }
 
     // Find the user's active profile to link the transaction
@@ -274,9 +270,7 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
     const userProfile = user.profile
 
     if (!userProfile) {
-      return new Response(JSON.stringify({ message: 'User profile not found', code: 404 }), {
-        status: 404,
-      })
+      return { data: [], error: 'User profile not found', code: 500 }
     }
     let walletId = user.activeWalletId
     if (!walletId) {
@@ -396,21 +390,19 @@ export async function submitDeposit(req: HonoRequest, user: Partial<UserWithProf
           },
         })
         .catch(console.error) // Log update error but don't block the original error response
+      // return { total_pages: 0, record: [], error: 'Failed to process deposit', code: 500 }
     }
-    return new Response(JSON.stringify({ message: 'Failed to process deposit', code: 500 }), {
-      status: 500,
-    })
+    return { data: [], error: 'Failed to process deposit', code: 500 }
   }
 
   // --- End Database and Payment Gateway Logic ---
 
   const response: SubmitDepositResponse = {
     code: 200,
+    error: null,
     data: submissionResult, // Return the result from the payment process (e.g., code_url or redirect url)
-    message: 'Deposit submitted successfully',
   }
-
-  return new Response(JSON.stringify(response))
+  return response
 }
 
 export async function cancelPendingDeposits(userId: string): Promise<number> {

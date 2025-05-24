@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
 
-  import { useDepositStore } from '@/stores/deposit.store'
+  import { DepositScreenName, useDepositStore } from '@/stores/deposit.store'
 
   // import { useUserStore } from '@/stores/user';
 
@@ -114,7 +114,7 @@
         </div>
       </div>
       <div class="mb-12 flex w-full flex-row justify-center" style="margin-bottom: 150px">
-        <div @click="eventBus.emit('activeName', 'shopConfirm')">
+        <div @click="depositStore.depositScreenName = DepositScreenName.CONFIRM">
           <GlassButton :disabled="method === 0 ? true : false">
             Next
             <span class="loading loading-spinner loading-lg" />

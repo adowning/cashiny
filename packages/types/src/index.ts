@@ -22,10 +22,18 @@ export interface PaginatedResponse<T> {
 }
 export type GenericApiResponse<T = any> = {
   code: number
-  data: T
+  data: T | null
+  error: string | null
+}
+export type GenericError = {
+  code: number
   message: string
 }
-
+// export type GenericApiError<T = any> = {
+//   code: number
+//   data: T
+//   error: string
+// }
 export * from './interface/auth.interface'
 export * from './interface/auth.socket-interface'
 export * from './interface/routes'

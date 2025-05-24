@@ -1,133 +1,32 @@
 <template>
-  <div class="login-view-container">
+  <div class="login-view-container overflow-hidden" v-if="authDialogVisible">
     <Logo class="logo-main"></Logo>
+    <div class="flex justify-center items-center min-h-[20px] w-80 glow text-sm">
+      <div :style="`color: ${!isSignUpMode ? 'white' : 'green'};`">Login</div>
 
-    <div
-      class="auth-mode-toggle mb-5"
-      :class="{ 'is-signup-active': isSignUpMode }"
-      tabindex="0"
-      role="switch"
-      aria-label="Toggle Sign Up Mode"
-      @click="toggleMode"
-      @keydown="toggleMode"
-    >
-      <span class="lab login-label" :class="{ active: !isSignUpMode }">Log In</span>
-      <div class="switch-visual-container">
-        <div class="switch-track"></div>
-        <div class="switch-knob"></div>
-      </div>
-      <span class="lab signup-label" :class="{ active: isSignUpMode }">Sign Up</span>
+      <input
+        type="checkbox"
+        id="switch"
+        style="transform: scale(0.5)"
+        @click="authStore.toggleSignUp"
+      /><label style="transform: scale(0.5)" for="switch">Toggle</label>
+
+      <div :style="`color: ${isSignUpMode ? 'white' : 'green'};`">Signup</div>
     </div>
 
-    <!-- <div v-if="authError" class="auth-error-message">
-      <p>{{ authError.message }}</p>
-    </div>
-    <div v-else style="min-height: 30px" class="my-4"></div> -->
+    <RegisterForm v-if="isSignUpMode" />
+    <LoginForm v-else />
 
-    <div v-if="!isAuthLoading" class="mt-14 flex flex-col justify-center items-center pt-16">
-      <label class="switch mt-4">
-        <div ref="flipCardInner" class="flip-card__inner">
-          <div class="flip-card__front flex-col flex">
-            <div class="title">Log In</div>
-            <form class="flip-card__form" @submit.prevent="handleSignIn">
-              <input
-                v-model="formData.username"
-                type="username"
-                placeholder="username"
-                required
-                class="flip-card__input"
-                :disabled="isAuthLoading || showError"
-              />
-              <input
-                v-model="formData.password"
-                type="password"
-                placeholder="Password"
-                required
-                autocomplete="current-password"
-                class="flip-card__input"
-                :disabled="isAuthLoading || showError"
-              />
-              <button type="submit" class="flip-card__btn" :disabled="isAuthLoading || showError">
-                Let's Go!
-              </button>
-            </form>
-            <div class="social-login-divider">OR</div>
-            <div class="flex items-center justify-center m-auto">
-              <div
-                id="googleSignInButtonContainer"
-                class="google-signin-container flex grow-1 w-full m-auto"
-              >
-                <button
-                  id="googleSignInButtonContainer"
-                  ref="googleLoginBtn"
-                  :disabled="isAuthLoading || showError"
-                  class="google-signin-button"
-                  googleSignInButtonContainer
-                  @click="handleGoogleSignIn"
-                />
-              </div>
-            </div>
-            <!-- <button
-              id="googleSignInButtonContainer"
-              class="google-signin-button"
-              ref="googleLoginBtn"
-              @click="baOneTap"
-              :disabled="isAuthLoading || componentLoading"
-            /> -->
-          </div>
-
-          <div class="flip-card__back">
-            <div class="title">Sign Up</div>
-            <form class="flip-card__form" @submit.prevent="handleSignUp">
-              <input
-                v-model="formData.username"
-                type="text"
-                placeholder="Username"
-                required
-                class="flip-card__input"
-                :disabled="isAuthLoading"
-              />
-              <input
-                v-model="formData.email"
-                type="email"
-                placeholder="Email"
-                required
-                class="flip-card__input"
-                :disabled="isAuthLoading"
-              />
-              <input
-                v-model="formData.password"
-                type="password"
-                placeholder="Password"
-                required
-                autocomplete="new-password"
-                class="flip-card__input"
-                :disabled="isAuthLoading"
-              />
-              <input
-                v-model="formData.confirmPassword"
-                type="password"
-                placeholder="Confirm Password"
-                required
-                autocomplete="new-password"
-                class="flip-card__input"
-                :disabled="isAuthLoading"
-              />
-              <button type="submit" class="flip-card__btn" :disabled="isAuthLoading">
-                Confirm!
-              </button>
-            </form>
-          </div>
-        </div>
-      </label>
-    </div>
-    <div v-else class="loading-indicator">
-      <Loading />
-    </div>
+    <!-- </div>  -->
+  </div>
+  <div v-else>
+    <Loading />
   </div>
 </template>
 
 <script setup lang="ts">
+  import LoginForm from './LoginForm.vue'
+  import RegisterForm from './RegisterForm.vue'
   import { ref, reactive, onMounted, onUnmounted, watch } from 'vue' // Import necessary Vue 3 APIs
   import { storeToRefs } from 'pinia' // Import storeToRefs
   import { useRouter } from 'vue-router' // For navigation (though handled elsewhere now)
@@ -148,11 +47,14 @@
   // Use storeToRefs for reactive state from stores
   const {
     currentUser,
+    isSignUpMode,
+    authDialogVisible,
     isLoading: isAuthLoading, // Auth store's loading state
     isAuthenticated, // Auth store's authentication status
   } = storeToRefs(authStore)
 
   const showError = ref<boolean>(false)
+  const isRegistering = ref<boolean>(false)
   // Destructure actions directly (they are not reactive)
   const { signInWithPassword, signUpNewUser, signInWithGoogleIdToken } = authStore
 
@@ -171,68 +73,6 @@
   // Removed currentAuthError computed as authError from storeToRefs is directly usable
 
   // --- Methods ---
-  const handleSignIn = async () => {
-    if (!formData.username || !formData.password) {
-      console.log('error in')
-      notificationStore.addNotification('error', 'Please enter both email and password.')
-
-      return
-    }
-
-    // Use the store's loading state
-    // componentLoading.value = true; // Removed
-    const { success, error } = await signInWithPassword({
-      username: formData.username,
-      password: formData.password,
-    })
-    // componentLoading.value = false; // Removed
-
-    // Notifications based on action result and store state
-    if (success) {
-      // Notification handled implicitly by the watch in this component (or App.vue)
-      // that triggers on isAuthenticated = true, or show a generic success here
-      // notificationStore.addNotification("success", "Successfully signed in!");
-      // Navigation is handled elsewhere (App.vue or Navigation Guard)
-    } else if (error) {
-      showError.value = true
-      // Error state is already set in the store and displayed in template or App.vue
-      // Optionally add a notification here as well if needed
-      notificationStore.addNotification('error', error.message || 'Sign in failed.')
-      setTimeout(() => {
-        showError.value = false
-        window.location.reload()
-      }, 3000)
-    }
-  }
-
-  const handleSignUp = async () => {
-    if (!formData.email || !formData.password || !formData.username) {
-      notificationStore.addNotification('error', 'Please fill in all required fields for sign up.')
-      return
-    }
-    if (formData.password !== formData.confirmPassword) {
-      notificationStore.addNotification('error', 'Passwords do not match.')
-      return
-    }
-
-    // Use the store's loading state
-    // componentLoading.value = true; // Removed
-    const { success, error } = await signUpNewUser({
-      email: formData.email,
-      password: formData.password,
-      username: formData.username,
-    })
-    // componentLoading.value = false; // Removed
-
-    if (success) {
-      // Notification handled implicitly or show generic success
-      // notificationStore.addNotification("success", "Successfully signed up and logged in!");
-      // Navigation handled elsewhere
-    } else if (error) {
-      // Error state set in store
-      // notificationStore.addNotification("error", error.message || "Sign up failed.");
-    }
-  }
 
   // Google Sign-In Handler (called by Google Identity Services callback)
   const handleGoogleSignIn = async (response: any) => {
@@ -269,7 +109,7 @@
         notificationStore.addNotification('error', error.message)
         setTimeout(() => {
           showError.value = false
-          window.location.reload()
+          // window.location.reload()
         }, 3000)
       }
     } else {
@@ -377,6 +217,7 @@
   // --- Component Lifecycle Hooks ---
   onMounted(() => {
     console.log('LoginView mounted.')
+    authStore.setAuthDialogVisible(true)
 
     // Clear any previous authentication errors when the login view is accessed
     authStore.clearAuthError()
@@ -434,7 +275,6 @@
   })
 
   // --- UI Toggle Logic ---
-  const isSignUpMode = ref(false) // false = login, true = signup
   const flipCardInner = ref<HTMLElement | null>(null)
 
   function toggleMode() {
@@ -457,6 +297,48 @@
 </script>
 
 <style scoped>
+  input[type='checkbox'] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+  }
+
+  label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 100px;
+    height: 50px;
+    background: #d19ae4;
+    display: block;
+    border-radius: 50px;
+    position: relative;
+  }
+
+  label:after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 45px;
+    height: 45px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+  }
+
+  input:checked + label {
+    background: #5b0091;
+  }
+
+  input:checked + label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+  }
+
+  label:active:after {
+    width: 130px;
+  }
+
   .auth-mode-toggle {
     /* CSS Variables for easy theming and consistent sizing */
     --toggle-track-width: 50px;
@@ -852,7 +734,6 @@
     /* width: 100%;
     height: 40%; */
     /* margin-top: 10px; */
-    z-index: 999999;
   }
 
   /* CSS Variables for theming (optional, but good practice) */

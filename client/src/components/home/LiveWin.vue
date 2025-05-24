@@ -211,26 +211,6 @@
 
       <div class="flex w-[90vw]"></div>
 
-      <!-- <div class="live-win-header">
-
-<inline-svg
-
-:src="icon_public_91"
-
-width="16"
-
-height="16"
-
-:transform-source="svgIconTransform"
-
-style="margin-top: 2px"
-
-></inline-svg>
-
-<p class="text-900-10 gray ml-1">Live Win</p>
-
-</div> -->
-
       <div
         class="live-win-body ml-0"
         style="

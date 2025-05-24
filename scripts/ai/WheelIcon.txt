@@ -1,53 +1,42 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
-  import * as RawWheelJsonData from '@/assets/anim/wheel.json' //
-  import WheelSpritesheetUrl from '@/assets/anim/wheel.png' //
-  import SpriteAnimation from '../common/SpriteAnimation.vue' // Adjust path
-  import type { SpriteData } from '@cashflow/types'
-  import { useEventManager } from '@/composables/EventManager' //
-  import { transformRawSpriteJsonToSpriteData } from '../common/transformSpriteData'
+  import * as WheelJson from '@/assets/anim/wheel.json'
+  import WheelImg from '@/assets/anim/wheel.png'
+  import { useUserStore } from '@/stores/user.store'
 
-  const eventBus = useEventManager() //
-  const isMounted = ref(false) //
-  const countdownActive = ref(false) //
-  const authStore = useAuthStore()
-  const { currentUser } = storeToRefs(authStore)
-  // const sprite = ref() // No longer for VSprite
-  const isSpiral = ref(false) //
-  const complete = ref(true) // Based on original template logic for spin button
-  const shakeIt = ref(false) //
+  const eventBus = useEventManager()
+  const { currentUser } = useUserStore()
+  const isMounted = ref(false)
+  const countdownActive = ref(false)
 
-  const wheelIconSpriteData: SpriteData = transformRawSpriteJsonToSpriteData(
-    RawWheelJsonData,
-    'wheel.png'
-  )
+  const sprite = ref()
+  const isSpiral = ref(false)
+  const complete = ref(false)
+  const shakeIt = ref(false)
+  // function formatTime(seconds: number): string {
+  //   const hours = Math.floor(seconds / 3600)
+  //   const minutes = Math.floor((seconds % 3600) / 60)
+  //   const secs = seconds % 60
 
+  //   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+  // }
+  // const formattedTime = ref('')
   function warnDisabled() {
-    //
+    // //console.log('wd')
     shakeIt.value = true
     setTimeout(() => {
       shakeIt.value = false
     }, 1500)
   }
-
   function doFreeSpin() {
-    //
     console.log('doFreeSpin')
     if (complete.value === false) {
-      // Assuming 'complete' means 'animation cycle complete and ready for new spin'
       warnDisabled()
     } else {
       eventBus.emit('wheelPageOpen', true)
-      // Potentially trigger wheel animation if it's not autoplay loop
-      // eventBus.emit('animation:play:wheel-main-animation');
     }
+    // $bus.$emit(eventTypes.show_wheel, true)
   }
-
-  onMounted(() => {
-    isMounted.value = true
-  })
-
   // //console.log(WheelJson)
   const start_date = new Date(
     currentUser?.lastDailySpin ? currentUser.lastDailySpin.toString() : '2023-01-01T00:00:00.000Z'
@@ -151,73 +140,115 @@
 </script>
 
 <template>
-  <div
-    :id="`UserControlWheel-${currentUser?.id}`"
-    class="nav-item user-wheel"
-    :class="{ shake: shakeIt }"
-    style="
-      color: white;
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100px;
-      height: 90px;
-      transform: translateY(8px);
-    "
-  >
-    <div
-      v-if="!isMounted && !countdownActive"
-      id="wheelCountdown"
-      style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2"
-      class="futex-cell flex justify-center text-black"
-      @click="warnDisabled()"
-    ></div>
+  <div ref="wheel" style="margin: auto" class="flex grow-1 flex-col justify-between">
+    <!-- <img src="/images/freespins2.avif"
+      style="margin: auto; margin-top: -10px; width: 80px; height: 60px;  background-repeat: no-repeat"
+      @click="doFreeSpin()"> -->
 
-    <div
-      v-if="countdownActive && complete === false"
-      style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2"
-      class="futex-cell flex justify-center text-white"
-      @click="warnDisabled()"
-    ></div>
-
-    <SpriteAnimation
-      v-if="isMounted"
-      animationName="wheel-main-animation"
-      :spritesheetUrl="WheelSpritesheetUrl"
-      :spriteData="wheelIconSpriteData"
-      :fps="20"
+    <VSprite
+      id="Wheel"
+      ref="sprite"
+      :spritesheet="WheelImg"
+      :json="WheelJson"
+      style="
+        margin-right: 40px;
+        width: 60px;
+        height: 60px;
+        background-repeat: no-repeat;
+        z-index: 1;
+        transform: scale(0.4) translateY(10px) translateX(-32px);
+      "
       :autoplay="true"
-      :loop="true"
-      :width="260"
-      :height="180"
-      style="z-index: 1; transform: scale(0.45) translateY(50px) translateX(50px)"
+      @click="doFreeSpin()"
     />
-
+    <!-- </div> -->
+    <!-- <div
+                v-if="!complete"
+                class="pl-5"
+                @click="warnDisabled"
+                style="
+                    position: absolute;
+                    background-image: url('/images/timeleft.avif');
+                    margin: auto;
+                    z-index: 2;
+                    bottom: 0px;
+                    margin-left: 4px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    height: 46px;
+                    width: 120px;
+                "
+            > -->
+    <div
+      v-if="!complete"
+      :class="{ shake: shakeIt }"
+      style="
+        position: absolute;
+        bottom: 8px;
+        padding-left: 7px;
+        padding-right: 7px;
+        right: -14px;
+        width: 80px;
+        height: 20px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        font-size: 14px;
+        font-weight: 700;
+        margin: auto;
+        justify-content: center;
+        z-index: 9999;
+      "
+      class="futex-cell flex"
+    >
+      {{ remaining_minutes }}:{{ remaining_seconds_display < 10 ? 0 : ''
+      }}{{ remaining_seconds_display }}
+    </div>
+    <!-- <div
+      :class="{ shake: shakeIt }"
+      v-else
+      style="
+        position: absolute;
+        bottom: 8px;
+        left: 12px;
+        padding-left: 7px;
+        padding-right: 7px;
+        right: -14px;
+        width: 80px;
+        height: 20px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        font-size: 14px;
+        font-weight: 700;
+        margin: auto;
+        justify-content: center;
+        z-index: 9999;
+      "
+      class="futex-cell flex"
+    >
+      freespin
+    </div> -->
+    <!-- </div> -->
     <div
       v-if="complete"
-      class="flex justify-center text-white glow font-bold futex-cell"
+      class="futex-cell flex justify-center text-white onacona"
       style="
-        line-height: 0.7;
-        width: 95px;
+        width: 90px;
+        line-height: 1;
         position: absolute;
-        bottom: -20px;
-        padding-bottom: 0px;
-        left: 30%;
-
-        height: 20px;
+        bottom: 6px;
+        padding-bottom: 20px;
+        left: -15px;
+        height: 15px;
         font-family: ubuntu;
         z-index: 9999;
-        font-size: 19px;
+        font-size: 20px;
         font-weight: 700;
-        cursor: pointer;
-        text-align: center;
       "
       @click="doFreeSpin()"
     >
       Spin
     </div>
+    <div v-if="complete" id="“spriteAnim”" />
   </div>
 </template>
 

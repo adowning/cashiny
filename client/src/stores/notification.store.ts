@@ -15,6 +15,7 @@ export interface Notification {
   message: string
   type: 'info' | 'success' | 'warning' | 'error'
   duration: number
+  isSkipped?: boolean
 }
 
 // --- Interface for the Notification Store INSTANCE ---

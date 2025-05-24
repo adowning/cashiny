@@ -17,6 +17,7 @@ const DEFAULT_AVATAR_FALLBACK = 'avatar-default.webp' // Example default
 
 interface AuthErrorState {
   message: string
+  error: string | null
   code?: number | string // HTTP status code or custom error code
   details?: any // Optional additional error details
 }
@@ -35,6 +36,7 @@ export const useAuthStore = defineStore(
     const currentUser = ref<UserWithProfile | null>(null)
 
     const isLoading = ref<boolean>(false) // For UI feedback during auth operations
+    const isSignUpMode = ref<boolean>(false) // For UI feedback during auth operations
     const error = ref<AuthErrorState | null>(null) // Stores the last auth-related error
     const initialAuthCheckComplete = ref<boolean>(false) // Tracks if the initial auth check has run
     const authModalType = ref<string | null>(null)
@@ -44,6 +46,9 @@ export const useAuthStore = defineStore(
     const isAuthenticated = computed(() => !!accessToken.value && !!currentUser.value)
     const userAvatar = computed(() => currentUser.value?.image || DEFAULT_AVATAR_FALLBACK)
 
+    function toggleSignUp() {
+      isSignUpMode.value = !isSignUpMode.value
+    }
     // --- Actions ---
 
     /**
@@ -170,18 +175,41 @@ export const useAuthStore = defineStore(
       action: T,
       ...args: Parameters<T>
     ): Promise<{ success: boolean; data?: AuthResponseDto; error?: ApiError | AuthErrorState }> {
+      const notificationStore = useNotificationStore()
+
       isLoading.value = true
       error.value = null
       try {
         const responseData = await action(...args)
+        if (responseData.error !== null) {
+          const errPayload: AuthErrorState = {
+            message: responseData.error || `Action ${action.name} failed`,
+            code: responseData.error,
+            // details: responseData.error,
+            error: responseData.error,
+          }
+          error.value = errPayload
+          console.log(errPayload)
+
+          console.log('error')
+          // No need to call clearAuthData here on every auth action failure.
+          // Only clear if the failure implies total invalidation of any prior state (e.g. bad creds on login).
+          // For instance, if a token refresh fails within an action, apiClient should handle logout.
+          // If it's a form validation type error from backend, user might still be "logged in".
+          notificationStore.addNotification('error', errPayload.message)
+          return { success: false, error: errPayload }
+        }
+
+        console.log(responseData)
         setAuthData(responseData)
         return { success: true, data: responseData }
       } catch (e: any) {
         console.error(`AuthStore: Action ${action.name} failed`, e)
         const errPayload: AuthErrorState = {
-          message: e.message || `Action ${action.name} failed`,
-          code: e.code,
-          details: e.details,
+          message: e.error || `Action ${action.name} failed`,
+          code: e.error,
+          // details: responseData.error,
+          error: e.error,
         }
         error.value = errPayload
         // No need to call clearAuthData here on every auth action failure.
@@ -280,7 +308,7 @@ export const useAuthStore = defineStore(
       isLoading,
       error,
       initialAuthCheckComplete,
-
+      authDialogVisible,
       // Getters
       isAuthenticated,
       userAvatar,
@@ -298,6 +326,8 @@ export const useAuthStore = defineStore(
       clearAuthError,
       setAuthModalType,
       setAuthDialogVisible,
+      isSignUpMode,
+      toggleSignUp,
     }
   },
   {

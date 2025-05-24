@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import LeaderJson from '@/assets/anim/leadernew.json'
-  import Part3Json from '@/assets/anim/part3.json'
+  import fireBlueJson from '@/assets/anim/fireBlue.json'
   import { useAppBarStore } from '@/stores/appBar.store'
   import { useDepositStore } from '@/stores/deposit.store'
   import { ref } from 'vue'
@@ -144,10 +144,10 @@
         "
       />
       <VGSprite
-        id="part3Icon"
+        id="fireBlueIcon"
         class="flex"
-        image-src="/images/bottom/part3_blue.png"
-        :sprite-sheet-data="Part3Json"
+        image-src="/images/bottom/fireBlue.png"
+        :sprite-sheet-data="fireBlueJson"
         style="
           position: absolute;
           background-repeat: no-repeat;

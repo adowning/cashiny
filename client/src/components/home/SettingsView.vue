@@ -20,14 +20,14 @@
     // authStore.isAuthenticated = false;
     // authStore.setToken(null);
     authStore.clearAuthData()
-
+    window.google.accounts.id.disableAutoSelect()
     // userStore.currentUser = undefined;
     // userStore.token = "";
 
     localStorage.clear()
     value.value = false
-    // router.push("/login");
-    window.location.reload()
+    router.push('/login')
+    // window.location.reload()
   }
   // const isOpen = ref(false)
   const customElementsForm = reactive({

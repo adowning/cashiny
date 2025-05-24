@@ -773,11 +773,13 @@ export async function getGameBigWin(): Promise<Response> {
   try {
     const allSpins = await db.gameSpin.findMany({
       where: {
-        grossWinAmount: { gt: 0 },
+        grossWinAmount: { gt: 100 },
       },
       include: {
         gameSession: true,
       },
+      orderBy: { grossWinAmount: 'desc' },
+      take: 100,
     })
 
     // Function to ensure user diversity

@@ -14,6 +14,11 @@ import { defineStore } from 'pinia'
 // Import reactive functions
 import { handleException } from './exception'
 
+export enum DepositScreenName {
+  'SELECT_PRODUCT',
+  'SELECT_PAYMENT',
+  'CONFIRM',
+}
 export const useDepositStore = defineStore('deposit', () => {
   // State properties converted to reactive references
   const success = ref(false)
@@ -35,6 +40,7 @@ export const useDepositStore = defineStore('deposit', () => {
   const selectedProduct = ref<Omit<Product, 'operator' | 'transactions'>>()
   const operatorData = ref<OperatorData>()
   const depositHistoryItem = ref<DepositHistoryResponse>({} as DepositHistoryResponse) // Keeping type assertion as in original
+  const depositScreenName = ref<DepositScreenName>(DepositScreenName.SELECT_PRODUCT)
 
   // Getters converted to computed properties
   const getSuccess = computed(() => success.value)
@@ -52,6 +58,9 @@ export const useDepositStore = defineStore('deposit', () => {
   // Actions converted to regular functions
   const setSuccess = (isSuccess: boolean) => {
     success.value = isSuccess
+  }
+  const setDepositScreenName = (screenName: DepositScreenName) => {
+    depositScreenName.value = screenName
   }
   const toggleShopOpen = () => {
     shopOpen.value = !shopOpen.value
@@ -201,6 +210,7 @@ export const useDepositStore = defineStore('deposit', () => {
     dispatchCancelPending,
     setSelectedProduct,
     errMessage,
+    depositScreenName,
     depositConfig,
     depositSubmit,
     pixInfo,
@@ -225,6 +235,8 @@ export const useDepositStore = defineStore('deposit', () => {
     dispatchUserDepositCfg,
     dispatchUserDepositSubmit,
     dispatchUserDepositHistory,
+    setDepositScreenName,
+    depositScreenName,
   }
 })
 
