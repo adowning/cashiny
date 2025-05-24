@@ -3,8 +3,6 @@ function calculateRTP(win: number, bet: number): number {
   return bet > 0 ? (win / bet) * 100 : 0
 }
 
-import { db, GameSession } from '@cashflow/database'
-import { TransactionType } from '@cashflow/database'
 import {
   GameBigWinData,
   GameBigWinItem,
@@ -44,6 +42,9 @@ import {
   TransactionStatus,
   XpEvent,
   Notification,
+  db,
+  GameSession,
+  TransactionType,
   Currency,
   UserReward,
   RewardType,
@@ -520,15 +521,17 @@ export async function registerGameRound(
         createdAt: new Date(),
         wagerAmount: betAmount,
         grossWinAmount: winAmount,
-        metadata: {
-          netWinAmount: winAmount - betAmount,
-        },
+        // metadata: {
+        //   netWinAmount: winAmount - betAmount,
+        // },
         // currencyId: gameSession.currencyId, // TODO - determine this
         // balanceBefore: user.profile.balance, // TODO
         // balanceAfter: user.profile.balance + winAmount - betAmount, // TODO
         // externalId: body.round_id, // TODO
         // externalRoundId: body.round_id, // TODO
         // externalGameId: game.id, // TODO
+        sessionId: session.id,
+        timeStamp: Date(),
       },
     })
 

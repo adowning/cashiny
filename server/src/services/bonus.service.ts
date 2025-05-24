@@ -1,10 +1,8 @@
-import type { UserWithProfile } from '@cashflow/database'
-import type { BonusItem, GetBonusList, GetUserBonusResponse } from '@cashflow/types'
+import type { GetBonusList, UserWithProfile } from '@cashflow/types'
 import type { HonoRequest } from 'hono'
 
 //
 import { createErrorResponse, createSuccessResponse } from '../routes'
-import { db } from './prisma.service'
 
 /**
  * Get user's bonus list.

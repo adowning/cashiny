@@ -11,6 +11,7 @@ import {
   TransactionStatus, // For Prisma.InputJsonValue and transaction client type
   // User,
   // Currency,
+  db,
 } from '@cashflow/database'
 import cron from 'node-cron'
 
@@ -41,7 +42,7 @@ import {
 // Placeholder for a real payment provider service
 // import { PaymentProviderService } from './paymentProvider.service';
 
-const prisma = new PrismaClient()
+const prisma = db
 
 type PrismaTransactionClient = Omit<
   PrismaClient,

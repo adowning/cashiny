@@ -1,5 +1,5 @@
 import {
-  PrismaClient,
+  db,
   User,
   XpEvent,
   VipInfo,
@@ -24,7 +24,7 @@ type PrismaTransactionClient = Omit<
   '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
 >
 
-const prisma = new PrismaClient()
+const prisma = db
 
 /**
  * Awards XP to a user, updates their VipInfo (total XP, current level XP, level),

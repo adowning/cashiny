@@ -1,0 +1,141 @@
+:root {
+   --p-primary-50: rgb(243, 246, 249);
+--p-primary-50: rgb(199, 213, 227);
+--p-primary-100: rgb(154, 180, 206);
+            --p-primary-200: rgb(109, 147, 184);
+            --p-primary-300: rgb(65, 113, 162);
+            --p-primary-400: rgb(20, 80, 140);
+            --p-primary-500: rgb(17, 68, 119);
+            --p-primary-600: rgb(14, 56, 98);
+            --p-primary-700: rgb(11, 44, 77);
+            --p-primary-800: rgb(8, 32, 56);
+            --p-primary-900: rgb(5, 20, 35);
+            --p-primary-950: rgb(5, 20, 34)
+  --p-surface-0: #ffffff;
+  --p-surface-50: #fafafa;
+  --p-surface-100: #f4f4f5;
+  --p-surface-200: #e4e4e7;
+  --p-surface-300: #d4d4d8;
+  --p-surface-400: #a1a1aa;
+  --p-surface-500: #71717a;
+  --p-surface-600: #52525b;
+  --p-surface-700: #3f3f46;
+  --p-surface-800: #27272a;
+  --p-surface-900: #18181b;
+  --p-surface-950: #09090b;
+  --p-content-border-radius: 6px;
+}
+
+/* Light */
+:root {
+  --p-primary-color: var(--p-primary-500);
+  --p-primary-contrast-color: var(--p-surface-0);
+  --p-primary-hover-color: var(--p-primary-600);
+  --p-primary-active-color: var(--p-primary-700);
+  --p-content-border-color: var(--p-surface-200);
+  --p-content-hover-background: var(--p-surface-100);
+  --p-content-hover-color: var(--p-surface-800);
+  --p-highlight-background: var(--p-primary-50);
+  --p-highlight-color: var(--p-primary-700);
+  --p-highlight-focus-background: var(--p-primary-100);
+  --p-highlight-focus-color: var(--p-primary-800);
+  --p-text-color: var(--p-surface-700);
+  --p-text-hover-color: var(--p-surface-800);
+  --p-text-muted-color: var(--p-surface-500);
+  --p-text-hover-muted-color: var(--p-surface-600);
+}
+
+/* Dark */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --p-primary-color: var(--p-primary-400);
+    --p-primary-contrast-color: var(--p-surface-900);
+    --p-primary-hover-color: var(--p-primary-300);
+    --p-primary-active-color: var(--p-primary-200);
+    --p-content-border-color: var(--p-surface-700);
+    --p-content-hover-background: var(--p-surface-800);
+    --p-content-hover-color: var(--p-surface-0);
+    --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
+    --p-highlight-color: rgba(255, 255, 255, 0.87);
+    --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
+    --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
+    --p-text-color: var(--p-surface-0);
+    --p-text-hover-color: var(--p-surface-0);
+    --p-text-muted-color: var(--p-surface-400);
+    --p-text-hover-muted-color: var(--p-surface-300);
+  }
+}
+
+.p-dark {
+  color-scheme: dark;
+}
+
+.container {
+  display: flex;
+}
+
+.color-palette {
+  width: 30%;
+  padding: 10px;
+}
+
+.color-palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.color-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.color-box {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+}
+
+label {
+  font-size: 0.8em;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+input[type='color'] {
+  width: 100%;
+  height: 25px;
+  border: none;
+  cursor: pointer;
+}
+
+.components {
+  width: 70%;
+  padding: 20px;
+  text-align: center;
+}
+
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 20px auto;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--p-content-border-color);
+  cursor: pointer;
+}
+
+tr:nth-child(even) {
+  background-color: var(--p-content-hover-background);
+}
+
+button {
+  padding: 10px 20px;

@@ -73,34 +73,34 @@ export class WebSocketRouter<T extends AppWsData = AppWsData> {
     console.log('[WebSocketRouter] Server instance has been set.')
   }
 
-  public onOpen(handler: OpenHandler<T>): this {
-    this.openHandlers.push(handler)
-    return this
-  }
+  // public onOpen(handler: OpenHandler<T>): this {
+  //   this.openHandlers.push(handler)
+  //   return this
+  // }
 
-  public onClose(handler: CloseHandler<T>): this {
-    this.closeHandlers.push(handler)
-    return this
-  }
+  // public onClose(handler: CloseHandler<T>): this {
+  //   this.closeHandlers.push(handler)
+  //   return this
+  // }
 
-  public onMessage<Schema extends MessageSchemaType>(
-    schema: Schema,
-    handler: MessageHandler<Schema, T>
-  ): this {
-    const messageType = schema.shape.type._def.value
-    if (typeof messageType !== 'string') {
-      console.error("[WS Router] Schema must have a literal string 'type'. Invalid schema:", schema)
-      return this
-    }
-    if (this.messageHandlers.has(messageType)) {
-      console.warn(`[WS Router] Overwriting handler for message type "${messageType}".`)
-    }
-    this.messageHandlers.set(messageType, {
-      schema,
-      handler: handler as MessageHandler<MessageSchemaType, T>,
-    })
-    return this
-  }
+  // public onMessage<Schema extends MessageSchemaType>(
+  //   schema: Schema,
+  //   handler: MessageHandler<Schema, T>
+  // ): this {
+  //   const messageType = schema.shape.type._def.value
+  //   if (typeof messageType !== 'string') {
+  //     console.error("[WS Router] Schema must have a literal string 'type'. Invalid schema:", schema)
+  //     return this
+  //   }
+  //   if (this.messageHandlers.has(messageType)) {
+  //     console.warn(`[WS Router] Overwriting handler for message type "${messageType}".`)
+  //   }
+  //   this.messageHandlers.set(messageType, {
+  //     schema,
+  //     handler: handler as MessageHandler<MessageSchemaType, T>,
+  //   })
+  //   return this
+  // }
 
   public upgrade(options: UpgradeRequestOptions<Omit<T, 'clientId'>>) {
     const { server, request, data, headers } = options

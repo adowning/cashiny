@@ -14,6 +14,7 @@
     "clean": "rm -rf node_modules .turbo && bunx turbo run clean"
   },
   "workspaces": [
+    "admin",
     "server",
     "client",
     "packages/*"

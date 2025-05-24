@@ -1,11 +1,11 @@
 import {
-  PrismaClient,
   VipInfo as PrismaVipInfo,
   RewardType,
   RewardStatus,
   UserReward as PrismaUserReward,
   TransactionType,
   TransactionStatus,
+  db,
   // Import other Prisma models if needed, e.g., RebateTransaction, VipTask, UserVipTaskProgress
 } from '@cashflow/database'
 import type {
@@ -30,7 +30,7 @@ import {
 import { addXpToUser } from './xp.service' // Assuming you have an XP service
 import { createTransactionRecord } from './transaction.service' // Assuming a generic transaction service
 
-const prisma = new PrismaClient()
+const prisma = db
 
 const DEFAULT_VIP_LEVEL = 1
 const DEFAULT_CASHBACK_PERCENTAGE = 0.01

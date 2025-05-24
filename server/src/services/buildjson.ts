@@ -129,7 +129,6 @@ export function buildJson(
 
 export function buildJsonForSpin(
   jsonBase: any
-  // balance: number,
   // stake: number,
   // originalBalance: number,
   // balance2: number

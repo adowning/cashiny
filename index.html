@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Palette Editor</title>
+    <style>
+      :root {
+        --p-primary-50: #ecfdf5;
+        --p-primary-100: #d1fae5;
+        --p-primary-200: #a7f3d0;
+        --p-primary-300: #6ee7b7;
+        --p-primary-400: #34d399;
+        --p-primary-500: #10b981;
+        --p-primary-600: #059669;
+        --p-primary-700: #047857;
+        --p-primary-800: #065f46;
+        --p-primary-900: #064e3b;
+        --p-primary-950: #022c22;
+        --p-surface-0: #ffffff;
+        --p-surface-50: #fafafa;
+        --p-surface-100: #f4f4f5;
+        --p-surface-200: #e4e4e7;
+        --p-surface-300: #d4d4d8;
+        --p-surface-400: #a1a1aa;
+        --p-surface-500: #71717a;
+        --p-surface-600: #52525b;
+        --p-surface-700: #3f3f46;
+        --p-surface-800: #27272a;
+        --p-surface-900: #18181b;
+        --p-surface-950: #09090b;
+        --p-content-border-radius: 6px;
+      }
+
+      /* Light */
+      :root {
+        --p-primary-color: var(--p-primary-500);
+        --p-primary-contrast-color: var(--p-surface-0);
+        --p-primary-hover-color: var(--p-primary-600);
+        --p-primary-active-color: var(--p-primary-700);
+        --p-content-border-color: var(--p-surface-200);
+        --p-content-hover-background: var(--p-surface-100);
+        --p-content-hover-color: var(--p-surface-800);
+        --p-highlight-background: var(--p-primary-50);
+        --p-highlight-color: var(--p-primary-700);
+        --p-highlight-focus-background: var(--p-primary-100);
+        --p-highlight-focus-color: var(--p-primary-800);
+        --p-text-color: var(--p-surface-700);
+        --p-text-hover-color: var(--p-surface-800);
+        --p-text-muted-color: var(--p-surface-500);
+        --p-text-hover-muted-color: var(--p-surface-600);
+      }
+
+      /* Dark */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --p-primary-color: var(--p-primary-400);
+          --p-primary-contrast-color: var(--p-surface-900);
+          --p-primary-hover-color: var(--p-primary-300);
+          --p-primary-active-color: var(--p-primary-200);
+          --p-content-border-color: var(--p-surface-700);
+          --p-content-hover-background: var(--p-surface-800);
+          --p-content-hover-color: var(--p-surface-0);
+          --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
+          --p-highlight-color: rgba(255, 255, 255, 0.87);
+          --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
+          --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
+          --p-text-color: var(--p-surface-0);
+          --p-text-hover-color: var(--p-surface-0);
+          --p-text-muted-color: var(--p-surface-400);
+          --p-text-hover-muted-color: var(--p-surface-300);
+        }
+      }
+
+      .p-dark {
+        color-scheme: dark;
+      }
+
+      .container {
+        display: flex;
+      }
+
+      .color-palette {
+        width: 30%;
+        padding: 10px;
+      }
+
+      .color-palette {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .color-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .color-box {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+      }
+
+      label {
+        font-size: 0.8em;
+        margin-bottom: 5px;
+        text-align: center;
+      }
+
+      input[type='color'] {
+        width: 100%;
+        height: 25px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .components {
+        width: 70%;
+        padding: 20px;
+        text-align: center;
+      }
+
+      table {
+        width: 80%;
+        border-collapse: collapse;
+        margin: 20px auto;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid var(--p-content-border-color);
+        cursor: pointer;
+      }
+
+      tr:nth-child(even) {
+        background-color: var(--p-content-hover-background);
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: var(--p-primary-color);
+        color: var(--p-primary-contrast-color);
+        border: none;
+        border-radius: var(--p-content-border-radius);
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+
+      .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--p-primary-color);
+        cursor: pointer;
+        margin: 0 auto;
+      }
+
+      input[type='color'] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Color Palette Editor</h1>
+    <div class="container">
+      <div class="color-palette" id="color-palette">
+        <!-- Color swatches and pickers will be added here -->
+      </div>
+
+      <div class="components">
+        <h2>UI Components</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Header</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Row 1</td>
+              <td>Data 1</td>
+            </tr>
+            <tr>
+              <td>Row 2</td>
+              <td>Data 2</td>
+            </tr>
+            <tr>
+              <td>Row 3</td>
+              <td>Data 3</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button>Click Me</button>
+        <div class="avatar"></div>
+
+        <input type="color" id="colorPicker" />
+      </div>
+    </div>
+
+    <script>
+      const tableRows = document.querySelectorAll('table tr')
+      const button = document.querySelector('button')
+      const avatar = document.querySelector('.avatar')
+      const colorPicker = document.getElementById('colorPicker')
+      const rootStyle = document.documentElement
+      const colorPalette = document.getElementById('color-palette')
+
+      // Function to extract CSS variables and their values
+      function getCSSVariables() {
+        const variables = {}
+        const styleSheet = document.styleSheets[0]
+        for (let i = 0; i < styleSheet.cssRules.length; i++) {
+          const rule = styleSheet.cssRules[i]
+          if (rule instanceof CSSStyleRule && rule.selectorText === ':root') {
+            for (let j = 0; j < rule.style.length; j++) {
+              const propertyName = rule.style[j]
+              if (propertyName.startsWith('--p-')) {
+                variables[propertyName] = rule.style.getPropertyValue(propertyName)
+              }
+            }
+          }
+        }
+        return variables
+      }
+
+      // Function to create color swatches and input elements
+      function populateColorPalette(variables) {
+        for (const variable in variables) {
+          if (variables.hasOwnProperty(variable)) {
+            const colorValue = variables[variable]
+
+            const colorContainer = document.createElement('div')
+            colorContainer.classList.add('color-container')
+
+            const colorBox = document.createElement('div')
+            colorBox.classList.add('color-box')
+            colorBox.style.backgroundColor = colorValue
+
+            const label = document.createElement('label')
+            label.textContent = variable
+
+            const colorInput = document.createElement('input')
+            colorInput.type = 'color'
+            colorInput.value = colorValue
+            colorInput.dataset.variable = variable
+            colorInput.addEventListener('input', (event) => {
+              const newColor = event.target.value
+              rootStyle.style.setProperty(variable, newColor)
+              colorBox.style.backgroundColor = newColor
+            })
+
+            colorContainer.appendChild(colorBox)
+            colorContainer.appendChild(label)
+            colorContainer.appendChild(colorInput)
+            colorPalette.appendChild(colorContainer)
+          }
+        }
+      }
+
+      // Get CSS variables and populate the color palette
+      const cssVariables = getCSSVariables()
+      populateColorPalette(cssVariables)
+
+      tableRows.forEach((row) => {
+        row.addEventListener('click', () => {
+          colorPicker.click()
+          colorPicker.onchange = function (e) {
+            row.style.backgroundColor = e.target.value
+          }
+        })
+      })
+
+      button.addEventListener('click', () => {
+        colorPicker.click()
+        colorPicker.onchange = function (e) {
+          button.style.backgroundColor = e.target.value
+        }
+      })
+
+      avatar.addEventListener('click', () => {
+        colorPicker.click()
+        colorPicker.onchange = function (e) {
+          avatar.style.backgroundColor = e.target.value
+        }
+      })
+    </script>
+  </body>
+</html>

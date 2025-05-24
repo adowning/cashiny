@@ -1,6 +1,6 @@
 // Instantiate PrismaClient
 import { db } from '@cashflow/database'
-import { User } from '@cashflow/types'
+import { UserWithProfile } from '@cashflow/types'
 import { BunRequest } from 'bun'
 
 import { calculateXpBonus } from './deposit-xp'
@@ -202,7 +202,7 @@ export async function handleCashAppWebhook(req: BunRequest) {
             },
           },
         },
-      })) as unknown as User
+      })) as unknown as UserWithProfile
 
       if (user) {
         // Update balance

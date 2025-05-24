@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
-import { UserWithProfile, db } from '@cashflow/database'
+import { db } from '@cashflow/database'
+import { UserWithProfile } from '@cashflow/types'
 // import type { User as Partial<User> } from 'better-auth';
 import { HonoRequest } from 'hono'
 
