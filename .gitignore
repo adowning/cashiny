@@ -5,4 +5,5 @@ build/
 .env
 .vscode/
 .turbo/
-**/.turbo/**
+**/.turbo/
+client/public/
