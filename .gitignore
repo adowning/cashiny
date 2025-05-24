@@ -6,4 +6,4 @@ build/
 .vscode/
 .turbo/
 **/.turbo/
-client/public/
+**.turbo**
