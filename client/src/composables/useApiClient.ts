@@ -8,6 +8,7 @@ import {
   type AuthResponseDto,
   type BalanceType,
   ClientClaimVipRewardPayload,
+  CreateTournamentAdminRequest,
   DepositHistoryResponse,
   GameBigWinData,
   type GameCategory as GameCategoryType,
@@ -18,11 +19,14 @@ import {
   GetOperatorDataResponse,
   GetRewardCenterList,
   GetSessionResponse,
+  GetTournamentLeaderboardRequestQuery,
   type GoogleSignInDto,
   type GoogleSignInResponse,
   type InitializeDepositDto,
   type InitializeDepositResponseDto,
+  JoinTournamentResponse,
   type LaunchGameResponseDto,
+  ListTournamentsRequestQuery,
   NETWORK_CONFIG,
   type PaginatedResponse,
   type Product,
@@ -31,8 +35,12 @@ import {
   type SetReferrerDto,
   type SignUpPayload,
   type TipUserDto,
+  TournamentCore,
+  TournamentDetailed,
+  TournamentParticipantInfo,
   type Transaction as TransactionType,
   type UpdatePasswordDto,
+  UpdateTournamentAdminRequest,
   type UpdateUserInput,
   UserReward,
   type UserVipStatus,
@@ -470,6 +478,82 @@ function useApiClient() {
       ), // Assuming NETWORK_CONFIG.HEALTH.HEALTH
   }
 
+  // --- Tournament API Methods ---
+  const tournamentsApi = {
+    list: (query?: ListTournamentsRequestQuery): Promise<TournamentCore[]> =>
+      request<TournamentCore[]>(NETWORK_CONFIG.TOURNAMENTS.LIST, 'GET', query),
+
+    getDetails: (tournamentId: string): Promise<TournamentDetailed> =>
+      request<TournamentDetailed>(
+        NETWORK_CONFIG.TOURNAMENTS.DETAILS.replace(':id', tournamentId),
+        'GET'
+      ),
+
+    getLeaderboard: (
+      tournamentId: string,
+      query?: GetTournamentLeaderboardRequestQuery
+    ): Promise<TournamentParticipantInfo[]> =>
+      request<TournamentParticipantInfo[]>(
+        NETWORK_CONFIG.TOURNAMENTS.LEADERBOARD.replace(':id', tournamentId),
+        'GET',
+        query
+      ),
+
+    join: (
+      tournamentId: string
+    ): Promise<JoinTournamentResponse> => // Ensure JoinTournamentResponse is defined in @cashflow/types
+      request<JoinTournamentResponse>(
+        NETWORK_CONFIG.TOURNAMENTS.JOIN.replace(':id', tournamentId),
+        'POST'
+      ),
+  }
+
+  // --- Admin Tournament API Methods (Optional - include if client needs admin actions) ---
+  const adminTournamentsApi = {
+    create: (payload: CreateTournamentAdminRequest): Promise<TournamentDetailed> =>
+      request<TournamentDetailed>(NETWORK_CONFIG.ADMIN_TOURNAMENTS.CREATE, 'POST', payload),
+
+    update: (
+      tournamentId: string,
+      payload: UpdateTournamentAdminRequest
+    ): Promise<TournamentDetailed> =>
+      request<TournamentDetailed>(
+        NETWORK_CONFIG.ADMIN_TOURNAMENTS.UPDATE.replace(':id', tournamentId),
+        'PUT',
+        payload
+      ),
+
+    start: (tournamentId: string): Promise<{ message: string }> =>
+      request<{ message: string }>(
+        NETWORK_CONFIG.ADMIN_TOURNAMENTS.START.replace(':id', tournamentId),
+        'POST'
+      ),
+
+    end: (tournamentId: string): Promise<{ message: string }> =>
+      request<{ message: string }>(
+        NETWORK_CONFIG.ADMIN_TOURNAMENTS.END.replace(':id', tournamentId),
+        'POST'
+      ),
+  }
+
+  return {
+    isRefreshingToken: readonly(isRefreshingToken),
+    request, // Expose generic request if still needed
+    auth,
+    users,
+    currency,
+    deposit,
+    games,
+    vip,
+    achievement,
+    bonus,
+    reward,
+    promo,
+    health,
+    tournaments: tournamentsApi, // Expose tournament methods
+    adminTournaments: adminTournamentsApi, // Expose admin tournament methods
+  }
+
   return {
     isRefreshingToken: readonly(isRefreshingToken),
     // tokenRefreshSubscribers: readonly(tokenRefreshSubscribers), // Usually not exposed
@@ -487,5 +571,4 @@ function useApiClient() {
     health,
   }
 }
-
 export default useApiClient

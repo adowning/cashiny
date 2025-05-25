@@ -1,6 +1,11 @@
 /* SPDX-FileCopyrightText: 2025-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
+import {
+  TournamentStartedPayload,
+  TournamentEndedPayload,
+  TournamentParticipantJoinedPayload,
+} from '@cashflow/types'
 import type { ZodLiteral, ZodObject, ZodRawShape, ZodTypeAny } from 'zod'
 import { z } from 'zod'
 // import { messageSchema } from './router'
@@ -271,3 +276,69 @@ export function messageSchema<
   // @ts-expect-error - TypeScript can't verify complex conditional return types
   return finalSchema
 }
+
+export const TournamentLeaderboardUpdateEvent = z.object({
+  table: z.string(),
+  operation: z.enum(['INSERT', 'UPDATE', 'DELETE']),
+  recordId: z.union([z.string(), z.number(), z.null()]).optional(), // Allow string/number/null IDs
+  data: z.record(z.any()).nullable(), // The row data (can be null on DELETE))
+})
+// New WebSocket Message Schemas for Tournaments
+export const TournamentStartedEvent = messageSchema(
+  'TOURNAMENT_STARTED_WS', // WebSocket message type, distinct from AppEvents enum value
+  z.custom<TournamentStartedPayload>() // Use the payload type directly
+)
+
+export const TournamentEndedEvent = messageSchema(
+  'TOURNAMENT_ENDED_WS',
+  z.custom<TournamentEndedPayload>()
+)
+
+export const TournamentParticipantJoinedEvent = messageSchema(
+  'TOURNAMENT_PARTICIPANT_JOINED_WS',
+  z.custom<TournamentParticipantJoinedPayload>()
+)
+
+// You might also want a generic tournament notification schema
+export const TournamentNotificationEvent = messageSchema(
+  'TOURNAMENT_NOTIFICATION_WS',
+  z.object({
+    tournamentId: z.string(),
+    title: z.string(),
+    message: z.string(),
+    details: z.record(z.unknown()).optional(), // For any extra data
+  })
+)
+
+// New Schemas for Client-to-Server Tournament Topic Subscription Messages
+export const SubscribeToTournamentTopicPayload = z.object({
+  tournamentId: z.string().cuid(), // Specific tournament ID
+  topicType: z.enum(['updates', 'leaderboard']), // Type of updates to subscribe to for that tournament
+})
+export const SubscribeToTournamentTopic = messageSchema(
+  'SUBSCRIBE_TOURNAMENT_TOPIC', // Message type from client
+  SubscribeToTournamentTopicPayload
+)
+
+export const UnsubscribeFromTournamentTopicPayload = z.object({
+  tournamentId: z.string().cuid(),
+  topicType: z.enum(['updates', 'leaderboard']),
+})
+export const UnsubscribeFromTournamentTopic = messageSchema(
+  'UNSUBSCRIBE_FROM_TOURNAMENT_TOPIC', // Message type from client
+  UnsubscribeFromTournamentTopicPayload
+)
+
+// Schema for subscribing to general tournament announcements (optional)
+export const SubscribeToGeneralTournaments = messageSchema('SUBSCRIBE_TO_GENERAL_TOURNAMENTS')
+export const UnsubscribeFromGeneralTournaments = messageSchema(
+  'UNSUBSCRIBE_FROM_GENERAL_TOURNAMENTS'
+)
+
+// It's also good to have a generic success/error response schema for client requests
+export const GenericWsResponsePayload = z.object({
+  success: z.boolean(),
+  message: z.string().optional(),
+  details: z.record(z.unknown()).optional(),
+})
+export const GenericWsResponse = messageSchema('GENERIC_WS_RESPONSE', GenericWsResponsePayload)

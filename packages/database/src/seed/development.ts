@@ -49,6 +49,7 @@ import {
   UserAchievement as PrismaUserAchievement, // <<<< ADDED
 } from '../../client' // User-provided path
 import { generateUsernames } from './wutang.js'
+import { seedTournaments } from './tournament'
 
 // Configuration
 const MAX_REGULAR_USERS = 20 // 1 admin + 9 regular users = MAX_USERS
@@ -1479,7 +1480,12 @@ async function main() {
   await seedAchievementsAndUserUnlocksInternal()
   await seedUserRewardsInternal()
   // --- End of new seed function calls ---
-
+  if (createdUsers.length > 0 && createdGames.length > 0) {
+    const adminForTournamentSeed = createdUsers.find((u) => u.role === PrismaRoleEnum.ADMIN) // Find an admin
+    await seedTournaments(prisma, createdUsers, createdGames, adminForTournamentSeed)
+  } else {
+    console.warn('⚠️ Skipping tournament seeding because users or games arrays are not populated.')
+  }
   console.log('✅ Database seed finished successfully.')
 }
 

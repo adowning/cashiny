@@ -1,0 +1,197 @@
+// Importing Prisma types that might be extended or re-used.
+// Adjust the import path if your generated Prisma client types are located elsewhere.
+import type {
+  Tournament as PrismaTournament,
+  TournamentParticipant as PrismaTournamentParticipant,
+  TournamentReward as PrismaTournamentReward,
+  TournamentGame as PrismaTournamentGame,
+  Game as PrismaGame,
+  User as PrismaUser,
+  Profile as PrismaProfile,
+  TournamentParticipant,
+} from '@cashflow/database'
+import { UserWithProfile } from '..'
+
+// --- Basic Tournament Information ---
+
+export interface TournamentGameInfo {
+  gameId: string
+  name: string // From related PrismaGame
+  pointMultiplier: number
+  // Add any other relevant game details you want to show
+  thumbnailUrl?: string // Example: if Game model has this
+}
+
+export interface TournamentRewardInfo {
+  id: string
+  rank: number
+  description: string
+  // currencyId?: string;
+  // amount?: number;
+  // itemId?: string;
+  isClaimed: boolean
+  winnerId?: string | null
+  winnerUsername?: string | null // If you want to include this directly
+}
+export type TournamentParticipantType = TournamentParticipant & {
+  user: UserWithProfile
+}
+
+export interface TournamentCore {
+  prizeFund: any
+  id: string
+  name: string
+  description?: string | null
+  startTime: string // ISO Date string
+  endTime?: string | null // ISO Date string
+  targetScore?: number | null
+  status: TournamentStatus
+  participantCount?: number // Often useful for list views
+}
+
+// For detailed views of a tournament
+export interface TournamentDetailed extends TournamentCore {
+  eligibleGames: TournamentGameInfo[]
+  rewards: TournamentRewardInfo[]
+  participants?: TournamentParticipantInfo[] // Usually for a leaderboard snapshot
+  createdBy?: {
+    id: string
+    username: string
+  }
+  createdAt: string // ISO Date string
+  updatedAt: string // ISO Date string
+}
+
+// --- Tournament Participant & Leaderboard ---
+
+export interface TournamentParticipantInfo {
+  userId: string
+  username: string
+  avatarUrl?: string | null // From User's Profile
+  score: number
+  rank?: number | null
+  joinedAt: string // ISO Date string
+}
+
+// --- API Request & Response Types (DTOs) ---
+
+// GET /tournaments
+export interface ListTournamentsRequestQuery {
+  status?: TournamentStatus
+  gameId?: string // CUID
+  activeNow?: boolean
+}
+export type ListTournamentsResponse = TournamentCore[]
+
+// GET /tournaments/:id
+export type GetTournamentDetailsResponse = TournamentDetailed
+
+// GET /tournaments/:id/leaderboard
+export interface GetTournamentLeaderboardRequestQuery {
+  limit?: number
+  offset?: number // For pagination
+}
+export type GetTournamentLeaderboardResponse = TournamentParticipantInfo[]
+
+// POST /tournaments/:id/join
+export type JoinTournamentResponse = TournamentParticipantInfo // Or a success message
+
+// --- Admin API Request & Response Types ---
+
+// POST /admin/tournaments
+export interface CreateTournamentAdminRequest {
+  name: string
+  description?: string
+  startTime: string // ISO Date string for Zod compatibility on server
+  endTime?: string // ISO Date string
+  targetScore?: number
+  eligibleGames?: Array<{
+    gameId: string // CUID
+    pointMultiplier?: number
+  }>
+  rewards?: Array<{
+    rank: number
+    description: string
+    // currencyId?: string;
+    // amount?: number;
+  }>
+}
+export type CreateTournamentAdminResponse = TournamentDetailed
+
+// PUT /admin/tournaments/:id
+export interface UpdateTournamentAdminRequest {
+  name?: string
+  description?: string
+  startTime?: string // ISO Date string
+  endTime?: string // ISO Date string
+  targetScore?: number
+  status?: TournamentStatus
+  // Note: Updating eligibleGames and rewards via PUT can be complex.
+  // Consider if they should be managed by separate dedicated endpoints (e.g., POST/DELETE on /admin/tournaments/:id/games)
+  // If included here, the DTO would be similar to CreateTournamentAdminRequest but with all fields optional.
+  eligibleGames?: Array<{
+    // This would likely replace all existing games if sent
+    gameId: string // CUID
+    pointMultiplier?: number
+  }>
+  rewards?: Array<{
+    // This would likely replace all existing rewards
+    rank: number
+    description: string
+  }>
+}
+export type UpdateTournamentAdminResponse = TournamentDetailed
+
+// --- Event Payloads (for typedAppEventEmitter and WebSockets) ---
+// These should align with what you define in '@/events' AppEvents
+
+export interface TournamentCreatedPayload {
+  tournamentId: string
+  name: string
+  startTime: string // ISO Date string
+  // Add any other relevant fields for a "new tournament" notification
+}
+
+export interface TournamentStartedPayload {
+  tournamentId: string
+  name: string
+  endTime?: string | null // ISO Date string
+}
+
+export interface TournamentEndedPayload {
+  tournamentId: string
+  name: string
+  // Optionally include final top N results or a summary
+  // results?: Pick<TournamentParticipantInfo, 'userId' | 'username' | 'score' | 'rank'>[];
+}
+
+export interface TournamentParticipantJoinedPayload {
+  tournamentId: string
+  userId: string
+  username: string
+  // newParticipantCount?: number; // Could be useful for client updates
+}
+
+export interface TournamentLeaderboardUpdatedPayload {
+  tournamentId: string
+  leaderboard: Array<
+    Pick<TournamentParticipantInfo, 'userId' | 'username' | 'score' | 'rank' | 'avatarUrl'>
+  >
+}
+
+// You might also want more granular event payloads, e.g., for individual score updates:
+export interface TournamentScoreUpdatedPayload {
+  tournamentId: string
+  userId: string
+  newScore: number
+  newRank?: number // Optional, if rank changes frequently
+  changeInScore: number // Helpful for animations/notifications
+}
+// export { Role, UserStatus /*, etc. */ } from '../prisma/interfaces' // Assuming @cashflow/database is your Prisma client package
+// Or define them manually if you don't want to expose Prisma directly
+export enum TournamentStatus {
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}

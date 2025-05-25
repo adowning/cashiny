@@ -15,6 +15,8 @@ import {
   useWebSocket,
 } from '@vueuse/core'
 import destr from 'destr'
+import { type ZodType, z } from 'zod' // Assuming Zod is used for schema
+import type { MessageSchemaType } from '@/../../server/src/sockets/types' // Adjust path if needed for server's MessageSchemaType
 
 // Ensure this path is correct
 
@@ -55,7 +57,8 @@ export const useAppWebSocket = createGlobalState(() => {
   // Expose reactive data and status
   const data = computed(() => wsInstanceRef.value?.data.value) // Last received message
   const status = readonly(internalStatus) // Publicly readable status
-
+  const wsData = data // data from useWebSocket is last received message
+  const wsStatus = status // status from useWebSocket
   const flushMessageQueue = () => {
     while (messageQueue.value.length > 0) {
       const message = messageQueue.value.shift()
@@ -70,7 +73,90 @@ export const useAppWebSocket = createGlobalState(() => {
       }
     }
   }
+  function sendTypedMessage<S extends MessageSchemaType>(
+    schema: S,
+    payload: S['shape'] extends { payload: infer P }
+      ? P extends ZodType
+        ? z.infer<P>
+        : unknown
+      : unknown,
+    meta?: S['shape'] extends { meta: infer M }
+      ? M extends ZodType
+        ? Partial<z.infer<M>>
+        : Record<string, never>
+      : Record<string, never>
+  ): boolean {
+    if (wsStatus.value !== 'OPEN') {
+      console.warn('WebSocket not open. Cannot send message.')
+      notificationStore.showError('Cannot send message: WebSocket is not connected.')
+      return false
+    }
 
+    try {
+      const typeDef = schema.shape.type._def
+      // Ensure 'value' exists and is the correct property for literal types
+      const messageType =
+        'value' in typeDef && typeof typeDef.value === 'string' ? typeDef.value : undefined
+
+      if (!messageType) {
+        console.error(
+          '[WS Send] Message schema does not have a valid literal string "type" property.'
+        )
+        notificationStore.showError('Internal Error: Invalid message schema type.')
+        return false
+      }
+
+      const messageToSend: Record<string, any> = {
+        // Use Record<string, any> for more flexible object assembly
+        type: messageType,
+        meta: {
+          timestamp: Date.now(),
+          ...(meta || {}), // Ensure meta is an object even if undefined initially
+        },
+      }
+
+      // Conditionally add payload only if it's not undefined
+      if (payload !== undefined) {
+        messageToSend.payload = payload
+      }
+
+      const validationResult = schema.safeParse(messageToSend)
+
+      if (!validationResult.success) {
+        console.error(
+          `[WS Send] Failed to validate message of type "${messageType}":`,
+          validationResult.error.flatten().fieldErrors
+        )
+        notificationStore.showError(
+          `WS Send Error: Invalid format for ${messageType}. ${validationResult.error.issues.map((i) => i.message).join(', ')}`
+        )
+        return false
+      }
+
+      const messageToSendString = JSON.stringify(validationResult.data)
+
+      // Call the useWebSocket's 'send' function.
+      // It expects a string, ArrayBuffer, or Blob for its single-argument version.
+      const success = send(messageToSendString) // Directly use the 'send' from useWebSocket
+
+      if (!success) {
+        // This usually means the WebSocket isn't in the OPEN state,
+        // though we check wsStatus.value above. It could also mean the send queue is full.
+        console.warn(
+          `[WS Send] send function returned false for message type "${messageType}". WebSocket might not be ready to send.`
+        )
+        notificationStore.showError('WebSocket busy or not ready to send. Please try again.')
+        return false
+      }
+
+      // console.log('[WS Send] SENT WS MESSAGE:', validationResult.data);
+      return true
+    } catch (error) {
+      console.error('[WS Send] Error constructing or sending message:', error)
+      notificationStore.showError('Failed to send WebSocket message due to an internal error.')
+      return false
+    }
+  }
   const connect = async () => {
     if (!VITE_HONO_WEBSOCKET_URL) {
       notificationStore.addNotification('error', 'WebSocket URL is not configured.')
@@ -203,7 +289,10 @@ export const useAppWebSocket = createGlobalState(() => {
     // eventManager.emit('wsConnected', false); // Watcher for status already does this.
   }
 
-  const send = (messagePayload: any) => {
+  const send = (
+    messagePayload: any,
+    p0: { tournamentId: string; topicType: 'updates' | 'leaderboard' }
+  ) => {
     if (wsInstanceRef.value && internalStatus.value === 'OPEN') {
       wsInstanceRef.value.send(JSON.stringify(messagePayload))
     } else {
@@ -250,12 +339,14 @@ export const useAppWebSocket = createGlobalState(() => {
   // The `useAppWebSocket` composable, when called, returns this object.
   // `createGlobalState` ensures this setup runs only once.
   return {
-    status, // reactive WebSocketStatus: 'CONNECTING', 'OPEN', 'CLOSED'
-    data, // reactive Ref<any>: last received message data, parsed
     connect,
     send,
-    close, // Call this to explicitly close the WebSocket connection
     onMessage, // Method to subscribe to messages
+    status: readonly(wsStatus), // Expose status (OPEN, CONNECTING, CLOSED)
+    data: readonly(wsData), // Expose last received message data
+    open, // Expose open function
+    close, // Expose close function
+    sendTypedMessage, // <<< EXPOSE THE VALIDATED SEND FUNCTION
   }
 })
 

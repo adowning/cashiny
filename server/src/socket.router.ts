@@ -1,12 +1,17 @@
-/**
- * WebSocket Router (`apps/server/src/sockets/router.ts`)
- * Refactored Version to support NoLimit Proxy
- */
 import type { Server, ServerWebSocket, WebSocketHandler } from 'bun'
-import { v4 as randomUUIDv7 } from 'uuid' // Changed from uuid to v4
+import { v4 as randomUUIDv7 } from 'uuid'
 import { z } from 'zod'
-
-import { UserLeft } from '@/sockets/schema' // Adjust path as needed
+import {
+  UserLeft,
+  Ping,
+  JoinRoom,
+  SendMessage,
+  SubscribeToTournamentTopic,
+  UnsubscribeFromTournamentTopic,
+  SubscribeToGeneralTournaments,
+  UnsubscribeFromGeneralTournaments,
+  GenericWsResponse,
+} from '@/sockets/schema' //
 import type {
   CloseHandler,
   CloseHandlerContext,
@@ -19,274 +24,344 @@ import type {
   SendFunction,
   UpgradeRequestOptions,
   WsData,
-} from '@/sockets/types' // Adjust path as needed
-
-import { publish } from './utils' // Adjust path as needed
+} from '@/sockets/types' //
 import {
   validateAndSend,
   safeJsonParse,
-  subscribeToTopic,
-  unsubscribeFromTopic,
-} from './utils/ws.utils' // Adjust path as needed
+  subscribeToTopic, // Correct: No 'util' prefix
+  unsubscribeFromTopic, // Correct: No 'util' prefix, and this is the function to use
+} from './utils/ws.utils' //
 import {
   NoLimitProxyWsData,
   nolimitProxyMessageHandler,
-} from './services/handlers/nolimit-proxy.handler' // Import proxy specific types and message handler
+} from './services/handlers/nolimit-proxy.handler' //
 
-// Define a more specific type for AppWsData if it's consistent across your app
-// This should include fields added by auth (userId) and potentially by proxy (isNoLimitProxy, etc.)
+import { handlePing } from './services/handlers/heartbeat.handler' //
+import { handleJoinRoom, handleSendMessage } from './services/handlers/chat.handler' //
+import {
+  kagamingProxyOpenHandler,
+  KaGamingProxyWsData,
+} from './services/handlers/kagaming-proxy.handler'
+
 export type AppWsData = WsData & {
-  userId?: string // Made optional as proxy might not have it initially or if auth fails
-  key?: string // From original client request if any
-  // NoLimit Proxy specific fields
+  userId?: string
+  username?: string
+  key?: string
   isNoLimitProxy?: boolean
   nolimitSessionKey?: string
-  nolimitRemoteWs?: WebSocket // Standard WebSocket for outgoing
+  nolimitRemoteWs?: WebSocket
   nolimitMessageCounter?: number
   nolimitRememberedData?: { extPlayerKey?: string }
   nolimitGameCodeString?: string
   nolimitClientString?: string
   nolimitLanguage?: string
   nolimitToken?: string
+  subscribedTournamentTopics?: Set<string>
+  mode?: string
+  gameCodeString?: string
+  kaToken?: string
+  gameId?: string
+  isKaGamingProxy?: boolean
+}
+
+// --- Tournament Topic Subscription Handlers ---
+
+function handleSubscribeToTournamentTopic(
+  context: MessageHandlerContext<typeof SubscribeToTournamentTopic, AppWsData>
+) {
+  const { ws, payload, send } = context
+  const topic = `tournament:${payload.tournamentId}:${payload.topicType}`
+  subscribeToTopic(ws, topic) // Corrected
+  if (!ws.data.subscribedTournamentTopics) {
+    ws.data.subscribedTournamentTopics = new Set()
+  }
+  ws.data.subscribedTournamentTopics.add(topic)
+  console.log(`User ${ws.data.userId || ws.data.clientId} subscribed to ${topic}`)
+  send(GenericWsResponse, { success: true, message: `Subscribed to ${topic}` })
+}
+
+function handleUnsubscribeFromTournamentTopic(
+  context: MessageHandlerContext<typeof UnsubscribeFromTournamentTopic, AppWsData>
+) {
+  const { ws, payload, send } = context
+  const topic = `tournament:${payload.tournamentId}:${payload.topicType}`
+  unsubscribeFromTopic(ws, topic, 'Client request') // Corrected, using the correct function
+  ws.data.subscribedTournamentTopics?.delete(topic)
+  console.log(`User ${ws.data.userId || ws.data.clientId} unsubscribed from ${topic}`)
+  send(GenericWsResponse, { success: true, message: `Unsubscribed from ${topic}` })
+}
+
+function handleSubscribeToGeneralTournaments(
+  context: MessageHandlerContext<typeof SubscribeToGeneralTournaments, AppWsData>
+) {
+  const { ws, send } = context
+  const topic = `tournaments:general`
+  subscribeToTopic(ws, topic) // Corrected
+  if (!ws.data.subscribedTournamentTopics) {
+    ws.data.subscribedTournamentTopics = new Set()
+  }
+  ws.data.subscribedTournamentTopics.add(topic)
+  console.log(`User ${ws.data.userId || ws.data.clientId} subscribed to ${topic}`)
+  send(GenericWsResponse, { success: true, message: `Subscribed to ${topic}` })
+}
+
+function handleUnsubscribeFromGeneralTournaments(
+  context: MessageHandlerContext<typeof UnsubscribeFromGeneralTournaments, AppWsData>
+) {
+  const { ws, send } = context
+  const topic = `tournaments:general`
+  unsubscribeFromTopic(ws, topic, 'Client request') // Corrected, using the correct function
+  ws.data.subscribedTournamentTopics?.delete(topic)
+  console.log(`User ${ws.data.userId || ws.data.clientId} unsubscribed from ${topic}`)
+  send(GenericWsResponse, { success: true, message: `Unsubscribed from ${topic}` })
 }
 
 export class WebSocketRouter<T extends AppWsData = AppWsData> {
-  private server!: Server
-  private isServerSet: boolean = false
-
-  private readonly openHandlers: OpenHandler<T>[] = []
-  private readonly closeHandlers: CloseHandler<T>[] = []
-  private readonly messageHandlers = new Map<string, MessageHandlerEntry<T>>()
+  private server: Server | null = null
+  private messageHandlers: Map<string, MessageHandlerEntry<T>> = new Map()
+  private openHandlers: OpenHandler<T>[] = []
+  private closeHandlers: CloseHandler<T>[] = []
 
   constructor() {
-    console.log('[WebSocketRouter] Initialized.')
+    this.registerMessageHandler(Ping, handlePing as MessageHandler<typeof Ping, T>)
+    this.registerMessageHandler(JoinRoom, handleJoinRoom as MessageHandler<typeof JoinRoom, T>)
+    this.registerMessageHandler(
+      SendMessage,
+      handleSendMessage as MessageHandler<typeof SendMessage, T>
+    )
+    this.registerMessageHandler(
+      SubscribeToTournamentTopic,
+      handleSubscribeToTournamentTopic as MessageHandler<typeof SubscribeToTournamentTopic, T>
+    )
+    this.registerMessageHandler(
+      UnsubscribeFromTournamentTopic,
+      handleUnsubscribeFromTournamentTopic as MessageHandler<
+        typeof UnsubscribeFromTournamentTopic,
+        T
+      >
+    )
+    this.registerMessageHandler(
+      SubscribeToGeneralTournaments,
+      handleSubscribeToGeneralTournaments as MessageHandler<typeof SubscribeToGeneralTournaments, T>
+    )
+    this.registerMessageHandler(
+      UnsubscribeFromGeneralTournaments,
+      handleUnsubscribeFromGeneralTournaments as MessageHandler<
+        typeof UnsubscribeFromGeneralTournaments,
+        T
+      >
+    )
+
+    this.addOpenHandler(this.defaultOpenHandler.bind(this))
+    this.addCloseHandler(this.defaultCloseHandler.bind(this))
   }
 
   public setServer(server: Server): void {
-    if (!server) throw new Error('[WebSocketRouter] Invalid Server instance.')
-    if (this.isServerSet) {
-      console.warn('[WebSocketRouter] Server instance already set.')
-      return
-    }
     this.server = server
-    this.isServerSet = true
-    console.log('[WebSocketRouter] Server instance has been set.')
   }
 
-  // public onOpen(handler: OpenHandler<T>): this {
-  //   this.openHandlers.push(handler)
-  //   return this
-  // }
+  public registerMessageHandler<Schema extends MessageSchemaType>(
+    schema: Schema,
+    handler: MessageHandler<Schema, T>
+  ): void {
+    const messageType = schema.shape.type.value
+    if (this.messageHandlers.has(messageType)) {
+      console.warn(`Message handler for type "${messageType}" is being overwritten.`)
+    }
+    this.messageHandlers.set(messageType, {
+      schema: schema as MessageSchemaType,
+      handler: handler as MessageHandler<MessageSchemaType, T>,
+    })
+  }
 
-  // public onClose(handler: CloseHandler<T>): this {
-  //   this.closeHandlers.push(handler)
-  //   return this
-  // }
+  public addOpenHandler(handler: OpenHandler<T>): void {
+    this.openHandlers.push(handler)
+  }
 
-  // public onMessage<Schema extends MessageSchemaType>(
-  //   schema: Schema,
-  //   handler: MessageHandler<Schema, T>
-  // ): this {
-  //   const messageType = schema.shape.type._def.value
-  //   if (typeof messageType !== 'string') {
-  //     console.error("[WS Router] Schema must have a literal string 'type'. Invalid schema:", schema)
-  //     return this
-  //   }
-  //   if (this.messageHandlers.has(messageType)) {
-  //     console.warn(`[WS Router] Overwriting handler for message type "${messageType}".`)
-  //   }
-  //   this.messageHandlers.set(messageType, {
-  //     schema,
-  //     handler: handler as MessageHandler<MessageSchemaType, T>,
-  //   })
-  //   return this
-  // }
+  public addCloseHandler(handler: CloseHandler<T>): void {
+    this.closeHandlers.push(handler)
+  }
 
-  public upgrade(options: UpgradeRequestOptions<Omit<T, 'clientId'>>) {
+  public upgrade(options: UpgradeRequestOptions<Omit<T, 'clientId'>>): string | null {
     const { server, request, data, headers } = options
-    if (!server) {
-      console.error('[WS Upgrade] Failed: Server instance missing.')
-      return new Response('WebSocket upgrade configuration error', { status: 500 })
-    }
-    const clientId = randomUUIDv7() // Use v4 from uuid
-
-    const wsData: T = { clientId, ...data } as T
-
-    const upgraded = server.upgrade(request, {
-      data: wsData,
-      headers: { 'X-Client-ID': clientId, ...headers },
+    const clientId = randomUUIDv7()
+    const success = server.upgrade(request, {
+      data: { ...data, clientId, subscribedTournamentTopics: new Set() } as T,
+      headers,
     })
-
-    if (!upgraded) {
-      console.error('[WS Upgrade] Failed. Server did not upgrade request.')
-      return new Response('WebSocket upgrade failed', { status: 500 })
-    }
-    return undefined
+    return success ? clientId : null
   }
 
-  private handleOpen(ws: ServerWebSocket<T>) {
-    const { clientId, userId, isNoLimitProxy } = ws.data
-    console.log(
-      `[WS OPEN] Connection opened: Client ${clientId}, User ${userId}, Proxy: ${!!isNoLimitProxy}`
-    )
-
-    if (!this.isServerSet) {
-      console.error(`[WS OPEN] Server instance not set for Client ${clientId}.`)
+  private async defaultOpenHandler(context: OpenHandlerContext<T>): Promise<void> {
+    const { ws } = context
+    console.log(`WebSocket opened: ${ws.data.clientId}, UserID: ${ws.data.userId || 'Guest'}`)
+    subscribeToTopic(ws, 'global') // Corrected
+    if (ws.data.userId) {
+      subscribeToTopic(ws, `user:${ws.data.userId}`) // Corrected
     }
-
-    const send = this.createSendFunction(ws)
-    if (userId && !isNoLimitProxy) {
-      // Standard user topic subscription, not for proxy during its own setup
-      subscribeToTopic(ws, `user_${userId}_updates`)
-    }
-
-    const context: OpenHandlerContext<T> = { ws, send }
-    this.openHandlers.forEach((handler) => {
-      try {
-        const result = handler(context)
-        if (result instanceof Promise) {
-          result.catch((error) =>
-            console.error(`[WS OPEN] Error in async open handler for ${clientId}:`, error)
-          )
-        }
-      } catch (error) {
-        console.error(`[WS OPEN] Error in sync open handler for ${clientId}:`, error)
-      }
-    })
   }
 
-  // Updated handleClose signature to match Bun's WebSocketHandler type
-  private handleClose(ws: ServerWebSocket<T>, code: number, reasonMessage: string) {
-    const { clientId, userId, currentRoomId, isNoLimitProxy } = ws.data
-    const displayReason = reasonMessage || 'N/A' // Use the string reason, provide default if empty
-    console.log(
-      `[WS CLOSE] Conn closed: Client ${clientId}, User ${userId}, Proxy: ${!!isNoLimitProxy}. Code: ${code}, Reason: ${displayReason}`
-    )
-
-    if (!this.isServerSet) {
-      console.error(`[WS CLOSE] Server instance not set for Client ${clientId}.`)
+  private async defaultCloseHandler(context: CloseHandlerContext<T>): Promise<void> {
+    const { ws, reason } = context // Ensure 'reason' is destructured
+    // Unsubscribe from all tracked topics on close
+    if (ws.data.subscribedTournamentTopics) {
+      ws.data.subscribedTournamentTopics.forEach((topic) => {
+        unsubscribeFromTopic(ws, topic, reason || 'Connection closed') // Corrected, using correct function and reason
+      })
+      ws.data.subscribedTournamentTopics.clear()
+    }
+    unsubscribeFromTopic(ws, 'global', reason || 'Connection closed') // Corrected
+    if (ws.data.userId) {
+      unsubscribeFromTopic(ws, `user:${ws.data.userId}`, reason || 'Connection closed') // Corrected
     }
 
-    if (userId && !isNoLimitProxy) {
-      // Standard unsubscribe, not for proxy during its own teardown
-      unsubscribeFromTopic(ws, `user_${userId}_updates`, 'socketClosing')
-    }
-    if (this.isServerSet && userId && currentRoomId && !isNoLimitProxy) {
-      // Only for non-proxy chat rooms
-      unsubscribeFromTopic(ws, currentRoomId, 'socketClosing')
-      publish(ws, this.server, currentRoomId, UserLeft, { roomId: currentRoomId, userId })
-    }
-
-    const send = this.createSendFunction(ws)
-    // Pass the string reason to the context
-    const context: CloseHandlerContext<T> = { ws, code, reason: displayReason, send }
-    this.closeHandlers.forEach((handler) => {
-      try {
-        const result = handler(context)
-        if (result instanceof Promise) {
-          result.catch((error) =>
-            console.error(`[WS CLOSE] Error in async close handler for ${clientId}:`, error)
-          )
-        }
-      } catch (error) {
-        console.error(`[WS CLOSE] Error in sync close handler for ${clientId}:`, error)
-      }
-    })
-  }
-
-  private handleMessage(ws: ServerWebSocket<T>, message: string | Buffer) {
-    const { clientId, isNoLimitProxy } = ws.data
-
-    if (!this.isServerSet) {
-      console.error(
-        `[WS MSG] Received from Client ${clientId}, but server instance not set. Cannot process.`
+    if (ws.data.currentRoomId && ws.data.userId && this.server && ws.data.username) {
+      this.server.publish(
+        ws.data.currentRoomId,
+        JSON.stringify({
+          type: UserLeft.shape.type.value,
+          payload: { userId: ws.data.userId, username: ws.data.username },
+          meta: { timestamp: new Date().toISOString() },
+        })
       )
-      return
     }
+  }
 
-    // --- Conditional handling for NoLimit Proxy ---
-    if (isNoLimitProxy) {
-      // Ensure nolimitProxyMessageHandler is compatible with ServerWebSocket<NoLimitProxyWsData>
-      // The cast here assumes that if isNoLimitProxy is true, ws.data conforms to NoLimitProxyWsData
+  private async handleOpen(ws: ServerWebSocket<T>): Promise<void> {
+    const send = this.createSendFunction(ws)
+    const context: OpenHandlerContext<T> = { ws, send }
+    for (const handler of this.openHandlers) {
+      try {
+        await handler(context)
+      } catch (error) {
+        console.error(`Error in open handler for ${ws.data.clientId}:`, error)
+      }
+    }
+  }
+
+  private async handleClose(
+    ws: ServerWebSocket<T>,
+    code: number,
+    reasonMessage: string
+  ): Promise<void> {
+    console.log(
+      `WebSocket closed: ${ws.data.clientId}, UserID: ${ws.data.userId || 'Guest'}, Code: ${code}, Reason: ${reasonMessage}`
+    )
+    const send = this.createSendFunction(ws)
+    // Pass the actual reason message from the close event to the context
+    const context: CloseHandlerContext<T> = { ws, code, reason: reasonMessage, send }
+
+    for (const handler of this.closeHandlers) {
+      try {
+        await handler(context)
+      } catch (error) {
+        console.error(`Error in close handler for ${ws.data.clientId}:`, error)
+      }
+    }
+  }
+
+  private async handleMessage(ws: ServerWebSocket<T>, message: string | Buffer): Promise<void> {
+    if (ws.data.isNoLimitProxy && typeof nolimitProxyMessageHandler === 'function') {
       nolimitProxyMessageHandler(ws as ServerWebSocket<NoLimitProxyWsData>, message)
       return
     }
-    // --- End of NoLimit Proxy specific handling ---
+    console.log('message')
+    if (ws.data.isKaGamingProxy && typeof kagamingProxyOpenHandler === 'function') {
+      kagamingProxyOpenHandler(ws as ServerWebSocket<KaGamingProxyWsData>, message)
+      return
+    }
+    const messageString = message instanceof Buffer ? message.toString() : message
+    const parseResult = safeJsonParse(messageString)
 
-    // --- Standard Schema-based message handling ---
-    const parseResult = safeJsonParse(message)
     if (!parseResult.success || !parseResult.data) {
       console.warn(
-        `[WS MSG] Failed parsing JSON message from client ${clientId}`,
+        `Received malformed or unparseable WebSocket message from ${ws.data.clientId}: ${messageString}`,
         parseResult.error
       )
+      const send = this.createSendFunction(ws)
+      send(GenericWsResponse, {
+        success: false,
+        message: 'Malformed WebSocket message.',
+        details: { error: parseResult.error?.message },
+      })
       return
     }
 
-    const parsedMessage = parseResult.data
-    const messageType = parsedMessage.type as string
-    const handlerEntry = this.messageHandlers.get(messageType)
+    const actualMessageData = parseResult.data
 
-    if (!handlerEntry) {
-      console.warn(`[WS MSG] No handler for type "${messageType}" from client ${clientId}.`)
-      return
-    }
-
-    const { schema, handler } = handlerEntry
-    const validationResult = schema.safeParse(parsedMessage)
-
-    if (!validationResult.success) {
-      console.error(
-        `[WS MSG] Validation failed for type "${messageType}" from client ${clientId}:`,
-        validationResult.error.flatten()
+    if (typeof actualMessageData.type !== 'string') {
+      console.warn(
+        `Parsed WebSocket message from ${ws.data.clientId} lacks a string 'type' property:`,
+        actualMessageData
       )
+      const send = this.createSendFunction(ws)
+      send(GenericWsResponse, {
+        success: false,
+        message: "Message 'type' property is missing or not a string.",
+      })
       return
     }
 
-    const validatedData = validationResult.data
-    const send = this.createSendFunction(ws)
-    const context: MessageHandlerContext<MessageSchemaType, T> = {
-      ws,
-      meta: validatedData.meta,
-      send,
-      server: this.server,
-      ...(validatedData.payload !== undefined && { payload: validatedData.payload }),
-    }
+    const entry = this.messageHandlers.get(actualMessageData.type)
+    if (entry) {
+      try {
+        const validatedMessage = entry.schema.parse(actualMessageData)
 
-    try {
-      const result = handler(context as any) // Cast needed due to generic handler storage
-      if (result instanceof Promise) {
-        result.catch((error) =>
-          console.error(
-            `[WS MSG] Unhandled rejection in handler for "${messageType}" from ${clientId}:`,
-            error
-          )
+        const send = this.createSendFunction(ws)
+        const context: MessageHandlerContext<MessageSchemaType, T> = {
+          ws,
+          ...(validatedMessage as any),
+          send,
+          server: this.server!,
+        }
+        await entry.handler(context)
+      } catch (error) {
+        console.error(
+          `Error processing WebSocket message type ${actualMessageData.type} from ${ws.data.clientId}:`,
+          error
         )
+        const send = this.createSendFunction(ws)
+        if (error instanceof z.ZodError) {
+          send(GenericWsResponse, {
+            success: false,
+            message: 'Invalid message structure or payload.',
+            details: error.flatten(),
+          })
+        } else if (error instanceof Error) {
+          send(GenericWsResponse, {
+            success: false,
+            message: error.message || 'Failed to process message.',
+          })
+        } else {
+          send(GenericWsResponse, {
+            success: false,
+            message: 'An unknown error occurred while processing the message.',
+          })
+        }
       }
-    } catch (error) {
-      console.error(`[WS MSG] Error in handler for "${messageType}" from ${clientId}:`, error)
+    } else {
+      console.warn(
+        `No WebSocket message handler registered for type "${actualMessageData.type}" from ${ws.data.clientId}`
+      )
+      const send = this.createSendFunction(ws)
+      send(GenericWsResponse, {
+        success: false,
+        message: `Unknown message type: ${actualMessageData.type}`,
+      })
     }
   }
 
   private createSendFunction(ws: ServerWebSocket<T>): SendFunction {
-    return <Schema extends MessageSchemaType>(
-      schema: Schema,
-      payload: Schema['shape'] extends { payload: infer P }
-        ? P extends z.ZodTypeAny
-          ? z.infer<P>
-          : unknown
-        : unknown,
-      meta: Partial<Omit<z.infer<Schema['shape']['meta']>, 'clientId' | 'timestamp'>> = {}
-    ) => {
+    return (schema, payload, meta) => {
       validateAndSend(ws, schema, payload, meta)
     }
   }
 
   public get websocket(): WebSocketHandler<T> {
     return {
-      open: this.handleOpen.bind(this),
-      close: this.handleClose.bind(this), // This now matches the expected type
-      message: this.handleMessage.bind(this),
+      open: (ws) => this.handleOpen(ws as ServerWebSocket<T>),
+      message: (ws, message) => this.handleMessage(ws as ServerWebSocket<T>, message),
+      close: (ws, code, reason) => this.handleClose(ws as ServerWebSocket<T>, code, reason),
     }
   }
 }

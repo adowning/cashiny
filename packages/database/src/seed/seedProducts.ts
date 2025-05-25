@@ -18,9 +18,9 @@ export default async function loadProducts(
   currencyID: string
 ): Promise<ProductInput[]> {
   // Map products to conform to ProductInput interface
-  console.log(products.default)
   // const _products = JSON.parse(JSON.stringify(products))
   // console.log(products[0])
+  //@ts-ignore
   const mappedProducts: ProductInput[] = (products.default as any[]).map((product) => ({
     ...product,
     title: product.title ?? product.title, // Map 'title' to 'name' if 'name' is missing

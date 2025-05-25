@@ -10,6 +10,7 @@ declare global {
   const ANIMATION_STOP_ALL_EVENT: typeof import('../../composables/useAnimationController')['ANIMATION_STOP_ALL_EVENT']
   const ANIMATION_STOP_EVENT: typeof import('../../composables/useAnimationController')['ANIMATION_STOP_EVENT']
   const ApiError: typeof import('../../composables/useApiClient')['ApiError']
+  const DepositScreenName: typeof import('../../stores/deposit.store')['DepositScreenName']
   const EffectScope: typeof import('vue')['EffectScope']
   const IN_BROWSER: typeof import('../../composables/useDisplay')['IN_BROWSER']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
@@ -302,6 +303,7 @@ declare global {
   const useToNumber: typeof import('@vueuse/core')['useToNumber']
   const useToString: typeof import('@vueuse/core')['useToString']
   const useToggle: typeof import('@vueuse/core')['useToggle']
+  const useTournamentStore: typeof import('../../stores/tournament.store')['useTournamentStore']
   const useTransition: typeof import('@vueuse/core')['useTransition']
   const useUrlSearchParams: typeof import('@vueuse/core')['useUrlSearchParams']
   const useUserMedia: typeof import('@vueuse/core')['useUserMedia']
@@ -353,6 +355,9 @@ declare global {
   // @ts-ignore
   export type { SSROptions } from '../../composables/useDisplay'
   import('../../composables/useDisplay')
+  // @ts-ignore
+  export type { DepositScreenName } from '../../stores/deposit.store'
+  import('../../stores/deposit.store')
   // @ts-ignore
   export type { Notification, INotificationStore } from '../../stores/notification.store'
   import('../../stores/notification.store')

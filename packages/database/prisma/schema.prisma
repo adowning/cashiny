@@ -87,7 +87,7 @@ enum GameCategory {
   OTHER
 }
 
-enum GameProvider {
+enum GameProviderName {
   PRAGMATICPLAY
   EVOPLAY
   NETENT
@@ -207,34 +207,34 @@ enum CurrencyType {
 }
 
 model User {
-  id                     String                @id @default(cuid())
-  username               String?               @unique
-  name                   String                @unique
-  email                  String                @unique
+  id                     String                  @id @default(cuid())
+  username               String?                 @unique
+  name                   String                  @unique
+  email                  String                  @unique
   emailVerified          Boolean?
   displayUsername        String?
-  phone                  String?               @unique
-  cashtag                String?               @unique
+  phone                  String?                 @unique
+  cashtag                String?                 @unique
   phoneVerified          DateTime?
-  isVerified             Boolean               @default(false)
+  isVerified             Boolean                 @default(false)
   passwordHash           String?
-  role                   Role                  @default(USER)
-  status                 UserStatus            @default(ACTIVE)
-  totalXp                Int                   @default(0)
-  currentLevel           Int                   @default(0)
-  referralCode           String?               @unique @default(cuid())
-  commissionRate         Float?                @default(0.05)
-  twoFactorEnabled       Boolean?              @default(false)
-  isOnline               Boolean?              @default(false)
+  role                   Role                    @default(USER)
+  status                 UserStatus              @default(ACTIVE)
+  totalXp                Int                     @default(0)
+  currentLevel           Int                     @default(0)
+  referralCode           String?                 @unique @default(cuid())
+  commissionRate         Float?                  @default(0.05)
+  twoFactorEnabled       Boolean?                @default(false)
+  isOnline               Boolean?                @default(false)
   twoFactorSecret        String?
   image                  String?
   twoFactorRecoveryCodes String[]
   lastLogin              DateTime?
   lastIp                 String?
-  createdAt              DateTime              @default(now())
-  updatedAt              DateTime              @updatedAt
-  profile                Profile?              @relation("PrimaryProfile")
-  otherProfiles          Profile[]             @relation("OtherProfiles")
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  profile                Profile?                @relation("PrimaryProfile")
+  otherProfiles          Profile[]               @relation("OtherProfiles")
   settings               Settings?
   activeWalletId         String?
   wallets                Wallet[]
@@ -245,24 +245,24 @@ model User {
   xpEvents               XpEvent[]
   userAchievements       UserAchievement[]
   // notifications          Notification[]
-  sentMessages           ChatMessage[]         @relation("SentMessages")
-  friendshipsSent        Friendship[]          @relation("SentFriendRequests")
-  friendshipsReceived    Friendship[]          @relation("ReceivedFriendRequests")
+  sentMessages           ChatMessage[]           @relation("SentMessages")
+  friendshipsSent        Friendship[]            @relation("SentFriendRequests")
+  friendshipsReceived    Friendship[]            @relation("ReceivedFriendRequests")
   // targetedTransactions   Transaction[]        @relation("TargetUserTransactions")
-  gameLaunchLinks        GameLaunchLink[]      @relation("UserGameLaunchLinks")
-  eventLogsAsActor       EventLog[]            @relation("ActorEvents")
+  gameLaunchLinks        GameLaunchLink[]        @relation("UserGameLaunchLinks")
+  eventLogsAsActor       EventLog[]              @relation("ActorEvents")
   // gameTransactions       Transaction[]    @relation("UserGameTransactions")
   // operators UserOperator[] // User's memberships in operators
-  createdOperators       OperatorAccess[]      @relation("OperatorOwner")
-  invitationsSent        OperatorInvitation[]  @relation("SentInvitations")
-  invitationsReceived    OperatorInvitation[]  @relation("ReceivedInvitations") // If linking invitation directly to an existing user
+  createdOperators       OperatorAccess[]        @relation("OperatorOwner")
+  invitationsSent        OperatorInvitation[]    @relation("SentInvitations")
+  invitationsReceived    OperatorInvitation[]    @relation("ReceivedInvitations") // If linking invitation directly to an existing user
   // vipProgress            UserVipProgress?     @relation("UserToVipProgress", fields: [userVipProgressId], references: [id])
   // vipRewardClaims        VipRewardClaim[]     @relation("UserToVipRewardClaims")
   // vipTaskProgress        UserVipTaskProgress[]
   // vip                    UserVipProgress?      @relation("UserToVipProgress", fields: [userVipProgressId], references: [id])
   referrerId             String?
-  referrer               User?                 @relation("Referrals", fields: [referrerId], references: [id], onDelete: SetNull)
-  referrals              User[]                @relation("Referrals")
+  referrer               User?                   @relation("Referrals", fields: [referrerId], references: [id], onDelete: SetNull)
+  referrals              User[]                  @relation("Referrals")
   account                Account[]
   Session                Session[]
   vipInfo                VipInfo?
@@ -281,11 +281,11 @@ model User {
   gender                 Gender?
   // Preferences
   preferredCurrencyId    String?
-  preferredCurrency      Currency?             @relation("PreferredCurrency", fields: [preferredCurrencyId], references: [id])
-  timezone               String?               @default("UTC")
-  locale                 String?               @default("en-US") // For language and regional formats
+  preferredCurrency      Currency?               @relation("PreferredCurrency", fields: [preferredCurrencyId], references: [id])
+  timezone               String?                 @default("UTC")
+  locale                 String?                 @default("en-US") // For language and regional formats
   // MFA
-  mfaEnabled             Boolean               @default(false)
+  mfaEnabled             Boolean                 @default(false)
   mfaSecret              String? // Encrypted
   // mfaBackupCodes Json? // Store hashed backup codes
   // Relationships
@@ -295,10 +295,13 @@ model User {
   // achievements UserAchievement[] // If you have an achievements system
   // Notification Notification[] @relation("NotificationUser")
   // allNotification Notification[] @relation("AllNotifications")
-  sentNotifications      Notification[]        @relation("Sender")
-  receivedNotifications  Notification[]        @relation("Originator")
-  originatedTransactions Transaction[]         @relation("OriginatedTransactions")
-  receivedTransactions   Transaction[]         @relation("ReceivedTransactions")
+  sentNotifications      Notification[]          @relation("Sender")
+  receivedNotifications  Notification[]          @relation("Originator")
+  originatedTransactions Transaction[]           @relation("OriginatedTransactions")
+  receivedTransactions   Transaction[]           @relation("ReceivedTransactions")
+  TournamentParticipant  TournamentParticipant[]
+  TournamentReward       TournamentReward[]      @relation("TournamentWinner")
+  Tournament             Tournament[]
 
   @@index([email])
   @@index([username])
@@ -495,26 +498,32 @@ model Achievement {
 }
 
 model Game {
-  id              String           @id @default(cuid())
-  name            String
-  title           String
-  goldsvetData    Json?
+  id                 String             @id @default(cuid())
+  name               String
+  title              String
+  goldsvetData       Json?
   // slug            String           @unique
-  description     String?          @db.Text
-  provider        GameProvider
-  category        GameCategory
-  tags            String[]
-  isActive        Boolean          @default(true)
-  thumbnailUrl    String?
-  bannerUrl       String?
-  meta            Json? // For RTP, volatility, features, releaseDate etc.
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  featured        Boolean          @default(false)
+  description        String?            @db.Text
+  supportedProviders GameProviderName[]
+  category           GameCategory
+  tags               String[]
+  isActive           Boolean            @default(true)
+  thumbnailUrl       String?
+  bannerUrl          String?
+  meta               Json? // For RTP, volatility, features, releaseDate etc.
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  featured           Boolean            @default(false)
+  providerName       String? // Kept for potential direct use or legacy
+  totalWagered       Int                @default(0)
+  gameProviderId     String?
+  gameProvider       GameProvider?      @relation(fields: [gameProviderId], references: [id])
+
   gameSessions    GameSession[]
   gameLaunchLinks GameLaunchLink[]
   operatorId      String?
   operator        OperatorAccess?  @relation(fields: [operatorId], references: [id])
+  TournamentGame  TournamentGame[]
 
   @@map("games")
 }
@@ -565,18 +574,61 @@ model GameSpin {
   @@map("game_spins")
 }
 
+model GameProvider {
+  id          String  @id @default(cuid())
+  name        String  @unique // e.g., "RedTigerGaming", "PragmaticPlay", "NetGame"
+  displayName String? // For display purposes, e.g., "Red Tiger"
+
+  rgsBaseUrl      String // Base URL for the Remote Game Server (RGS) API
+  settingsPath    String? // Path for the game settings/init endpoint (e.g., "/user/settings")
+  spinPath        String? // Path for the spin/play endpoint (e.g., "/game/spin")
+  resolveBetPath  String? // Path for bet settlement or specific win actions, if applicable
+  // Add other common action paths if needed (e.g., refundPath, historyPath)
+  providerRoundId String?
+  authType        ProviderAuthType @default(API_KEY) // How to authenticate with this provider's RGS
+  apiKey          String? // Store securely if using API Key auth (consider vault/encryption)
+  apiSecret       String? // Store securely
+  publicKey       String? // For other auth types like JWT signing/verification
+  privateKeyRef   String? // Reference to a private key stored securely (e.g., in a vault)
+
+  // Provider-specific configurations stored as JSON
+  // This can hold things like required headers, specific field mappings,
+  // or any other unique settings for this provider.
+  configJson Json? @default("{}")
+
+  isActive Boolean @default(true)
+  notes    String?
+
+  games Game[] // One provider can have many games
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([isActive])
+}
+
+enum ProviderAuthType {
+  API_KEY // Simple API key in header or query
+  OAUTH2 // OAuth2 client credentials or other flows
+  JWT_SIGN // Your server signs a JWT to send to the provider
+  CUSTOM // Requires custom logic, details might be in configJson
+  NONE // No specific auth beyond what's in the RGS call itself (e.g. session token)
+}
+
 model GameSession {
   id              String     @id @default(cuid())
   isActive        Boolean    @default(false) // Typically false once ended
   sessionData     Json? // e.g., betHistory, lastSpin
   spins           GameSpin[]
-  sessionId       String?
+  authSessionId   String?
   currencyId      String?
   startedAt       DateTime   @default(now())
   endTime         DateTime?
   startTime       DateTime?
   ipAddress       String?
   startingBalance Int?       @default(0)
+  startingTotalXp Int?       @default(0)
   userAgent       String?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
@@ -586,11 +638,13 @@ model GameSession {
   user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   gameId          String
   game            Game       @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  rtgToken        String?
+  rtgFingerPrint  String?
   // gameTransactions Transaction[]
   profileId       String?
   // profileId String
   // profile   Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  Profile         Profile[]
+  profile         Profile[]
 
   @@map("game_sessions")
 }
@@ -681,6 +735,7 @@ model Transaction {
   // Assuming 'originatorUserId' and 'receiverUserId' are the foreign key fields
   originatorUserId    String
   processedAt         DateTime?
+  gameId              String?
   originator          User               @relation("OriginatedTransactions", fields: [originatorUserId], references: [id], onDelete: Restrict)
   receiverUserId      String? // Optional: for P2P, commissions, or system-to-user transfers
   receiver            User?              @relation("ReceivedTransactions", fields: [receiverUserId], references: [id], onDelete: SetNull)
@@ -984,6 +1039,90 @@ model RebateTransaction {
 
   @@index([userId, status])
   @@map("rebate_transactions")
+}
+
+model Tournament {
+  id            String                  @id @default(cuid())
+  name          String
+  description   String?
+  startTime     DateTime // When the tournament becomes active
+  endTime       DateTime? // For time-limited tournaments
+  targetScore   Int? // For score-limited tournaments
+  status        TournamentStatus        @default(PENDING) // PENDING, ACTIVE, COMPLETED, CANCELLED
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  eligibleGames TournamentGame[]
+  participants  TournamentParticipant[]
+  rewards       TournamentReward[]
+  createdBy     User?                   @relation(fields: [createdByid], references: [id])
+  createdByid   String?
+
+  @@index([status, startTime, endTime])
+}
+
+model TournamentGame {
+  id              String     @id @default(cuid())
+  tournament      Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournamentId    String
+  game            Game       @relation(fields: [gameId], references: [id]) // Assumes a 'Game' model exists
+  gameId          String
+  pointMultiplier Float      @default(1.0) // Points from this game might be multiplied
+
+  @@unique([tournamentId, gameId])
+}
+
+model TournamentParticipant {
+  id           String     @id @default(cuid())
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournamentId String
+  user         User       @relation(fields: [userId], references: [id]) // Assumes a 'User' model exists
+  userId       String
+  score        Int        @default(0)
+  rank         Int? // Can be calculated dynamically or stored upon tournament completion
+  joinedAt     DateTime   @default(now())
+
+  gamePlays TournamentGamePlay[] // Log of game activities contributing to the score
+
+  @@unique([tournamentId, userId])
+  @@index([userId])
+  @@index([tournamentId, score]) // For leaderboard querying
+}
+
+// Log each game play that contributes points to a tournament
+model TournamentGamePlay {
+  id                      String                @id @default(cuid())
+  tournamentParticipant   TournamentParticipant @relation(fields: [tournamentParticipantId], references: [id], onDelete: Cascade)
+  tournamentParticipantId String
+  gameId                  String // Which game was played
+  pointsEarned            Int // Points earned in this specific instance for the tournament
+  playedAt                DateTime              @default(now())
+  // Optional: reference to a general game round/session if you have one
+  gameSessionId           String?
+
+  @@index([tournamentParticipantId])
+}
+
+model TournamentReward {
+  id           String     @id @default(cuid())
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournamentId String
+  rank         Int // e.g., 1 for 1st place, 2 for 2nd, etc.
+  description  String // e.g., "1000 Bonus Credits"
+  // Add fields for actual reward type, e.g., currencyId, amount, itemId if you have an items system
+  // currencyId    String?
+  // amount        Float?
+  isClaimed    Boolean    @default(false)
+  winnerId     String?
+  winner       User?      @relation("TournamentWinner", fields: [winnerId], references: [id]) // User who won this specific reward
+
+  @@index([tournamentId])
+}
+
+enum TournamentStatus {
+  PENDING // Setup but not yet started
+  ACTIVE // Currently running
+  COMPLETED // Finished, winners determined
+  CANCELLED // Cancelled by admin
 }
 
 // // === prisma/schema.prisma (or your ps.txt) ===

@@ -10,8 +10,16 @@ import {
   WebSocketBroadcastPayload,
   UserEventPayload,
   WithdrawalProcessedPayload,
-} from '@cashflow/types'
-import { EventEmitter } from 'node:events' // Using Node.js built-in EventEmitter
+  // Import the new tournament event payloads we defined in @cashflow/types
+  TournamentCreatedPayload,
+  TournamentStartedPayload,
+  TournamentEndedPayload,
+  TournamentParticipantJoinedPayload,
+  TournamentLeaderboardUpdatedPayload,
+  TournamentScoreUpdatedPayload, // Assuming you defined this too
+  // Add TournamentUpdatedPayload if you plan to use it
+} from '@cashflow/types' // This path should resolve to your packages/types/src/index.ts or directly to interface/tournaments.ts if re-exported
+import { EventEmitter } from 'node:events'
 
 // --------------- Event Emitter Instance ---------------
 /**
@@ -42,7 +50,7 @@ export enum AppEvents {
   USER_LEVELED_UP = 'user:leveledUp', // VIP Level Up
 
   // VIP & Reward Events
-  USER_REWARD_CREATED = 'user:rewardCreated', // When a new UserReward entry is made available
+  USER_REWARD_CREATED = 'user:rewardCreated',
   USER_REWARD_CLAIMED = 'user:rewardClaimed',
   VIP_BENEFIT_UNLOCKED = 'vip:benefitUnlocked',
 
@@ -70,7 +78,15 @@ export enum AppEvents {
 
   // Admin/System Events
   SYSTEM_NOTIFICATION = 'system:notification',
-  // Add more specific events as your application grows
+
+  // --- Tournament Events --- ADD THESE ---
+  TOURNAMENT_CREATED = 'tournament:created',
+  TOURNAMENT_UPDATED = 'tournament:updated', // Optional: if you need to announce general updates
+  TOURNAMENT_STARTED = 'tournament:started',
+  TOURNAMENT_ENDED = 'tournament:ended',
+  TOURNAMENT_PARTICIPANT_JOINED = 'tournament:participantJoined',
+  TOURNAMENT_LEADERBOARD_UPDATED = 'tournament:leaderboardUpdated',
+  TOURNAMENT_SCORE_UPDATED = 'tournament:scoreUpdated', // For more granular updates, if needed
 }
 
 // --------------- Event Payload Interfaces ---------------
@@ -78,15 +94,11 @@ export enum AppEvents {
 // --------------- Type Helper for Listeners ---------------
 /**
  * Provides a typed interface for event listeners.
- * Usage:
- * appEventEmitter.on(AppEvents.USER_CREATED, (payload: EventPayloads[AppEvents.USER_CREATED]) => {
- * // payload is now correctly typed as UserCreatedPayload
- * });
  */
 export interface EventPayloads {
   [AppEvents.USER_CREATED]: UserCreatedPayload
-  [AppEvents.USER_UPDATED]: UserProfileUpdatedPayload // Assuming UserProfileUpdatedPayload is generic enough
-  [AppEvents.USER_EMAIL_VERIFIED]: UserEventPayload // Basic payload
+  [AppEvents.USER_UPDATED]: UserProfileUpdatedPayload
+  [AppEvents.USER_EMAIL_VERIFIED]: UserEventPayload
   [AppEvents.USER_PASSWORD_RESET_REQUESTED]: UserEventPayload & { email: string }
   [AppEvents.USER_PASSWORD_CHANGED]: UserEventPayload
   [AppEvents.USER_LOGIN_SUCCESS]: UserEventPayload & { ipAddress?: string }
@@ -109,7 +121,7 @@ export interface EventPayloads {
     level: number
   }
 
-  [AppEvents.TRANSACTION_CREATED]: TransactionStatusChangedPayload // Or a more specific CreatePayload
+  [AppEvents.TRANSACTION_CREATED]: TransactionStatusChangedPayload
   [AppEvents.TRANSACTION_COMPLETED]: TransactionStatusChangedPayload
   [AppEvents.TRANSACTION_CHANGED]: TransactionStatusChangedPayload
   [AppEvents.TRANSACTION_FAILED]: TransactionStatusChangedPayload & { reason?: string }
@@ -136,13 +148,19 @@ export interface EventPayloads {
     details?: unknown
   }
 
-  // Add other event types and their corresponding payload interfaces here
-  // ...
-  [key: string]: unknown
+  // --- Tournament Event Payloads --- ADD THESE MAPPINGS ---
+  [AppEvents.TOURNAMENT_CREATED]: TournamentCreatedPayload
+  [AppEvents.TOURNAMENT_UPDATED]: TournamentScoreUpdatedPayload // If you add this event and its payload
+  [AppEvents.TOURNAMENT_STARTED]: TournamentStartedPayload
+  [AppEvents.TOURNAMENT_ENDED]: TournamentEndedPayload
+  [AppEvents.TOURNAMENT_PARTICIPANT_JOINED]: TournamentParticipantJoinedPayload
+  [AppEvents.TOURNAMENT_LEADERBOARD_UPDATED]: TournamentLeaderboardUpdatedPayload
+  // [AppEvents.TOURNAMENT_SCORE_UPDATED]: TournamentScoreUpdatedPayload; // If you add this event
+
+  [key: string]: unknown // Keep this for extensibility if it was already there
 }
 
 // Typed EventEmitter (Optional, but provides better type safety for .on, .emit)
-// This gives you type checking for event names and their corresponding payload types.
 interface TypedEventEmitter<TEvents extends Record<string, unknown>> {
   on<TEventName extends keyof TEvents>(
     eventName: TEventName,
@@ -166,29 +184,8 @@ interface TypedEventEmitter<TEvents extends Record<string, unknown>> {
 
   removeAllListeners<TEventName extends keyof TEvents>(eventName?: TEventName): EventEmitter
 
-  // Add other EventEmitter methods if needed, correctly typed
   listenerCount(eventName: keyof TEvents): number
 }
 
 // Cast your appEventEmitter to the typed version for better DX
 export const typedAppEventEmitter = appEventEmitter as TypedEventEmitter<EventPayloads>
-
-// --------------- Example Usage (for illustration, not part of this file) ---------------
-/*
-// In another service (e.g., notification.service.ts)
-import { typedAppEventEmitter, AppEvents, EventPayloads } from './events'; // Adjust path
-
-typedAppEventEmitter.on(AppEvents.USER_LEVELED_UP, async (payload: EventPayloads[AppEvents.USER_LEVELED_UP]) => {
-  // TODO: Create a notification record in DB
-  // TODO: Send a push notification or WebSocket message
-});
-
-typedAppEventEmitter.on(AppEvents.USER_XP_GAINED, (payload) => { // Type is inferred here if using typedAppEventEmitter
-  // Potentially send a WebSocket update to the client for their XP bar
-});
-
-// In xp.service.ts (how it would emit)
-// import { typedAppEventEmitter, AppEvents, UserLeveledUpPayload } from '../events';
-// const levelUpPayload: UserLeveledUpPayload = { ... };
-// typedAppEventEmitter.emit(AppEvents.USER_LEVELED_UP, levelUpPayload);
-*/

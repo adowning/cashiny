@@ -33,6 +33,7 @@
       notificationStore.addNotification('error', 'Passwords do not match.')
       return
     }
+    authStore.setAuthDialogVisible(false)
 
     // Use the store's loading state
     // componentLoading.value = true; // Removed

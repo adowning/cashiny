@@ -72,7 +72,7 @@ router.get(NETWORK_CONFIG.GAME_INFO.SPIN, async () => {
 router.get(NETWORK_CONFIG.GAME_INFO.SPINPAGE, async () => {
   return await getGameSpinPage()
 })
-router.get(NETWORK_CONFIG.GAME_INFO.RTG_SETTINGS, async (c) => {
+router.get(NETWORK_CONFIG.GAME_INFO.RTG_SETTINGS3, async (c) => {
   return await rtgSettings(c, c.get('user')! as UserWithProfile)
 })
 router.get(NETWORK_CONFIG.GAME_INFO.RTG_SPIN, async (c) => {

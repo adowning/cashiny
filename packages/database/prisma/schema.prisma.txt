@@ -579,17 +579,17 @@ model GameProvider {
   name        String  @unique // e.g., "RedTigerGaming", "PragmaticPlay", "NetGame"
   displayName String? // For display purposes, e.g., "Red Tiger"
 
-  rgsBaseUrl      String // Base URL for the Remote Game Server (RGS) API
-  settingsPath    String? // Path for the game settings/init endpoint (e.g., "/user/settings")
-  spinPath        String? // Path for the spin/play endpoint (e.g., "/game/spin")
-  resolveBetPath  String? // Path for bet settlement or specific win actions, if applicable
+  rgsBaseUrl     String // Base URL for the Remote Game Server (RGS) API
+  settingsPath   String? // Path for the game settings/init endpoint (e.g., "/user/settings")
+  spinPath       String? // Path for the spin/play endpoint (e.g., "/game/spin")
+  resolveBetPath String? // Path for bet settlement or specific win actions, if applicable
   // Add other common action paths if needed (e.g., refundPath, historyPath)
-  providerRoundId String?
-  authType        ProviderAuthType @default(API_KEY) // How to authenticate with this provider's RGS
-  apiKey          String? // Store securely if using API Key auth (consider vault/encryption)
-  apiSecret       String? // Store securely
-  publicKey       String? // For other auth types like JWT signing/verification
-  privateKeyRef   String? // Reference to a private key stored securely (e.g., in a vault)
+
+  authType      ProviderAuthType @default(API_KEY) // How to authenticate with this provider's RGS
+  apiKey        String? // Store securely if using API Key auth (consider vault/encryption)
+  apiSecret     String? // Store securely
+  publicKey     String? // For other auth types like JWT signing/verification
+  privateKeyRef String? // Reference to a private key stored securely (e.g., in a vault)
 
   // Provider-specific configurations stored as JSON
   // This can hold things like required headers, specific field mappings,
@@ -735,7 +735,6 @@ model Transaction {
   // Assuming 'originatorUserId' and 'receiverUserId' are the foreign key fields
   originatorUserId    String
   processedAt         DateTime?
-  gameId              String?
   originator          User               @relation("OriginatedTransactions", fields: [originatorUserId], references: [id], onDelete: Restrict)
   receiverUserId      String? // Optional: for P2P, commissions, or system-to-user transfers
   receiver            User?              @relation("ReceivedTransactions", fields: [receiverUserId], references: [id], onDelete: SetNull)

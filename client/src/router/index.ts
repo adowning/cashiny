@@ -16,7 +16,7 @@ const VITE_PUBLIC_PATH = import.meta.env.VITE_PUBLIC_PATH
 export const routes: RouteRecordRaw[] = [
   {
     path: '/login',
-    component: () => import('@/views/LoginView.vue'),
+    component: () => import('@/views/auth/LoginView.vue'),
     name: 'Login',
     meta: {
       title: '登录',
@@ -27,7 +27,18 @@ export const routes: RouteRecordRaw[] = [
     path: '/',
     redirect: '/home',
   },
-
+  {
+    path: '/tournaments',
+    name: 'TournamentList',
+    component: () => import('@/views/TournamentsView.vue'), // A
+    // props: false, // Passes route params as props to the component
+  },
+  {
+    path: '/rtggame',
+    name: 'RtgGame',
+    component: () => import('@/views/RtgGame.vue'), // A
+    // props: false, // Passes route params as props to the component
+  },
   {
     path: '/home',
     component: () => import('@/views/HomeView.vue'),

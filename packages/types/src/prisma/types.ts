@@ -40,7 +40,7 @@ export type EnumGameCategory =
   | 'CRASH'
   | 'OTHER'
 
-export type EnumGameProvider =
+export type EnumGameProviderName =
   | 'PRAGMATICPLAY'
   | 'EVOPLAY'
   | 'NETENT'
@@ -134,6 +134,8 @@ export type EnumPaymentMethod = 'INSTORE_CASH' | 'INSTORE_CARD' | 'CASH_APP'
 
 export type EnumCurrencyType = 'FIAT' | 'CRYPTO' | 'VIRTUAL'
 
+export type EnumProviderAuthType = 'API_KEY' | 'OAUTH2' | 'JWT_SIGN' | 'CUSTOM' | 'NONE'
+
 export type EnumRewardType =
   | 'DAILY_SIGN_IN'
   | 'WEEKLY_CYCLE'
@@ -160,6 +162,8 @@ export type EnumVipTaskType =
   | 'VERIFY_EMAIL'
   | 'PLACE_BETS'
   | 'WIN_STREAK'
+
+export type EnumTournamentStatus = 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
 
 export type User = {
   id: string
@@ -230,6 +234,9 @@ export type User = {
   receivedNotifications?: Notification[]
   originatedTransactions?: Transaction[]
   receivedTransactions?: Transaction[]
+  TournamentParticipant?: TournamentParticipant[]
+  TournamentReward?: TournamentReward[]
+  Tournament?: Tournament[]
 }
 
 export type Currency = {
@@ -389,7 +396,7 @@ export type Game = {
   title: string
   goldsvetData: JsonValue | null
   description: string | null
-  provider: EnumGameProvider
+  supportedProviders: EnumGameProviderName[]
   category: EnumGameCategory
   tags: string[]
   isActive: boolean
@@ -399,10 +406,14 @@ export type Game = {
   createdAt: Date
   updatedAt: Date
   featured: boolean
+  providerName: string | null
+  gameProviderId: string | null
+  gameProvider?: GameProvider | null
   gameSessions?: GameSession[]
   gameLaunchLinks?: GameLaunchLink[]
   operatorId: string | null
   operator?: OperatorAccess | null
+  TournamentGame?: TournamentGame[]
 }
 
 export type Post = {
@@ -445,18 +456,41 @@ export type GameSpin = {
   gameSession?: GameSession
 }
 
+export type GameProvider = {
+  id: string
+  name: string
+  displayName: string | null
+  rgsBaseUrl: string
+  settingsPath: string | null
+  spinPath: string | null
+  resolveBetPath: string | null
+  providerRoundId: string | null
+  authType: EnumProviderAuthType
+  apiKey: string | null
+  apiSecret: string | null
+  publicKey: string | null
+  privateKeyRef: string | null
+  configJson: JsonValue | null
+  isActive: boolean
+  notes: string | null
+  games?: Game[]
+  createdAt: Date
+  updatedAt: Date
+}
+
 export type GameSession = {
   id: string
   isActive: boolean
   sessionData: JsonValue | null
   spins?: GameSpin[]
-  sessionId: string | null
+  authSessionId: string | null
   currencyId: string | null
   startedAt: Date
   endTime: Date | null
   startTime: Date | null
   ipAddress: string | null
   startingBalance: number | null
+  startingTotalXp: number | null
   userAgent: string | null
   createdAt: Date
   updatedAt: Date
@@ -466,8 +500,10 @@ export type GameSession = {
   user?: User
   gameId: string
   game?: Game
+  rtgToken: string | null
+  rtgFingerPrint: string | null
   profileId: string | null
-  Profile?: Profile[]
+  profile?: Profile[]
 }
 
 export type UserAchievement = {
@@ -537,6 +573,7 @@ export type Transaction = {
   id: string
   originatorUserId: string
   processedAt: Date | null
+  gameId: string | null
   originator?: User
   receiverUserId: string | null
   receiver?: User | null
@@ -735,6 +772,65 @@ export type RebateTransaction = {
   paidOutAt: Date | null
   createdAt: Date
   updatedAt: Date
+}
+
+export type Tournament = {
+  id: string
+  name: string
+  description: string | null
+  startTime: Date
+  endTime: Date | null
+  targetScore: number | null
+  status: EnumTournamentStatus
+  createdAt: Date
+  updatedAt: Date
+  eligibleGames?: TournamentGame[]
+  participants?: TournamentParticipant[]
+  rewards?: TournamentReward[]
+  createdBy?: User | null
+  createdByid: string | null
+}
+
+export type TournamentGame = {
+  id: string
+  tournament?: Tournament
+  tournamentId: string
+  game?: Game
+  gameId: string
+  pointMultiplier: number
+}
+
+export type TournamentParticipant = {
+  id: string
+  tournament?: Tournament
+  tournamentId: string
+  user?: User
+  userId: string
+  score: number
+  rank: number | null
+  joinedAt: Date
+  gamePlays?: TournamentGamePlay[]
+}
+
+export type TournamentGamePlay = {
+  id: string
+  tournamentParticipant?: TournamentParticipant
+  tournamentParticipantId: string
+  gameId: string
+  pointsEarned: number
+  playedAt: Date
+  gameSessionId: string | null
+}
+
+export type TournamentReward = {
+  id: string
+  tournament?: Tournament
+  tournamentId: string
+  rank: number
+  description: string
+  isClaimed: boolean
+  winnerId: string | null
+  winner?: User | null
 }
 
 type JsonValue =

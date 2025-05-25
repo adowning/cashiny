@@ -126,7 +126,11 @@ export namespace NETWORK_CONFIG {
     static SPINPAGE = '/user/spin/page'
     static RTG_SETTINGS = '/game/settings'
     static RTG_SETTINGS2 = '/public/:token/game/settings'
-    static RTG_SPIN = '/game/:token/game/settings'
+    static RTG_SETTINGS3 = '/games/rtg/platform/:userid/:gameName/game/settings'
+    static RTG_SPIN = '/games/rtg/platform/:userid/:gameName/game/settings'
+    // static RTG_SPIN = '/game/:token/game/settings'
+
+    // http://localhost:3000/api/games/rtg/platform/H5N9xV70HKorWvAcqzTb0hGg26ansypu/777Strike/game/spin
     static NETENT_SPIN = '/games/netent/platform/userId/gameName/game/spin'
   }
 
@@ -191,5 +195,18 @@ export namespace NETWORK_CONFIG {
     static RECIEVE_ACHIV_BONUS = '/achievement/receiveachivbonus'
     static STAGE_AWARD = '/achievement/stageaward'
     static ACHIEVEMENT_AWARD = '/achievement/achivaward'
+  }
+
+  export class TOURNAMENTS {
+    static LIST = '/' // GET /tournaments
+    static DETAILS = '/:id' // GET /tournaments/:id
+    static LEADERBOARD = '/:id/leaderboard' // GET /tournaments/:id/leaderboard
+    static JOIN = '/:id/join' // POST /tournaments/:id/join
+  }
+  export class ADMIN_TOURNAMENTS {
+    static CREATE = '/' // POST /admin/tournaments
+    static UPDATE = '/:id' // PUT /admin/tournaments/:id
+    static START = '/:id/start' // POST /admin/tournaments/:id/start
+    static END = '/:id/end' // POST /admin/tournaments/:id/end
   }
 }

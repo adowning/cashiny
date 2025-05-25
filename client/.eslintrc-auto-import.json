@@ -368,6 +368,8 @@
     "useSocketStore": true,
     "useUserStore": true,
     "useVipStore": true,
-    "useImageLoadingStore": true
+    "useImageLoadingStore": true,
+    "DepositScreenName": true,
+    "useTournamentStore": true
   }
 }

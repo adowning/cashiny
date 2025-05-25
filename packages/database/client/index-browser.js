@@ -297,7 +297,7 @@ exports.Prisma.GameScalarFieldEnum = {
   title: 'title',
   goldsvetData: 'goldsvetData',
   description: 'description',
-  provider: 'provider',
+  supportedProviders: 'supportedProviders',
   category: 'category',
   tags: 'tags',
   isActive: 'isActive',
@@ -307,6 +307,8 @@ exports.Prisma.GameScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   featured: 'featured',
+  providerName: 'providerName',
+  gameProviderId: 'gameProviderId',
   operatorId: 'operatorId'
 };
 
@@ -345,17 +347,39 @@ exports.Prisma.GameSpinScalarFieldEnum = {
   timeStamp: 'timeStamp'
 };
 
+exports.Prisma.GameProviderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  displayName: 'displayName',
+  rgsBaseUrl: 'rgsBaseUrl',
+  settingsPath: 'settingsPath',
+  spinPath: 'spinPath',
+  resolveBetPath: 'resolveBetPath',
+  providerRoundId: 'providerRoundId',
+  authType: 'authType',
+  apiKey: 'apiKey',
+  apiSecret: 'apiSecret',
+  publicKey: 'publicKey',
+  privateKeyRef: 'privateKeyRef',
+  configJson: 'configJson',
+  isActive: 'isActive',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.GameSessionScalarFieldEnum = {
   id: 'id',
   isActive: 'isActive',
   sessionData: 'sessionData',
-  sessionId: 'sessionId',
+  authSessionId: 'authSessionId',
   currencyId: 'currencyId',
   startedAt: 'startedAt',
   endTime: 'endTime',
   startTime: 'startTime',
   ipAddress: 'ipAddress',
   startingBalance: 'startingBalance',
+  startingTotalXp: 'startingTotalXp',
   userAgent: 'userAgent',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -363,6 +387,8 @@ exports.Prisma.GameSessionScalarFieldEnum = {
   totalWon: 'totalWon',
   userId: 'userId',
   gameId: 'gameId',
+  rtgToken: 'rtgToken',
+  rtgFingerPrint: 'rtgFingerPrint',
   profileId: 'profileId'
 };
 
@@ -425,6 +451,7 @@ exports.Prisma.TransactionScalarFieldEnum = {
   id: 'id',
   originatorUserId: 'originatorUserId',
   processedAt: 'processedAt',
+  gameId: 'gameId',
   receiverUserId: 'receiverUserId',
   walletId: 'walletId',
   type: 'type',
@@ -600,6 +627,53 @@ exports.Prisma.RebateTransactionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TournamentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  targetScore: 'targetScore',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdByid: 'createdByid'
+};
+
+exports.Prisma.TournamentGameScalarFieldEnum = {
+  id: 'id',
+  tournamentId: 'tournamentId',
+  gameId: 'gameId',
+  pointMultiplier: 'pointMultiplier'
+};
+
+exports.Prisma.TournamentParticipantScalarFieldEnum = {
+  id: 'id',
+  tournamentId: 'tournamentId',
+  userId: 'userId',
+  score: 'score',
+  rank: 'rank',
+  joinedAt: 'joinedAt'
+};
+
+exports.Prisma.TournamentGamePlayScalarFieldEnum = {
+  id: 'id',
+  tournamentParticipantId: 'tournamentParticipantId',
+  gameId: 'gameId',
+  pointsEarned: 'pointsEarned',
+  playedAt: 'playedAt',
+  gameSessionId: 'gameSessionId'
+};
+
+exports.Prisma.TournamentRewardScalarFieldEnum = {
+  id: 'id',
+  tournamentId: 'tournamentId',
+  rank: 'rank',
+  description: 'description',
+  isClaimed: 'isClaimed',
+  winnerId: 'winnerId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -669,7 +743,20 @@ exports.PaymentMethod = exports.$Enums.PaymentMethod = {
   CASH_APP: 'CASH_APP'
 };
 
-exports.GameProvider = exports.$Enums.GameProvider = {
+exports.GameCategory = exports.$Enums.GameCategory = {
+  FISH: 'FISH',
+  POKER: 'POKER',
+  SLOTS: 'SLOTS',
+  TABLE_GAMES: 'TABLE_GAMES',
+  LIVE_CASINO: 'LIVE_CASINO',
+  SPORTSBOOK: 'SPORTSBOOK',
+  VIRTUAL_SPORTS: 'VIRTUAL_SPORTS',
+  LOTTERY: 'LOTTERY',
+  CRASH: 'CRASH',
+  OTHER: 'OTHER'
+};
+
+exports.GameProviderName = exports.$Enums.GameProviderName = {
   PRAGMATICPLAY: 'PRAGMATICPLAY',
   EVOPLAY: 'EVOPLAY',
   NETENT: 'NETENT',
@@ -687,17 +774,12 @@ exports.GameProvider = exports.$Enums.GameProvider = {
   KICKASS: 'KICKASS'
 };
 
-exports.GameCategory = exports.$Enums.GameCategory = {
-  FISH: 'FISH',
-  POKER: 'POKER',
-  SLOTS: 'SLOTS',
-  TABLE_GAMES: 'TABLE_GAMES',
-  LIVE_CASINO: 'LIVE_CASINO',
-  SPORTSBOOK: 'SPORTSBOOK',
-  VIRTUAL_SPORTS: 'VIRTUAL_SPORTS',
-  LOTTERY: 'LOTTERY',
-  CRASH: 'CRASH',
-  OTHER: 'OTHER'
+exports.ProviderAuthType = exports.$Enums.ProviderAuthType = {
+  API_KEY: 'API_KEY',
+  OAUTH2: 'OAUTH2',
+  JWT_SIGN: 'JWT_SIGN',
+  CUSTOM: 'CUSTOM',
+  NONE: 'NONE'
 };
 
 exports.NotificationType = exports.$Enums.NotificationType = {
@@ -806,6 +888,13 @@ exports.VipTaskType = exports.$Enums.VipTaskType = {
   WIN_STREAK: 'WIN_STREAK'
 };
 
+exports.TournamentStatus = exports.$Enums.TournamentStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Currency: 'Currency',
@@ -821,6 +910,7 @@ exports.Prisma.ModelName = {
   Post: 'Post',
   Comment: 'Comment',
   GameSpin: 'GameSpin',
+  GameProvider: 'GameProvider',
   GameSession: 'GameSession',
   UserAchievement: 'UserAchievement',
   XpEvent: 'XpEvent',
@@ -836,7 +926,12 @@ exports.Prisma.ModelName = {
   UserReward: 'UserReward',
   VipTask: 'VipTask',
   UserVipTaskProgress: 'UserVipTaskProgress',
-  RebateTransaction: 'RebateTransaction'
+  RebateTransaction: 'RebateTransaction',
+  Tournament: 'Tournament',
+  TournamentGame: 'TournamentGame',
+  TournamentParticipant: 'TournamentParticipant',
+  TournamentGamePlay: 'TournamentGamePlay',
+  TournamentReward: 'TournamentReward'
 };
 
 /**

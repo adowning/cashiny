@@ -1,6 +1,5 @@
-import { ErrorLike, Server } from 'bun'
+import { BunRequest, ErrorLike, Server } from 'bun'
 import { ExecutionContext } from 'hono'
-
 import { auth } from './auth' // Adjust path as needed
 import createApp from './create-app' // Adjust path as needed
 import { WebSocketRouter, AppWsData } from './socket.router' // Use AppWsData from router
@@ -8,6 +7,19 @@ import { PgRealtimeClientOptions } from './services/dbupdates/types' // Adjust p
 // import { handleJoinRoom, handleSendMessage } from './services/handlers/chat.handler' // Adjust path
 // import { handlePing } from './services/handlers/heartbeat.handler' // Adjust path
 import { RealtimeService } from './services/realtime.service' // Adjust path
+import { setupTournamentWebSocketListeners } from './services/handlers/tournament.handler'
+// import { initTournamentScheduler } from './services/tournament.service'
+import * as tournamentService from './services/tournament.service' // For initTournamentScheduler
+import {
+  nolimitProxyCloseHandler,
+  nolimitProxyOpenHandler,
+} from './services/handlers/nolimit-proxy.handler'
+import {
+  kagamingProxyCloseHandler,
+  kagamingProxyOpenHandler,
+} from './services/handlers/kagaming-proxy.handler'
+import { rtgSettings, rtgSpin } from './services/game.service'
+
 // import * as Schema from './sockets/schema' // Adjust path
 // // import { WsData } from './sockets/types'; // WsData is now part of AppWsData from router
 // import {
@@ -34,7 +46,6 @@ const pgOptions: PgRealtimeClientOptions = {
 const realtimeService = new RealtimeService(pgOptions)
 // Use AppWsData with WebSocketRouter
 const wsRouter = new WebSocketRouter<AppWsData>()
-
 try {
   // Register standard message handlers
   // wsRouter.onMessage(Schema.JoinRoom, handleJoinRoom)
@@ -111,21 +122,38 @@ async function handleWsUpgrade(req: Request, server: Server): Promise<Response> 
     })
   }
 }
-
 async function handleGameRequest(req: Request, server: Server): Promise<Response> {
   const parsedUrl = new URL(req.url)
-  let token = parsedUrl.pathname.split('game/')[1]
-  token = token?.split('/')[0]
+  const tokenAndGame = parsedUrl.pathname.substring(
+    parsedUrl.pathname.indexOf('platform/') + 9,
+    parsedUrl.pathname.lastIndexOf('/game')
+  )
+  const token = tokenAndGame?.split('/')[0]
+  const game = tokenAndGame?.split('/')[1]
+  const command = parsedUrl.pathname.split('/game/')[1]
+  console.log(typeof command)
   if (token) req.headers.set('Authorization', `Bearer ${token}`)
-  const honoEnv = { serverInstance: server }
-  try {
-    const executionContext: ExecutionContext = {
-      waitUntil() {},
-      passThroughOnException() {},
-    }
+  // const honoEnv = { serverInstance: server }
+  const session = await auth.api.getSession({
+    headers: req.headers,
+  })
+  // console.log(typeof session)
 
-    return await router.fetch(req, honoEnv, executionContext)
+  try {
+    // Route the request
+    switch (command) {
+      case 'settings':
+        return await rtgSettings(req, session, game)
+        break
+      case 'spin':
+        return await rtgSpin(req, session, game)
+        break
+      default:
+        break
+    }
+    return await rtgSettings(req, session, game)
   } catch (error) {
+    console.log(error)
     return new Response('Internal Server Error', { status: 500 })
   }
 }
@@ -140,7 +168,37 @@ function handlePublicAsset(req: Request): Response {
   }
   return new Response(Bun.file(fp))
 }
+function handleKaGamingUpgrade(req: Request, server: Server) {
+  //?g=GangsterOverlord&p=demo&u=875802063&t=1238&ak=accessKey&cr=USD&loc=en
+  const url = new URL(req.url)
+  const gameCodeString = url.searchParams.get('g')
+  const mode = url.searchParams.get('p')
+  const sessionId = url.searchParams.get('u')
+  const gameId = url.searchParams.get('ak')
+  const currency = url.searchParams.get('cr')
+  const location = url.searchParams.get('loc')
+  const kaToken = url.searchParams.get('t')
+  console.log(gameCodeString, mode, sessionId, gameId, currency, location, kaToken)
 
+  const upgradeData: Partial<AppWsData> = {
+    isKaGamingProxy: true,
+    isNoLimitProxy: false,
+    // Pass NLC specific params if available from client query
+    ...(gameCodeString && { kaGamingGameCodeString: gameCodeString }),
+    ...(mode && { kaGamingClientString: mode }),
+    ...(gameId && { nkaGamingLanguage: gameId }),
+    ...(kaToken && { kaGamingToken: kaToken }),
+    // userId might be added here if your own platform's user is already authenticated
+    // For a pure game proxy, userId might be derived/managed differently or not used by proxy itself.
+  }
+  const upgradeResponse = wsRouter.upgrade({
+    server,
+    request: req,
+    data: upgradeData as Omit<AppWsData, 'clientId'>, // Cast because clientId is added by router
+  })
+  if (upgradeResponse instanceof Response) return upgradeResponse
+  return new Response(null, { status: 101 }) // Should be handled by Bun if upgrade successful
+}
 function handleNoLimitUpgrade(req: Request, server: Server) {
   const url = new URL(req.url)
   // Added a more generic proxy path
@@ -154,6 +212,7 @@ function handleNoLimitUpgrade(req: Request, server: Server) {
   const nlcToken = url.searchParams.get('token') // NLC specific token
 
   const upgradeData: Partial<AppWsData> = {
+    isKaGamingProxy: false,
     isNoLimitProxy: true,
     // Pass NLC specific params if available from client query
     ...(gameCodeString && { nolimitGameCodeString: gameCodeString }),
@@ -169,6 +228,7 @@ function handleNoLimitUpgrade(req: Request, server: Server) {
     request: req,
     data: upgradeData as Omit<AppWsData, 'clientId'>, // Cast because clientId is added by router
   })
+  console.log(upgradeResponse)
   if (upgradeResponse instanceof Response) return upgradeResponse
   return new Response(null, { status: 101 }) // Should be handled by Bun if upgrade successful
 }
@@ -180,19 +240,22 @@ try {
     hostname: HOSTNAME,
     async fetch(req, server) {
       // Define route handlers
+      console.log(req.url)
       const routes: Record<string, (req: Request, server: Server) => Response | Promise<Response>> =
         {
-          '/ws': handleWsUpgrade,
           '/games/nolimit/ws/game': handleNoLimitUpgrade,
+          '/games/kagaming/ws/game': handleKaGamingUpgrade,
           'game/': handleGameRequest,
           'php/': handleGameRequest,
           '/public': handlePublicAsset,
+          '/ws': handleWsUpgrade,
           // '/games': handlePublicAsset,
         }
 
       // Route the request
       for (const pattern in routes) {
         if (req.url.includes(pattern) || req.url === pattern) {
+          console.log(pattern)
           return routes[pattern](req, server)
         }
       }
@@ -223,6 +286,13 @@ try {
     serverInstance.stop(true) // Ensure clean shutdown
     process.exit(1)
   })
+  // wsRouter.setServer(serverInstance) // Important: Ensure WebSocketRouter has the server instance
+  setupTournamentWebSocketListeners(serverInstance) // Call the new setup function
+  tournamentService.initTournamentScheduler() // Initialize the scheduler from tournament.service
+  wsRouter.addOpenHandler(nolimitProxyOpenHandler)
+  wsRouter.addOpenHandler(kagamingProxyOpenHandler)
+  wsRouter.addCloseHandler(nolimitProxyCloseHandler)
+  wsRouter.addCloseHandler(kagamingProxyCloseHandler)
 
   console.log(`Server running at http://${serverInstance.hostname}:${serverInstance.port}`)
 } catch (error) {

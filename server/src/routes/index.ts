@@ -6,7 +6,6 @@ import createRouter from '../rest.router'
 import achievementRoute from './achievement.route'
 import authRoute from './auth.route'
 import bonusRoute from './bonus.route'
-import currencyRoute from './currency.route'
 import depositRoute from './deposit.route'
 import gameRoute from './game.route'
 import healthRoute from './health.route'
@@ -16,15 +15,16 @@ import promoRoute from './promo.route'
 import rewardRoute from './reward.route'
 import userRoute from './user.route'
 import vipRoute from './vip.route'
+import { publicTournamentRoute } from './tournament.route'
+import { adminTournamentRoute } from './tournament.route'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
-import { GenericApiResponse } from '@cashflow/types'
+// import { GenericApiResponse } from '@cashflow/types'
 
 export default [
   healthRoute,
   userRoute,
   depositRoute,
-  currencyRoute,
   vipRoute,
   gameRoute,
   authRoute,
@@ -34,6 +34,8 @@ export default [
   bonusRoute,
   achievementRoute,
   promoRoute,
+  publicTournamentRoute,
+  adminTournamentRoute,
 ]
 
 export function registerRoutes(app: OpenAPIHono<HonoEnv>) {
@@ -61,7 +63,6 @@ export function registerRoutes(app: OpenAPIHono<HonoEnv>) {
   app.route('/', authRoute)
   app.route(BASE_PATH, userRoute)
   app.route(BASE_PATH, depositRoute)
-  app.route(BASE_PATH, currencyRoute)
   app.route(BASE_PATH, vipRoute)
   app.route(BASE_PATH, gameRoute)
   app.route(BASE_PATH, healthRoute)
@@ -71,6 +72,8 @@ export function registerRoutes(app: OpenAPIHono<HonoEnv>) {
   app.route(BASE_PATH, rewardRoute)
   app.route(BASE_PATH, bonusRoute)
   app.route(BASE_PATH, promoRoute)
+  app.route(BASE_PATH, publicTournamentRoute)
+  app.route(BASE_PATH, adminTournamentRoute)
   // app.use('/*', cors()).use('/*', logger())
 
   return app

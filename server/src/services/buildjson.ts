@@ -1,130 +1,31 @@
 // import stringifyObject from 'stringify-object'
 
-export function buildJson(
-  jsonBase: any,
+import { RTGSettingsResponseDto } from '@cashflow/types'
+
+export function buildJsonSettings(
+  gameSettingsFromDeveloper: RTGSettingsResponseDto,
   balance: number,
-  coins: number,
   experience: number
 ): string {
-  console.log(jsonBase)
-  jsonBase.result.user.balance.cash = balance
-  jsonBase.result.user.balance.freeBets = coins
-  jsonBase.result.user.balance.sessionFreeBets = experience
-  jsonBase.result.user.currency.code = 'USD'
-  jsonBase.result.user.currency.symbol = '$'
-  jsonBase.result.user.limits.maxTotalStake = 10
+  // console.log(gameSettingsFromDeveloper)
+  gameSettingsFromDeveloper.result.user.balance.cash = balance.toString()
+  gameSettingsFromDeveloper.result.user.balance.sessionFreeBets = experience.toString()
+  gameSettingsFromDeveloper.result.user.currency.code = 'USD'
+  gameSettingsFromDeveloper.result.user.currency.symbol = '$'
+  gameSettingsFromDeveloper.result.user.limits.maxTotalStake = { total: '10.00' }
+  gameSettingsFromDeveloper.result.user.limits.minTotalStake = { total: '0.10' }
   //console.log(jsonBase.result.user.stakes.types)
   const newTypes: string[] = []
 
-  jsonBase.result.user.stakes.types.forEach((type: string) => {
+  gameSettingsFromDeveloper.result.user.stakes.types.forEach((type: string) => {
     if (parseInt(type) <= 2) {
+      console.log(type)
       newTypes.push(type)
     }
   })
-  jsonBase.result.user.stakes.types = newTypes
-  // const pretty = JSON.stringify(jsonBase);
-  // , {
-  //   // indent: '  ',
-  //   // singleQuotes: false,
-  // });
-  // //console.log(pretty);
-  // const jsonResult = {
-  // 	success: true,
-  // 	result: {
-  // 		user: {
-  // 			balance: {
-  // 				cash: player.balance,
-  // 				freeBets: '0.00',
-  // 				sessionCash: '0.00',
-  // 				sessionFreeBets: '0.00',
-  // 				bonus: '0.00',
-  // 			},
-  // 			notifications: [],
-  // 			messages: [],
-  // 			bonuses: [],
-  // 			tournaments: [],
-  // 			vouchers: [],
-  // 			userId: 1335987,
-  // 			country: 'US',
-  // 			casino: 'NONE',
-  // 			vertical: 'true',
-  // 			currency: {
-  // 				code: server.currency.code,
-  // 				symbol: server.currency.symbol,
-  // 			},
-  // 			token:
-  // 				'7ebe022fa6e8161f8c5a0248e10feba205597734501cb86361a2b3f4732106ef9571f913dbe835f79a86d2a5719db5adc2b166f572e8650a30fb6d5cfda8d5b6',
-  // 			sessionId: player.sessionId,
-  // 			sessionNetPosition: '0.00',
-  // 			aamsParticipationId: null,
-  // 			aamsSessionId: null,
-  // 			depositedAmount: '0.00',
-  // 			maxDeposit: '0.00',
-  // 			canGamble: false,
-  // 			lastWin: '0.00',
-  // 			prevRounds: [],
-  // 			limits: {
-  // 				maxGambleStake: server.maxGambleStake,
-  // 				maxTotalStake: {
-  // 					total: '1.00',
-  // 				},
-  // 				minTotalStake: {
-  // 					total: '0.20',
-  // 				},
-  // 				spinDuration: null,
-  // 			},
-  // 			stakes: {
-  // 				defaultIndex: 0,
-  // 				lastIndex: 0,
-  // 				types: ['0.2', '0.4', '0.6', '0.8', '1'],
-  // 			},
-  // 			autoplay: {
-  // 				type: 'modal',
-  // 				options: {
-  // 					spins: {
-  // 						values: ['10', '20', '30', '50', '100'],
-  // 						default: 10,
-  // 					},
-  // 					stopOnFeature: {
-  // 						enabled: true,
-  // 					},
-  // 					stopOnLossLimits: {
-  // 						mandatory: true,
-  // 						enabled: true,
-  // 						values: ['10', '20', '30', '50', '100', '200', '500', '1000', '5000', '10000'],
-  // 						default: 0,
-  // 					},
-  // 					stopOnWin: {
-  // 						enabled: true,
-  // 						values: [
-  // 							'10',
-  // 							'20',
-  // 							'30',
-  // 							'50',
-  // 							'100',
-  // 							'200',
-  // 							'500',
-  // 							'1000',
-  // 							'5000',
-  // 							'10000',
-  // 							'50000',
-  // 							'100000',
-  // 						],
-  // 					},
-  // 					hasRestart: false,
-  // 				},
-  // 			},
-  // 			serverTime: '2023-11-26 00:03:31',
-  // 			additional: null,
-  // 		},
-  // 		game: game,
-  // 		launcher: {
-  // 			version: '1.31.0',
-  // 		},
-  // 		jackpots: null,
-  // 	},
-  // };
-  return jsonBase
+  gameSettingsFromDeveloper.result.user.stakes.types = newTypes
+  console.dir(gameSettingsFromDeveloper, { depth: null })
+  return JSON.stringify(gameSettingsFromDeveloper)
 }
 
 export function buildJsonForSpin(

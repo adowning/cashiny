@@ -84,6 +84,11 @@ export type Comment = $Result.DefaultSelection<Prisma.$CommentPayload>
  */
 export type GameSpin = $Result.DefaultSelection<Prisma.$GameSpinPayload>
 /**
+ * Model GameProvider
+ * 
+ */
+export type GameProvider = $Result.DefaultSelection<Prisma.$GameProviderPayload>
+/**
  * Model GameSession
  * 
  */
@@ -163,6 +168,31 @@ export type UserVipTaskProgress = $Result.DefaultSelection<Prisma.$UserVipTaskPr
  * 
  */
 export type RebateTransaction = $Result.DefaultSelection<Prisma.$RebateTransactionPayload>
+/**
+ * Model Tournament
+ * 
+ */
+export type Tournament = $Result.DefaultSelection<Prisma.$TournamentPayload>
+/**
+ * Model TournamentGame
+ * 
+ */
+export type TournamentGame = $Result.DefaultSelection<Prisma.$TournamentGamePayload>
+/**
+ * Model TournamentParticipant
+ * 
+ */
+export type TournamentParticipant = $Result.DefaultSelection<Prisma.$TournamentParticipantPayload>
+/**
+ * Model TournamentGamePlay
+ * 
+ */
+export type TournamentGamePlay = $Result.DefaultSelection<Prisma.$TournamentGamePlayPayload>
+/**
+ * Model TournamentReward
+ * 
+ */
+export type TournamentReward = $Result.DefaultSelection<Prisma.$TournamentRewardPayload>
 
 /**
  * Enums
@@ -233,7 +263,7 @@ export const GameCategory: {
 export type GameCategory = (typeof GameCategory)[keyof typeof GameCategory]
 
 
-export const GameProvider: {
+export const GameProviderName: {
   PRAGMATICPLAY: 'PRAGMATICPLAY',
   EVOPLAY: 'EVOPLAY',
   NETENT: 'NETENT',
@@ -251,7 +281,7 @@ export const GameProvider: {
   KICKASS: 'KICKASS'
 };
 
-export type GameProvider = (typeof GameProvider)[keyof typeof GameProvider]
+export type GameProviderName = (typeof GameProviderName)[keyof typeof GameProviderName]
 
 
 export const TransactionType: {
@@ -377,6 +407,17 @@ export const CurrencyType: {
 export type CurrencyType = (typeof CurrencyType)[keyof typeof CurrencyType]
 
 
+export const ProviderAuthType: {
+  API_KEY: 'API_KEY',
+  OAUTH2: 'OAUTH2',
+  JWT_SIGN: 'JWT_SIGN',
+  CUSTOM: 'CUSTOM',
+  NONE: 'NONE'
+};
+
+export type ProviderAuthType = (typeof ProviderAuthType)[keyof typeof ProviderAuthType]
+
+
 export const RewardType: {
   DAILY_SIGN_IN: 'DAILY_SIGN_IN',
   WEEKLY_CYCLE: 'WEEKLY_CYCLE',
@@ -420,6 +461,16 @@ export const VipTaskType: {
 
 export type VipTaskType = (typeof VipTaskType)[keyof typeof VipTaskType]
 
+
+export const TournamentStatus: {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type TournamentStatus = (typeof TournamentStatus)[keyof typeof TournamentStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -442,9 +493,9 @@ export type GameCategory = $Enums.GameCategory
 
 export const GameCategory: typeof $Enums.GameCategory
 
-export type GameProvider = $Enums.GameProvider
+export type GameProviderName = $Enums.GameProviderName
 
-export const GameProvider: typeof $Enums.GameProvider
+export const GameProviderName: typeof $Enums.GameProviderName
 
 export type TransactionType = $Enums.TransactionType
 
@@ -478,6 +529,10 @@ export type CurrencyType = $Enums.CurrencyType
 
 export const CurrencyType: typeof $Enums.CurrencyType
 
+export type ProviderAuthType = $Enums.ProviderAuthType
+
+export const ProviderAuthType: typeof $Enums.ProviderAuthType
+
 export type RewardType = $Enums.RewardType
 
 export const RewardType: typeof $Enums.RewardType
@@ -489,6 +544,10 @@ export const RewardStatus: typeof $Enums.RewardStatus
 export type VipTaskType = $Enums.VipTaskType
 
 export const VipTaskType: typeof $Enums.VipTaskType
+
+export type TournamentStatus = $Enums.TournamentStatus
+
+export const TournamentStatus: typeof $Enums.TournamentStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -756,6 +815,16 @@ export class PrismaClient<
   get gameSpin(): Prisma.GameSpinDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.gameProvider`: Exposes CRUD operations for the **GameProvider** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GameProviders
+    * const gameProviders = await prisma.gameProvider.findMany()
+    * ```
+    */
+  get gameProvider(): Prisma.GameProviderDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.gameSession`: Exposes CRUD operations for the **GameSession** model.
     * Example usage:
     * ```ts
@@ -914,6 +983,56 @@ export class PrismaClient<
     * ```
     */
   get rebateTransaction(): Prisma.RebateTransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tournament`: Exposes CRUD operations for the **Tournament** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Tournaments
+    * const tournaments = await prisma.tournament.findMany()
+    * ```
+    */
+  get tournament(): Prisma.TournamentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tournamentGame`: Exposes CRUD operations for the **TournamentGame** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TournamentGames
+    * const tournamentGames = await prisma.tournamentGame.findMany()
+    * ```
+    */
+  get tournamentGame(): Prisma.TournamentGameDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tournamentParticipant`: Exposes CRUD operations for the **TournamentParticipant** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TournamentParticipants
+    * const tournamentParticipants = await prisma.tournamentParticipant.findMany()
+    * ```
+    */
+  get tournamentParticipant(): Prisma.TournamentParticipantDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tournamentGamePlay`: Exposes CRUD operations for the **TournamentGamePlay** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TournamentGamePlays
+    * const tournamentGamePlays = await prisma.tournamentGamePlay.findMany()
+    * ```
+    */
+  get tournamentGamePlay(): Prisma.TournamentGamePlayDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tournamentReward`: Exposes CRUD operations for the **TournamentReward** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TournamentRewards
+    * const tournamentRewards = await prisma.tournamentReward.findMany()
+    * ```
+    */
+  get tournamentReward(): Prisma.TournamentRewardDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1368,6 +1487,7 @@ export namespace Prisma {
     Post: 'Post',
     Comment: 'Comment',
     GameSpin: 'GameSpin',
+    GameProvider: 'GameProvider',
     GameSession: 'GameSession',
     UserAchievement: 'UserAchievement',
     XpEvent: 'XpEvent',
@@ -1383,7 +1503,12 @@ export namespace Prisma {
     UserReward: 'UserReward',
     VipTask: 'VipTask',
     UserVipTaskProgress: 'UserVipTaskProgress',
-    RebateTransaction: 'RebateTransaction'
+    RebateTransaction: 'RebateTransaction',
+    Tournament: 'Tournament',
+    TournamentGame: 'TournamentGame',
+    TournamentParticipant: 'TournamentParticipant',
+    TournamentGamePlay: 'TournamentGamePlay',
+    TournamentReward: 'TournamentReward'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1402,7 +1527,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "currency" | "session" | "account" | "verification" | "profile" | "settings" | "wallet" | "operatorAccess" | "achievement" | "game" | "post" | "comment" | "gameSpin" | "gameSession" | "userAchievement" | "xpEvent" | "notification" | "chatMessage" | "friendship" | "transaction" | "gameLaunchLink" | "product" | "eventLog" | "operatorInvitation" | "vipInfo" | "userReward" | "vipTask" | "userVipTaskProgress" | "rebateTransaction"
+      modelProps: "user" | "currency" | "session" | "account" | "verification" | "profile" | "settings" | "wallet" | "operatorAccess" | "achievement" | "game" | "post" | "comment" | "gameSpin" | "gameProvider" | "gameSession" | "userAchievement" | "xpEvent" | "notification" | "chatMessage" | "friendship" | "transaction" | "gameLaunchLink" | "product" | "eventLog" | "operatorInvitation" | "vipInfo" | "userReward" | "vipTask" | "userVipTaskProgress" | "rebateTransaction" | "tournament" | "tournamentGame" | "tournamentParticipant" | "tournamentGamePlay" | "tournamentReward"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2439,6 +2564,80 @@ export namespace Prisma {
           count: {
             args: Prisma.GameSpinCountArgs<ExtArgs>
             result: $Utils.Optional<GameSpinCountAggregateOutputType> | number
+          }
+        }
+      }
+      GameProvider: {
+        payload: Prisma.$GameProviderPayload<ExtArgs>
+        fields: Prisma.GameProviderFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GameProviderFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GameProviderFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>
+          }
+          findFirst: {
+            args: Prisma.GameProviderFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GameProviderFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>
+          }
+          findMany: {
+            args: Prisma.GameProviderFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>[]
+          }
+          create: {
+            args: Prisma.GameProviderCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>
+          }
+          createMany: {
+            args: Prisma.GameProviderCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GameProviderCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>[]
+          }
+          delete: {
+            args: Prisma.GameProviderDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>
+          }
+          update: {
+            args: Prisma.GameProviderUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>
+          }
+          deleteMany: {
+            args: Prisma.GameProviderDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GameProviderUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GameProviderUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>[]
+          }
+          upsert: {
+            args: Prisma.GameProviderUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GameProviderPayload>
+          }
+          aggregate: {
+            args: Prisma.GameProviderAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGameProvider>
+          }
+          groupBy: {
+            args: Prisma.GameProviderGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GameProviderGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GameProviderCountArgs<ExtArgs>
+            result: $Utils.Optional<GameProviderCountAggregateOutputType> | number
           }
         }
       }
@@ -3626,6 +3825,376 @@ export namespace Prisma {
           }
         }
       }
+      Tournament: {
+        payload: Prisma.$TournamentPayload<ExtArgs>
+        fields: Prisma.TournamentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TournamentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TournamentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>
+          }
+          findFirst: {
+            args: Prisma.TournamentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TournamentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>
+          }
+          findMany: {
+            args: Prisma.TournamentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>[]
+          }
+          create: {
+            args: Prisma.TournamentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>
+          }
+          createMany: {
+            args: Prisma.TournamentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TournamentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>[]
+          }
+          delete: {
+            args: Prisma.TournamentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>
+          }
+          update: {
+            args: Prisma.TournamentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>
+          }
+          deleteMany: {
+            args: Prisma.TournamentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TournamentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TournamentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>[]
+          }
+          upsert: {
+            args: Prisma.TournamentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentPayload>
+          }
+          aggregate: {
+            args: Prisma.TournamentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTournament>
+          }
+          groupBy: {
+            args: Prisma.TournamentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TournamentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TournamentCountArgs<ExtArgs>
+            result: $Utils.Optional<TournamentCountAggregateOutputType> | number
+          }
+        }
+      }
+      TournamentGame: {
+        payload: Prisma.$TournamentGamePayload<ExtArgs>
+        fields: Prisma.TournamentGameFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TournamentGameFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TournamentGameFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>
+          }
+          findFirst: {
+            args: Prisma.TournamentGameFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TournamentGameFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>
+          }
+          findMany: {
+            args: Prisma.TournamentGameFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>[]
+          }
+          create: {
+            args: Prisma.TournamentGameCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>
+          }
+          createMany: {
+            args: Prisma.TournamentGameCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TournamentGameCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>[]
+          }
+          delete: {
+            args: Prisma.TournamentGameDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>
+          }
+          update: {
+            args: Prisma.TournamentGameUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>
+          }
+          deleteMany: {
+            args: Prisma.TournamentGameDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TournamentGameUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TournamentGameUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>[]
+          }
+          upsert: {
+            args: Prisma.TournamentGameUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePayload>
+          }
+          aggregate: {
+            args: Prisma.TournamentGameAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTournamentGame>
+          }
+          groupBy: {
+            args: Prisma.TournamentGameGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TournamentGameGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TournamentGameCountArgs<ExtArgs>
+            result: $Utils.Optional<TournamentGameCountAggregateOutputType> | number
+          }
+        }
+      }
+      TournamentParticipant: {
+        payload: Prisma.$TournamentParticipantPayload<ExtArgs>
+        fields: Prisma.TournamentParticipantFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TournamentParticipantFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TournamentParticipantFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>
+          }
+          findFirst: {
+            args: Prisma.TournamentParticipantFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TournamentParticipantFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>
+          }
+          findMany: {
+            args: Prisma.TournamentParticipantFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>[]
+          }
+          create: {
+            args: Prisma.TournamentParticipantCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>
+          }
+          createMany: {
+            args: Prisma.TournamentParticipantCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TournamentParticipantCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>[]
+          }
+          delete: {
+            args: Prisma.TournamentParticipantDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>
+          }
+          update: {
+            args: Prisma.TournamentParticipantUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>
+          }
+          deleteMany: {
+            args: Prisma.TournamentParticipantDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TournamentParticipantUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TournamentParticipantUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>[]
+          }
+          upsert: {
+            args: Prisma.TournamentParticipantUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentParticipantPayload>
+          }
+          aggregate: {
+            args: Prisma.TournamentParticipantAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTournamentParticipant>
+          }
+          groupBy: {
+            args: Prisma.TournamentParticipantGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TournamentParticipantGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TournamentParticipantCountArgs<ExtArgs>
+            result: $Utils.Optional<TournamentParticipantCountAggregateOutputType> | number
+          }
+        }
+      }
+      TournamentGamePlay: {
+        payload: Prisma.$TournamentGamePlayPayload<ExtArgs>
+        fields: Prisma.TournamentGamePlayFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TournamentGamePlayFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TournamentGamePlayFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>
+          }
+          findFirst: {
+            args: Prisma.TournamentGamePlayFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TournamentGamePlayFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>
+          }
+          findMany: {
+            args: Prisma.TournamentGamePlayFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>[]
+          }
+          create: {
+            args: Prisma.TournamentGamePlayCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>
+          }
+          createMany: {
+            args: Prisma.TournamentGamePlayCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TournamentGamePlayCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>[]
+          }
+          delete: {
+            args: Prisma.TournamentGamePlayDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>
+          }
+          update: {
+            args: Prisma.TournamentGamePlayUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>
+          }
+          deleteMany: {
+            args: Prisma.TournamentGamePlayDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TournamentGamePlayUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TournamentGamePlayUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>[]
+          }
+          upsert: {
+            args: Prisma.TournamentGamePlayUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentGamePlayPayload>
+          }
+          aggregate: {
+            args: Prisma.TournamentGamePlayAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTournamentGamePlay>
+          }
+          groupBy: {
+            args: Prisma.TournamentGamePlayGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TournamentGamePlayGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TournamentGamePlayCountArgs<ExtArgs>
+            result: $Utils.Optional<TournamentGamePlayCountAggregateOutputType> | number
+          }
+        }
+      }
+      TournamentReward: {
+        payload: Prisma.$TournamentRewardPayload<ExtArgs>
+        fields: Prisma.TournamentRewardFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TournamentRewardFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TournamentRewardFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>
+          }
+          findFirst: {
+            args: Prisma.TournamentRewardFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TournamentRewardFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>
+          }
+          findMany: {
+            args: Prisma.TournamentRewardFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>[]
+          }
+          create: {
+            args: Prisma.TournamentRewardCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>
+          }
+          createMany: {
+            args: Prisma.TournamentRewardCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TournamentRewardCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>[]
+          }
+          delete: {
+            args: Prisma.TournamentRewardDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>
+          }
+          update: {
+            args: Prisma.TournamentRewardUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>
+          }
+          deleteMany: {
+            args: Prisma.TournamentRewardDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TournamentRewardUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TournamentRewardUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>[]
+          }
+          upsert: {
+            args: Prisma.TournamentRewardUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TournamentRewardPayload>
+          }
+          aggregate: {
+            args: Prisma.TournamentRewardAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTournamentReward>
+          }
+          groupBy: {
+            args: Prisma.TournamentRewardGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TournamentRewardGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TournamentRewardCountArgs<ExtArgs>
+            result: $Utils.Optional<TournamentRewardCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3724,6 +4293,7 @@ export namespace Prisma {
     post?: PostOmit
     comment?: CommentOmit
     gameSpin?: GameSpinOmit
+    gameProvider?: GameProviderOmit
     gameSession?: GameSessionOmit
     userAchievement?: UserAchievementOmit
     xpEvent?: XpEventOmit
@@ -3740,6 +4310,11 @@ export namespace Prisma {
     vipTask?: VipTaskOmit
     userVipTaskProgress?: UserVipTaskProgressOmit
     rebateTransaction?: RebateTransactionOmit
+    tournament?: TournamentOmit
+    tournamentGame?: TournamentGameOmit
+    tournamentParticipant?: TournamentParticipantOmit
+    tournamentGamePlay?: TournamentGamePlayOmit
+    tournamentReward?: TournamentRewardOmit
   }
 
   /* Types for Logging */
@@ -3859,6 +4434,9 @@ export namespace Prisma {
     receivedNotifications: number
     originatedTransactions: number
     receivedTransactions: number
+    TournamentParticipant: number
+    TournamentReward: number
+    Tournament: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3887,6 +4465,9 @@ export namespace Prisma {
     receivedNotifications?: boolean | UserCountOutputTypeCountReceivedNotificationsArgs
     originatedTransactions?: boolean | UserCountOutputTypeCountOriginatedTransactionsArgs
     receivedTransactions?: boolean | UserCountOutputTypeCountReceivedTransactionsArgs
+    TournamentParticipant?: boolean | UserCountOutputTypeCountTournamentParticipantArgs
+    TournamentReward?: boolean | UserCountOutputTypeCountTournamentRewardArgs
+    Tournament?: boolean | UserCountOutputTypeCountTournamentArgs
   }
 
   // Custom InputTypes
@@ -4073,6 +4654,27 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReceivedTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TransactionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTournamentParticipantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentParticipantWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTournamentRewardArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentRewardWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTournamentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentWhereInput
   }
 
 
@@ -4270,11 +4872,13 @@ export namespace Prisma {
   export type GameCountOutputType = {
     gameSessions: number
     gameLaunchLinks: number
+    TournamentGame: number
   }
 
   export type GameCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gameSessions?: boolean | GameCountOutputTypeCountGameSessionsArgs
     gameLaunchLinks?: boolean | GameCountOutputTypeCountGameLaunchLinksArgs
+    TournamentGame?: boolean | GameCountOutputTypeCountTournamentGameArgs
   }
 
   // Custom InputTypes
@@ -4300,6 +4904,13 @@ export namespace Prisma {
    */
   export type GameCountOutputTypeCountGameLaunchLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GameLaunchLinkWhereInput
+  }
+
+  /**
+   * GameCountOutputType without action
+   */
+  export type GameCountOutputTypeCountTournamentGameArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentGameWhereInput
   }
 
 
@@ -4335,17 +4946,48 @@ export namespace Prisma {
 
 
   /**
+   * Count Type GameProviderCountOutputType
+   */
+
+  export type GameProviderCountOutputType = {
+    games: number
+  }
+
+  export type GameProviderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    games?: boolean | GameProviderCountOutputTypeCountGamesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GameProviderCountOutputType without action
+   */
+  export type GameProviderCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProviderCountOutputType
+     */
+    select?: GameProviderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GameProviderCountOutputType without action
+   */
+  export type GameProviderCountOutputTypeCountGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GameWhereInput
+  }
+
+
+  /**
    * Count Type GameSessionCountOutputType
    */
 
   export type GameSessionCountOutputType = {
     spins: number
-    Profile: number
+    profile: number
   }
 
   export type GameSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     spins?: boolean | GameSessionCountOutputTypeCountSpinsArgs
-    Profile?: boolean | GameSessionCountOutputTypeCountProfileArgs
+    profile?: boolean | GameSessionCountOutputTypeCountProfileArgs
   }
 
   // Custom InputTypes
@@ -4495,6 +5137,86 @@ export namespace Prisma {
    */
   export type VipTaskCountOutputTypeCountUserTaskProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserVipTaskProgressWhereInput
+  }
+
+
+  /**
+   * Count Type TournamentCountOutputType
+   */
+
+  export type TournamentCountOutputType = {
+    eligibleGames: number
+    participants: number
+    rewards: number
+  }
+
+  export type TournamentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    eligibleGames?: boolean | TournamentCountOutputTypeCountEligibleGamesArgs
+    participants?: boolean | TournamentCountOutputTypeCountParticipantsArgs
+    rewards?: boolean | TournamentCountOutputTypeCountRewardsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TournamentCountOutputType without action
+   */
+  export type TournamentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentCountOutputType
+     */
+    select?: TournamentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TournamentCountOutputType without action
+   */
+  export type TournamentCountOutputTypeCountEligibleGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentGameWhereInput
+  }
+
+  /**
+   * TournamentCountOutputType without action
+   */
+  export type TournamentCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentParticipantWhereInput
+  }
+
+  /**
+   * TournamentCountOutputType without action
+   */
+  export type TournamentCountOutputTypeCountRewardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentRewardWhereInput
+  }
+
+
+  /**
+   * Count Type TournamentParticipantCountOutputType
+   */
+
+  export type TournamentParticipantCountOutputType = {
+    gamePlays: number
+  }
+
+  export type TournamentParticipantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gamePlays?: boolean | TournamentParticipantCountOutputTypeCountGamePlaysArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TournamentParticipantCountOutputType without action
+   */
+  export type TournamentParticipantCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipantCountOutputType
+     */
+    select?: TournamentParticipantCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TournamentParticipantCountOutputType without action
+   */
+  export type TournamentParticipantCountOutputTypeCountGamePlaysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentGamePlayWhereInput
   }
 
 
@@ -4998,6 +5720,9 @@ export namespace Prisma {
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
     originatedTransactions?: boolean | User$originatedTransactionsArgs<ExtArgs>
     receivedTransactions?: boolean | User$receivedTransactionsArgs<ExtArgs>
+    TournamentParticipant?: boolean | User$TournamentParticipantArgs<ExtArgs>
+    TournamentReward?: boolean | User$TournamentRewardArgs<ExtArgs>
+    Tournament?: boolean | User$TournamentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5160,6 +5885,9 @@ export namespace Prisma {
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
     originatedTransactions?: boolean | User$originatedTransactionsArgs<ExtArgs>
     receivedTransactions?: boolean | User$receivedTransactionsArgs<ExtArgs>
+    TournamentParticipant?: boolean | User$TournamentParticipantArgs<ExtArgs>
+    TournamentReward?: boolean | User$TournamentRewardArgs<ExtArgs>
+    Tournament?: boolean | User$TournamentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5204,6 +5932,9 @@ export namespace Prisma {
       receivedNotifications: Prisma.$NotificationPayload<ExtArgs>[]
       originatedTransactions: Prisma.$TransactionPayload<ExtArgs>[]
       receivedTransactions: Prisma.$TransactionPayload<ExtArgs>[]
+      TournamentParticipant: Prisma.$TournamentParticipantPayload<ExtArgs>[]
+      TournamentReward: Prisma.$TournamentRewardPayload<ExtArgs>[]
+      Tournament: Prisma.$TournamentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5668,6 +6399,9 @@ export namespace Prisma {
     receivedNotifications<T extends User$receivedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     originatedTransactions<T extends User$originatedTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$originatedTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedTransactions<T extends User$receivedTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    TournamentParticipant<T extends User$TournamentParticipantArgs<ExtArgs> = {}>(args?: Subset<T, User$TournamentParticipantArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    TournamentReward<T extends User$TournamentRewardArgs<ExtArgs> = {}>(args?: Subset<T, User$TournamentRewardArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Tournament<T extends User$TournamentArgs<ExtArgs> = {}>(args?: Subset<T, User$TournamentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6823,6 +7557,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * User.TournamentParticipant
+   */
+  export type User$TournamentParticipantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    where?: TournamentParticipantWhereInput
+    orderBy?: TournamentParticipantOrderByWithRelationInput | TournamentParticipantOrderByWithRelationInput[]
+    cursor?: TournamentParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentParticipantScalarFieldEnum | TournamentParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * User.TournamentReward
+   */
+  export type User$TournamentRewardArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    where?: TournamentRewardWhereInput
+    orderBy?: TournamentRewardOrderByWithRelationInput | TournamentRewardOrderByWithRelationInput[]
+    cursor?: TournamentRewardWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentRewardScalarFieldEnum | TournamentRewardScalarFieldEnum[]
+  }
+
+  /**
+   * User.Tournament
+   */
+  export type User$TournamentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    where?: TournamentWhereInput
+    orderBy?: TournamentOrderByWithRelationInput | TournamentOrderByWithRelationInput[]
+    cursor?: TournamentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
   }
 
   /**
@@ -17604,7 +18410,6 @@ export namespace Prisma {
     name: string | null
     title: string | null
     description: string | null
-    provider: $Enums.GameProvider | null
     category: $Enums.GameCategory | null
     isActive: boolean | null
     thumbnailUrl: string | null
@@ -17612,6 +18417,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     featured: boolean | null
+    providerName: string | null
+    gameProviderId: string | null
     operatorId: string | null
   }
 
@@ -17620,7 +18427,6 @@ export namespace Prisma {
     name: string | null
     title: string | null
     description: string | null
-    provider: $Enums.GameProvider | null
     category: $Enums.GameCategory | null
     isActive: boolean | null
     thumbnailUrl: string | null
@@ -17628,6 +18434,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     featured: boolean | null
+    providerName: string | null
+    gameProviderId: string | null
     operatorId: string | null
   }
 
@@ -17637,7 +18445,7 @@ export namespace Prisma {
     title: number
     goldsvetData: number
     description: number
-    provider: number
+    supportedProviders: number
     category: number
     tags: number
     isActive: number
@@ -17647,6 +18455,8 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     featured: number
+    providerName: number
+    gameProviderId: number
     operatorId: number
     _all: number
   }
@@ -17657,7 +18467,6 @@ export namespace Prisma {
     name?: true
     title?: true
     description?: true
-    provider?: true
     category?: true
     isActive?: true
     thumbnailUrl?: true
@@ -17665,6 +18474,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     featured?: true
+    providerName?: true
+    gameProviderId?: true
     operatorId?: true
   }
 
@@ -17673,7 +18484,6 @@ export namespace Prisma {
     name?: true
     title?: true
     description?: true
-    provider?: true
     category?: true
     isActive?: true
     thumbnailUrl?: true
@@ -17681,6 +18491,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     featured?: true
+    providerName?: true
+    gameProviderId?: true
     operatorId?: true
   }
 
@@ -17690,7 +18502,7 @@ export namespace Prisma {
     title?: true
     goldsvetData?: true
     description?: true
-    provider?: true
+    supportedProviders?: true
     category?: true
     tags?: true
     isActive?: true
@@ -17700,6 +18512,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     featured?: true
+    providerName?: true
+    gameProviderId?: true
     operatorId?: true
     _all?: true
   }
@@ -17782,7 +18596,7 @@ export namespace Prisma {
     title: string
     goldsvetData: JsonValue | null
     description: string | null
-    provider: $Enums.GameProvider
+    supportedProviders: $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags: string[]
     isActive: boolean
@@ -17792,6 +18606,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     featured: boolean
+    providerName: string | null
+    gameProviderId: string | null
     operatorId: string | null
     _count: GameCountAggregateOutputType | null
     _min: GameMinAggregateOutputType | null
@@ -17818,7 +18634,7 @@ export namespace Prisma {
     title?: boolean
     goldsvetData?: boolean
     description?: boolean
-    provider?: boolean
+    supportedProviders?: boolean
     category?: boolean
     tags?: boolean
     isActive?: boolean
@@ -17828,10 +18644,14 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     featured?: boolean
+    providerName?: boolean
+    gameProviderId?: boolean
     operatorId?: boolean
+    gameProvider?: boolean | Game$gameProviderArgs<ExtArgs>
     gameSessions?: boolean | Game$gameSessionsArgs<ExtArgs>
     gameLaunchLinks?: boolean | Game$gameLaunchLinksArgs<ExtArgs>
     operator?: boolean | Game$operatorArgs<ExtArgs>
+    TournamentGame?: boolean | Game$TournamentGameArgs<ExtArgs>
     _count?: boolean | GameCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["game"]>
 
@@ -17841,7 +18661,7 @@ export namespace Prisma {
     title?: boolean
     goldsvetData?: boolean
     description?: boolean
-    provider?: boolean
+    supportedProviders?: boolean
     category?: boolean
     tags?: boolean
     isActive?: boolean
@@ -17851,7 +18671,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     featured?: boolean
+    providerName?: boolean
+    gameProviderId?: boolean
     operatorId?: boolean
+    gameProvider?: boolean | Game$gameProviderArgs<ExtArgs>
     operator?: boolean | Game$operatorArgs<ExtArgs>
   }, ExtArgs["result"]["game"]>
 
@@ -17861,7 +18684,7 @@ export namespace Prisma {
     title?: boolean
     goldsvetData?: boolean
     description?: boolean
-    provider?: boolean
+    supportedProviders?: boolean
     category?: boolean
     tags?: boolean
     isActive?: boolean
@@ -17871,7 +18694,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     featured?: boolean
+    providerName?: boolean
+    gameProviderId?: boolean
     operatorId?: boolean
+    gameProvider?: boolean | Game$gameProviderArgs<ExtArgs>
     operator?: boolean | Game$operatorArgs<ExtArgs>
   }, ExtArgs["result"]["game"]>
 
@@ -17881,7 +18707,7 @@ export namespace Prisma {
     title?: boolean
     goldsvetData?: boolean
     description?: boolean
-    provider?: boolean
+    supportedProviders?: boolean
     category?: boolean
     tags?: boolean
     isActive?: boolean
@@ -17891,29 +18717,37 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     featured?: boolean
+    providerName?: boolean
+    gameProviderId?: boolean
     operatorId?: boolean
   }
 
-  export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "title" | "goldsvetData" | "description" | "provider" | "category" | "tags" | "isActive" | "thumbnailUrl" | "bannerUrl" | "meta" | "createdAt" | "updatedAt" | "featured" | "operatorId", ExtArgs["result"]["game"]>
+  export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "title" | "goldsvetData" | "description" | "supportedProviders" | "category" | "tags" | "isActive" | "thumbnailUrl" | "bannerUrl" | "meta" | "createdAt" | "updatedAt" | "featured" | "providerName" | "gameProviderId" | "operatorId", ExtArgs["result"]["game"]>
   export type GameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gameProvider?: boolean | Game$gameProviderArgs<ExtArgs>
     gameSessions?: boolean | Game$gameSessionsArgs<ExtArgs>
     gameLaunchLinks?: boolean | Game$gameLaunchLinksArgs<ExtArgs>
     operator?: boolean | Game$operatorArgs<ExtArgs>
+    TournamentGame?: boolean | Game$TournamentGameArgs<ExtArgs>
     _count?: boolean | GameCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GameIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gameProvider?: boolean | Game$gameProviderArgs<ExtArgs>
     operator?: boolean | Game$operatorArgs<ExtArgs>
   }
   export type GameIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gameProvider?: boolean | Game$gameProviderArgs<ExtArgs>
     operator?: boolean | Game$operatorArgs<ExtArgs>
   }
 
   export type $GamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Game"
     objects: {
+      gameProvider: Prisma.$GameProviderPayload<ExtArgs> | null
       gameSessions: Prisma.$GameSessionPayload<ExtArgs>[]
       gameLaunchLinks: Prisma.$GameLaunchLinkPayload<ExtArgs>[]
       operator: Prisma.$OperatorAccessPayload<ExtArgs> | null
+      TournamentGame: Prisma.$TournamentGamePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17921,7 +18755,7 @@ export namespace Prisma {
       title: string
       goldsvetData: Prisma.JsonValue | null
       description: string | null
-      provider: $Enums.GameProvider
+      supportedProviders: $Enums.GameProviderName[]
       category: $Enums.GameCategory
       tags: string[]
       isActive: boolean
@@ -17931,6 +18765,8 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       featured: boolean
+      providerName: string | null
+      gameProviderId: string | null
       operatorId: string | null
     }, ExtArgs["result"]["game"]>
     composites: {}
@@ -18326,9 +19162,11 @@ export namespace Prisma {
    */
   export interface Prisma__GameClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    gameProvider<T extends Game$gameProviderArgs<ExtArgs> = {}>(args?: Subset<T, Game$gameProviderArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     gameSessions<T extends Game$gameSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Game$gameSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GameSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gameLaunchLinks<T extends Game$gameLaunchLinksArgs<ExtArgs> = {}>(args?: Subset<T, Game$gameLaunchLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GameLaunchLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     operator<T extends Game$operatorArgs<ExtArgs> = {}>(args?: Subset<T, Game$operatorArgs<ExtArgs>>): Prisma__OperatorAccessClient<$Result.GetResult<Prisma.$OperatorAccessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    TournamentGame<T extends Game$TournamentGameArgs<ExtArgs> = {}>(args?: Subset<T, Game$TournamentGameArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18363,7 +19201,7 @@ export namespace Prisma {
     readonly title: FieldRef<"Game", 'String'>
     readonly goldsvetData: FieldRef<"Game", 'Json'>
     readonly description: FieldRef<"Game", 'String'>
-    readonly provider: FieldRef<"Game", 'GameProvider'>
+    readonly supportedProviders: FieldRef<"Game", 'GameProviderName[]'>
     readonly category: FieldRef<"Game", 'GameCategory'>
     readonly tags: FieldRef<"Game", 'String[]'>
     readonly isActive: FieldRef<"Game", 'Boolean'>
@@ -18373,6 +19211,8 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Game", 'DateTime'>
     readonly updatedAt: FieldRef<"Game", 'DateTime'>
     readonly featured: FieldRef<"Game", 'Boolean'>
+    readonly providerName: FieldRef<"Game", 'String'>
+    readonly gameProviderId: FieldRef<"Game", 'String'>
     readonly operatorId: FieldRef<"Game", 'String'>
   }
     
@@ -18770,6 +19610,25 @@ export namespace Prisma {
   }
 
   /**
+   * Game.gameProvider
+   */
+  export type Game$gameProviderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    where?: GameProviderWhereInput
+  }
+
+  /**
    * Game.gameSessions
    */
   export type Game$gameSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18834,6 +19693,30 @@ export namespace Prisma {
      */
     include?: OperatorAccessInclude<ExtArgs> | null
     where?: OperatorAccessWhereInput
+  }
+
+  /**
+   * Game.TournamentGame
+   */
+  export type Game$TournamentGameArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    where?: TournamentGameWhereInput
+    orderBy?: TournamentGameOrderByWithRelationInput | TournamentGameOrderByWithRelationInput[]
+    cursor?: TournamentGameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentGameScalarFieldEnum | TournamentGameScalarFieldEnum[]
   }
 
   /**
@@ -22275,6 +23158,1241 @@ export namespace Prisma {
 
 
   /**
+   * Model GameProvider
+   */
+
+  export type AggregateGameProvider = {
+    _count: GameProviderCountAggregateOutputType | null
+    _min: GameProviderMinAggregateOutputType | null
+    _max: GameProviderMaxAggregateOutputType | null
+  }
+
+  export type GameProviderMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    displayName: string | null
+    rgsBaseUrl: string | null
+    settingsPath: string | null
+    spinPath: string | null
+    resolveBetPath: string | null
+    providerRoundId: string | null
+    authType: $Enums.ProviderAuthType | null
+    apiKey: string | null
+    apiSecret: string | null
+    publicKey: string | null
+    privateKeyRef: string | null
+    isActive: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GameProviderMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    displayName: string | null
+    rgsBaseUrl: string | null
+    settingsPath: string | null
+    spinPath: string | null
+    resolveBetPath: string | null
+    providerRoundId: string | null
+    authType: $Enums.ProviderAuthType | null
+    apiKey: string | null
+    apiSecret: string | null
+    publicKey: string | null
+    privateKeyRef: string | null
+    isActive: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GameProviderCountAggregateOutputType = {
+    id: number
+    name: number
+    displayName: number
+    rgsBaseUrl: number
+    settingsPath: number
+    spinPath: number
+    resolveBetPath: number
+    providerRoundId: number
+    authType: number
+    apiKey: number
+    apiSecret: number
+    publicKey: number
+    privateKeyRef: number
+    configJson: number
+    isActive: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GameProviderMinAggregateInputType = {
+    id?: true
+    name?: true
+    displayName?: true
+    rgsBaseUrl?: true
+    settingsPath?: true
+    spinPath?: true
+    resolveBetPath?: true
+    providerRoundId?: true
+    authType?: true
+    apiKey?: true
+    apiSecret?: true
+    publicKey?: true
+    privateKeyRef?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GameProviderMaxAggregateInputType = {
+    id?: true
+    name?: true
+    displayName?: true
+    rgsBaseUrl?: true
+    settingsPath?: true
+    spinPath?: true
+    resolveBetPath?: true
+    providerRoundId?: true
+    authType?: true
+    apiKey?: true
+    apiSecret?: true
+    publicKey?: true
+    privateKeyRef?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GameProviderCountAggregateInputType = {
+    id?: true
+    name?: true
+    displayName?: true
+    rgsBaseUrl?: true
+    settingsPath?: true
+    spinPath?: true
+    resolveBetPath?: true
+    providerRoundId?: true
+    authType?: true
+    apiKey?: true
+    apiSecret?: true
+    publicKey?: true
+    privateKeyRef?: true
+    configJson?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GameProviderAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GameProvider to aggregate.
+     */
+    where?: GameProviderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GameProviders to fetch.
+     */
+    orderBy?: GameProviderOrderByWithRelationInput | GameProviderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GameProviderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GameProviders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GameProviders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GameProviders
+    **/
+    _count?: true | GameProviderCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GameProviderMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GameProviderMaxAggregateInputType
+  }
+
+  export type GetGameProviderAggregateType<T extends GameProviderAggregateArgs> = {
+        [P in keyof T & keyof AggregateGameProvider]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGameProvider[P]>
+      : GetScalarType<T[P], AggregateGameProvider[P]>
+  }
+
+
+
+
+  export type GameProviderGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GameProviderWhereInput
+    orderBy?: GameProviderOrderByWithAggregationInput | GameProviderOrderByWithAggregationInput[]
+    by: GameProviderScalarFieldEnum[] | GameProviderScalarFieldEnum
+    having?: GameProviderScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GameProviderCountAggregateInputType | true
+    _min?: GameProviderMinAggregateInputType
+    _max?: GameProviderMaxAggregateInputType
+  }
+
+  export type GameProviderGroupByOutputType = {
+    id: string
+    name: string
+    displayName: string | null
+    rgsBaseUrl: string
+    settingsPath: string | null
+    spinPath: string | null
+    resolveBetPath: string | null
+    providerRoundId: string | null
+    authType: $Enums.ProviderAuthType
+    apiKey: string | null
+    apiSecret: string | null
+    publicKey: string | null
+    privateKeyRef: string | null
+    configJson: JsonValue | null
+    isActive: boolean
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: GameProviderCountAggregateOutputType | null
+    _min: GameProviderMinAggregateOutputType | null
+    _max: GameProviderMaxAggregateOutputType | null
+  }
+
+  type GetGameProviderGroupByPayload<T extends GameProviderGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GameProviderGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GameProviderGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GameProviderGroupByOutputType[P]>
+            : GetScalarType<T[P], GameProviderGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GameProviderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    displayName?: boolean
+    rgsBaseUrl?: boolean
+    settingsPath?: boolean
+    spinPath?: boolean
+    resolveBetPath?: boolean
+    providerRoundId?: boolean
+    authType?: boolean
+    apiKey?: boolean
+    apiSecret?: boolean
+    publicKey?: boolean
+    privateKeyRef?: boolean
+    configJson?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    games?: boolean | GameProvider$gamesArgs<ExtArgs>
+    _count?: boolean | GameProviderCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["gameProvider"]>
+
+  export type GameProviderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    displayName?: boolean
+    rgsBaseUrl?: boolean
+    settingsPath?: boolean
+    spinPath?: boolean
+    resolveBetPath?: boolean
+    providerRoundId?: boolean
+    authType?: boolean
+    apiKey?: boolean
+    apiSecret?: boolean
+    publicKey?: boolean
+    privateKeyRef?: boolean
+    configJson?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["gameProvider"]>
+
+  export type GameProviderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    displayName?: boolean
+    rgsBaseUrl?: boolean
+    settingsPath?: boolean
+    spinPath?: boolean
+    resolveBetPath?: boolean
+    providerRoundId?: boolean
+    authType?: boolean
+    apiKey?: boolean
+    apiSecret?: boolean
+    publicKey?: boolean
+    privateKeyRef?: boolean
+    configJson?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["gameProvider"]>
+
+  export type GameProviderSelectScalar = {
+    id?: boolean
+    name?: boolean
+    displayName?: boolean
+    rgsBaseUrl?: boolean
+    settingsPath?: boolean
+    spinPath?: boolean
+    resolveBetPath?: boolean
+    providerRoundId?: boolean
+    authType?: boolean
+    apiKey?: boolean
+    apiSecret?: boolean
+    publicKey?: boolean
+    privateKeyRef?: boolean
+    configJson?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GameProviderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "displayName" | "rgsBaseUrl" | "settingsPath" | "spinPath" | "resolveBetPath" | "providerRoundId" | "authType" | "apiKey" | "apiSecret" | "publicKey" | "privateKeyRef" | "configJson" | "isActive" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["gameProvider"]>
+  export type GameProviderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    games?: boolean | GameProvider$gamesArgs<ExtArgs>
+    _count?: boolean | GameProviderCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type GameProviderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type GameProviderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $GameProviderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GameProvider"
+    objects: {
+      games: Prisma.$GamePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      displayName: string | null
+      rgsBaseUrl: string
+      settingsPath: string | null
+      spinPath: string | null
+      resolveBetPath: string | null
+      providerRoundId: string | null
+      authType: $Enums.ProviderAuthType
+      apiKey: string | null
+      apiSecret: string | null
+      publicKey: string | null
+      privateKeyRef: string | null
+      configJson: Prisma.JsonValue | null
+      isActive: boolean
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["gameProvider"]>
+    composites: {}
+  }
+
+  type GameProviderGetPayload<S extends boolean | null | undefined | GameProviderDefaultArgs> = $Result.GetResult<Prisma.$GameProviderPayload, S>
+
+  type GameProviderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GameProviderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GameProviderCountAggregateInputType | true
+    }
+
+  export interface GameProviderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GameProvider'], meta: { name: 'GameProvider' } }
+    /**
+     * Find zero or one GameProvider that matches the filter.
+     * @param {GameProviderFindUniqueArgs} args - Arguments to find a GameProvider
+     * @example
+     * // Get one GameProvider
+     * const gameProvider = await prisma.gameProvider.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GameProviderFindUniqueArgs>(args: SelectSubset<T, GameProviderFindUniqueArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GameProvider that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GameProviderFindUniqueOrThrowArgs} args - Arguments to find a GameProvider
+     * @example
+     * // Get one GameProvider
+     * const gameProvider = await prisma.gameProvider.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GameProviderFindUniqueOrThrowArgs>(args: SelectSubset<T, GameProviderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GameProvider that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GameProviderFindFirstArgs} args - Arguments to find a GameProvider
+     * @example
+     * // Get one GameProvider
+     * const gameProvider = await prisma.gameProvider.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GameProviderFindFirstArgs>(args?: SelectSubset<T, GameProviderFindFirstArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GameProvider that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GameProviderFindFirstOrThrowArgs} args - Arguments to find a GameProvider
+     * @example
+     * // Get one GameProvider
+     * const gameProvider = await prisma.gameProvider.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GameProviderFindFirstOrThrowArgs>(args?: SelectSubset<T, GameProviderFindFirstOrThrowArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GameProviders that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GameProviderFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GameProviders
+     * const gameProviders = await prisma.gameProvider.findMany()
+     * 
+     * // Get first 10 GameProviders
+     * const gameProviders = await prisma.gameProvider.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const gameProviderWithIdOnly = await prisma.gameProvider.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GameProviderFindManyArgs>(args?: SelectSubset<T, GameProviderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GameProvider.
+     * @param {GameProviderCreateArgs} args - Arguments to create a GameProvider.
+     * @example
+     * // Create one GameProvider
+     * const GameProvider = await prisma.gameProvider.create({
+     *   data: {
+     *     // ... data to create a GameProvider
+     *   }
+     * })
+     * 
+     */
+    create<T extends GameProviderCreateArgs>(args: SelectSubset<T, GameProviderCreateArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GameProviders.
+     * @param {GameProviderCreateManyArgs} args - Arguments to create many GameProviders.
+     * @example
+     * // Create many GameProviders
+     * const gameProvider = await prisma.gameProvider.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GameProviderCreateManyArgs>(args?: SelectSubset<T, GameProviderCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GameProviders and returns the data saved in the database.
+     * @param {GameProviderCreateManyAndReturnArgs} args - Arguments to create many GameProviders.
+     * @example
+     * // Create many GameProviders
+     * const gameProvider = await prisma.gameProvider.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GameProviders and only return the `id`
+     * const gameProviderWithIdOnly = await prisma.gameProvider.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GameProviderCreateManyAndReturnArgs>(args?: SelectSubset<T, GameProviderCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GameProvider.
+     * @param {GameProviderDeleteArgs} args - Arguments to delete one GameProvider.
+     * @example
+     * // Delete one GameProvider
+     * const GameProvider = await prisma.gameProvider.delete({
+     *   where: {
+     *     // ... filter to delete one GameProvider
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GameProviderDeleteArgs>(args: SelectSubset<T, GameProviderDeleteArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GameProvider.
+     * @param {GameProviderUpdateArgs} args - Arguments to update one GameProvider.
+     * @example
+     * // Update one GameProvider
+     * const gameProvider = await prisma.gameProvider.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GameProviderUpdateArgs>(args: SelectSubset<T, GameProviderUpdateArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GameProviders.
+     * @param {GameProviderDeleteManyArgs} args - Arguments to filter GameProviders to delete.
+     * @example
+     * // Delete a few GameProviders
+     * const { count } = await prisma.gameProvider.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GameProviderDeleteManyArgs>(args?: SelectSubset<T, GameProviderDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GameProviders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GameProviderUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GameProviders
+     * const gameProvider = await prisma.gameProvider.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GameProviderUpdateManyArgs>(args: SelectSubset<T, GameProviderUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GameProviders and returns the data updated in the database.
+     * @param {GameProviderUpdateManyAndReturnArgs} args - Arguments to update many GameProviders.
+     * @example
+     * // Update many GameProviders
+     * const gameProvider = await prisma.gameProvider.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GameProviders and only return the `id`
+     * const gameProviderWithIdOnly = await prisma.gameProvider.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GameProviderUpdateManyAndReturnArgs>(args: SelectSubset<T, GameProviderUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GameProvider.
+     * @param {GameProviderUpsertArgs} args - Arguments to update or create a GameProvider.
+     * @example
+     * // Update or create a GameProvider
+     * const gameProvider = await prisma.gameProvider.upsert({
+     *   create: {
+     *     // ... data to create a GameProvider
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GameProvider we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GameProviderUpsertArgs>(args: SelectSubset<T, GameProviderUpsertArgs<ExtArgs>>): Prisma__GameProviderClient<$Result.GetResult<Prisma.$GameProviderPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GameProviders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GameProviderCountArgs} args - Arguments to filter GameProviders to count.
+     * @example
+     * // Count the number of GameProviders
+     * const count = await prisma.gameProvider.count({
+     *   where: {
+     *     // ... the filter for the GameProviders we want to count
+     *   }
+     * })
+    **/
+    count<T extends GameProviderCountArgs>(
+      args?: Subset<T, GameProviderCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GameProviderCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GameProvider.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GameProviderAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GameProviderAggregateArgs>(args: Subset<T, GameProviderAggregateArgs>): Prisma.PrismaPromise<GetGameProviderAggregateType<T>>
+
+    /**
+     * Group by GameProvider.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GameProviderGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GameProviderGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GameProviderGroupByArgs['orderBy'] }
+        : { orderBy?: GameProviderGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GameProviderGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGameProviderGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GameProvider model
+   */
+  readonly fields: GameProviderFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GameProvider.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GameProviderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    games<T extends GameProvider$gamesArgs<ExtArgs> = {}>(args?: Subset<T, GameProvider$gamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GameProvider model
+   */
+  interface GameProviderFieldRefs {
+    readonly id: FieldRef<"GameProvider", 'String'>
+    readonly name: FieldRef<"GameProvider", 'String'>
+    readonly displayName: FieldRef<"GameProvider", 'String'>
+    readonly rgsBaseUrl: FieldRef<"GameProvider", 'String'>
+    readonly settingsPath: FieldRef<"GameProvider", 'String'>
+    readonly spinPath: FieldRef<"GameProvider", 'String'>
+    readonly resolveBetPath: FieldRef<"GameProvider", 'String'>
+    readonly providerRoundId: FieldRef<"GameProvider", 'String'>
+    readonly authType: FieldRef<"GameProvider", 'ProviderAuthType'>
+    readonly apiKey: FieldRef<"GameProvider", 'String'>
+    readonly apiSecret: FieldRef<"GameProvider", 'String'>
+    readonly publicKey: FieldRef<"GameProvider", 'String'>
+    readonly privateKeyRef: FieldRef<"GameProvider", 'String'>
+    readonly configJson: FieldRef<"GameProvider", 'Json'>
+    readonly isActive: FieldRef<"GameProvider", 'Boolean'>
+    readonly notes: FieldRef<"GameProvider", 'String'>
+    readonly createdAt: FieldRef<"GameProvider", 'DateTime'>
+    readonly updatedAt: FieldRef<"GameProvider", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GameProvider findUnique
+   */
+  export type GameProviderFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * Filter, which GameProvider to fetch.
+     */
+    where: GameProviderWhereUniqueInput
+  }
+
+  /**
+   * GameProvider findUniqueOrThrow
+   */
+  export type GameProviderFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * Filter, which GameProvider to fetch.
+     */
+    where: GameProviderWhereUniqueInput
+  }
+
+  /**
+   * GameProvider findFirst
+   */
+  export type GameProviderFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * Filter, which GameProvider to fetch.
+     */
+    where?: GameProviderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GameProviders to fetch.
+     */
+    orderBy?: GameProviderOrderByWithRelationInput | GameProviderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GameProviders.
+     */
+    cursor?: GameProviderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GameProviders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GameProviders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GameProviders.
+     */
+    distinct?: GameProviderScalarFieldEnum | GameProviderScalarFieldEnum[]
+  }
+
+  /**
+   * GameProvider findFirstOrThrow
+   */
+  export type GameProviderFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * Filter, which GameProvider to fetch.
+     */
+    where?: GameProviderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GameProviders to fetch.
+     */
+    orderBy?: GameProviderOrderByWithRelationInput | GameProviderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GameProviders.
+     */
+    cursor?: GameProviderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GameProviders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GameProviders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GameProviders.
+     */
+    distinct?: GameProviderScalarFieldEnum | GameProviderScalarFieldEnum[]
+  }
+
+  /**
+   * GameProvider findMany
+   */
+  export type GameProviderFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * Filter, which GameProviders to fetch.
+     */
+    where?: GameProviderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GameProviders to fetch.
+     */
+    orderBy?: GameProviderOrderByWithRelationInput | GameProviderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GameProviders.
+     */
+    cursor?: GameProviderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GameProviders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GameProviders.
+     */
+    skip?: number
+    distinct?: GameProviderScalarFieldEnum | GameProviderScalarFieldEnum[]
+  }
+
+  /**
+   * GameProvider create
+   */
+  export type GameProviderCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GameProvider.
+     */
+    data: XOR<GameProviderCreateInput, GameProviderUncheckedCreateInput>
+  }
+
+  /**
+   * GameProvider createMany
+   */
+  export type GameProviderCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GameProviders.
+     */
+    data: GameProviderCreateManyInput | GameProviderCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GameProvider createManyAndReturn
+   */
+  export type GameProviderCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * The data used to create many GameProviders.
+     */
+    data: GameProviderCreateManyInput | GameProviderCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GameProvider update
+   */
+  export type GameProviderUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GameProvider.
+     */
+    data: XOR<GameProviderUpdateInput, GameProviderUncheckedUpdateInput>
+    /**
+     * Choose, which GameProvider to update.
+     */
+    where: GameProviderWhereUniqueInput
+  }
+
+  /**
+   * GameProvider updateMany
+   */
+  export type GameProviderUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GameProviders.
+     */
+    data: XOR<GameProviderUpdateManyMutationInput, GameProviderUncheckedUpdateManyInput>
+    /**
+     * Filter which GameProviders to update
+     */
+    where?: GameProviderWhereInput
+    /**
+     * Limit how many GameProviders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GameProvider updateManyAndReturn
+   */
+  export type GameProviderUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * The data used to update GameProviders.
+     */
+    data: XOR<GameProviderUpdateManyMutationInput, GameProviderUncheckedUpdateManyInput>
+    /**
+     * Filter which GameProviders to update
+     */
+    where?: GameProviderWhereInput
+    /**
+     * Limit how many GameProviders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GameProvider upsert
+   */
+  export type GameProviderUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GameProvider to update in case it exists.
+     */
+    where: GameProviderWhereUniqueInput
+    /**
+     * In case the GameProvider found by the `where` argument doesn't exist, create a new GameProvider with this data.
+     */
+    create: XOR<GameProviderCreateInput, GameProviderUncheckedCreateInput>
+    /**
+     * In case the GameProvider was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GameProviderUpdateInput, GameProviderUncheckedUpdateInput>
+  }
+
+  /**
+   * GameProvider delete
+   */
+  export type GameProviderDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+    /**
+     * Filter which GameProvider to delete.
+     */
+    where: GameProviderWhereUniqueInput
+  }
+
+  /**
+   * GameProvider deleteMany
+   */
+  export type GameProviderDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GameProviders to delete
+     */
+    where?: GameProviderWhereInput
+    /**
+     * Limit how many GameProviders to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GameProvider.games
+   */
+  export type GameProvider$gamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Game
+     */
+    select?: GameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Game
+     */
+    omit?: GameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameInclude<ExtArgs> | null
+    where?: GameWhereInput
+    orderBy?: GameOrderByWithRelationInput | GameOrderByWithRelationInput[]
+    cursor?: GameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GameScalarFieldEnum | GameScalarFieldEnum[]
+  }
+
+  /**
+   * GameProvider without action
+   */
+  export type GameProviderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GameProvider
+     */
+    select?: GameProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GameProvider
+     */
+    omit?: GameProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameProviderInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model GameSession
    */
 
@@ -22288,12 +24406,14 @@ export namespace Prisma {
 
   export type GameSessionAvgAggregateOutputType = {
     startingBalance: number | null
+    startingTotalXp: number | null
     totalWagered: number | null
     totalWon: number | null
   }
 
   export type GameSessionSumAggregateOutputType = {
     startingBalance: number | null
+    startingTotalXp: number | null
     totalWagered: number | null
     totalWon: number | null
   }
@@ -22301,13 +24421,14 @@ export namespace Prisma {
   export type GameSessionMinAggregateOutputType = {
     id: string | null
     isActive: boolean | null
-    sessionId: string | null
+    authSessionId: string | null
     currencyId: string | null
     startedAt: Date | null
     endTime: Date | null
     startTime: Date | null
     ipAddress: string | null
     startingBalance: number | null
+    startingTotalXp: number | null
     userAgent: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -22315,19 +24436,22 @@ export namespace Prisma {
     totalWon: number | null
     userId: string | null
     gameId: string | null
+    rtgToken: string | null
+    rtgFingerPrint: string | null
     profileId: string | null
   }
 
   export type GameSessionMaxAggregateOutputType = {
     id: string | null
     isActive: boolean | null
-    sessionId: string | null
+    authSessionId: string | null
     currencyId: string | null
     startedAt: Date | null
     endTime: Date | null
     startTime: Date | null
     ipAddress: string | null
     startingBalance: number | null
+    startingTotalXp: number | null
     userAgent: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -22335,6 +24459,8 @@ export namespace Prisma {
     totalWon: number | null
     userId: string | null
     gameId: string | null
+    rtgToken: string | null
+    rtgFingerPrint: string | null
     profileId: string | null
   }
 
@@ -22342,13 +24468,14 @@ export namespace Prisma {
     id: number
     isActive: number
     sessionData: number
-    sessionId: number
+    authSessionId: number
     currencyId: number
     startedAt: number
     endTime: number
     startTime: number
     ipAddress: number
     startingBalance: number
+    startingTotalXp: number
     userAgent: number
     createdAt: number
     updatedAt: number
@@ -22356,6 +24483,8 @@ export namespace Prisma {
     totalWon: number
     userId: number
     gameId: number
+    rtgToken: number
+    rtgFingerPrint: number
     profileId: number
     _all: number
   }
@@ -22363,12 +24492,14 @@ export namespace Prisma {
 
   export type GameSessionAvgAggregateInputType = {
     startingBalance?: true
+    startingTotalXp?: true
     totalWagered?: true
     totalWon?: true
   }
 
   export type GameSessionSumAggregateInputType = {
     startingBalance?: true
+    startingTotalXp?: true
     totalWagered?: true
     totalWon?: true
   }
@@ -22376,13 +24507,14 @@ export namespace Prisma {
   export type GameSessionMinAggregateInputType = {
     id?: true
     isActive?: true
-    sessionId?: true
+    authSessionId?: true
     currencyId?: true
     startedAt?: true
     endTime?: true
     startTime?: true
     ipAddress?: true
     startingBalance?: true
+    startingTotalXp?: true
     userAgent?: true
     createdAt?: true
     updatedAt?: true
@@ -22390,19 +24522,22 @@ export namespace Prisma {
     totalWon?: true
     userId?: true
     gameId?: true
+    rtgToken?: true
+    rtgFingerPrint?: true
     profileId?: true
   }
 
   export type GameSessionMaxAggregateInputType = {
     id?: true
     isActive?: true
-    sessionId?: true
+    authSessionId?: true
     currencyId?: true
     startedAt?: true
     endTime?: true
     startTime?: true
     ipAddress?: true
     startingBalance?: true
+    startingTotalXp?: true
     userAgent?: true
     createdAt?: true
     updatedAt?: true
@@ -22410,6 +24545,8 @@ export namespace Prisma {
     totalWon?: true
     userId?: true
     gameId?: true
+    rtgToken?: true
+    rtgFingerPrint?: true
     profileId?: true
   }
 
@@ -22417,13 +24554,14 @@ export namespace Prisma {
     id?: true
     isActive?: true
     sessionData?: true
-    sessionId?: true
+    authSessionId?: true
     currencyId?: true
     startedAt?: true
     endTime?: true
     startTime?: true
     ipAddress?: true
     startingBalance?: true
+    startingTotalXp?: true
     userAgent?: true
     createdAt?: true
     updatedAt?: true
@@ -22431,6 +24569,8 @@ export namespace Prisma {
     totalWon?: true
     userId?: true
     gameId?: true
+    rtgToken?: true
+    rtgFingerPrint?: true
     profileId?: true
     _all?: true
   }
@@ -22525,13 +24665,14 @@ export namespace Prisma {
     id: string
     isActive: boolean
     sessionData: JsonValue | null
-    sessionId: string | null
+    authSessionId: string | null
     currencyId: string | null
     startedAt: Date
     endTime: Date | null
     startTime: Date | null
     ipAddress: string | null
     startingBalance: number | null
+    startingTotalXp: number | null
     userAgent: string | null
     createdAt: Date
     updatedAt: Date
@@ -22539,6 +24680,8 @@ export namespace Prisma {
     totalWon: number
     userId: string
     gameId: string
+    rtgToken: string | null
+    rtgFingerPrint: string | null
     profileId: string | null
     _count: GameSessionCountAggregateOutputType | null
     _avg: GameSessionAvgAggregateOutputType | null
@@ -22565,13 +24708,14 @@ export namespace Prisma {
     id?: boolean
     isActive?: boolean
     sessionData?: boolean
-    sessionId?: boolean
+    authSessionId?: boolean
     currencyId?: boolean
     startedAt?: boolean
     endTime?: boolean
     startTime?: boolean
     ipAddress?: boolean
     startingBalance?: boolean
+    startingTotalXp?: boolean
     userAgent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -22579,11 +24723,13 @@ export namespace Prisma {
     totalWon?: boolean
     userId?: boolean
     gameId?: boolean
+    rtgToken?: boolean
+    rtgFingerPrint?: boolean
     profileId?: boolean
     spins?: boolean | GameSession$spinsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     game?: boolean | GameDefaultArgs<ExtArgs>
-    Profile?: boolean | GameSession$ProfileArgs<ExtArgs>
+    profile?: boolean | GameSession$profileArgs<ExtArgs>
     _count?: boolean | GameSessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gameSession"]>
 
@@ -22591,13 +24737,14 @@ export namespace Prisma {
     id?: boolean
     isActive?: boolean
     sessionData?: boolean
-    sessionId?: boolean
+    authSessionId?: boolean
     currencyId?: boolean
     startedAt?: boolean
     endTime?: boolean
     startTime?: boolean
     ipAddress?: boolean
     startingBalance?: boolean
+    startingTotalXp?: boolean
     userAgent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -22605,6 +24752,8 @@ export namespace Prisma {
     totalWon?: boolean
     userId?: boolean
     gameId?: boolean
+    rtgToken?: boolean
+    rtgFingerPrint?: boolean
     profileId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     game?: boolean | GameDefaultArgs<ExtArgs>
@@ -22614,13 +24763,14 @@ export namespace Prisma {
     id?: boolean
     isActive?: boolean
     sessionData?: boolean
-    sessionId?: boolean
+    authSessionId?: boolean
     currencyId?: boolean
     startedAt?: boolean
     endTime?: boolean
     startTime?: boolean
     ipAddress?: boolean
     startingBalance?: boolean
+    startingTotalXp?: boolean
     userAgent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -22628,6 +24778,8 @@ export namespace Prisma {
     totalWon?: boolean
     userId?: boolean
     gameId?: boolean
+    rtgToken?: boolean
+    rtgFingerPrint?: boolean
     profileId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     game?: boolean | GameDefaultArgs<ExtArgs>
@@ -22637,13 +24789,14 @@ export namespace Prisma {
     id?: boolean
     isActive?: boolean
     sessionData?: boolean
-    sessionId?: boolean
+    authSessionId?: boolean
     currencyId?: boolean
     startedAt?: boolean
     endTime?: boolean
     startTime?: boolean
     ipAddress?: boolean
     startingBalance?: boolean
+    startingTotalXp?: boolean
     userAgent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -22651,15 +24804,17 @@ export namespace Prisma {
     totalWon?: boolean
     userId?: boolean
     gameId?: boolean
+    rtgToken?: boolean
+    rtgFingerPrint?: boolean
     profileId?: boolean
   }
 
-  export type GameSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "isActive" | "sessionData" | "sessionId" | "currencyId" | "startedAt" | "endTime" | "startTime" | "ipAddress" | "startingBalance" | "userAgent" | "createdAt" | "updatedAt" | "totalWagered" | "totalWon" | "userId" | "gameId" | "profileId", ExtArgs["result"]["gameSession"]>
+  export type GameSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "isActive" | "sessionData" | "authSessionId" | "currencyId" | "startedAt" | "endTime" | "startTime" | "ipAddress" | "startingBalance" | "startingTotalXp" | "userAgent" | "createdAt" | "updatedAt" | "totalWagered" | "totalWon" | "userId" | "gameId" | "rtgToken" | "rtgFingerPrint" | "profileId", ExtArgs["result"]["gameSession"]>
   export type GameSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     spins?: boolean | GameSession$spinsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     game?: boolean | GameDefaultArgs<ExtArgs>
-    Profile?: boolean | GameSession$ProfileArgs<ExtArgs>
+    profile?: boolean | GameSession$profileArgs<ExtArgs>
     _count?: boolean | GameSessionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GameSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22677,19 +24832,20 @@ export namespace Prisma {
       spins: Prisma.$GameSpinPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
       game: Prisma.$GamePayload<ExtArgs>
-      Profile: Prisma.$ProfilePayload<ExtArgs>[]
+      profile: Prisma.$ProfilePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       isActive: boolean
       sessionData: Prisma.JsonValue | null
-      sessionId: string | null
+      authSessionId: string | null
       currencyId: string | null
       startedAt: Date
       endTime: Date | null
       startTime: Date | null
       ipAddress: string | null
       startingBalance: number | null
+      startingTotalXp: number | null
       userAgent: string | null
       createdAt: Date
       updatedAt: Date
@@ -22697,6 +24853,8 @@ export namespace Prisma {
       totalWon: number
       userId: string
       gameId: string
+      rtgToken: string | null
+      rtgFingerPrint: string | null
       profileId: string | null
     }, ExtArgs["result"]["gameSession"]>
     composites: {}
@@ -23095,7 +25253,7 @@ export namespace Prisma {
     spins<T extends GameSession$spinsArgs<ExtArgs> = {}>(args?: Subset<T, GameSession$spinsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GameSpinPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     game<T extends GameDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GameDefaultArgs<ExtArgs>>): Prisma__GameClient<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Profile<T extends GameSession$ProfileArgs<ExtArgs> = {}>(args?: Subset<T, GameSession$ProfileArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    profile<T extends GameSession$profileArgs<ExtArgs> = {}>(args?: Subset<T, GameSession$profileArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -23128,13 +25286,14 @@ export namespace Prisma {
     readonly id: FieldRef<"GameSession", 'String'>
     readonly isActive: FieldRef<"GameSession", 'Boolean'>
     readonly sessionData: FieldRef<"GameSession", 'Json'>
-    readonly sessionId: FieldRef<"GameSession", 'String'>
+    readonly authSessionId: FieldRef<"GameSession", 'String'>
     readonly currencyId: FieldRef<"GameSession", 'String'>
     readonly startedAt: FieldRef<"GameSession", 'DateTime'>
     readonly endTime: FieldRef<"GameSession", 'DateTime'>
     readonly startTime: FieldRef<"GameSession", 'DateTime'>
     readonly ipAddress: FieldRef<"GameSession", 'String'>
     readonly startingBalance: FieldRef<"GameSession", 'Int'>
+    readonly startingTotalXp: FieldRef<"GameSession", 'Int'>
     readonly userAgent: FieldRef<"GameSession", 'String'>
     readonly createdAt: FieldRef<"GameSession", 'DateTime'>
     readonly updatedAt: FieldRef<"GameSession", 'DateTime'>
@@ -23142,6 +25301,8 @@ export namespace Prisma {
     readonly totalWon: FieldRef<"GameSession", 'Int'>
     readonly userId: FieldRef<"GameSession", 'String'>
     readonly gameId: FieldRef<"GameSession", 'String'>
+    readonly rtgToken: FieldRef<"GameSession", 'String'>
+    readonly rtgFingerPrint: FieldRef<"GameSession", 'String'>
     readonly profileId: FieldRef<"GameSession", 'String'>
   }
     
@@ -23563,9 +25724,9 @@ export namespace Prisma {
   }
 
   /**
-   * GameSession.Profile
+   * GameSession.profile
    */
-  export type GameSession$ProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GameSession$profileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Profile
      */
@@ -29178,6 +31339,7 @@ export namespace Prisma {
     id: string | null
     originatorUserId: string | null
     processedAt: Date | null
+    gameId: string | null
     receiverUserId: string | null
     walletId: string | null
     type: $Enums.TransactionType | null
@@ -29207,6 +31369,7 @@ export namespace Prisma {
     id: string | null
     originatorUserId: string | null
     processedAt: Date | null
+    gameId: string | null
     receiverUserId: string | null
     walletId: string | null
     type: $Enums.TransactionType | null
@@ -29236,6 +31399,7 @@ export namespace Prisma {
     id: number
     originatorUserId: number
     processedAt: number
+    gameId: number
     receiverUserId: number
     walletId: number
     type: number
@@ -29294,6 +31458,7 @@ export namespace Prisma {
     id?: true
     originatorUserId?: true
     processedAt?: true
+    gameId?: true
     receiverUserId?: true
     walletId?: true
     type?: true
@@ -29323,6 +31488,7 @@ export namespace Prisma {
     id?: true
     originatorUserId?: true
     processedAt?: true
+    gameId?: true
     receiverUserId?: true
     walletId?: true
     type?: true
@@ -29352,6 +31518,7 @@ export namespace Prisma {
     id?: true
     originatorUserId?: true
     processedAt?: true
+    gameId?: true
     receiverUserId?: true
     walletId?: true
     type?: true
@@ -29469,6 +31636,7 @@ export namespace Prisma {
     id: string
     originatorUserId: string
     processedAt: Date | null
+    gameId: string | null
     receiverUserId: string | null
     walletId: string | null
     type: $Enums.TransactionType
@@ -29518,6 +31686,7 @@ export namespace Prisma {
     id?: boolean
     originatorUserId?: boolean
     processedAt?: boolean
+    gameId?: boolean
     receiverUserId?: boolean
     walletId?: boolean
     type?: boolean
@@ -29556,6 +31725,7 @@ export namespace Prisma {
     id?: boolean
     originatorUserId?: boolean
     processedAt?: boolean
+    gameId?: boolean
     receiverUserId?: boolean
     walletId?: boolean
     type?: boolean
@@ -29591,6 +31761,7 @@ export namespace Prisma {
     id?: boolean
     originatorUserId?: boolean
     processedAt?: boolean
+    gameId?: boolean
     receiverUserId?: boolean
     walletId?: boolean
     type?: boolean
@@ -29626,6 +31797,7 @@ export namespace Prisma {
     id?: boolean
     originatorUserId?: boolean
     processedAt?: boolean
+    gameId?: boolean
     receiverUserId?: boolean
     walletId?: boolean
     type?: boolean
@@ -29652,7 +31824,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "originatorUserId" | "processedAt" | "receiverUserId" | "walletId" | "type" | "status" | "amount" | "netAmount" | "feeAmount" | "productId" | "currencyId" | "balanceBefore" | "balanceAfter" | "bonusBalanceBefore" | "bonusBalanceAfter" | "bonusAmount" | "wageringRequirement" | "wageringProgress" | "description" | "provider" | "providerTxId" | "relatedGameId" | "relatedRoundId" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "originatorUserId" | "processedAt" | "gameId" | "receiverUserId" | "walletId" | "type" | "status" | "amount" | "netAmount" | "feeAmount" | "productId" | "currencyId" | "balanceBefore" | "balanceAfter" | "bonusBalanceBefore" | "bonusBalanceAfter" | "bonusAmount" | "wageringRequirement" | "wageringProgress" | "description" | "provider" | "providerTxId" | "relatedGameId" | "relatedRoundId" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     originator?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | Transaction$receiverArgs<ExtArgs>
@@ -29693,6 +31865,7 @@ export namespace Prisma {
       id: string
       originatorUserId: string
       processedAt: Date | null
+      gameId: string | null
       receiverUserId: string | null
       walletId: string | null
       type: $Enums.TransactionType
@@ -30150,6 +32323,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Transaction", 'String'>
     readonly originatorUserId: FieldRef<"Transaction", 'String'>
     readonly processedAt: FieldRef<"Transaction", 'DateTime'>
+    readonly gameId: FieldRef<"Transaction", 'String'>
     readonly receiverUserId: FieldRef<"Transaction", 'String'>
     readonly walletId: FieldRef<"Transaction", 'String'>
     readonly type: FieldRef<"Transaction", 'TransactionType'>
@@ -41657,6 +43831,5739 @@ export namespace Prisma {
 
 
   /**
+   * Model Tournament
+   */
+
+  export type AggregateTournament = {
+    _count: TournamentCountAggregateOutputType | null
+    _avg: TournamentAvgAggregateOutputType | null
+    _sum: TournamentSumAggregateOutputType | null
+    _min: TournamentMinAggregateOutputType | null
+    _max: TournamentMaxAggregateOutputType | null
+  }
+
+  export type TournamentAvgAggregateOutputType = {
+    targetScore: number | null
+  }
+
+  export type TournamentSumAggregateOutputType = {
+    targetScore: number | null
+  }
+
+  export type TournamentMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    startTime: Date | null
+    endTime: Date | null
+    targetScore: number | null
+    status: $Enums.TournamentStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    createdByid: string | null
+  }
+
+  export type TournamentMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    startTime: Date | null
+    endTime: Date | null
+    targetScore: number | null
+    status: $Enums.TournamentStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    createdByid: string | null
+  }
+
+  export type TournamentCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    startTime: number
+    endTime: number
+    targetScore: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    createdByid: number
+    _all: number
+  }
+
+
+  export type TournamentAvgAggregateInputType = {
+    targetScore?: true
+  }
+
+  export type TournamentSumAggregateInputType = {
+    targetScore?: true
+  }
+
+  export type TournamentMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    startTime?: true
+    endTime?: true
+    targetScore?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    createdByid?: true
+  }
+
+  export type TournamentMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    startTime?: true
+    endTime?: true
+    targetScore?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    createdByid?: true
+  }
+
+  export type TournamentCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    startTime?: true
+    endTime?: true
+    targetScore?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    createdByid?: true
+    _all?: true
+  }
+
+  export type TournamentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tournament to aggregate.
+     */
+    where?: TournamentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tournaments to fetch.
+     */
+    orderBy?: TournamentOrderByWithRelationInput | TournamentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TournamentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tournaments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tournaments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Tournaments
+    **/
+    _count?: true | TournamentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TournamentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TournamentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TournamentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TournamentMaxAggregateInputType
+  }
+
+  export type GetTournamentAggregateType<T extends TournamentAggregateArgs> = {
+        [P in keyof T & keyof AggregateTournament]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTournament[P]>
+      : GetScalarType<T[P], AggregateTournament[P]>
+  }
+
+
+
+
+  export type TournamentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentWhereInput
+    orderBy?: TournamentOrderByWithAggregationInput | TournamentOrderByWithAggregationInput[]
+    by: TournamentScalarFieldEnum[] | TournamentScalarFieldEnum
+    having?: TournamentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TournamentCountAggregateInputType | true
+    _avg?: TournamentAvgAggregateInputType
+    _sum?: TournamentSumAggregateInputType
+    _min?: TournamentMinAggregateInputType
+    _max?: TournamentMaxAggregateInputType
+  }
+
+  export type TournamentGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    startTime: Date
+    endTime: Date | null
+    targetScore: number | null
+    status: $Enums.TournamentStatus
+    createdAt: Date
+    updatedAt: Date
+    createdByid: string | null
+    _count: TournamentCountAggregateOutputType | null
+    _avg: TournamentAvgAggregateOutputType | null
+    _sum: TournamentSumAggregateOutputType | null
+    _min: TournamentMinAggregateOutputType | null
+    _max: TournamentMaxAggregateOutputType | null
+  }
+
+  type GetTournamentGroupByPayload<T extends TournamentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TournamentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TournamentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TournamentGroupByOutputType[P]>
+            : GetScalarType<T[P], TournamentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TournamentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    targetScore?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdByid?: boolean
+    eligibleGames?: boolean | Tournament$eligibleGamesArgs<ExtArgs>
+    participants?: boolean | Tournament$participantsArgs<ExtArgs>
+    rewards?: boolean | Tournament$rewardsArgs<ExtArgs>
+    createdBy?: boolean | Tournament$createdByArgs<ExtArgs>
+    _count?: boolean | TournamentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournament"]>
+
+  export type TournamentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    targetScore?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdByid?: boolean
+    createdBy?: boolean | Tournament$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["tournament"]>
+
+  export type TournamentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    targetScore?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdByid?: boolean
+    createdBy?: boolean | Tournament$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["tournament"]>
+
+  export type TournamentSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    targetScore?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdByid?: boolean
+  }
+
+  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "startTime" | "endTime" | "targetScore" | "status" | "createdAt" | "updatedAt" | "createdByid", ExtArgs["result"]["tournament"]>
+  export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    eligibleGames?: boolean | Tournament$eligibleGamesArgs<ExtArgs>
+    participants?: boolean | Tournament$participantsArgs<ExtArgs>
+    rewards?: boolean | Tournament$rewardsArgs<ExtArgs>
+    createdBy?: boolean | Tournament$createdByArgs<ExtArgs>
+    _count?: boolean | TournamentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TournamentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Tournament$createdByArgs<ExtArgs>
+  }
+  export type TournamentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Tournament$createdByArgs<ExtArgs>
+  }
+
+  export type $TournamentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Tournament"
+    objects: {
+      eligibleGames: Prisma.$TournamentGamePayload<ExtArgs>[]
+      participants: Prisma.$TournamentParticipantPayload<ExtArgs>[]
+      rewards: Prisma.$TournamentRewardPayload<ExtArgs>[]
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      startTime: Date
+      endTime: Date | null
+      targetScore: number | null
+      status: $Enums.TournamentStatus
+      createdAt: Date
+      updatedAt: Date
+      createdByid: string | null
+    }, ExtArgs["result"]["tournament"]>
+    composites: {}
+  }
+
+  type TournamentGetPayload<S extends boolean | null | undefined | TournamentDefaultArgs> = $Result.GetResult<Prisma.$TournamentPayload, S>
+
+  type TournamentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TournamentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TournamentCountAggregateInputType | true
+    }
+
+  export interface TournamentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Tournament'], meta: { name: 'Tournament' } }
+    /**
+     * Find zero or one Tournament that matches the filter.
+     * @param {TournamentFindUniqueArgs} args - Arguments to find a Tournament
+     * @example
+     * // Get one Tournament
+     * const tournament = await prisma.tournament.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TournamentFindUniqueArgs>(args: SelectSubset<T, TournamentFindUniqueArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Tournament that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TournamentFindUniqueOrThrowArgs} args - Arguments to find a Tournament
+     * @example
+     * // Get one Tournament
+     * const tournament = await prisma.tournament.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TournamentFindUniqueOrThrowArgs>(args: SelectSubset<T, TournamentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Tournament that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentFindFirstArgs} args - Arguments to find a Tournament
+     * @example
+     * // Get one Tournament
+     * const tournament = await prisma.tournament.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TournamentFindFirstArgs>(args?: SelectSubset<T, TournamentFindFirstArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Tournament that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentFindFirstOrThrowArgs} args - Arguments to find a Tournament
+     * @example
+     * // Get one Tournament
+     * const tournament = await prisma.tournament.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TournamentFindFirstOrThrowArgs>(args?: SelectSubset<T, TournamentFindFirstOrThrowArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Tournaments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tournaments
+     * const tournaments = await prisma.tournament.findMany()
+     * 
+     * // Get first 10 Tournaments
+     * const tournaments = await prisma.tournament.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tournamentWithIdOnly = await prisma.tournament.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TournamentFindManyArgs>(args?: SelectSubset<T, TournamentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Tournament.
+     * @param {TournamentCreateArgs} args - Arguments to create a Tournament.
+     * @example
+     * // Create one Tournament
+     * const Tournament = await prisma.tournament.create({
+     *   data: {
+     *     // ... data to create a Tournament
+     *   }
+     * })
+     * 
+     */
+    create<T extends TournamentCreateArgs>(args: SelectSubset<T, TournamentCreateArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Tournaments.
+     * @param {TournamentCreateManyArgs} args - Arguments to create many Tournaments.
+     * @example
+     * // Create many Tournaments
+     * const tournament = await prisma.tournament.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TournamentCreateManyArgs>(args?: SelectSubset<T, TournamentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Tournaments and returns the data saved in the database.
+     * @param {TournamentCreateManyAndReturnArgs} args - Arguments to create many Tournaments.
+     * @example
+     * // Create many Tournaments
+     * const tournament = await prisma.tournament.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Tournaments and only return the `id`
+     * const tournamentWithIdOnly = await prisma.tournament.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TournamentCreateManyAndReturnArgs>(args?: SelectSubset<T, TournamentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Tournament.
+     * @param {TournamentDeleteArgs} args - Arguments to delete one Tournament.
+     * @example
+     * // Delete one Tournament
+     * const Tournament = await prisma.tournament.delete({
+     *   where: {
+     *     // ... filter to delete one Tournament
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TournamentDeleteArgs>(args: SelectSubset<T, TournamentDeleteArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Tournament.
+     * @param {TournamentUpdateArgs} args - Arguments to update one Tournament.
+     * @example
+     * // Update one Tournament
+     * const tournament = await prisma.tournament.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TournamentUpdateArgs>(args: SelectSubset<T, TournamentUpdateArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Tournaments.
+     * @param {TournamentDeleteManyArgs} args - Arguments to filter Tournaments to delete.
+     * @example
+     * // Delete a few Tournaments
+     * const { count } = await prisma.tournament.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TournamentDeleteManyArgs>(args?: SelectSubset<T, TournamentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tournaments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tournaments
+     * const tournament = await prisma.tournament.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TournamentUpdateManyArgs>(args: SelectSubset<T, TournamentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tournaments and returns the data updated in the database.
+     * @param {TournamentUpdateManyAndReturnArgs} args - Arguments to update many Tournaments.
+     * @example
+     * // Update many Tournaments
+     * const tournament = await prisma.tournament.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Tournaments and only return the `id`
+     * const tournamentWithIdOnly = await prisma.tournament.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TournamentUpdateManyAndReturnArgs>(args: SelectSubset<T, TournamentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Tournament.
+     * @param {TournamentUpsertArgs} args - Arguments to update or create a Tournament.
+     * @example
+     * // Update or create a Tournament
+     * const tournament = await prisma.tournament.upsert({
+     *   create: {
+     *     // ... data to create a Tournament
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Tournament we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TournamentUpsertArgs>(args: SelectSubset<T, TournamentUpsertArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Tournaments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentCountArgs} args - Arguments to filter Tournaments to count.
+     * @example
+     * // Count the number of Tournaments
+     * const count = await prisma.tournament.count({
+     *   where: {
+     *     // ... the filter for the Tournaments we want to count
+     *   }
+     * })
+    **/
+    count<T extends TournamentCountArgs>(
+      args?: Subset<T, TournamentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TournamentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Tournament.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TournamentAggregateArgs>(args: Subset<T, TournamentAggregateArgs>): Prisma.PrismaPromise<GetTournamentAggregateType<T>>
+
+    /**
+     * Group by Tournament.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TournamentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TournamentGroupByArgs['orderBy'] }
+        : { orderBy?: TournamentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TournamentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTournamentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Tournament model
+   */
+  readonly fields: TournamentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Tournament.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TournamentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    eligibleGames<T extends Tournament$eligibleGamesArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$eligibleGamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    participants<T extends Tournament$participantsArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rewards<T extends Tournament$rewardsArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$rewardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdBy<T extends Tournament$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Tournament model
+   */
+  interface TournamentFieldRefs {
+    readonly id: FieldRef<"Tournament", 'String'>
+    readonly name: FieldRef<"Tournament", 'String'>
+    readonly description: FieldRef<"Tournament", 'String'>
+    readonly startTime: FieldRef<"Tournament", 'DateTime'>
+    readonly endTime: FieldRef<"Tournament", 'DateTime'>
+    readonly targetScore: FieldRef<"Tournament", 'Int'>
+    readonly status: FieldRef<"Tournament", 'TournamentStatus'>
+    readonly createdAt: FieldRef<"Tournament", 'DateTime'>
+    readonly updatedAt: FieldRef<"Tournament", 'DateTime'>
+    readonly createdByid: FieldRef<"Tournament", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Tournament findUnique
+   */
+  export type TournamentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * Filter, which Tournament to fetch.
+     */
+    where: TournamentWhereUniqueInput
+  }
+
+  /**
+   * Tournament findUniqueOrThrow
+   */
+  export type TournamentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * Filter, which Tournament to fetch.
+     */
+    where: TournamentWhereUniqueInput
+  }
+
+  /**
+   * Tournament findFirst
+   */
+  export type TournamentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * Filter, which Tournament to fetch.
+     */
+    where?: TournamentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tournaments to fetch.
+     */
+    orderBy?: TournamentOrderByWithRelationInput | TournamentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tournaments.
+     */
+    cursor?: TournamentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tournaments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tournaments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tournaments.
+     */
+    distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
+  }
+
+  /**
+   * Tournament findFirstOrThrow
+   */
+  export type TournamentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * Filter, which Tournament to fetch.
+     */
+    where?: TournamentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tournaments to fetch.
+     */
+    orderBy?: TournamentOrderByWithRelationInput | TournamentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tournaments.
+     */
+    cursor?: TournamentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tournaments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tournaments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tournaments.
+     */
+    distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
+  }
+
+  /**
+   * Tournament findMany
+   */
+  export type TournamentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * Filter, which Tournaments to fetch.
+     */
+    where?: TournamentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tournaments to fetch.
+     */
+    orderBy?: TournamentOrderByWithRelationInput | TournamentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Tournaments.
+     */
+    cursor?: TournamentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tournaments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tournaments.
+     */
+    skip?: number
+    distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
+  }
+
+  /**
+   * Tournament create
+   */
+  export type TournamentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Tournament.
+     */
+    data: XOR<TournamentCreateInput, TournamentUncheckedCreateInput>
+  }
+
+  /**
+   * Tournament createMany
+   */
+  export type TournamentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Tournaments.
+     */
+    data: TournamentCreateManyInput | TournamentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Tournament createManyAndReturn
+   */
+  export type TournamentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Tournaments.
+     */
+    data: TournamentCreateManyInput | TournamentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Tournament update
+   */
+  export type TournamentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Tournament.
+     */
+    data: XOR<TournamentUpdateInput, TournamentUncheckedUpdateInput>
+    /**
+     * Choose, which Tournament to update.
+     */
+    where: TournamentWhereUniqueInput
+  }
+
+  /**
+   * Tournament updateMany
+   */
+  export type TournamentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Tournaments.
+     */
+    data: XOR<TournamentUpdateManyMutationInput, TournamentUncheckedUpdateManyInput>
+    /**
+     * Filter which Tournaments to update
+     */
+    where?: TournamentWhereInput
+    /**
+     * Limit how many Tournaments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Tournament updateManyAndReturn
+   */
+  export type TournamentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * The data used to update Tournaments.
+     */
+    data: XOR<TournamentUpdateManyMutationInput, TournamentUncheckedUpdateManyInput>
+    /**
+     * Filter which Tournaments to update
+     */
+    where?: TournamentWhereInput
+    /**
+     * Limit how many Tournaments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Tournament upsert
+   */
+  export type TournamentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Tournament to update in case it exists.
+     */
+    where: TournamentWhereUniqueInput
+    /**
+     * In case the Tournament found by the `where` argument doesn't exist, create a new Tournament with this data.
+     */
+    create: XOR<TournamentCreateInput, TournamentUncheckedCreateInput>
+    /**
+     * In case the Tournament was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TournamentUpdateInput, TournamentUncheckedUpdateInput>
+  }
+
+  /**
+   * Tournament delete
+   */
+  export type TournamentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    /**
+     * Filter which Tournament to delete.
+     */
+    where: TournamentWhereUniqueInput
+  }
+
+  /**
+   * Tournament deleteMany
+   */
+  export type TournamentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tournaments to delete
+     */
+    where?: TournamentWhereInput
+    /**
+     * Limit how many Tournaments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Tournament.eligibleGames
+   */
+  export type Tournament$eligibleGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    where?: TournamentGameWhereInput
+    orderBy?: TournamentGameOrderByWithRelationInput | TournamentGameOrderByWithRelationInput[]
+    cursor?: TournamentGameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentGameScalarFieldEnum | TournamentGameScalarFieldEnum[]
+  }
+
+  /**
+   * Tournament.participants
+   */
+  export type Tournament$participantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    where?: TournamentParticipantWhereInput
+    orderBy?: TournamentParticipantOrderByWithRelationInput | TournamentParticipantOrderByWithRelationInput[]
+    cursor?: TournamentParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentParticipantScalarFieldEnum | TournamentParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * Tournament.rewards
+   */
+  export type Tournament$rewardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    where?: TournamentRewardWhereInput
+    orderBy?: TournamentRewardOrderByWithRelationInput | TournamentRewardOrderByWithRelationInput[]
+    cursor?: TournamentRewardWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentRewardScalarFieldEnum | TournamentRewardScalarFieldEnum[]
+  }
+
+  /**
+   * Tournament.createdBy
+   */
+  export type Tournament$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Tournament without action
+   */
+  export type TournamentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TournamentGame
+   */
+
+  export type AggregateTournamentGame = {
+    _count: TournamentGameCountAggregateOutputType | null
+    _avg: TournamentGameAvgAggregateOutputType | null
+    _sum: TournamentGameSumAggregateOutputType | null
+    _min: TournamentGameMinAggregateOutputType | null
+    _max: TournamentGameMaxAggregateOutputType | null
+  }
+
+  export type TournamentGameAvgAggregateOutputType = {
+    pointMultiplier: number | null
+  }
+
+  export type TournamentGameSumAggregateOutputType = {
+    pointMultiplier: number | null
+  }
+
+  export type TournamentGameMinAggregateOutputType = {
+    id: string | null
+    tournamentId: string | null
+    gameId: string | null
+    pointMultiplier: number | null
+  }
+
+  export type TournamentGameMaxAggregateOutputType = {
+    id: string | null
+    tournamentId: string | null
+    gameId: string | null
+    pointMultiplier: number | null
+  }
+
+  export type TournamentGameCountAggregateOutputType = {
+    id: number
+    tournamentId: number
+    gameId: number
+    pointMultiplier: number
+    _all: number
+  }
+
+
+  export type TournamentGameAvgAggregateInputType = {
+    pointMultiplier?: true
+  }
+
+  export type TournamentGameSumAggregateInputType = {
+    pointMultiplier?: true
+  }
+
+  export type TournamentGameMinAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    gameId?: true
+    pointMultiplier?: true
+  }
+
+  export type TournamentGameMaxAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    gameId?: true
+    pointMultiplier?: true
+  }
+
+  export type TournamentGameCountAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    gameId?: true
+    pointMultiplier?: true
+    _all?: true
+  }
+
+  export type TournamentGameAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentGame to aggregate.
+     */
+    where?: TournamentGameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentGames to fetch.
+     */
+    orderBy?: TournamentGameOrderByWithRelationInput | TournamentGameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TournamentGameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentGames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentGames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TournamentGames
+    **/
+    _count?: true | TournamentGameCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TournamentGameAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TournamentGameSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TournamentGameMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TournamentGameMaxAggregateInputType
+  }
+
+  export type GetTournamentGameAggregateType<T extends TournamentGameAggregateArgs> = {
+        [P in keyof T & keyof AggregateTournamentGame]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTournamentGame[P]>
+      : GetScalarType<T[P], AggregateTournamentGame[P]>
+  }
+
+
+
+
+  export type TournamentGameGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentGameWhereInput
+    orderBy?: TournamentGameOrderByWithAggregationInput | TournamentGameOrderByWithAggregationInput[]
+    by: TournamentGameScalarFieldEnum[] | TournamentGameScalarFieldEnum
+    having?: TournamentGameScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TournamentGameCountAggregateInputType | true
+    _avg?: TournamentGameAvgAggregateInputType
+    _sum?: TournamentGameSumAggregateInputType
+    _min?: TournamentGameMinAggregateInputType
+    _max?: TournamentGameMaxAggregateInputType
+  }
+
+  export type TournamentGameGroupByOutputType = {
+    id: string
+    tournamentId: string
+    gameId: string
+    pointMultiplier: number
+    _count: TournamentGameCountAggregateOutputType | null
+    _avg: TournamentGameAvgAggregateOutputType | null
+    _sum: TournamentGameSumAggregateOutputType | null
+    _min: TournamentGameMinAggregateOutputType | null
+    _max: TournamentGameMaxAggregateOutputType | null
+  }
+
+  type GetTournamentGameGroupByPayload<T extends TournamentGameGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TournamentGameGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TournamentGameGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TournamentGameGroupByOutputType[P]>
+            : GetScalarType<T[P], TournamentGameGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TournamentGameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    gameId?: boolean
+    pointMultiplier?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    game?: boolean | GameDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentGame"]>
+
+  export type TournamentGameSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    gameId?: boolean
+    pointMultiplier?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    game?: boolean | GameDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentGame"]>
+
+  export type TournamentGameSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    gameId?: boolean
+    pointMultiplier?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    game?: boolean | GameDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentGame"]>
+
+  export type TournamentGameSelectScalar = {
+    id?: boolean
+    tournamentId?: boolean
+    gameId?: boolean
+    pointMultiplier?: boolean
+  }
+
+  export type TournamentGameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentId" | "gameId" | "pointMultiplier", ExtArgs["result"]["tournamentGame"]>
+  export type TournamentGameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    game?: boolean | GameDefaultArgs<ExtArgs>
+  }
+  export type TournamentGameIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    game?: boolean | GameDefaultArgs<ExtArgs>
+  }
+  export type TournamentGameIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    game?: boolean | GameDefaultArgs<ExtArgs>
+  }
+
+  export type $TournamentGamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TournamentGame"
+    objects: {
+      tournament: Prisma.$TournamentPayload<ExtArgs>
+      game: Prisma.$GamePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tournamentId: string
+      gameId: string
+      pointMultiplier: number
+    }, ExtArgs["result"]["tournamentGame"]>
+    composites: {}
+  }
+
+  type TournamentGameGetPayload<S extends boolean | null | undefined | TournamentGameDefaultArgs> = $Result.GetResult<Prisma.$TournamentGamePayload, S>
+
+  type TournamentGameCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TournamentGameFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TournamentGameCountAggregateInputType | true
+    }
+
+  export interface TournamentGameDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TournamentGame'], meta: { name: 'TournamentGame' } }
+    /**
+     * Find zero or one TournamentGame that matches the filter.
+     * @param {TournamentGameFindUniqueArgs} args - Arguments to find a TournamentGame
+     * @example
+     * // Get one TournamentGame
+     * const tournamentGame = await prisma.tournamentGame.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TournamentGameFindUniqueArgs>(args: SelectSubset<T, TournamentGameFindUniqueArgs<ExtArgs>>): Prisma__TournamentGameClient<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TournamentGame that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TournamentGameFindUniqueOrThrowArgs} args - Arguments to find a TournamentGame
+     * @example
+     * // Get one TournamentGame
+     * const tournamentGame = await prisma.tournamentGame.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TournamentGameFindUniqueOrThrowArgs>(args: SelectSubset<T, TournamentGameFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TournamentGameClient<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentGame that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGameFindFirstArgs} args - Arguments to find a TournamentGame
+     * @example
+     * // Get one TournamentGame
+     * const tournamentGame = await prisma.tournamentGame.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TournamentGameFindFirstArgs>(args?: SelectSubset<T, TournamentGameFindFirstArgs<ExtArgs>>): Prisma__TournamentGameClient<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentGame that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGameFindFirstOrThrowArgs} args - Arguments to find a TournamentGame
+     * @example
+     * // Get one TournamentGame
+     * const tournamentGame = await prisma.tournamentGame.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TournamentGameFindFirstOrThrowArgs>(args?: SelectSubset<T, TournamentGameFindFirstOrThrowArgs<ExtArgs>>): Prisma__TournamentGameClient<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TournamentGames that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGameFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TournamentGames
+     * const tournamentGames = await prisma.tournamentGame.findMany()
+     * 
+     * // Get first 10 TournamentGames
+     * const tournamentGames = await prisma.tournamentGame.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tournamentGameWithIdOnly = await prisma.tournamentGame.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TournamentGameFindManyArgs>(args?: SelectSubset<T, TournamentGameFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TournamentGame.
+     * @param {TournamentGameCreateArgs} args - Arguments to create a TournamentGame.
+     * @example
+     * // Create one TournamentGame
+     * const TournamentGame = await prisma.tournamentGame.create({
+     *   data: {
+     *     // ... data to create a TournamentGame
+     *   }
+     * })
+     * 
+     */
+    create<T extends TournamentGameCreateArgs>(args: SelectSubset<T, TournamentGameCreateArgs<ExtArgs>>): Prisma__TournamentGameClient<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TournamentGames.
+     * @param {TournamentGameCreateManyArgs} args - Arguments to create many TournamentGames.
+     * @example
+     * // Create many TournamentGames
+     * const tournamentGame = await prisma.tournamentGame.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TournamentGameCreateManyArgs>(args?: SelectSubset<T, TournamentGameCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TournamentGames and returns the data saved in the database.
+     * @param {TournamentGameCreateManyAndReturnArgs} args - Arguments to create many TournamentGames.
+     * @example
+     * // Create many TournamentGames
+     * const tournamentGame = await prisma.tournamentGame.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TournamentGames and only return the `id`
+     * const tournamentGameWithIdOnly = await prisma.tournamentGame.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TournamentGameCreateManyAndReturnArgs>(args?: SelectSubset<T, TournamentGameCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TournamentGame.
+     * @param {TournamentGameDeleteArgs} args - Arguments to delete one TournamentGame.
+     * @example
+     * // Delete one TournamentGame
+     * const TournamentGame = await prisma.tournamentGame.delete({
+     *   where: {
+     *     // ... filter to delete one TournamentGame
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TournamentGameDeleteArgs>(args: SelectSubset<T, TournamentGameDeleteArgs<ExtArgs>>): Prisma__TournamentGameClient<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TournamentGame.
+     * @param {TournamentGameUpdateArgs} args - Arguments to update one TournamentGame.
+     * @example
+     * // Update one TournamentGame
+     * const tournamentGame = await prisma.tournamentGame.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TournamentGameUpdateArgs>(args: SelectSubset<T, TournamentGameUpdateArgs<ExtArgs>>): Prisma__TournamentGameClient<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TournamentGames.
+     * @param {TournamentGameDeleteManyArgs} args - Arguments to filter TournamentGames to delete.
+     * @example
+     * // Delete a few TournamentGames
+     * const { count } = await prisma.tournamentGame.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TournamentGameDeleteManyArgs>(args?: SelectSubset<T, TournamentGameDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentGames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGameUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TournamentGames
+     * const tournamentGame = await prisma.tournamentGame.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TournamentGameUpdateManyArgs>(args: SelectSubset<T, TournamentGameUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentGames and returns the data updated in the database.
+     * @param {TournamentGameUpdateManyAndReturnArgs} args - Arguments to update many TournamentGames.
+     * @example
+     * // Update many TournamentGames
+     * const tournamentGame = await prisma.tournamentGame.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TournamentGames and only return the `id`
+     * const tournamentGameWithIdOnly = await prisma.tournamentGame.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TournamentGameUpdateManyAndReturnArgs>(args: SelectSubset<T, TournamentGameUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TournamentGame.
+     * @param {TournamentGameUpsertArgs} args - Arguments to update or create a TournamentGame.
+     * @example
+     * // Update or create a TournamentGame
+     * const tournamentGame = await prisma.tournamentGame.upsert({
+     *   create: {
+     *     // ... data to create a TournamentGame
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TournamentGame we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TournamentGameUpsertArgs>(args: SelectSubset<T, TournamentGameUpsertArgs<ExtArgs>>): Prisma__TournamentGameClient<$Result.GetResult<Prisma.$TournamentGamePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TournamentGames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGameCountArgs} args - Arguments to filter TournamentGames to count.
+     * @example
+     * // Count the number of TournamentGames
+     * const count = await prisma.tournamentGame.count({
+     *   where: {
+     *     // ... the filter for the TournamentGames we want to count
+     *   }
+     * })
+    **/
+    count<T extends TournamentGameCountArgs>(
+      args?: Subset<T, TournamentGameCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TournamentGameCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TournamentGame.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGameAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TournamentGameAggregateArgs>(args: Subset<T, TournamentGameAggregateArgs>): Prisma.PrismaPromise<GetTournamentGameAggregateType<T>>
+
+    /**
+     * Group by TournamentGame.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGameGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TournamentGameGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TournamentGameGroupByArgs['orderBy'] }
+        : { orderBy?: TournamentGameGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TournamentGameGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTournamentGameGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TournamentGame model
+   */
+  readonly fields: TournamentGameFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TournamentGame.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TournamentGameClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tournament<T extends TournamentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentDefaultArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    game<T extends GameDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GameDefaultArgs<ExtArgs>>): Prisma__GameClient<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TournamentGame model
+   */
+  interface TournamentGameFieldRefs {
+    readonly id: FieldRef<"TournamentGame", 'String'>
+    readonly tournamentId: FieldRef<"TournamentGame", 'String'>
+    readonly gameId: FieldRef<"TournamentGame", 'String'>
+    readonly pointMultiplier: FieldRef<"TournamentGame", 'Float'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TournamentGame findUnique
+   */
+  export type TournamentGameFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGame to fetch.
+     */
+    where: TournamentGameWhereUniqueInput
+  }
+
+  /**
+   * TournamentGame findUniqueOrThrow
+   */
+  export type TournamentGameFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGame to fetch.
+     */
+    where: TournamentGameWhereUniqueInput
+  }
+
+  /**
+   * TournamentGame findFirst
+   */
+  export type TournamentGameFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGame to fetch.
+     */
+    where?: TournamentGameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentGames to fetch.
+     */
+    orderBy?: TournamentGameOrderByWithRelationInput | TournamentGameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentGames.
+     */
+    cursor?: TournamentGameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentGames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentGames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentGames.
+     */
+    distinct?: TournamentGameScalarFieldEnum | TournamentGameScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentGame findFirstOrThrow
+   */
+  export type TournamentGameFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGame to fetch.
+     */
+    where?: TournamentGameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentGames to fetch.
+     */
+    orderBy?: TournamentGameOrderByWithRelationInput | TournamentGameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentGames.
+     */
+    cursor?: TournamentGameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentGames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentGames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentGames.
+     */
+    distinct?: TournamentGameScalarFieldEnum | TournamentGameScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentGame findMany
+   */
+  export type TournamentGameFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGames to fetch.
+     */
+    where?: TournamentGameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentGames to fetch.
+     */
+    orderBy?: TournamentGameOrderByWithRelationInput | TournamentGameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TournamentGames.
+     */
+    cursor?: TournamentGameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentGames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentGames.
+     */
+    skip?: number
+    distinct?: TournamentGameScalarFieldEnum | TournamentGameScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentGame create
+   */
+  export type TournamentGameCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TournamentGame.
+     */
+    data: XOR<TournamentGameCreateInput, TournamentGameUncheckedCreateInput>
+  }
+
+  /**
+   * TournamentGame createMany
+   */
+  export type TournamentGameCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TournamentGames.
+     */
+    data: TournamentGameCreateManyInput | TournamentGameCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TournamentGame createManyAndReturn
+   */
+  export type TournamentGameCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * The data used to create many TournamentGames.
+     */
+    data: TournamentGameCreateManyInput | TournamentGameCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentGame update
+   */
+  export type TournamentGameUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TournamentGame.
+     */
+    data: XOR<TournamentGameUpdateInput, TournamentGameUncheckedUpdateInput>
+    /**
+     * Choose, which TournamentGame to update.
+     */
+    where: TournamentGameWhereUniqueInput
+  }
+
+  /**
+   * TournamentGame updateMany
+   */
+  export type TournamentGameUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TournamentGames.
+     */
+    data: XOR<TournamentGameUpdateManyMutationInput, TournamentGameUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentGames to update
+     */
+    where?: TournamentGameWhereInput
+    /**
+     * Limit how many TournamentGames to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentGame updateManyAndReturn
+   */
+  export type TournamentGameUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * The data used to update TournamentGames.
+     */
+    data: XOR<TournamentGameUpdateManyMutationInput, TournamentGameUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentGames to update
+     */
+    where?: TournamentGameWhereInput
+    /**
+     * Limit how many TournamentGames to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentGame upsert
+   */
+  export type TournamentGameUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TournamentGame to update in case it exists.
+     */
+    where: TournamentGameWhereUniqueInput
+    /**
+     * In case the TournamentGame found by the `where` argument doesn't exist, create a new TournamentGame with this data.
+     */
+    create: XOR<TournamentGameCreateInput, TournamentGameUncheckedCreateInput>
+    /**
+     * In case the TournamentGame was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TournamentGameUpdateInput, TournamentGameUncheckedUpdateInput>
+  }
+
+  /**
+   * TournamentGame delete
+   */
+  export type TournamentGameDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+    /**
+     * Filter which TournamentGame to delete.
+     */
+    where: TournamentGameWhereUniqueInput
+  }
+
+  /**
+   * TournamentGame deleteMany
+   */
+  export type TournamentGameDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentGames to delete
+     */
+    where?: TournamentGameWhereInput
+    /**
+     * Limit how many TournamentGames to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentGame without action
+   */
+  export type TournamentGameDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGame
+     */
+    select?: TournamentGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGame
+     */
+    omit?: TournamentGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGameInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TournamentParticipant
+   */
+
+  export type AggregateTournamentParticipant = {
+    _count: TournamentParticipantCountAggregateOutputType | null
+    _avg: TournamentParticipantAvgAggregateOutputType | null
+    _sum: TournamentParticipantSumAggregateOutputType | null
+    _min: TournamentParticipantMinAggregateOutputType | null
+    _max: TournamentParticipantMaxAggregateOutputType | null
+  }
+
+  export type TournamentParticipantAvgAggregateOutputType = {
+    score: number | null
+    rank: number | null
+  }
+
+  export type TournamentParticipantSumAggregateOutputType = {
+    score: number | null
+    rank: number | null
+  }
+
+  export type TournamentParticipantMinAggregateOutputType = {
+    id: string | null
+    tournamentId: string | null
+    userId: string | null
+    score: number | null
+    rank: number | null
+    joinedAt: Date | null
+  }
+
+  export type TournamentParticipantMaxAggregateOutputType = {
+    id: string | null
+    tournamentId: string | null
+    userId: string | null
+    score: number | null
+    rank: number | null
+    joinedAt: Date | null
+  }
+
+  export type TournamentParticipantCountAggregateOutputType = {
+    id: number
+    tournamentId: number
+    userId: number
+    score: number
+    rank: number
+    joinedAt: number
+    _all: number
+  }
+
+
+  export type TournamentParticipantAvgAggregateInputType = {
+    score?: true
+    rank?: true
+  }
+
+  export type TournamentParticipantSumAggregateInputType = {
+    score?: true
+    rank?: true
+  }
+
+  export type TournamentParticipantMinAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    userId?: true
+    score?: true
+    rank?: true
+    joinedAt?: true
+  }
+
+  export type TournamentParticipantMaxAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    userId?: true
+    score?: true
+    rank?: true
+    joinedAt?: true
+  }
+
+  export type TournamentParticipantCountAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    userId?: true
+    score?: true
+    rank?: true
+    joinedAt?: true
+    _all?: true
+  }
+
+  export type TournamentParticipantAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentParticipant to aggregate.
+     */
+    where?: TournamentParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentParticipants to fetch.
+     */
+    orderBy?: TournamentParticipantOrderByWithRelationInput | TournamentParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TournamentParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TournamentParticipants
+    **/
+    _count?: true | TournamentParticipantCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TournamentParticipantAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TournamentParticipantSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TournamentParticipantMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TournamentParticipantMaxAggregateInputType
+  }
+
+  export type GetTournamentParticipantAggregateType<T extends TournamentParticipantAggregateArgs> = {
+        [P in keyof T & keyof AggregateTournamentParticipant]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTournamentParticipant[P]>
+      : GetScalarType<T[P], AggregateTournamentParticipant[P]>
+  }
+
+
+
+
+  export type TournamentParticipantGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentParticipantWhereInput
+    orderBy?: TournamentParticipantOrderByWithAggregationInput | TournamentParticipantOrderByWithAggregationInput[]
+    by: TournamentParticipantScalarFieldEnum[] | TournamentParticipantScalarFieldEnum
+    having?: TournamentParticipantScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TournamentParticipantCountAggregateInputType | true
+    _avg?: TournamentParticipantAvgAggregateInputType
+    _sum?: TournamentParticipantSumAggregateInputType
+    _min?: TournamentParticipantMinAggregateInputType
+    _max?: TournamentParticipantMaxAggregateInputType
+  }
+
+  export type TournamentParticipantGroupByOutputType = {
+    id: string
+    tournamentId: string
+    userId: string
+    score: number
+    rank: number | null
+    joinedAt: Date
+    _count: TournamentParticipantCountAggregateOutputType | null
+    _avg: TournamentParticipantAvgAggregateOutputType | null
+    _sum: TournamentParticipantSumAggregateOutputType | null
+    _min: TournamentParticipantMinAggregateOutputType | null
+    _max: TournamentParticipantMaxAggregateOutputType | null
+  }
+
+  type GetTournamentParticipantGroupByPayload<T extends TournamentParticipantGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TournamentParticipantGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TournamentParticipantGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TournamentParticipantGroupByOutputType[P]>
+            : GetScalarType<T[P], TournamentParticipantGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TournamentParticipantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    userId?: boolean
+    score?: boolean
+    rank?: boolean
+    joinedAt?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    gamePlays?: boolean | TournamentParticipant$gamePlaysArgs<ExtArgs>
+    _count?: boolean | TournamentParticipantCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentParticipant"]>
+
+  export type TournamentParticipantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    userId?: boolean
+    score?: boolean
+    rank?: boolean
+    joinedAt?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentParticipant"]>
+
+  export type TournamentParticipantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    userId?: boolean
+    score?: boolean
+    rank?: boolean
+    joinedAt?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentParticipant"]>
+
+  export type TournamentParticipantSelectScalar = {
+    id?: boolean
+    tournamentId?: boolean
+    userId?: boolean
+    score?: boolean
+    rank?: boolean
+    joinedAt?: boolean
+  }
+
+  export type TournamentParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentId" | "userId" | "score" | "rank" | "joinedAt", ExtArgs["result"]["tournamentParticipant"]>
+  export type TournamentParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    gamePlays?: boolean | TournamentParticipant$gamePlaysArgs<ExtArgs>
+    _count?: boolean | TournamentParticipantCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TournamentParticipantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TournamentParticipantIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TournamentParticipantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TournamentParticipant"
+    objects: {
+      tournament: Prisma.$TournamentPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+      gamePlays: Prisma.$TournamentGamePlayPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tournamentId: string
+      userId: string
+      score: number
+      rank: number | null
+      joinedAt: Date
+    }, ExtArgs["result"]["tournamentParticipant"]>
+    composites: {}
+  }
+
+  type TournamentParticipantGetPayload<S extends boolean | null | undefined | TournamentParticipantDefaultArgs> = $Result.GetResult<Prisma.$TournamentParticipantPayload, S>
+
+  type TournamentParticipantCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TournamentParticipantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TournamentParticipantCountAggregateInputType | true
+    }
+
+  export interface TournamentParticipantDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TournamentParticipant'], meta: { name: 'TournamentParticipant' } }
+    /**
+     * Find zero or one TournamentParticipant that matches the filter.
+     * @param {TournamentParticipantFindUniqueArgs} args - Arguments to find a TournamentParticipant
+     * @example
+     * // Get one TournamentParticipant
+     * const tournamentParticipant = await prisma.tournamentParticipant.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TournamentParticipantFindUniqueArgs>(args: SelectSubset<T, TournamentParticipantFindUniqueArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TournamentParticipant that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TournamentParticipantFindUniqueOrThrowArgs} args - Arguments to find a TournamentParticipant
+     * @example
+     * // Get one TournamentParticipant
+     * const tournamentParticipant = await prisma.tournamentParticipant.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TournamentParticipantFindUniqueOrThrowArgs>(args: SelectSubset<T, TournamentParticipantFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentParticipant that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentParticipantFindFirstArgs} args - Arguments to find a TournamentParticipant
+     * @example
+     * // Get one TournamentParticipant
+     * const tournamentParticipant = await prisma.tournamentParticipant.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TournamentParticipantFindFirstArgs>(args?: SelectSubset<T, TournamentParticipantFindFirstArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentParticipant that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentParticipantFindFirstOrThrowArgs} args - Arguments to find a TournamentParticipant
+     * @example
+     * // Get one TournamentParticipant
+     * const tournamentParticipant = await prisma.tournamentParticipant.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TournamentParticipantFindFirstOrThrowArgs>(args?: SelectSubset<T, TournamentParticipantFindFirstOrThrowArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TournamentParticipants that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentParticipantFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TournamentParticipants
+     * const tournamentParticipants = await prisma.tournamentParticipant.findMany()
+     * 
+     * // Get first 10 TournamentParticipants
+     * const tournamentParticipants = await prisma.tournamentParticipant.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tournamentParticipantWithIdOnly = await prisma.tournamentParticipant.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TournamentParticipantFindManyArgs>(args?: SelectSubset<T, TournamentParticipantFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TournamentParticipant.
+     * @param {TournamentParticipantCreateArgs} args - Arguments to create a TournamentParticipant.
+     * @example
+     * // Create one TournamentParticipant
+     * const TournamentParticipant = await prisma.tournamentParticipant.create({
+     *   data: {
+     *     // ... data to create a TournamentParticipant
+     *   }
+     * })
+     * 
+     */
+    create<T extends TournamentParticipantCreateArgs>(args: SelectSubset<T, TournamentParticipantCreateArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TournamentParticipants.
+     * @param {TournamentParticipantCreateManyArgs} args - Arguments to create many TournamentParticipants.
+     * @example
+     * // Create many TournamentParticipants
+     * const tournamentParticipant = await prisma.tournamentParticipant.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TournamentParticipantCreateManyArgs>(args?: SelectSubset<T, TournamentParticipantCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TournamentParticipants and returns the data saved in the database.
+     * @param {TournamentParticipantCreateManyAndReturnArgs} args - Arguments to create many TournamentParticipants.
+     * @example
+     * // Create many TournamentParticipants
+     * const tournamentParticipant = await prisma.tournamentParticipant.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TournamentParticipants and only return the `id`
+     * const tournamentParticipantWithIdOnly = await prisma.tournamentParticipant.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TournamentParticipantCreateManyAndReturnArgs>(args?: SelectSubset<T, TournamentParticipantCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TournamentParticipant.
+     * @param {TournamentParticipantDeleteArgs} args - Arguments to delete one TournamentParticipant.
+     * @example
+     * // Delete one TournamentParticipant
+     * const TournamentParticipant = await prisma.tournamentParticipant.delete({
+     *   where: {
+     *     // ... filter to delete one TournamentParticipant
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TournamentParticipantDeleteArgs>(args: SelectSubset<T, TournamentParticipantDeleteArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TournamentParticipant.
+     * @param {TournamentParticipantUpdateArgs} args - Arguments to update one TournamentParticipant.
+     * @example
+     * // Update one TournamentParticipant
+     * const tournamentParticipant = await prisma.tournamentParticipant.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TournamentParticipantUpdateArgs>(args: SelectSubset<T, TournamentParticipantUpdateArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TournamentParticipants.
+     * @param {TournamentParticipantDeleteManyArgs} args - Arguments to filter TournamentParticipants to delete.
+     * @example
+     * // Delete a few TournamentParticipants
+     * const { count } = await prisma.tournamentParticipant.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TournamentParticipantDeleteManyArgs>(args?: SelectSubset<T, TournamentParticipantDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentParticipantUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TournamentParticipants
+     * const tournamentParticipant = await prisma.tournamentParticipant.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TournamentParticipantUpdateManyArgs>(args: SelectSubset<T, TournamentParticipantUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentParticipants and returns the data updated in the database.
+     * @param {TournamentParticipantUpdateManyAndReturnArgs} args - Arguments to update many TournamentParticipants.
+     * @example
+     * // Update many TournamentParticipants
+     * const tournamentParticipant = await prisma.tournamentParticipant.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TournamentParticipants and only return the `id`
+     * const tournamentParticipantWithIdOnly = await prisma.tournamentParticipant.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TournamentParticipantUpdateManyAndReturnArgs>(args: SelectSubset<T, TournamentParticipantUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TournamentParticipant.
+     * @param {TournamentParticipantUpsertArgs} args - Arguments to update or create a TournamentParticipant.
+     * @example
+     * // Update or create a TournamentParticipant
+     * const tournamentParticipant = await prisma.tournamentParticipant.upsert({
+     *   create: {
+     *     // ... data to create a TournamentParticipant
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TournamentParticipant we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TournamentParticipantUpsertArgs>(args: SelectSubset<T, TournamentParticipantUpsertArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TournamentParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentParticipantCountArgs} args - Arguments to filter TournamentParticipants to count.
+     * @example
+     * // Count the number of TournamentParticipants
+     * const count = await prisma.tournamentParticipant.count({
+     *   where: {
+     *     // ... the filter for the TournamentParticipants we want to count
+     *   }
+     * })
+    **/
+    count<T extends TournamentParticipantCountArgs>(
+      args?: Subset<T, TournamentParticipantCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TournamentParticipantCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TournamentParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentParticipantAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TournamentParticipantAggregateArgs>(args: Subset<T, TournamentParticipantAggregateArgs>): Prisma.PrismaPromise<GetTournamentParticipantAggregateType<T>>
+
+    /**
+     * Group by TournamentParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentParticipantGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TournamentParticipantGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TournamentParticipantGroupByArgs['orderBy'] }
+        : { orderBy?: TournamentParticipantGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TournamentParticipantGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTournamentParticipantGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TournamentParticipant model
+   */
+  readonly fields: TournamentParticipantFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TournamentParticipant.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TournamentParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tournament<T extends TournamentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentDefaultArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    gamePlays<T extends TournamentParticipant$gamePlaysArgs<ExtArgs> = {}>(args?: Subset<T, TournamentParticipant$gamePlaysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TournamentParticipant model
+   */
+  interface TournamentParticipantFieldRefs {
+    readonly id: FieldRef<"TournamentParticipant", 'String'>
+    readonly tournamentId: FieldRef<"TournamentParticipant", 'String'>
+    readonly userId: FieldRef<"TournamentParticipant", 'String'>
+    readonly score: FieldRef<"TournamentParticipant", 'Int'>
+    readonly rank: FieldRef<"TournamentParticipant", 'Int'>
+    readonly joinedAt: FieldRef<"TournamentParticipant", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TournamentParticipant findUnique
+   */
+  export type TournamentParticipantFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentParticipant to fetch.
+     */
+    where: TournamentParticipantWhereUniqueInput
+  }
+
+  /**
+   * TournamentParticipant findUniqueOrThrow
+   */
+  export type TournamentParticipantFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentParticipant to fetch.
+     */
+    where: TournamentParticipantWhereUniqueInput
+  }
+
+  /**
+   * TournamentParticipant findFirst
+   */
+  export type TournamentParticipantFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentParticipant to fetch.
+     */
+    where?: TournamentParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentParticipants to fetch.
+     */
+    orderBy?: TournamentParticipantOrderByWithRelationInput | TournamentParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentParticipants.
+     */
+    cursor?: TournamentParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentParticipants.
+     */
+    distinct?: TournamentParticipantScalarFieldEnum | TournamentParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentParticipant findFirstOrThrow
+   */
+  export type TournamentParticipantFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentParticipant to fetch.
+     */
+    where?: TournamentParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentParticipants to fetch.
+     */
+    orderBy?: TournamentParticipantOrderByWithRelationInput | TournamentParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentParticipants.
+     */
+    cursor?: TournamentParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentParticipants.
+     */
+    distinct?: TournamentParticipantScalarFieldEnum | TournamentParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentParticipant findMany
+   */
+  export type TournamentParticipantFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentParticipants to fetch.
+     */
+    where?: TournamentParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentParticipants to fetch.
+     */
+    orderBy?: TournamentParticipantOrderByWithRelationInput | TournamentParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TournamentParticipants.
+     */
+    cursor?: TournamentParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentParticipants.
+     */
+    skip?: number
+    distinct?: TournamentParticipantScalarFieldEnum | TournamentParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentParticipant create
+   */
+  export type TournamentParticipantCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TournamentParticipant.
+     */
+    data: XOR<TournamentParticipantCreateInput, TournamentParticipantUncheckedCreateInput>
+  }
+
+  /**
+   * TournamentParticipant createMany
+   */
+  export type TournamentParticipantCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TournamentParticipants.
+     */
+    data: TournamentParticipantCreateManyInput | TournamentParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TournamentParticipant createManyAndReturn
+   */
+  export type TournamentParticipantCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to create many TournamentParticipants.
+     */
+    data: TournamentParticipantCreateManyInput | TournamentParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentParticipant update
+   */
+  export type TournamentParticipantUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TournamentParticipant.
+     */
+    data: XOR<TournamentParticipantUpdateInput, TournamentParticipantUncheckedUpdateInput>
+    /**
+     * Choose, which TournamentParticipant to update.
+     */
+    where: TournamentParticipantWhereUniqueInput
+  }
+
+  /**
+   * TournamentParticipant updateMany
+   */
+  export type TournamentParticipantUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TournamentParticipants.
+     */
+    data: XOR<TournamentParticipantUpdateManyMutationInput, TournamentParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentParticipants to update
+     */
+    where?: TournamentParticipantWhereInput
+    /**
+     * Limit how many TournamentParticipants to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentParticipant updateManyAndReturn
+   */
+  export type TournamentParticipantUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to update TournamentParticipants.
+     */
+    data: XOR<TournamentParticipantUpdateManyMutationInput, TournamentParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentParticipants to update
+     */
+    where?: TournamentParticipantWhereInput
+    /**
+     * Limit how many TournamentParticipants to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentParticipant upsert
+   */
+  export type TournamentParticipantUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TournamentParticipant to update in case it exists.
+     */
+    where: TournamentParticipantWhereUniqueInput
+    /**
+     * In case the TournamentParticipant found by the `where` argument doesn't exist, create a new TournamentParticipant with this data.
+     */
+    create: XOR<TournamentParticipantCreateInput, TournamentParticipantUncheckedCreateInput>
+    /**
+     * In case the TournamentParticipant was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TournamentParticipantUpdateInput, TournamentParticipantUncheckedUpdateInput>
+  }
+
+  /**
+   * TournamentParticipant delete
+   */
+  export type TournamentParticipantDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+    /**
+     * Filter which TournamentParticipant to delete.
+     */
+    where: TournamentParticipantWhereUniqueInput
+  }
+
+  /**
+   * TournamentParticipant deleteMany
+   */
+  export type TournamentParticipantDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentParticipants to delete
+     */
+    where?: TournamentParticipantWhereInput
+    /**
+     * Limit how many TournamentParticipants to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentParticipant.gamePlays
+   */
+  export type TournamentParticipant$gamePlaysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    where?: TournamentGamePlayWhereInput
+    orderBy?: TournamentGamePlayOrderByWithRelationInput | TournamentGamePlayOrderByWithRelationInput[]
+    cursor?: TournamentGamePlayWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentGamePlayScalarFieldEnum | TournamentGamePlayScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentParticipant without action
+   */
+  export type TournamentParticipantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentParticipant
+     */
+    select?: TournamentParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentParticipant
+     */
+    omit?: TournamentParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentParticipantInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TournamentGamePlay
+   */
+
+  export type AggregateTournamentGamePlay = {
+    _count: TournamentGamePlayCountAggregateOutputType | null
+    _avg: TournamentGamePlayAvgAggregateOutputType | null
+    _sum: TournamentGamePlaySumAggregateOutputType | null
+    _min: TournamentGamePlayMinAggregateOutputType | null
+    _max: TournamentGamePlayMaxAggregateOutputType | null
+  }
+
+  export type TournamentGamePlayAvgAggregateOutputType = {
+    pointsEarned: number | null
+  }
+
+  export type TournamentGamePlaySumAggregateOutputType = {
+    pointsEarned: number | null
+  }
+
+  export type TournamentGamePlayMinAggregateOutputType = {
+    id: string | null
+    tournamentParticipantId: string | null
+    gameId: string | null
+    pointsEarned: number | null
+    playedAt: Date | null
+    gameSessionId: string | null
+  }
+
+  export type TournamentGamePlayMaxAggregateOutputType = {
+    id: string | null
+    tournamentParticipantId: string | null
+    gameId: string | null
+    pointsEarned: number | null
+    playedAt: Date | null
+    gameSessionId: string | null
+  }
+
+  export type TournamentGamePlayCountAggregateOutputType = {
+    id: number
+    tournamentParticipantId: number
+    gameId: number
+    pointsEarned: number
+    playedAt: number
+    gameSessionId: number
+    _all: number
+  }
+
+
+  export type TournamentGamePlayAvgAggregateInputType = {
+    pointsEarned?: true
+  }
+
+  export type TournamentGamePlaySumAggregateInputType = {
+    pointsEarned?: true
+  }
+
+  export type TournamentGamePlayMinAggregateInputType = {
+    id?: true
+    tournamentParticipantId?: true
+    gameId?: true
+    pointsEarned?: true
+    playedAt?: true
+    gameSessionId?: true
+  }
+
+  export type TournamentGamePlayMaxAggregateInputType = {
+    id?: true
+    tournamentParticipantId?: true
+    gameId?: true
+    pointsEarned?: true
+    playedAt?: true
+    gameSessionId?: true
+  }
+
+  export type TournamentGamePlayCountAggregateInputType = {
+    id?: true
+    tournamentParticipantId?: true
+    gameId?: true
+    pointsEarned?: true
+    playedAt?: true
+    gameSessionId?: true
+    _all?: true
+  }
+
+  export type TournamentGamePlayAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentGamePlay to aggregate.
+     */
+    where?: TournamentGamePlayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentGamePlays to fetch.
+     */
+    orderBy?: TournamentGamePlayOrderByWithRelationInput | TournamentGamePlayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TournamentGamePlayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentGamePlays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentGamePlays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TournamentGamePlays
+    **/
+    _count?: true | TournamentGamePlayCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TournamentGamePlayAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TournamentGamePlaySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TournamentGamePlayMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TournamentGamePlayMaxAggregateInputType
+  }
+
+  export type GetTournamentGamePlayAggregateType<T extends TournamentGamePlayAggregateArgs> = {
+        [P in keyof T & keyof AggregateTournamentGamePlay]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTournamentGamePlay[P]>
+      : GetScalarType<T[P], AggregateTournamentGamePlay[P]>
+  }
+
+
+
+
+  export type TournamentGamePlayGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentGamePlayWhereInput
+    orderBy?: TournamentGamePlayOrderByWithAggregationInput | TournamentGamePlayOrderByWithAggregationInput[]
+    by: TournamentGamePlayScalarFieldEnum[] | TournamentGamePlayScalarFieldEnum
+    having?: TournamentGamePlayScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TournamentGamePlayCountAggregateInputType | true
+    _avg?: TournamentGamePlayAvgAggregateInputType
+    _sum?: TournamentGamePlaySumAggregateInputType
+    _min?: TournamentGamePlayMinAggregateInputType
+    _max?: TournamentGamePlayMaxAggregateInputType
+  }
+
+  export type TournamentGamePlayGroupByOutputType = {
+    id: string
+    tournamentParticipantId: string
+    gameId: string
+    pointsEarned: number
+    playedAt: Date
+    gameSessionId: string | null
+    _count: TournamentGamePlayCountAggregateOutputType | null
+    _avg: TournamentGamePlayAvgAggregateOutputType | null
+    _sum: TournamentGamePlaySumAggregateOutputType | null
+    _min: TournamentGamePlayMinAggregateOutputType | null
+    _max: TournamentGamePlayMaxAggregateOutputType | null
+  }
+
+  type GetTournamentGamePlayGroupByPayload<T extends TournamentGamePlayGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TournamentGamePlayGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TournamentGamePlayGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TournamentGamePlayGroupByOutputType[P]>
+            : GetScalarType<T[P], TournamentGamePlayGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TournamentGamePlaySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentParticipantId?: boolean
+    gameId?: boolean
+    pointsEarned?: boolean
+    playedAt?: boolean
+    gameSessionId?: boolean
+    tournamentParticipant?: boolean | TournamentParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentGamePlay"]>
+
+  export type TournamentGamePlaySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentParticipantId?: boolean
+    gameId?: boolean
+    pointsEarned?: boolean
+    playedAt?: boolean
+    gameSessionId?: boolean
+    tournamentParticipant?: boolean | TournamentParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentGamePlay"]>
+
+  export type TournamentGamePlaySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentParticipantId?: boolean
+    gameId?: boolean
+    pointsEarned?: boolean
+    playedAt?: boolean
+    gameSessionId?: boolean
+    tournamentParticipant?: boolean | TournamentParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentGamePlay"]>
+
+  export type TournamentGamePlaySelectScalar = {
+    id?: boolean
+    tournamentParticipantId?: boolean
+    gameId?: boolean
+    pointsEarned?: boolean
+    playedAt?: boolean
+    gameSessionId?: boolean
+  }
+
+  export type TournamentGamePlayOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentParticipantId" | "gameId" | "pointsEarned" | "playedAt" | "gameSessionId", ExtArgs["result"]["tournamentGamePlay"]>
+  export type TournamentGamePlayInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentParticipant?: boolean | TournamentParticipantDefaultArgs<ExtArgs>
+  }
+  export type TournamentGamePlayIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentParticipant?: boolean | TournamentParticipantDefaultArgs<ExtArgs>
+  }
+  export type TournamentGamePlayIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournamentParticipant?: boolean | TournamentParticipantDefaultArgs<ExtArgs>
+  }
+
+  export type $TournamentGamePlayPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TournamentGamePlay"
+    objects: {
+      tournamentParticipant: Prisma.$TournamentParticipantPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tournamentParticipantId: string
+      gameId: string
+      pointsEarned: number
+      playedAt: Date
+      gameSessionId: string | null
+    }, ExtArgs["result"]["tournamentGamePlay"]>
+    composites: {}
+  }
+
+  type TournamentGamePlayGetPayload<S extends boolean | null | undefined | TournamentGamePlayDefaultArgs> = $Result.GetResult<Prisma.$TournamentGamePlayPayload, S>
+
+  type TournamentGamePlayCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TournamentGamePlayFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TournamentGamePlayCountAggregateInputType | true
+    }
+
+  export interface TournamentGamePlayDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TournamentGamePlay'], meta: { name: 'TournamentGamePlay' } }
+    /**
+     * Find zero or one TournamentGamePlay that matches the filter.
+     * @param {TournamentGamePlayFindUniqueArgs} args - Arguments to find a TournamentGamePlay
+     * @example
+     * // Get one TournamentGamePlay
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TournamentGamePlayFindUniqueArgs>(args: SelectSubset<T, TournamentGamePlayFindUniqueArgs<ExtArgs>>): Prisma__TournamentGamePlayClient<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TournamentGamePlay that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TournamentGamePlayFindUniqueOrThrowArgs} args - Arguments to find a TournamentGamePlay
+     * @example
+     * // Get one TournamentGamePlay
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TournamentGamePlayFindUniqueOrThrowArgs>(args: SelectSubset<T, TournamentGamePlayFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TournamentGamePlayClient<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentGamePlay that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGamePlayFindFirstArgs} args - Arguments to find a TournamentGamePlay
+     * @example
+     * // Get one TournamentGamePlay
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TournamentGamePlayFindFirstArgs>(args?: SelectSubset<T, TournamentGamePlayFindFirstArgs<ExtArgs>>): Prisma__TournamentGamePlayClient<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentGamePlay that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGamePlayFindFirstOrThrowArgs} args - Arguments to find a TournamentGamePlay
+     * @example
+     * // Get one TournamentGamePlay
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TournamentGamePlayFindFirstOrThrowArgs>(args?: SelectSubset<T, TournamentGamePlayFindFirstOrThrowArgs<ExtArgs>>): Prisma__TournamentGamePlayClient<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TournamentGamePlays that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGamePlayFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TournamentGamePlays
+     * const tournamentGamePlays = await prisma.tournamentGamePlay.findMany()
+     * 
+     * // Get first 10 TournamentGamePlays
+     * const tournamentGamePlays = await prisma.tournamentGamePlay.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tournamentGamePlayWithIdOnly = await prisma.tournamentGamePlay.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TournamentGamePlayFindManyArgs>(args?: SelectSubset<T, TournamentGamePlayFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TournamentGamePlay.
+     * @param {TournamentGamePlayCreateArgs} args - Arguments to create a TournamentGamePlay.
+     * @example
+     * // Create one TournamentGamePlay
+     * const TournamentGamePlay = await prisma.tournamentGamePlay.create({
+     *   data: {
+     *     // ... data to create a TournamentGamePlay
+     *   }
+     * })
+     * 
+     */
+    create<T extends TournamentGamePlayCreateArgs>(args: SelectSubset<T, TournamentGamePlayCreateArgs<ExtArgs>>): Prisma__TournamentGamePlayClient<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TournamentGamePlays.
+     * @param {TournamentGamePlayCreateManyArgs} args - Arguments to create many TournamentGamePlays.
+     * @example
+     * // Create many TournamentGamePlays
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TournamentGamePlayCreateManyArgs>(args?: SelectSubset<T, TournamentGamePlayCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TournamentGamePlays and returns the data saved in the database.
+     * @param {TournamentGamePlayCreateManyAndReturnArgs} args - Arguments to create many TournamentGamePlays.
+     * @example
+     * // Create many TournamentGamePlays
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TournamentGamePlays and only return the `id`
+     * const tournamentGamePlayWithIdOnly = await prisma.tournamentGamePlay.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TournamentGamePlayCreateManyAndReturnArgs>(args?: SelectSubset<T, TournamentGamePlayCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TournamentGamePlay.
+     * @param {TournamentGamePlayDeleteArgs} args - Arguments to delete one TournamentGamePlay.
+     * @example
+     * // Delete one TournamentGamePlay
+     * const TournamentGamePlay = await prisma.tournamentGamePlay.delete({
+     *   where: {
+     *     // ... filter to delete one TournamentGamePlay
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TournamentGamePlayDeleteArgs>(args: SelectSubset<T, TournamentGamePlayDeleteArgs<ExtArgs>>): Prisma__TournamentGamePlayClient<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TournamentGamePlay.
+     * @param {TournamentGamePlayUpdateArgs} args - Arguments to update one TournamentGamePlay.
+     * @example
+     * // Update one TournamentGamePlay
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TournamentGamePlayUpdateArgs>(args: SelectSubset<T, TournamentGamePlayUpdateArgs<ExtArgs>>): Prisma__TournamentGamePlayClient<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TournamentGamePlays.
+     * @param {TournamentGamePlayDeleteManyArgs} args - Arguments to filter TournamentGamePlays to delete.
+     * @example
+     * // Delete a few TournamentGamePlays
+     * const { count } = await prisma.tournamentGamePlay.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TournamentGamePlayDeleteManyArgs>(args?: SelectSubset<T, TournamentGamePlayDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentGamePlays.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGamePlayUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TournamentGamePlays
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TournamentGamePlayUpdateManyArgs>(args: SelectSubset<T, TournamentGamePlayUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentGamePlays and returns the data updated in the database.
+     * @param {TournamentGamePlayUpdateManyAndReturnArgs} args - Arguments to update many TournamentGamePlays.
+     * @example
+     * // Update many TournamentGamePlays
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TournamentGamePlays and only return the `id`
+     * const tournamentGamePlayWithIdOnly = await prisma.tournamentGamePlay.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TournamentGamePlayUpdateManyAndReturnArgs>(args: SelectSubset<T, TournamentGamePlayUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TournamentGamePlay.
+     * @param {TournamentGamePlayUpsertArgs} args - Arguments to update or create a TournamentGamePlay.
+     * @example
+     * // Update or create a TournamentGamePlay
+     * const tournamentGamePlay = await prisma.tournamentGamePlay.upsert({
+     *   create: {
+     *     // ... data to create a TournamentGamePlay
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TournamentGamePlay we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TournamentGamePlayUpsertArgs>(args: SelectSubset<T, TournamentGamePlayUpsertArgs<ExtArgs>>): Prisma__TournamentGamePlayClient<$Result.GetResult<Prisma.$TournamentGamePlayPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TournamentGamePlays.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGamePlayCountArgs} args - Arguments to filter TournamentGamePlays to count.
+     * @example
+     * // Count the number of TournamentGamePlays
+     * const count = await prisma.tournamentGamePlay.count({
+     *   where: {
+     *     // ... the filter for the TournamentGamePlays we want to count
+     *   }
+     * })
+    **/
+    count<T extends TournamentGamePlayCountArgs>(
+      args?: Subset<T, TournamentGamePlayCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TournamentGamePlayCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TournamentGamePlay.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGamePlayAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TournamentGamePlayAggregateArgs>(args: Subset<T, TournamentGamePlayAggregateArgs>): Prisma.PrismaPromise<GetTournamentGamePlayAggregateType<T>>
+
+    /**
+     * Group by TournamentGamePlay.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentGamePlayGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TournamentGamePlayGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TournamentGamePlayGroupByArgs['orderBy'] }
+        : { orderBy?: TournamentGamePlayGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TournamentGamePlayGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTournamentGamePlayGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TournamentGamePlay model
+   */
+  readonly fields: TournamentGamePlayFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TournamentGamePlay.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TournamentGamePlayClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tournamentParticipant<T extends TournamentParticipantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentParticipantDefaultArgs<ExtArgs>>): Prisma__TournamentParticipantClient<$Result.GetResult<Prisma.$TournamentParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TournamentGamePlay model
+   */
+  interface TournamentGamePlayFieldRefs {
+    readonly id: FieldRef<"TournamentGamePlay", 'String'>
+    readonly tournamentParticipantId: FieldRef<"TournamentGamePlay", 'String'>
+    readonly gameId: FieldRef<"TournamentGamePlay", 'String'>
+    readonly pointsEarned: FieldRef<"TournamentGamePlay", 'Int'>
+    readonly playedAt: FieldRef<"TournamentGamePlay", 'DateTime'>
+    readonly gameSessionId: FieldRef<"TournamentGamePlay", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TournamentGamePlay findUnique
+   */
+  export type TournamentGamePlayFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGamePlay to fetch.
+     */
+    where: TournamentGamePlayWhereUniqueInput
+  }
+
+  /**
+   * TournamentGamePlay findUniqueOrThrow
+   */
+  export type TournamentGamePlayFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGamePlay to fetch.
+     */
+    where: TournamentGamePlayWhereUniqueInput
+  }
+
+  /**
+   * TournamentGamePlay findFirst
+   */
+  export type TournamentGamePlayFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGamePlay to fetch.
+     */
+    where?: TournamentGamePlayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentGamePlays to fetch.
+     */
+    orderBy?: TournamentGamePlayOrderByWithRelationInput | TournamentGamePlayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentGamePlays.
+     */
+    cursor?: TournamentGamePlayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentGamePlays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentGamePlays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentGamePlays.
+     */
+    distinct?: TournamentGamePlayScalarFieldEnum | TournamentGamePlayScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentGamePlay findFirstOrThrow
+   */
+  export type TournamentGamePlayFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGamePlay to fetch.
+     */
+    where?: TournamentGamePlayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentGamePlays to fetch.
+     */
+    orderBy?: TournamentGamePlayOrderByWithRelationInput | TournamentGamePlayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentGamePlays.
+     */
+    cursor?: TournamentGamePlayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentGamePlays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentGamePlays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentGamePlays.
+     */
+    distinct?: TournamentGamePlayScalarFieldEnum | TournamentGamePlayScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentGamePlay findMany
+   */
+  export type TournamentGamePlayFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentGamePlays to fetch.
+     */
+    where?: TournamentGamePlayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentGamePlays to fetch.
+     */
+    orderBy?: TournamentGamePlayOrderByWithRelationInput | TournamentGamePlayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TournamentGamePlays.
+     */
+    cursor?: TournamentGamePlayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentGamePlays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentGamePlays.
+     */
+    skip?: number
+    distinct?: TournamentGamePlayScalarFieldEnum | TournamentGamePlayScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentGamePlay create
+   */
+  export type TournamentGamePlayCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TournamentGamePlay.
+     */
+    data: XOR<TournamentGamePlayCreateInput, TournamentGamePlayUncheckedCreateInput>
+  }
+
+  /**
+   * TournamentGamePlay createMany
+   */
+  export type TournamentGamePlayCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TournamentGamePlays.
+     */
+    data: TournamentGamePlayCreateManyInput | TournamentGamePlayCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TournamentGamePlay createManyAndReturn
+   */
+  export type TournamentGamePlayCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * The data used to create many TournamentGamePlays.
+     */
+    data: TournamentGamePlayCreateManyInput | TournamentGamePlayCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentGamePlay update
+   */
+  export type TournamentGamePlayUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TournamentGamePlay.
+     */
+    data: XOR<TournamentGamePlayUpdateInput, TournamentGamePlayUncheckedUpdateInput>
+    /**
+     * Choose, which TournamentGamePlay to update.
+     */
+    where: TournamentGamePlayWhereUniqueInput
+  }
+
+  /**
+   * TournamentGamePlay updateMany
+   */
+  export type TournamentGamePlayUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TournamentGamePlays.
+     */
+    data: XOR<TournamentGamePlayUpdateManyMutationInput, TournamentGamePlayUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentGamePlays to update
+     */
+    where?: TournamentGamePlayWhereInput
+    /**
+     * Limit how many TournamentGamePlays to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentGamePlay updateManyAndReturn
+   */
+  export type TournamentGamePlayUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * The data used to update TournamentGamePlays.
+     */
+    data: XOR<TournamentGamePlayUpdateManyMutationInput, TournamentGamePlayUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentGamePlays to update
+     */
+    where?: TournamentGamePlayWhereInput
+    /**
+     * Limit how many TournamentGamePlays to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentGamePlay upsert
+   */
+  export type TournamentGamePlayUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TournamentGamePlay to update in case it exists.
+     */
+    where: TournamentGamePlayWhereUniqueInput
+    /**
+     * In case the TournamentGamePlay found by the `where` argument doesn't exist, create a new TournamentGamePlay with this data.
+     */
+    create: XOR<TournamentGamePlayCreateInput, TournamentGamePlayUncheckedCreateInput>
+    /**
+     * In case the TournamentGamePlay was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TournamentGamePlayUpdateInput, TournamentGamePlayUncheckedUpdateInput>
+  }
+
+  /**
+   * TournamentGamePlay delete
+   */
+  export type TournamentGamePlayDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+    /**
+     * Filter which TournamentGamePlay to delete.
+     */
+    where: TournamentGamePlayWhereUniqueInput
+  }
+
+  /**
+   * TournamentGamePlay deleteMany
+   */
+  export type TournamentGamePlayDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentGamePlays to delete
+     */
+    where?: TournamentGamePlayWhereInput
+    /**
+     * Limit how many TournamentGamePlays to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentGamePlay without action
+   */
+  export type TournamentGamePlayDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentGamePlay
+     */
+    select?: TournamentGamePlaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentGamePlay
+     */
+    omit?: TournamentGamePlayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentGamePlayInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TournamentReward
+   */
+
+  export type AggregateTournamentReward = {
+    _count: TournamentRewardCountAggregateOutputType | null
+    _avg: TournamentRewardAvgAggregateOutputType | null
+    _sum: TournamentRewardSumAggregateOutputType | null
+    _min: TournamentRewardMinAggregateOutputType | null
+    _max: TournamentRewardMaxAggregateOutputType | null
+  }
+
+  export type TournamentRewardAvgAggregateOutputType = {
+    rank: number | null
+  }
+
+  export type TournamentRewardSumAggregateOutputType = {
+    rank: number | null
+  }
+
+  export type TournamentRewardMinAggregateOutputType = {
+    id: string | null
+    tournamentId: string | null
+    rank: number | null
+    description: string | null
+    isClaimed: boolean | null
+    winnerId: string | null
+  }
+
+  export type TournamentRewardMaxAggregateOutputType = {
+    id: string | null
+    tournamentId: string | null
+    rank: number | null
+    description: string | null
+    isClaimed: boolean | null
+    winnerId: string | null
+  }
+
+  export type TournamentRewardCountAggregateOutputType = {
+    id: number
+    tournamentId: number
+    rank: number
+    description: number
+    isClaimed: number
+    winnerId: number
+    _all: number
+  }
+
+
+  export type TournamentRewardAvgAggregateInputType = {
+    rank?: true
+  }
+
+  export type TournamentRewardSumAggregateInputType = {
+    rank?: true
+  }
+
+  export type TournamentRewardMinAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    rank?: true
+    description?: true
+    isClaimed?: true
+    winnerId?: true
+  }
+
+  export type TournamentRewardMaxAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    rank?: true
+    description?: true
+    isClaimed?: true
+    winnerId?: true
+  }
+
+  export type TournamentRewardCountAggregateInputType = {
+    id?: true
+    tournamentId?: true
+    rank?: true
+    description?: true
+    isClaimed?: true
+    winnerId?: true
+    _all?: true
+  }
+
+  export type TournamentRewardAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentReward to aggregate.
+     */
+    where?: TournamentRewardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentRewards to fetch.
+     */
+    orderBy?: TournamentRewardOrderByWithRelationInput | TournamentRewardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TournamentRewardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentRewards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentRewards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TournamentRewards
+    **/
+    _count?: true | TournamentRewardCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TournamentRewardAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TournamentRewardSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TournamentRewardMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TournamentRewardMaxAggregateInputType
+  }
+
+  export type GetTournamentRewardAggregateType<T extends TournamentRewardAggregateArgs> = {
+        [P in keyof T & keyof AggregateTournamentReward]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTournamentReward[P]>
+      : GetScalarType<T[P], AggregateTournamentReward[P]>
+  }
+
+
+
+
+  export type TournamentRewardGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentRewardWhereInput
+    orderBy?: TournamentRewardOrderByWithAggregationInput | TournamentRewardOrderByWithAggregationInput[]
+    by: TournamentRewardScalarFieldEnum[] | TournamentRewardScalarFieldEnum
+    having?: TournamentRewardScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TournamentRewardCountAggregateInputType | true
+    _avg?: TournamentRewardAvgAggregateInputType
+    _sum?: TournamentRewardSumAggregateInputType
+    _min?: TournamentRewardMinAggregateInputType
+    _max?: TournamentRewardMaxAggregateInputType
+  }
+
+  export type TournamentRewardGroupByOutputType = {
+    id: string
+    tournamentId: string
+    rank: number
+    description: string
+    isClaimed: boolean
+    winnerId: string | null
+    _count: TournamentRewardCountAggregateOutputType | null
+    _avg: TournamentRewardAvgAggregateOutputType | null
+    _sum: TournamentRewardSumAggregateOutputType | null
+    _min: TournamentRewardMinAggregateOutputType | null
+    _max: TournamentRewardMaxAggregateOutputType | null
+  }
+
+  type GetTournamentRewardGroupByPayload<T extends TournamentRewardGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TournamentRewardGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TournamentRewardGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TournamentRewardGroupByOutputType[P]>
+            : GetScalarType<T[P], TournamentRewardGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TournamentRewardSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    rank?: boolean
+    description?: boolean
+    isClaimed?: boolean
+    winnerId?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    winner?: boolean | TournamentReward$winnerArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentReward"]>
+
+  export type TournamentRewardSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    rank?: boolean
+    description?: boolean
+    isClaimed?: boolean
+    winnerId?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    winner?: boolean | TournamentReward$winnerArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentReward"]>
+
+  export type TournamentRewardSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tournamentId?: boolean
+    rank?: boolean
+    description?: boolean
+    isClaimed?: boolean
+    winnerId?: boolean
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    winner?: boolean | TournamentReward$winnerArgs<ExtArgs>
+  }, ExtArgs["result"]["tournamentReward"]>
+
+  export type TournamentRewardSelectScalar = {
+    id?: boolean
+    tournamentId?: boolean
+    rank?: boolean
+    description?: boolean
+    isClaimed?: boolean
+    winnerId?: boolean
+  }
+
+  export type TournamentRewardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tournamentId" | "rank" | "description" | "isClaimed" | "winnerId", ExtArgs["result"]["tournamentReward"]>
+  export type TournamentRewardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    winner?: boolean | TournamentReward$winnerArgs<ExtArgs>
+  }
+  export type TournamentRewardIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    winner?: boolean | TournamentReward$winnerArgs<ExtArgs>
+  }
+  export type TournamentRewardIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tournament?: boolean | TournamentDefaultArgs<ExtArgs>
+    winner?: boolean | TournamentReward$winnerArgs<ExtArgs>
+  }
+
+  export type $TournamentRewardPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TournamentReward"
+    objects: {
+      tournament: Prisma.$TournamentPayload<ExtArgs>
+      winner: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tournamentId: string
+      rank: number
+      description: string
+      isClaimed: boolean
+      winnerId: string | null
+    }, ExtArgs["result"]["tournamentReward"]>
+    composites: {}
+  }
+
+  type TournamentRewardGetPayload<S extends boolean | null | undefined | TournamentRewardDefaultArgs> = $Result.GetResult<Prisma.$TournamentRewardPayload, S>
+
+  type TournamentRewardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TournamentRewardFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TournamentRewardCountAggregateInputType | true
+    }
+
+  export interface TournamentRewardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TournamentReward'], meta: { name: 'TournamentReward' } }
+    /**
+     * Find zero or one TournamentReward that matches the filter.
+     * @param {TournamentRewardFindUniqueArgs} args - Arguments to find a TournamentReward
+     * @example
+     * // Get one TournamentReward
+     * const tournamentReward = await prisma.tournamentReward.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TournamentRewardFindUniqueArgs>(args: SelectSubset<T, TournamentRewardFindUniqueArgs<ExtArgs>>): Prisma__TournamentRewardClient<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TournamentReward that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TournamentRewardFindUniqueOrThrowArgs} args - Arguments to find a TournamentReward
+     * @example
+     * // Get one TournamentReward
+     * const tournamentReward = await prisma.tournamentReward.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TournamentRewardFindUniqueOrThrowArgs>(args: SelectSubset<T, TournamentRewardFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TournamentRewardClient<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentReward that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentRewardFindFirstArgs} args - Arguments to find a TournamentReward
+     * @example
+     * // Get one TournamentReward
+     * const tournamentReward = await prisma.tournamentReward.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TournamentRewardFindFirstArgs>(args?: SelectSubset<T, TournamentRewardFindFirstArgs<ExtArgs>>): Prisma__TournamentRewardClient<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TournamentReward that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentRewardFindFirstOrThrowArgs} args - Arguments to find a TournamentReward
+     * @example
+     * // Get one TournamentReward
+     * const tournamentReward = await prisma.tournamentReward.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TournamentRewardFindFirstOrThrowArgs>(args?: SelectSubset<T, TournamentRewardFindFirstOrThrowArgs<ExtArgs>>): Prisma__TournamentRewardClient<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TournamentRewards that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentRewardFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TournamentRewards
+     * const tournamentRewards = await prisma.tournamentReward.findMany()
+     * 
+     * // Get first 10 TournamentRewards
+     * const tournamentRewards = await prisma.tournamentReward.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tournamentRewardWithIdOnly = await prisma.tournamentReward.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TournamentRewardFindManyArgs>(args?: SelectSubset<T, TournamentRewardFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TournamentReward.
+     * @param {TournamentRewardCreateArgs} args - Arguments to create a TournamentReward.
+     * @example
+     * // Create one TournamentReward
+     * const TournamentReward = await prisma.tournamentReward.create({
+     *   data: {
+     *     // ... data to create a TournamentReward
+     *   }
+     * })
+     * 
+     */
+    create<T extends TournamentRewardCreateArgs>(args: SelectSubset<T, TournamentRewardCreateArgs<ExtArgs>>): Prisma__TournamentRewardClient<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TournamentRewards.
+     * @param {TournamentRewardCreateManyArgs} args - Arguments to create many TournamentRewards.
+     * @example
+     * // Create many TournamentRewards
+     * const tournamentReward = await prisma.tournamentReward.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TournamentRewardCreateManyArgs>(args?: SelectSubset<T, TournamentRewardCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TournamentRewards and returns the data saved in the database.
+     * @param {TournamentRewardCreateManyAndReturnArgs} args - Arguments to create many TournamentRewards.
+     * @example
+     * // Create many TournamentRewards
+     * const tournamentReward = await prisma.tournamentReward.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TournamentRewards and only return the `id`
+     * const tournamentRewardWithIdOnly = await prisma.tournamentReward.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TournamentRewardCreateManyAndReturnArgs>(args?: SelectSubset<T, TournamentRewardCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TournamentReward.
+     * @param {TournamentRewardDeleteArgs} args - Arguments to delete one TournamentReward.
+     * @example
+     * // Delete one TournamentReward
+     * const TournamentReward = await prisma.tournamentReward.delete({
+     *   where: {
+     *     // ... filter to delete one TournamentReward
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TournamentRewardDeleteArgs>(args: SelectSubset<T, TournamentRewardDeleteArgs<ExtArgs>>): Prisma__TournamentRewardClient<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TournamentReward.
+     * @param {TournamentRewardUpdateArgs} args - Arguments to update one TournamentReward.
+     * @example
+     * // Update one TournamentReward
+     * const tournamentReward = await prisma.tournamentReward.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TournamentRewardUpdateArgs>(args: SelectSubset<T, TournamentRewardUpdateArgs<ExtArgs>>): Prisma__TournamentRewardClient<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TournamentRewards.
+     * @param {TournamentRewardDeleteManyArgs} args - Arguments to filter TournamentRewards to delete.
+     * @example
+     * // Delete a few TournamentRewards
+     * const { count } = await prisma.tournamentReward.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TournamentRewardDeleteManyArgs>(args?: SelectSubset<T, TournamentRewardDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentRewards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentRewardUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TournamentRewards
+     * const tournamentReward = await prisma.tournamentReward.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TournamentRewardUpdateManyArgs>(args: SelectSubset<T, TournamentRewardUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TournamentRewards and returns the data updated in the database.
+     * @param {TournamentRewardUpdateManyAndReturnArgs} args - Arguments to update many TournamentRewards.
+     * @example
+     * // Update many TournamentRewards
+     * const tournamentReward = await prisma.tournamentReward.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TournamentRewards and only return the `id`
+     * const tournamentRewardWithIdOnly = await prisma.tournamentReward.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TournamentRewardUpdateManyAndReturnArgs>(args: SelectSubset<T, TournamentRewardUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TournamentReward.
+     * @param {TournamentRewardUpsertArgs} args - Arguments to update or create a TournamentReward.
+     * @example
+     * // Update or create a TournamentReward
+     * const tournamentReward = await prisma.tournamentReward.upsert({
+     *   create: {
+     *     // ... data to create a TournamentReward
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TournamentReward we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TournamentRewardUpsertArgs>(args: SelectSubset<T, TournamentRewardUpsertArgs<ExtArgs>>): Prisma__TournamentRewardClient<$Result.GetResult<Prisma.$TournamentRewardPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TournamentRewards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentRewardCountArgs} args - Arguments to filter TournamentRewards to count.
+     * @example
+     * // Count the number of TournamentRewards
+     * const count = await prisma.tournamentReward.count({
+     *   where: {
+     *     // ... the filter for the TournamentRewards we want to count
+     *   }
+     * })
+    **/
+    count<T extends TournamentRewardCountArgs>(
+      args?: Subset<T, TournamentRewardCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TournamentRewardCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TournamentReward.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentRewardAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TournamentRewardAggregateArgs>(args: Subset<T, TournamentRewardAggregateArgs>): Prisma.PrismaPromise<GetTournamentRewardAggregateType<T>>
+
+    /**
+     * Group by TournamentReward.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TournamentRewardGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TournamentRewardGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TournamentRewardGroupByArgs['orderBy'] }
+        : { orderBy?: TournamentRewardGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TournamentRewardGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTournamentRewardGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TournamentReward model
+   */
+  readonly fields: TournamentRewardFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TournamentReward.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TournamentRewardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tournament<T extends TournamentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TournamentDefaultArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    winner<T extends TournamentReward$winnerArgs<ExtArgs> = {}>(args?: Subset<T, TournamentReward$winnerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TournamentReward model
+   */
+  interface TournamentRewardFieldRefs {
+    readonly id: FieldRef<"TournamentReward", 'String'>
+    readonly tournamentId: FieldRef<"TournamentReward", 'String'>
+    readonly rank: FieldRef<"TournamentReward", 'Int'>
+    readonly description: FieldRef<"TournamentReward", 'String'>
+    readonly isClaimed: FieldRef<"TournamentReward", 'Boolean'>
+    readonly winnerId: FieldRef<"TournamentReward", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TournamentReward findUnique
+   */
+  export type TournamentRewardFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentReward to fetch.
+     */
+    where: TournamentRewardWhereUniqueInput
+  }
+
+  /**
+   * TournamentReward findUniqueOrThrow
+   */
+  export type TournamentRewardFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentReward to fetch.
+     */
+    where: TournamentRewardWhereUniqueInput
+  }
+
+  /**
+   * TournamentReward findFirst
+   */
+  export type TournamentRewardFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentReward to fetch.
+     */
+    where?: TournamentRewardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentRewards to fetch.
+     */
+    orderBy?: TournamentRewardOrderByWithRelationInput | TournamentRewardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentRewards.
+     */
+    cursor?: TournamentRewardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentRewards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentRewards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentRewards.
+     */
+    distinct?: TournamentRewardScalarFieldEnum | TournamentRewardScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentReward findFirstOrThrow
+   */
+  export type TournamentRewardFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentReward to fetch.
+     */
+    where?: TournamentRewardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentRewards to fetch.
+     */
+    orderBy?: TournamentRewardOrderByWithRelationInput | TournamentRewardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TournamentRewards.
+     */
+    cursor?: TournamentRewardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentRewards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentRewards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TournamentRewards.
+     */
+    distinct?: TournamentRewardScalarFieldEnum | TournamentRewardScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentReward findMany
+   */
+  export type TournamentRewardFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * Filter, which TournamentRewards to fetch.
+     */
+    where?: TournamentRewardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TournamentRewards to fetch.
+     */
+    orderBy?: TournamentRewardOrderByWithRelationInput | TournamentRewardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TournamentRewards.
+     */
+    cursor?: TournamentRewardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TournamentRewards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TournamentRewards.
+     */
+    skip?: number
+    distinct?: TournamentRewardScalarFieldEnum | TournamentRewardScalarFieldEnum[]
+  }
+
+  /**
+   * TournamentReward create
+   */
+  export type TournamentRewardCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TournamentReward.
+     */
+    data: XOR<TournamentRewardCreateInput, TournamentRewardUncheckedCreateInput>
+  }
+
+  /**
+   * TournamentReward createMany
+   */
+  export type TournamentRewardCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TournamentRewards.
+     */
+    data: TournamentRewardCreateManyInput | TournamentRewardCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TournamentReward createManyAndReturn
+   */
+  export type TournamentRewardCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * The data used to create many TournamentRewards.
+     */
+    data: TournamentRewardCreateManyInput | TournamentRewardCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentReward update
+   */
+  export type TournamentRewardUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TournamentReward.
+     */
+    data: XOR<TournamentRewardUpdateInput, TournamentRewardUncheckedUpdateInput>
+    /**
+     * Choose, which TournamentReward to update.
+     */
+    where: TournamentRewardWhereUniqueInput
+  }
+
+  /**
+   * TournamentReward updateMany
+   */
+  export type TournamentRewardUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TournamentRewards.
+     */
+    data: XOR<TournamentRewardUpdateManyMutationInput, TournamentRewardUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentRewards to update
+     */
+    where?: TournamentRewardWhereInput
+    /**
+     * Limit how many TournamentRewards to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentReward updateManyAndReturn
+   */
+  export type TournamentRewardUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * The data used to update TournamentRewards.
+     */
+    data: XOR<TournamentRewardUpdateManyMutationInput, TournamentRewardUncheckedUpdateManyInput>
+    /**
+     * Filter which TournamentRewards to update
+     */
+    where?: TournamentRewardWhereInput
+    /**
+     * Limit how many TournamentRewards to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TournamentReward upsert
+   */
+  export type TournamentRewardUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TournamentReward to update in case it exists.
+     */
+    where: TournamentRewardWhereUniqueInput
+    /**
+     * In case the TournamentReward found by the `where` argument doesn't exist, create a new TournamentReward with this data.
+     */
+    create: XOR<TournamentRewardCreateInput, TournamentRewardUncheckedCreateInput>
+    /**
+     * In case the TournamentReward was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TournamentRewardUpdateInput, TournamentRewardUncheckedUpdateInput>
+  }
+
+  /**
+   * TournamentReward delete
+   */
+  export type TournamentRewardDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+    /**
+     * Filter which TournamentReward to delete.
+     */
+    where: TournamentRewardWhereUniqueInput
+  }
+
+  /**
+   * TournamentReward deleteMany
+   */
+  export type TournamentRewardDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TournamentRewards to delete
+     */
+    where?: TournamentRewardWhereInput
+    /**
+     * Limit how many TournamentRewards to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TournamentReward.winner
+   */
+  export type TournamentReward$winnerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * TournamentReward without action
+   */
+  export type TournamentRewardDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentReward
+     */
+    select?: TournamentRewardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TournamentReward
+     */
+    omit?: TournamentRewardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentRewardInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -41877,7 +49784,7 @@ export namespace Prisma {
     title: 'title',
     goldsvetData: 'goldsvetData',
     description: 'description',
-    provider: 'provider',
+    supportedProviders: 'supportedProviders',
     category: 'category',
     tags: 'tags',
     isActive: 'isActive',
@@ -41887,6 +49794,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     featured: 'featured',
+    providerName: 'providerName',
+    gameProviderId: 'gameProviderId',
     operatorId: 'operatorId'
   };
 
@@ -41937,17 +49846,42 @@ export namespace Prisma {
   export type GameSpinScalarFieldEnum = (typeof GameSpinScalarFieldEnum)[keyof typeof GameSpinScalarFieldEnum]
 
 
+  export const GameProviderScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    displayName: 'displayName',
+    rgsBaseUrl: 'rgsBaseUrl',
+    settingsPath: 'settingsPath',
+    spinPath: 'spinPath',
+    resolveBetPath: 'resolveBetPath',
+    providerRoundId: 'providerRoundId',
+    authType: 'authType',
+    apiKey: 'apiKey',
+    apiSecret: 'apiSecret',
+    publicKey: 'publicKey',
+    privateKeyRef: 'privateKeyRef',
+    configJson: 'configJson',
+    isActive: 'isActive',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GameProviderScalarFieldEnum = (typeof GameProviderScalarFieldEnum)[keyof typeof GameProviderScalarFieldEnum]
+
+
   export const GameSessionScalarFieldEnum: {
     id: 'id',
     isActive: 'isActive',
     sessionData: 'sessionData',
-    sessionId: 'sessionId',
+    authSessionId: 'authSessionId',
     currencyId: 'currencyId',
     startedAt: 'startedAt',
     endTime: 'endTime',
     startTime: 'startTime',
     ipAddress: 'ipAddress',
     startingBalance: 'startingBalance',
+    startingTotalXp: 'startingTotalXp',
     userAgent: 'userAgent',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -41955,6 +49889,8 @@ export namespace Prisma {
     totalWon: 'totalWon',
     userId: 'userId',
     gameId: 'gameId',
+    rtgToken: 'rtgToken',
+    rtgFingerPrint: 'rtgFingerPrint',
     profileId: 'profileId'
   };
 
@@ -42035,6 +49971,7 @@ export namespace Prisma {
     id: 'id',
     originatorUserId: 'originatorUserId',
     processedAt: 'processedAt',
+    gameId: 'gameId',
     receiverUserId: 'receiverUserId',
     walletId: 'walletId',
     type: 'type',
@@ -42240,6 +50177,68 @@ export namespace Prisma {
   export type RebateTransactionScalarFieldEnum = (typeof RebateTransactionScalarFieldEnum)[keyof typeof RebateTransactionScalarFieldEnum]
 
 
+  export const TournamentScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    targetScore: 'targetScore',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    createdByid: 'createdByid'
+  };
+
+  export type TournamentScalarFieldEnum = (typeof TournamentScalarFieldEnum)[keyof typeof TournamentScalarFieldEnum]
+
+
+  export const TournamentGameScalarFieldEnum: {
+    id: 'id',
+    tournamentId: 'tournamentId',
+    gameId: 'gameId',
+    pointMultiplier: 'pointMultiplier'
+  };
+
+  export type TournamentGameScalarFieldEnum = (typeof TournamentGameScalarFieldEnum)[keyof typeof TournamentGameScalarFieldEnum]
+
+
+  export const TournamentParticipantScalarFieldEnum: {
+    id: 'id',
+    tournamentId: 'tournamentId',
+    userId: 'userId',
+    score: 'score',
+    rank: 'rank',
+    joinedAt: 'joinedAt'
+  };
+
+  export type TournamentParticipantScalarFieldEnum = (typeof TournamentParticipantScalarFieldEnum)[keyof typeof TournamentParticipantScalarFieldEnum]
+
+
+  export const TournamentGamePlayScalarFieldEnum: {
+    id: 'id',
+    tournamentParticipantId: 'tournamentParticipantId',
+    gameId: 'gameId',
+    pointsEarned: 'pointsEarned',
+    playedAt: 'playedAt',
+    gameSessionId: 'gameSessionId'
+  };
+
+  export type TournamentGamePlayScalarFieldEnum = (typeof TournamentGamePlayScalarFieldEnum)[keyof typeof TournamentGamePlayScalarFieldEnum]
+
+
+  export const TournamentRewardScalarFieldEnum: {
+    id: 'id',
+    tournamentId: 'tournamentId',
+    rank: 'rank',
+    description: 'description',
+    isClaimed: 'isClaimed',
+    winnerId: 'winnerId'
+  };
+
+  export type TournamentRewardScalarFieldEnum = (typeof TournamentRewardScalarFieldEnum)[keyof typeof TournamentRewardScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -42434,16 +50433,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'GameProvider'
+   * Reference to a field of type 'GameProviderName[]'
    */
-  export type EnumGameProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GameProvider'>
+  export type ListEnumGameProviderNameFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GameProviderName[]'>
     
 
 
   /**
-   * Reference to a field of type 'GameProvider[]'
+   * Reference to a field of type 'GameProviderName'
    */
-  export type ListEnumGameProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GameProvider[]'>
+  export type EnumGameProviderNameFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GameProviderName'>
     
 
 
@@ -42458,6 +50457,20 @@ export namespace Prisma {
    * Reference to a field of type 'GameCategory[]'
    */
   export type ListEnumGameCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GameCategory[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProviderAuthType'
+   */
+  export type EnumProviderAuthTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProviderAuthType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProviderAuthType[]'
+   */
+  export type ListEnumProviderAuthTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProviderAuthType[]'>
     
 
 
@@ -42557,6 +50570,20 @@ export namespace Prisma {
    */
   export type ListEnumVipTaskTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VipTaskType[]'>
     
+
+
+  /**
+   * Reference to a field of type 'TournamentStatus'
+   */
+  export type EnumTournamentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TournamentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'TournamentStatus[]'
+   */
+  export type ListEnumTournamentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TournamentStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -42634,6 +50661,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationListRelationFilter
     originatedTransactions?: TransactionListRelationFilter
     receivedTransactions?: TransactionListRelationFilter
+    TournamentParticipant?: TournamentParticipantListRelationFilter
+    TournamentReward?: TournamentRewardListRelationFilter
+    Tournament?: TournamentListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -42705,6 +50735,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationOrderByRelationAggregateInput
     originatedTransactions?: TransactionOrderByRelationAggregateInput
     receivedTransactions?: TransactionOrderByRelationAggregateInput
+    TournamentParticipant?: TournamentParticipantOrderByRelationAggregateInput
+    TournamentReward?: TournamentRewardOrderByRelationAggregateInput
+    Tournament?: TournamentOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -42779,6 +50812,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationListRelationFilter
     originatedTransactions?: TransactionListRelationFilter
     receivedTransactions?: TransactionListRelationFilter
+    TournamentParticipant?: TournamentParticipantListRelationFilter
+    TournamentReward?: TournamentRewardListRelationFilter
+    Tournament?: TournamentListRelationFilter
   }, "id" | "username" | "name" | "email" | "phone" | "cashtag" | "referralCode">
 
   export type UserOrderByWithAggregationInput = {
@@ -43710,7 +51746,7 @@ export namespace Prisma {
     title?: StringFilter<"Game"> | string
     goldsvetData?: JsonNullableFilter<"Game">
     description?: StringNullableFilter<"Game"> | string | null
-    provider?: EnumGameProviderFilter<"Game"> | $Enums.GameProvider
+    supportedProviders?: EnumGameProviderNameNullableListFilter<"Game">
     category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
     tags?: StringNullableListFilter<"Game">
     isActive?: BoolFilter<"Game"> | boolean
@@ -43720,10 +51756,14 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Game"> | Date | string
     updatedAt?: DateTimeFilter<"Game"> | Date | string
     featured?: BoolFilter<"Game"> | boolean
+    providerName?: StringNullableFilter<"Game"> | string | null
+    gameProviderId?: StringNullableFilter<"Game"> | string | null
     operatorId?: StringNullableFilter<"Game"> | string | null
+    gameProvider?: XOR<GameProviderNullableScalarRelationFilter, GameProviderWhereInput> | null
     gameSessions?: GameSessionListRelationFilter
     gameLaunchLinks?: GameLaunchLinkListRelationFilter
     operator?: XOR<OperatorAccessNullableScalarRelationFilter, OperatorAccessWhereInput> | null
+    TournamentGame?: TournamentGameListRelationFilter
   }
 
   export type GameOrderByWithRelationInput = {
@@ -43732,7 +51772,7 @@ export namespace Prisma {
     title?: SortOrder
     goldsvetData?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
-    provider?: SortOrder
+    supportedProviders?: SortOrder
     category?: SortOrder
     tags?: SortOrder
     isActive?: SortOrder
@@ -43742,10 +51782,14 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     featured?: SortOrder
+    providerName?: SortOrderInput | SortOrder
+    gameProviderId?: SortOrderInput | SortOrder
     operatorId?: SortOrderInput | SortOrder
+    gameProvider?: GameProviderOrderByWithRelationInput
     gameSessions?: GameSessionOrderByRelationAggregateInput
     gameLaunchLinks?: GameLaunchLinkOrderByRelationAggregateInput
     operator?: OperatorAccessOrderByWithRelationInput
+    TournamentGame?: TournamentGameOrderByRelationAggregateInput
   }
 
   export type GameWhereUniqueInput = Prisma.AtLeast<{
@@ -43757,7 +51801,7 @@ export namespace Prisma {
     title?: StringFilter<"Game"> | string
     goldsvetData?: JsonNullableFilter<"Game">
     description?: StringNullableFilter<"Game"> | string | null
-    provider?: EnumGameProviderFilter<"Game"> | $Enums.GameProvider
+    supportedProviders?: EnumGameProviderNameNullableListFilter<"Game">
     category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
     tags?: StringNullableListFilter<"Game">
     isActive?: BoolFilter<"Game"> | boolean
@@ -43767,10 +51811,14 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Game"> | Date | string
     updatedAt?: DateTimeFilter<"Game"> | Date | string
     featured?: BoolFilter<"Game"> | boolean
+    providerName?: StringNullableFilter<"Game"> | string | null
+    gameProviderId?: StringNullableFilter<"Game"> | string | null
     operatorId?: StringNullableFilter<"Game"> | string | null
+    gameProvider?: XOR<GameProviderNullableScalarRelationFilter, GameProviderWhereInput> | null
     gameSessions?: GameSessionListRelationFilter
     gameLaunchLinks?: GameLaunchLinkListRelationFilter
     operator?: XOR<OperatorAccessNullableScalarRelationFilter, OperatorAccessWhereInput> | null
+    TournamentGame?: TournamentGameListRelationFilter
   }, "id">
 
   export type GameOrderByWithAggregationInput = {
@@ -43779,7 +51827,7 @@ export namespace Prisma {
     title?: SortOrder
     goldsvetData?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
-    provider?: SortOrder
+    supportedProviders?: SortOrder
     category?: SortOrder
     tags?: SortOrder
     isActive?: SortOrder
@@ -43789,6 +51837,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     featured?: SortOrder
+    providerName?: SortOrderInput | SortOrder
+    gameProviderId?: SortOrderInput | SortOrder
     operatorId?: SortOrderInput | SortOrder
     _count?: GameCountOrderByAggregateInput
     _max?: GameMaxOrderByAggregateInput
@@ -43804,7 +51854,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Game"> | string
     goldsvetData?: JsonNullableWithAggregatesFilter<"Game">
     description?: StringNullableWithAggregatesFilter<"Game"> | string | null
-    provider?: EnumGameProviderWithAggregatesFilter<"Game"> | $Enums.GameProvider
+    supportedProviders?: EnumGameProviderNameNullableListFilter<"Game">
     category?: EnumGameCategoryWithAggregatesFilter<"Game"> | $Enums.GameCategory
     tags?: StringNullableListFilter<"Game">
     isActive?: BoolWithAggregatesFilter<"Game"> | boolean
@@ -43814,6 +51864,8 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Game"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Game"> | Date | string
     featured?: BoolWithAggregatesFilter<"Game"> | boolean
+    providerName?: StringNullableWithAggregatesFilter<"Game"> | string | null
+    gameProviderId?: StringNullableWithAggregatesFilter<"Game"> | string | null
     operatorId?: StringNullableWithAggregatesFilter<"Game"> | string | null
   }
 
@@ -44047,6 +52099,126 @@ export namespace Prisma {
     timeStamp?: DateTimeWithAggregatesFilter<"GameSpin"> | Date | string
   }
 
+  export type GameProviderWhereInput = {
+    AND?: GameProviderWhereInput | GameProviderWhereInput[]
+    OR?: GameProviderWhereInput[]
+    NOT?: GameProviderWhereInput | GameProviderWhereInput[]
+    id?: StringFilter<"GameProvider"> | string
+    name?: StringFilter<"GameProvider"> | string
+    displayName?: StringNullableFilter<"GameProvider"> | string | null
+    rgsBaseUrl?: StringFilter<"GameProvider"> | string
+    settingsPath?: StringNullableFilter<"GameProvider"> | string | null
+    spinPath?: StringNullableFilter<"GameProvider"> | string | null
+    resolveBetPath?: StringNullableFilter<"GameProvider"> | string | null
+    providerRoundId?: StringNullableFilter<"GameProvider"> | string | null
+    authType?: EnumProviderAuthTypeFilter<"GameProvider"> | $Enums.ProviderAuthType
+    apiKey?: StringNullableFilter<"GameProvider"> | string | null
+    apiSecret?: StringNullableFilter<"GameProvider"> | string | null
+    publicKey?: StringNullableFilter<"GameProvider"> | string | null
+    privateKeyRef?: StringNullableFilter<"GameProvider"> | string | null
+    configJson?: JsonNullableFilter<"GameProvider">
+    isActive?: BoolFilter<"GameProvider"> | boolean
+    notes?: StringNullableFilter<"GameProvider"> | string | null
+    createdAt?: DateTimeFilter<"GameProvider"> | Date | string
+    updatedAt?: DateTimeFilter<"GameProvider"> | Date | string
+    games?: GameListRelationFilter
+  }
+
+  export type GameProviderOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrderInput | SortOrder
+    rgsBaseUrl?: SortOrder
+    settingsPath?: SortOrderInput | SortOrder
+    spinPath?: SortOrderInput | SortOrder
+    resolveBetPath?: SortOrderInput | SortOrder
+    providerRoundId?: SortOrderInput | SortOrder
+    authType?: SortOrder
+    apiKey?: SortOrderInput | SortOrder
+    apiSecret?: SortOrderInput | SortOrder
+    publicKey?: SortOrderInput | SortOrder
+    privateKeyRef?: SortOrderInput | SortOrder
+    configJson?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    games?: GameOrderByRelationAggregateInput
+  }
+
+  export type GameProviderWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: GameProviderWhereInput | GameProviderWhereInput[]
+    OR?: GameProviderWhereInput[]
+    NOT?: GameProviderWhereInput | GameProviderWhereInput[]
+    displayName?: StringNullableFilter<"GameProvider"> | string | null
+    rgsBaseUrl?: StringFilter<"GameProvider"> | string
+    settingsPath?: StringNullableFilter<"GameProvider"> | string | null
+    spinPath?: StringNullableFilter<"GameProvider"> | string | null
+    resolveBetPath?: StringNullableFilter<"GameProvider"> | string | null
+    providerRoundId?: StringNullableFilter<"GameProvider"> | string | null
+    authType?: EnumProviderAuthTypeFilter<"GameProvider"> | $Enums.ProviderAuthType
+    apiKey?: StringNullableFilter<"GameProvider"> | string | null
+    apiSecret?: StringNullableFilter<"GameProvider"> | string | null
+    publicKey?: StringNullableFilter<"GameProvider"> | string | null
+    privateKeyRef?: StringNullableFilter<"GameProvider"> | string | null
+    configJson?: JsonNullableFilter<"GameProvider">
+    isActive?: BoolFilter<"GameProvider"> | boolean
+    notes?: StringNullableFilter<"GameProvider"> | string | null
+    createdAt?: DateTimeFilter<"GameProvider"> | Date | string
+    updatedAt?: DateTimeFilter<"GameProvider"> | Date | string
+    games?: GameListRelationFilter
+  }, "id" | "name">
+
+  export type GameProviderOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrderInput | SortOrder
+    rgsBaseUrl?: SortOrder
+    settingsPath?: SortOrderInput | SortOrder
+    spinPath?: SortOrderInput | SortOrder
+    resolveBetPath?: SortOrderInput | SortOrder
+    providerRoundId?: SortOrderInput | SortOrder
+    authType?: SortOrder
+    apiKey?: SortOrderInput | SortOrder
+    apiSecret?: SortOrderInput | SortOrder
+    publicKey?: SortOrderInput | SortOrder
+    privateKeyRef?: SortOrderInput | SortOrder
+    configJson?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GameProviderCountOrderByAggregateInput
+    _max?: GameProviderMaxOrderByAggregateInput
+    _min?: GameProviderMinOrderByAggregateInput
+  }
+
+  export type GameProviderScalarWhereWithAggregatesInput = {
+    AND?: GameProviderScalarWhereWithAggregatesInput | GameProviderScalarWhereWithAggregatesInput[]
+    OR?: GameProviderScalarWhereWithAggregatesInput[]
+    NOT?: GameProviderScalarWhereWithAggregatesInput | GameProviderScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GameProvider"> | string
+    name?: StringWithAggregatesFilter<"GameProvider"> | string
+    displayName?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    rgsBaseUrl?: StringWithAggregatesFilter<"GameProvider"> | string
+    settingsPath?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    spinPath?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    resolveBetPath?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    providerRoundId?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    authType?: EnumProviderAuthTypeWithAggregatesFilter<"GameProvider"> | $Enums.ProviderAuthType
+    apiKey?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    apiSecret?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    publicKey?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    privateKeyRef?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    configJson?: JsonNullableWithAggregatesFilter<"GameProvider">
+    isActive?: BoolWithAggregatesFilter<"GameProvider"> | boolean
+    notes?: StringNullableWithAggregatesFilter<"GameProvider"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"GameProvider"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GameProvider"> | Date | string
+  }
+
   export type GameSessionWhereInput = {
     AND?: GameSessionWhereInput | GameSessionWhereInput[]
     OR?: GameSessionWhereInput[]
@@ -44054,13 +52226,14 @@ export namespace Prisma {
     id?: StringFilter<"GameSession"> | string
     isActive?: BoolFilter<"GameSession"> | boolean
     sessionData?: JsonNullableFilter<"GameSession">
-    sessionId?: StringNullableFilter<"GameSession"> | string | null
+    authSessionId?: StringNullableFilter<"GameSession"> | string | null
     currencyId?: StringNullableFilter<"GameSession"> | string | null
     startedAt?: DateTimeFilter<"GameSession"> | Date | string
     endTime?: DateTimeNullableFilter<"GameSession"> | Date | string | null
     startTime?: DateTimeNullableFilter<"GameSession"> | Date | string | null
     ipAddress?: StringNullableFilter<"GameSession"> | string | null
     startingBalance?: IntNullableFilter<"GameSession"> | number | null
+    startingTotalXp?: IntNullableFilter<"GameSession"> | number | null
     userAgent?: StringNullableFilter<"GameSession"> | string | null
     createdAt?: DateTimeFilter<"GameSession"> | Date | string
     updatedAt?: DateTimeFilter<"GameSession"> | Date | string
@@ -44068,24 +52241,27 @@ export namespace Prisma {
     totalWon?: IntFilter<"GameSession"> | number
     userId?: StringFilter<"GameSession"> | string
     gameId?: StringFilter<"GameSession"> | string
+    rtgToken?: StringNullableFilter<"GameSession"> | string | null
+    rtgFingerPrint?: StringNullableFilter<"GameSession"> | string | null
     profileId?: StringNullableFilter<"GameSession"> | string | null
     spins?: GameSpinListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     game?: XOR<GameScalarRelationFilter, GameWhereInput>
-    Profile?: ProfileListRelationFilter
+    profile?: ProfileListRelationFilter
   }
 
   export type GameSessionOrderByWithRelationInput = {
     id?: SortOrder
     isActive?: SortOrder
     sessionData?: SortOrderInput | SortOrder
-    sessionId?: SortOrderInput | SortOrder
+    authSessionId?: SortOrderInput | SortOrder
     currencyId?: SortOrderInput | SortOrder
     startedAt?: SortOrder
     endTime?: SortOrderInput | SortOrder
     startTime?: SortOrderInput | SortOrder
     ipAddress?: SortOrderInput | SortOrder
     startingBalance?: SortOrderInput | SortOrder
+    startingTotalXp?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -44093,11 +52269,13 @@ export namespace Prisma {
     totalWon?: SortOrder
     userId?: SortOrder
     gameId?: SortOrder
+    rtgToken?: SortOrderInput | SortOrder
+    rtgFingerPrint?: SortOrderInput | SortOrder
     profileId?: SortOrderInput | SortOrder
     spins?: GameSpinOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
     game?: GameOrderByWithRelationInput
-    Profile?: ProfileOrderByRelationAggregateInput
+    profile?: ProfileOrderByRelationAggregateInput
   }
 
   export type GameSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -44107,13 +52285,14 @@ export namespace Prisma {
     NOT?: GameSessionWhereInput | GameSessionWhereInput[]
     isActive?: BoolFilter<"GameSession"> | boolean
     sessionData?: JsonNullableFilter<"GameSession">
-    sessionId?: StringNullableFilter<"GameSession"> | string | null
+    authSessionId?: StringNullableFilter<"GameSession"> | string | null
     currencyId?: StringNullableFilter<"GameSession"> | string | null
     startedAt?: DateTimeFilter<"GameSession"> | Date | string
     endTime?: DateTimeNullableFilter<"GameSession"> | Date | string | null
     startTime?: DateTimeNullableFilter<"GameSession"> | Date | string | null
     ipAddress?: StringNullableFilter<"GameSession"> | string | null
     startingBalance?: IntNullableFilter<"GameSession"> | number | null
+    startingTotalXp?: IntNullableFilter<"GameSession"> | number | null
     userAgent?: StringNullableFilter<"GameSession"> | string | null
     createdAt?: DateTimeFilter<"GameSession"> | Date | string
     updatedAt?: DateTimeFilter<"GameSession"> | Date | string
@@ -44121,24 +52300,27 @@ export namespace Prisma {
     totalWon?: IntFilter<"GameSession"> | number
     userId?: StringFilter<"GameSession"> | string
     gameId?: StringFilter<"GameSession"> | string
+    rtgToken?: StringNullableFilter<"GameSession"> | string | null
+    rtgFingerPrint?: StringNullableFilter<"GameSession"> | string | null
     profileId?: StringNullableFilter<"GameSession"> | string | null
     spins?: GameSpinListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     game?: XOR<GameScalarRelationFilter, GameWhereInput>
-    Profile?: ProfileListRelationFilter
+    profile?: ProfileListRelationFilter
   }, "id">
 
   export type GameSessionOrderByWithAggregationInput = {
     id?: SortOrder
     isActive?: SortOrder
     sessionData?: SortOrderInput | SortOrder
-    sessionId?: SortOrderInput | SortOrder
+    authSessionId?: SortOrderInput | SortOrder
     currencyId?: SortOrderInput | SortOrder
     startedAt?: SortOrder
     endTime?: SortOrderInput | SortOrder
     startTime?: SortOrderInput | SortOrder
     ipAddress?: SortOrderInput | SortOrder
     startingBalance?: SortOrderInput | SortOrder
+    startingTotalXp?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -44146,6 +52328,8 @@ export namespace Prisma {
     totalWon?: SortOrder
     userId?: SortOrder
     gameId?: SortOrder
+    rtgToken?: SortOrderInput | SortOrder
+    rtgFingerPrint?: SortOrderInput | SortOrder
     profileId?: SortOrderInput | SortOrder
     _count?: GameSessionCountOrderByAggregateInput
     _avg?: GameSessionAvgOrderByAggregateInput
@@ -44161,13 +52345,14 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"GameSession"> | string
     isActive?: BoolWithAggregatesFilter<"GameSession"> | boolean
     sessionData?: JsonNullableWithAggregatesFilter<"GameSession">
-    sessionId?: StringNullableWithAggregatesFilter<"GameSession"> | string | null
+    authSessionId?: StringNullableWithAggregatesFilter<"GameSession"> | string | null
     currencyId?: StringNullableWithAggregatesFilter<"GameSession"> | string | null
     startedAt?: DateTimeWithAggregatesFilter<"GameSession"> | Date | string
     endTime?: DateTimeNullableWithAggregatesFilter<"GameSession"> | Date | string | null
     startTime?: DateTimeNullableWithAggregatesFilter<"GameSession"> | Date | string | null
     ipAddress?: StringNullableWithAggregatesFilter<"GameSession"> | string | null
     startingBalance?: IntNullableWithAggregatesFilter<"GameSession"> | number | null
+    startingTotalXp?: IntNullableWithAggregatesFilter<"GameSession"> | number | null
     userAgent?: StringNullableWithAggregatesFilter<"GameSession"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"GameSession"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"GameSession"> | Date | string
@@ -44175,6 +52360,8 @@ export namespace Prisma {
     totalWon?: IntWithAggregatesFilter<"GameSession"> | number
     userId?: StringWithAggregatesFilter<"GameSession"> | string
     gameId?: StringWithAggregatesFilter<"GameSession"> | string
+    rtgToken?: StringNullableWithAggregatesFilter<"GameSession"> | string | null
+    rtgFingerPrint?: StringNullableWithAggregatesFilter<"GameSession"> | string | null
     profileId?: StringNullableWithAggregatesFilter<"GameSession"> | string | null
   }
 
@@ -44548,6 +52735,7 @@ export namespace Prisma {
     id?: StringFilter<"Transaction"> | string
     originatorUserId?: StringFilter<"Transaction"> | string
     processedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
+    gameId?: StringNullableFilter<"Transaction"> | string | null
     receiverUserId?: StringNullableFilter<"Transaction"> | string | null
     walletId?: StringNullableFilter<"Transaction"> | string | null
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
@@ -44585,6 +52773,7 @@ export namespace Prisma {
     id?: SortOrder
     originatorUserId?: SortOrder
     processedAt?: SortOrderInput | SortOrder
+    gameId?: SortOrderInput | SortOrder
     receiverUserId?: SortOrderInput | SortOrder
     walletId?: SortOrderInput | SortOrder
     type?: SortOrder
@@ -44625,6 +52814,7 @@ export namespace Prisma {
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     originatorUserId?: StringFilter<"Transaction"> | string
     processedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
+    gameId?: StringNullableFilter<"Transaction"> | string | null
     receiverUserId?: StringNullableFilter<"Transaction"> | string | null
     walletId?: StringNullableFilter<"Transaction"> | string | null
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
@@ -44662,6 +52852,7 @@ export namespace Prisma {
     id?: SortOrder
     originatorUserId?: SortOrder
     processedAt?: SortOrderInput | SortOrder
+    gameId?: SortOrderInput | SortOrder
     receiverUserId?: SortOrderInput | SortOrder
     walletId?: SortOrderInput | SortOrder
     type?: SortOrder
@@ -44700,6 +52891,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Transaction"> | string
     originatorUserId?: StringWithAggregatesFilter<"Transaction"> | string
     processedAt?: DateTimeNullableWithAggregatesFilter<"Transaction"> | Date | string | null
+    gameId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     receiverUserId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     walletId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     type?: EnumTransactionTypeWithAggregatesFilter<"Transaction"> | $Enums.TransactionType
@@ -45646,6 +53838,349 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"RebateTransaction"> | Date | string
   }
 
+  export type TournamentWhereInput = {
+    AND?: TournamentWhereInput | TournamentWhereInput[]
+    OR?: TournamentWhereInput[]
+    NOT?: TournamentWhereInput | TournamentWhereInput[]
+    id?: StringFilter<"Tournament"> | string
+    name?: StringFilter<"Tournament"> | string
+    description?: StringNullableFilter<"Tournament"> | string | null
+    startTime?: DateTimeFilter<"Tournament"> | Date | string
+    endTime?: DateTimeNullableFilter<"Tournament"> | Date | string | null
+    targetScore?: IntNullableFilter<"Tournament"> | number | null
+    status?: EnumTournamentStatusFilter<"Tournament"> | $Enums.TournamentStatus
+    createdAt?: DateTimeFilter<"Tournament"> | Date | string
+    updatedAt?: DateTimeFilter<"Tournament"> | Date | string
+    createdByid?: StringNullableFilter<"Tournament"> | string | null
+    eligibleGames?: TournamentGameListRelationFilter
+    participants?: TournamentParticipantListRelationFilter
+    rewards?: TournamentRewardListRelationFilter
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type TournamentOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrderInput | SortOrder
+    targetScore?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdByid?: SortOrderInput | SortOrder
+    eligibleGames?: TournamentGameOrderByRelationAggregateInput
+    participants?: TournamentParticipantOrderByRelationAggregateInput
+    rewards?: TournamentRewardOrderByRelationAggregateInput
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type TournamentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TournamentWhereInput | TournamentWhereInput[]
+    OR?: TournamentWhereInput[]
+    NOT?: TournamentWhereInput | TournamentWhereInput[]
+    name?: StringFilter<"Tournament"> | string
+    description?: StringNullableFilter<"Tournament"> | string | null
+    startTime?: DateTimeFilter<"Tournament"> | Date | string
+    endTime?: DateTimeNullableFilter<"Tournament"> | Date | string | null
+    targetScore?: IntNullableFilter<"Tournament"> | number | null
+    status?: EnumTournamentStatusFilter<"Tournament"> | $Enums.TournamentStatus
+    createdAt?: DateTimeFilter<"Tournament"> | Date | string
+    updatedAt?: DateTimeFilter<"Tournament"> | Date | string
+    createdByid?: StringNullableFilter<"Tournament"> | string | null
+    eligibleGames?: TournamentGameListRelationFilter
+    participants?: TournamentParticipantListRelationFilter
+    rewards?: TournamentRewardListRelationFilter
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type TournamentOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrderInput | SortOrder
+    targetScore?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdByid?: SortOrderInput | SortOrder
+    _count?: TournamentCountOrderByAggregateInput
+    _avg?: TournamentAvgOrderByAggregateInput
+    _max?: TournamentMaxOrderByAggregateInput
+    _min?: TournamentMinOrderByAggregateInput
+    _sum?: TournamentSumOrderByAggregateInput
+  }
+
+  export type TournamentScalarWhereWithAggregatesInput = {
+    AND?: TournamentScalarWhereWithAggregatesInput | TournamentScalarWhereWithAggregatesInput[]
+    OR?: TournamentScalarWhereWithAggregatesInput[]
+    NOT?: TournamentScalarWhereWithAggregatesInput | TournamentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Tournament"> | string
+    name?: StringWithAggregatesFilter<"Tournament"> | string
+    description?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
+    startTime?: DateTimeWithAggregatesFilter<"Tournament"> | Date | string
+    endTime?: DateTimeNullableWithAggregatesFilter<"Tournament"> | Date | string | null
+    targetScore?: IntNullableWithAggregatesFilter<"Tournament"> | number | null
+    status?: EnumTournamentStatusWithAggregatesFilter<"Tournament"> | $Enums.TournamentStatus
+    createdAt?: DateTimeWithAggregatesFilter<"Tournament"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Tournament"> | Date | string
+    createdByid?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
+  }
+
+  export type TournamentGameWhereInput = {
+    AND?: TournamentGameWhereInput | TournamentGameWhereInput[]
+    OR?: TournamentGameWhereInput[]
+    NOT?: TournamentGameWhereInput | TournamentGameWhereInput[]
+    id?: StringFilter<"TournamentGame"> | string
+    tournamentId?: StringFilter<"TournamentGame"> | string
+    gameId?: StringFilter<"TournamentGame"> | string
+    pointMultiplier?: FloatFilter<"TournamentGame"> | number
+    tournament?: XOR<TournamentScalarRelationFilter, TournamentWhereInput>
+    game?: XOR<GameScalarRelationFilter, GameWhereInput>
+  }
+
+  export type TournamentGameOrderByWithRelationInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    gameId?: SortOrder
+    pointMultiplier?: SortOrder
+    tournament?: TournamentOrderByWithRelationInput
+    game?: GameOrderByWithRelationInput
+  }
+
+  export type TournamentGameWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tournamentId_gameId?: TournamentGameTournamentIdGameIdCompoundUniqueInput
+    AND?: TournamentGameWhereInput | TournamentGameWhereInput[]
+    OR?: TournamentGameWhereInput[]
+    NOT?: TournamentGameWhereInput | TournamentGameWhereInput[]
+    tournamentId?: StringFilter<"TournamentGame"> | string
+    gameId?: StringFilter<"TournamentGame"> | string
+    pointMultiplier?: FloatFilter<"TournamentGame"> | number
+    tournament?: XOR<TournamentScalarRelationFilter, TournamentWhereInput>
+    game?: XOR<GameScalarRelationFilter, GameWhereInput>
+  }, "id" | "tournamentId_gameId">
+
+  export type TournamentGameOrderByWithAggregationInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    gameId?: SortOrder
+    pointMultiplier?: SortOrder
+    _count?: TournamentGameCountOrderByAggregateInput
+    _avg?: TournamentGameAvgOrderByAggregateInput
+    _max?: TournamentGameMaxOrderByAggregateInput
+    _min?: TournamentGameMinOrderByAggregateInput
+    _sum?: TournamentGameSumOrderByAggregateInput
+  }
+
+  export type TournamentGameScalarWhereWithAggregatesInput = {
+    AND?: TournamentGameScalarWhereWithAggregatesInput | TournamentGameScalarWhereWithAggregatesInput[]
+    OR?: TournamentGameScalarWhereWithAggregatesInput[]
+    NOT?: TournamentGameScalarWhereWithAggregatesInput | TournamentGameScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TournamentGame"> | string
+    tournamentId?: StringWithAggregatesFilter<"TournamentGame"> | string
+    gameId?: StringWithAggregatesFilter<"TournamentGame"> | string
+    pointMultiplier?: FloatWithAggregatesFilter<"TournamentGame"> | number
+  }
+
+  export type TournamentParticipantWhereInput = {
+    AND?: TournamentParticipantWhereInput | TournamentParticipantWhereInput[]
+    OR?: TournamentParticipantWhereInput[]
+    NOT?: TournamentParticipantWhereInput | TournamentParticipantWhereInput[]
+    id?: StringFilter<"TournamentParticipant"> | string
+    tournamentId?: StringFilter<"TournamentParticipant"> | string
+    userId?: StringFilter<"TournamentParticipant"> | string
+    score?: IntFilter<"TournamentParticipant"> | number
+    rank?: IntNullableFilter<"TournamentParticipant"> | number | null
+    joinedAt?: DateTimeFilter<"TournamentParticipant"> | Date | string
+    tournament?: XOR<TournamentScalarRelationFilter, TournamentWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    gamePlays?: TournamentGamePlayListRelationFilter
+  }
+
+  export type TournamentParticipantOrderByWithRelationInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    rank?: SortOrderInput | SortOrder
+    joinedAt?: SortOrder
+    tournament?: TournamentOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    gamePlays?: TournamentGamePlayOrderByRelationAggregateInput
+  }
+
+  export type TournamentParticipantWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tournamentId_userId?: TournamentParticipantTournamentIdUserIdCompoundUniqueInput
+    AND?: TournamentParticipantWhereInput | TournamentParticipantWhereInput[]
+    OR?: TournamentParticipantWhereInput[]
+    NOT?: TournamentParticipantWhereInput | TournamentParticipantWhereInput[]
+    tournamentId?: StringFilter<"TournamentParticipant"> | string
+    userId?: StringFilter<"TournamentParticipant"> | string
+    score?: IntFilter<"TournamentParticipant"> | number
+    rank?: IntNullableFilter<"TournamentParticipant"> | number | null
+    joinedAt?: DateTimeFilter<"TournamentParticipant"> | Date | string
+    tournament?: XOR<TournamentScalarRelationFilter, TournamentWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    gamePlays?: TournamentGamePlayListRelationFilter
+  }, "id" | "tournamentId_userId">
+
+  export type TournamentParticipantOrderByWithAggregationInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    rank?: SortOrderInput | SortOrder
+    joinedAt?: SortOrder
+    _count?: TournamentParticipantCountOrderByAggregateInput
+    _avg?: TournamentParticipantAvgOrderByAggregateInput
+    _max?: TournamentParticipantMaxOrderByAggregateInput
+    _min?: TournamentParticipantMinOrderByAggregateInput
+    _sum?: TournamentParticipantSumOrderByAggregateInput
+  }
+
+  export type TournamentParticipantScalarWhereWithAggregatesInput = {
+    AND?: TournamentParticipantScalarWhereWithAggregatesInput | TournamentParticipantScalarWhereWithAggregatesInput[]
+    OR?: TournamentParticipantScalarWhereWithAggregatesInput[]
+    NOT?: TournamentParticipantScalarWhereWithAggregatesInput | TournamentParticipantScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TournamentParticipant"> | string
+    tournamentId?: StringWithAggregatesFilter<"TournamentParticipant"> | string
+    userId?: StringWithAggregatesFilter<"TournamentParticipant"> | string
+    score?: IntWithAggregatesFilter<"TournamentParticipant"> | number
+    rank?: IntNullableWithAggregatesFilter<"TournamentParticipant"> | number | null
+    joinedAt?: DateTimeWithAggregatesFilter<"TournamentParticipant"> | Date | string
+  }
+
+  export type TournamentGamePlayWhereInput = {
+    AND?: TournamentGamePlayWhereInput | TournamentGamePlayWhereInput[]
+    OR?: TournamentGamePlayWhereInput[]
+    NOT?: TournamentGamePlayWhereInput | TournamentGamePlayWhereInput[]
+    id?: StringFilter<"TournamentGamePlay"> | string
+    tournamentParticipantId?: StringFilter<"TournamentGamePlay"> | string
+    gameId?: StringFilter<"TournamentGamePlay"> | string
+    pointsEarned?: IntFilter<"TournamentGamePlay"> | number
+    playedAt?: DateTimeFilter<"TournamentGamePlay"> | Date | string
+    gameSessionId?: StringNullableFilter<"TournamentGamePlay"> | string | null
+    tournamentParticipant?: XOR<TournamentParticipantScalarRelationFilter, TournamentParticipantWhereInput>
+  }
+
+  export type TournamentGamePlayOrderByWithRelationInput = {
+    id?: SortOrder
+    tournamentParticipantId?: SortOrder
+    gameId?: SortOrder
+    pointsEarned?: SortOrder
+    playedAt?: SortOrder
+    gameSessionId?: SortOrderInput | SortOrder
+    tournamentParticipant?: TournamentParticipantOrderByWithRelationInput
+  }
+
+  export type TournamentGamePlayWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TournamentGamePlayWhereInput | TournamentGamePlayWhereInput[]
+    OR?: TournamentGamePlayWhereInput[]
+    NOT?: TournamentGamePlayWhereInput | TournamentGamePlayWhereInput[]
+    tournamentParticipantId?: StringFilter<"TournamentGamePlay"> | string
+    gameId?: StringFilter<"TournamentGamePlay"> | string
+    pointsEarned?: IntFilter<"TournamentGamePlay"> | number
+    playedAt?: DateTimeFilter<"TournamentGamePlay"> | Date | string
+    gameSessionId?: StringNullableFilter<"TournamentGamePlay"> | string | null
+    tournamentParticipant?: XOR<TournamentParticipantScalarRelationFilter, TournamentParticipantWhereInput>
+  }, "id">
+
+  export type TournamentGamePlayOrderByWithAggregationInput = {
+    id?: SortOrder
+    tournamentParticipantId?: SortOrder
+    gameId?: SortOrder
+    pointsEarned?: SortOrder
+    playedAt?: SortOrder
+    gameSessionId?: SortOrderInput | SortOrder
+    _count?: TournamentGamePlayCountOrderByAggregateInput
+    _avg?: TournamentGamePlayAvgOrderByAggregateInput
+    _max?: TournamentGamePlayMaxOrderByAggregateInput
+    _min?: TournamentGamePlayMinOrderByAggregateInput
+    _sum?: TournamentGamePlaySumOrderByAggregateInput
+  }
+
+  export type TournamentGamePlayScalarWhereWithAggregatesInput = {
+    AND?: TournamentGamePlayScalarWhereWithAggregatesInput | TournamentGamePlayScalarWhereWithAggregatesInput[]
+    OR?: TournamentGamePlayScalarWhereWithAggregatesInput[]
+    NOT?: TournamentGamePlayScalarWhereWithAggregatesInput | TournamentGamePlayScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TournamentGamePlay"> | string
+    tournamentParticipantId?: StringWithAggregatesFilter<"TournamentGamePlay"> | string
+    gameId?: StringWithAggregatesFilter<"TournamentGamePlay"> | string
+    pointsEarned?: IntWithAggregatesFilter<"TournamentGamePlay"> | number
+    playedAt?: DateTimeWithAggregatesFilter<"TournamentGamePlay"> | Date | string
+    gameSessionId?: StringNullableWithAggregatesFilter<"TournamentGamePlay"> | string | null
+  }
+
+  export type TournamentRewardWhereInput = {
+    AND?: TournamentRewardWhereInput | TournamentRewardWhereInput[]
+    OR?: TournamentRewardWhereInput[]
+    NOT?: TournamentRewardWhereInput | TournamentRewardWhereInput[]
+    id?: StringFilter<"TournamentReward"> | string
+    tournamentId?: StringFilter<"TournamentReward"> | string
+    rank?: IntFilter<"TournamentReward"> | number
+    description?: StringFilter<"TournamentReward"> | string
+    isClaimed?: BoolFilter<"TournamentReward"> | boolean
+    winnerId?: StringNullableFilter<"TournamentReward"> | string | null
+    tournament?: XOR<TournamentScalarRelationFilter, TournamentWhereInput>
+    winner?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type TournamentRewardOrderByWithRelationInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    rank?: SortOrder
+    description?: SortOrder
+    isClaimed?: SortOrder
+    winnerId?: SortOrderInput | SortOrder
+    tournament?: TournamentOrderByWithRelationInput
+    winner?: UserOrderByWithRelationInput
+  }
+
+  export type TournamentRewardWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TournamentRewardWhereInput | TournamentRewardWhereInput[]
+    OR?: TournamentRewardWhereInput[]
+    NOT?: TournamentRewardWhereInput | TournamentRewardWhereInput[]
+    tournamentId?: StringFilter<"TournamentReward"> | string
+    rank?: IntFilter<"TournamentReward"> | number
+    description?: StringFilter<"TournamentReward"> | string
+    isClaimed?: BoolFilter<"TournamentReward"> | boolean
+    winnerId?: StringNullableFilter<"TournamentReward"> | string | null
+    tournament?: XOR<TournamentScalarRelationFilter, TournamentWhereInput>
+    winner?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type TournamentRewardOrderByWithAggregationInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    rank?: SortOrder
+    description?: SortOrder
+    isClaimed?: SortOrder
+    winnerId?: SortOrderInput | SortOrder
+    _count?: TournamentRewardCountOrderByAggregateInput
+    _avg?: TournamentRewardAvgOrderByAggregateInput
+    _max?: TournamentRewardMaxOrderByAggregateInput
+    _min?: TournamentRewardMinOrderByAggregateInput
+    _sum?: TournamentRewardSumOrderByAggregateInput
+  }
+
+  export type TournamentRewardScalarWhereWithAggregatesInput = {
+    AND?: TournamentRewardScalarWhereWithAggregatesInput | TournamentRewardScalarWhereWithAggregatesInput[]
+    OR?: TournamentRewardScalarWhereWithAggregatesInput[]
+    NOT?: TournamentRewardScalarWhereWithAggregatesInput | TournamentRewardScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TournamentReward"> | string
+    tournamentId?: StringWithAggregatesFilter<"TournamentReward"> | string
+    rank?: IntWithAggregatesFilter<"TournamentReward"> | number
+    description?: StringWithAggregatesFilter<"TournamentReward"> | string
+    isClaimed?: BoolWithAggregatesFilter<"TournamentReward"> | boolean
+    winnerId?: StringNullableWithAggregatesFilter<"TournamentReward"> | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     username?: string | null
@@ -45713,6 +54248,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -45782,6 +54320,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -45851,6 +54392,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -45920,6 +54464,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -46993,7 +55540,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -47003,9 +55550,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProvider?: GameProviderCreateNestedOneWithoutGamesInput
     gameSessions?: GameSessionCreateNestedManyWithoutGameInput
     gameLaunchLinks?: GameLaunchLinkCreateNestedManyWithoutGameInput
     operator?: OperatorAccessCreateNestedOneWithoutGamesInput
+    TournamentGame?: TournamentGameCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateInput = {
@@ -47014,7 +55564,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -47024,9 +55574,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProviderId?: string | null
     operatorId?: string | null
     gameSessions?: GameSessionUncheckedCreateNestedManyWithoutGameInput
     gameLaunchLinks?: GameLaunchLinkUncheckedCreateNestedManyWithoutGameInput
+    TournamentGame?: TournamentGameUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameUpdateInput = {
@@ -47035,7 +55588,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -47045,9 +55598,12 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProvider?: GameProviderUpdateOneWithoutGamesNestedInput
     gameSessions?: GameSessionUpdateManyWithoutGameNestedInput
     gameLaunchLinks?: GameLaunchLinkUpdateManyWithoutGameNestedInput
     operator?: OperatorAccessUpdateOneWithoutGamesNestedInput
+    TournamentGame?: TournamentGameUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateInput = {
@@ -47056,7 +55612,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -47066,9 +55622,12 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProviderId?: NullableStringFieldUpdateOperationsInput | string | null
     operatorId?: NullableStringFieldUpdateOperationsInput | string | null
     gameSessions?: GameSessionUncheckedUpdateManyWithoutGameNestedInput
     gameLaunchLinks?: GameLaunchLinkUncheckedUpdateManyWithoutGameNestedInput
+    TournamentGame?: TournamentGameUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type GameCreateManyInput = {
@@ -47077,7 +55636,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -47087,6 +55646,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProviderId?: string | null
     operatorId?: string | null
   }
 
@@ -47096,7 +55657,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -47106,6 +55667,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type GameUncheckedUpdateManyInput = {
@@ -47114,7 +55676,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -47124,6 +55686,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProviderId?: NullableStringFieldUpdateOperationsInput | string | null
     operatorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -47372,40 +55936,195 @@ export namespace Prisma {
     timeStamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GameProviderCreateInput = {
+    id?: string
+    name: string
+    displayName?: string | null
+    rgsBaseUrl: string
+    settingsPath?: string | null
+    spinPath?: string | null
+    resolveBetPath?: string | null
+    providerRoundId?: string | null
+    authType?: $Enums.ProviderAuthType
+    apiKey?: string | null
+    apiSecret?: string | null
+    publicKey?: string | null
+    privateKeyRef?: string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    games?: GameCreateNestedManyWithoutGameProviderInput
+  }
+
+  export type GameProviderUncheckedCreateInput = {
+    id?: string
+    name: string
+    displayName?: string | null
+    rgsBaseUrl: string
+    settingsPath?: string | null
+    spinPath?: string | null
+    resolveBetPath?: string | null
+    providerRoundId?: string | null
+    authType?: $Enums.ProviderAuthType
+    apiKey?: string | null
+    apiSecret?: string | null
+    publicKey?: string | null
+    privateKeyRef?: string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    games?: GameUncheckedCreateNestedManyWithoutGameProviderInput
+  }
+
+  export type GameProviderUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    rgsBaseUrl?: StringFieldUpdateOperationsInput | string
+    settingsPath?: NullableStringFieldUpdateOperationsInput | string | null
+    spinPath?: NullableStringFieldUpdateOperationsInput | string | null
+    resolveBetPath?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRoundId?: NullableStringFieldUpdateOperationsInput | string | null
+    authType?: EnumProviderAuthTypeFieldUpdateOperationsInput | $Enums.ProviderAuthType
+    apiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    apiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    publicKey?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKeyRef?: NullableStringFieldUpdateOperationsInput | string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    games?: GameUpdateManyWithoutGameProviderNestedInput
+  }
+
+  export type GameProviderUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    rgsBaseUrl?: StringFieldUpdateOperationsInput | string
+    settingsPath?: NullableStringFieldUpdateOperationsInput | string | null
+    spinPath?: NullableStringFieldUpdateOperationsInput | string | null
+    resolveBetPath?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRoundId?: NullableStringFieldUpdateOperationsInput | string | null
+    authType?: EnumProviderAuthTypeFieldUpdateOperationsInput | $Enums.ProviderAuthType
+    apiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    apiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    publicKey?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKeyRef?: NullableStringFieldUpdateOperationsInput | string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    games?: GameUncheckedUpdateManyWithoutGameProviderNestedInput
+  }
+
+  export type GameProviderCreateManyInput = {
+    id?: string
+    name: string
+    displayName?: string | null
+    rgsBaseUrl: string
+    settingsPath?: string | null
+    spinPath?: string | null
+    resolveBetPath?: string | null
+    providerRoundId?: string | null
+    authType?: $Enums.ProviderAuthType
+    apiKey?: string | null
+    apiSecret?: string | null
+    publicKey?: string | null
+    privateKeyRef?: string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GameProviderUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    rgsBaseUrl?: StringFieldUpdateOperationsInput | string
+    settingsPath?: NullableStringFieldUpdateOperationsInput | string | null
+    spinPath?: NullableStringFieldUpdateOperationsInput | string | null
+    resolveBetPath?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRoundId?: NullableStringFieldUpdateOperationsInput | string | null
+    authType?: EnumProviderAuthTypeFieldUpdateOperationsInput | $Enums.ProviderAuthType
+    apiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    apiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    publicKey?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKeyRef?: NullableStringFieldUpdateOperationsInput | string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GameProviderUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    rgsBaseUrl?: StringFieldUpdateOperationsInput | string
+    settingsPath?: NullableStringFieldUpdateOperationsInput | string | null
+    spinPath?: NullableStringFieldUpdateOperationsInput | string | null
+    resolveBetPath?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRoundId?: NullableStringFieldUpdateOperationsInput | string | null
+    authType?: EnumProviderAuthTypeFieldUpdateOperationsInput | $Enums.ProviderAuthType
+    apiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    apiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    publicKey?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKeyRef?: NullableStringFieldUpdateOperationsInput | string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GameSessionCreateInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     spins?: GameSpinCreateNestedManyWithoutGameSessionInput
     user: UserCreateNestedOneWithoutGameSessionsInput
     game: GameCreateNestedOneWithoutGameSessionsInput
-    Profile?: ProfileCreateNestedManyWithoutCurrentGameSessionInput
+    profile?: ProfileCreateNestedManyWithoutCurrentGameSessionInput
   }
 
   export type GameSessionUncheckedCreateInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -47413,45 +56132,51 @@ export namespace Prisma {
     totalWon?: number
     userId: string
     gameId: string
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     spins?: GameSpinUncheckedCreateNestedManyWithoutGameSessionInput
-    Profile?: ProfileUncheckedCreateNestedManyWithoutCurrentGameSessionInput
+    profile?: ProfileUncheckedCreateNestedManyWithoutCurrentGameSessionInput
   }
 
   export type GameSessionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     spins?: GameSpinUpdateManyWithoutGameSessionNestedInput
     user?: UserUpdateOneRequiredWithoutGameSessionsNestedInput
     game?: GameUpdateOneRequiredWithoutGameSessionsNestedInput
-    Profile?: ProfileUpdateManyWithoutCurrentGameSessionNestedInput
+    profile?: ProfileUpdateManyWithoutCurrentGameSessionNestedInput
   }
 
   export type GameSessionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47459,22 +56184,25 @@ export namespace Prisma {
     totalWon?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     gameId?: StringFieldUpdateOperationsInput | string
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     spins?: GameSpinUncheckedUpdateManyWithoutGameSessionNestedInput
-    Profile?: ProfileUncheckedUpdateManyWithoutCurrentGameSessionNestedInput
+    profile?: ProfileUncheckedUpdateManyWithoutCurrentGameSessionNestedInput
   }
 
   export type GameSessionCreateManyInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -47482,6 +56210,8 @@ export namespace Prisma {
     totalWon?: number
     userId: string
     gameId: string
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
   }
 
@@ -47489,18 +56219,21 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -47508,13 +56241,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47522,6 +56256,8 @@ export namespace Prisma {
     totalWon?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     gameId?: StringFieldUpdateOperationsInput | string
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -47908,6 +56644,7 @@ export namespace Prisma {
   export type TransactionCreateInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
     amount: number
@@ -47941,6 +56678,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -47972,6 +56710,7 @@ export namespace Prisma {
   export type TransactionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -48005,6 +56744,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -48037,6 +56777,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -48066,6 +56807,7 @@ export namespace Prisma {
   export type TransactionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -48092,6 +56834,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -49158,6 +57901,343 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TournamentCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eligibleGames?: TournamentGameCreateNestedManyWithoutTournamentInput
+    participants?: TournamentParticipantCreateNestedManyWithoutTournamentInput
+    rewards?: TournamentRewardCreateNestedManyWithoutTournamentInput
+    createdBy?: UserCreateNestedOneWithoutTournamentInput
+  }
+
+  export type TournamentUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByid?: string | null
+    eligibleGames?: TournamentGameUncheckedCreateNestedManyWithoutTournamentInput
+    participants?: TournamentParticipantUncheckedCreateNestedManyWithoutTournamentInput
+    rewards?: TournamentRewardUncheckedCreateNestedManyWithoutTournamentInput
+  }
+
+  export type TournamentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eligibleGames?: TournamentGameUpdateManyWithoutTournamentNestedInput
+    participants?: TournamentParticipantUpdateManyWithoutTournamentNestedInput
+    rewards?: TournamentRewardUpdateManyWithoutTournamentNestedInput
+    createdBy?: UserUpdateOneWithoutTournamentNestedInput
+  }
+
+  export type TournamentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByid?: NullableStringFieldUpdateOperationsInput | string | null
+    eligibleGames?: TournamentGameUncheckedUpdateManyWithoutTournamentNestedInput
+    participants?: TournamentParticipantUncheckedUpdateManyWithoutTournamentNestedInput
+    rewards?: TournamentRewardUncheckedUpdateManyWithoutTournamentNestedInput
+  }
+
+  export type TournamentCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByid?: string | null
+  }
+
+  export type TournamentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByid?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentGameCreateInput = {
+    id?: string
+    pointMultiplier?: number
+    tournament: TournamentCreateNestedOneWithoutEligibleGamesInput
+    game: GameCreateNestedOneWithoutTournamentGameInput
+  }
+
+  export type TournamentGameUncheckedCreateInput = {
+    id?: string
+    tournamentId: string
+    gameId: string
+    pointMultiplier?: number
+  }
+
+  export type TournamentGameUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+    tournament?: TournamentUpdateOneRequiredWithoutEligibleGamesNestedInput
+    game?: GameUpdateOneRequiredWithoutTournamentGameNestedInput
+  }
+
+  export type TournamentGameUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type TournamentGameCreateManyInput = {
+    id?: string
+    tournamentId: string
+    gameId: string
+    pointMultiplier?: number
+  }
+
+  export type TournamentGameUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type TournamentGameUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type TournamentParticipantCreateInput = {
+    id?: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+    tournament: TournamentCreateNestedOneWithoutParticipantsInput
+    user: UserCreateNestedOneWithoutTournamentParticipantInput
+    gamePlays?: TournamentGamePlayCreateNestedManyWithoutTournamentParticipantInput
+  }
+
+  export type TournamentParticipantUncheckedCreateInput = {
+    id?: string
+    tournamentId: string
+    userId: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+    gamePlays?: TournamentGamePlayUncheckedCreateNestedManyWithoutTournamentParticipantInput
+  }
+
+  export type TournamentParticipantUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournament?: TournamentUpdateOneRequiredWithoutParticipantsNestedInput
+    user?: UserUpdateOneRequiredWithoutTournamentParticipantNestedInput
+    gamePlays?: TournamentGamePlayUpdateManyWithoutTournamentParticipantNestedInput
+  }
+
+  export type TournamentParticipantUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gamePlays?: TournamentGamePlayUncheckedUpdateManyWithoutTournamentParticipantNestedInput
+  }
+
+  export type TournamentParticipantCreateManyInput = {
+    id?: string
+    tournamentId: string
+    userId: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+  }
+
+  export type TournamentParticipantUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentParticipantUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentGamePlayCreateInput = {
+    id?: string
+    gameId: string
+    pointsEarned: number
+    playedAt?: Date | string
+    gameSessionId?: string | null
+    tournamentParticipant: TournamentParticipantCreateNestedOneWithoutGamePlaysInput
+  }
+
+  export type TournamentGamePlayUncheckedCreateInput = {
+    id?: string
+    tournamentParticipantId: string
+    gameId: string
+    pointsEarned: number
+    playedAt?: Date | string
+    gameSessionId?: string | null
+  }
+
+  export type TournamentGamePlayUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointsEarned?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    tournamentParticipant?: TournamentParticipantUpdateOneRequiredWithoutGamePlaysNestedInput
+  }
+
+  export type TournamentGamePlayUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentParticipantId?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointsEarned?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentGamePlayCreateManyInput = {
+    id?: string
+    tournamentParticipantId: string
+    gameId: string
+    pointsEarned: number
+    playedAt?: Date | string
+    gameSessionId?: string | null
+  }
+
+  export type TournamentGamePlayUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointsEarned?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentGamePlayUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentParticipantId?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointsEarned?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentRewardCreateInput = {
+    id?: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+    tournament: TournamentCreateNestedOneWithoutRewardsInput
+    winner?: UserCreateNestedOneWithoutTournamentRewardInput
+  }
+
+  export type TournamentRewardUncheckedCreateInput = {
+    id?: string
+    tournamentId: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+    winnerId?: string | null
+  }
+
+  export type TournamentRewardUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    tournament?: TournamentUpdateOneRequiredWithoutRewardsNestedInput
+    winner?: UserUpdateOneWithoutTournamentRewardNestedInput
+  }
+
+  export type TournamentRewardUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentRewardCreateManyInput = {
+    id?: string
+    tournamentId: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+    winnerId?: string | null
+  }
+
+  export type TournamentRewardUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TournamentRewardUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -49422,6 +58502,24 @@ export namespace Prisma {
     none?: TransactionWhereInput
   }
 
+  export type TournamentParticipantListRelationFilter = {
+    every?: TournamentParticipantWhereInput
+    some?: TournamentParticipantWhereInput
+    none?: TournamentParticipantWhereInput
+  }
+
+  export type TournamentRewardListRelationFilter = {
+    every?: TournamentRewardWhereInput
+    some?: TournamentRewardWhereInput
+    none?: TournamentRewardWhereInput
+  }
+
+  export type TournamentListRelationFilter = {
+    every?: TournamentWhereInput
+    some?: TournamentWhereInput
+    none?: TournamentWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -49508,6 +58606,18 @@ export namespace Prisma {
   }
 
   export type TransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TournamentParticipantOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TournamentRewardOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TournamentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -50393,11 +59503,12 @@ export namespace Prisma {
     blur?: SortOrder
   }
 
-  export type EnumGameProviderFilter<$PrismaModel = never> = {
-    equals?: $Enums.GameProvider | EnumGameProviderFieldRefInput<$PrismaModel>
-    in?: $Enums.GameProvider[] | ListEnumGameProviderFieldRefInput<$PrismaModel>
-    notIn?: $Enums.GameProvider[] | ListEnumGameProviderFieldRefInput<$PrismaModel>
-    not?: NestedEnumGameProviderFilter<$PrismaModel> | $Enums.GameProvider
+  export type EnumGameProviderNameNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.GameProviderName[] | ListEnumGameProviderNameFieldRefInput<$PrismaModel> | null
+    has?: $Enums.GameProviderName | EnumGameProviderNameFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.GameProviderName[] | ListEnumGameProviderNameFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.GameProviderName[] | ListEnumGameProviderNameFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
   }
 
   export type EnumGameCategoryFilter<$PrismaModel = never> = {
@@ -50407,13 +59518,28 @@ export namespace Prisma {
     not?: NestedEnumGameCategoryFilter<$PrismaModel> | $Enums.GameCategory
   }
 
+  export type GameProviderNullableScalarRelationFilter = {
+    is?: GameProviderWhereInput | null
+    isNot?: GameProviderWhereInput | null
+  }
+
+  export type TournamentGameListRelationFilter = {
+    every?: TournamentGameWhereInput
+    some?: TournamentGameWhereInput
+    none?: TournamentGameWhereInput
+  }
+
+  export type TournamentGameOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type GameCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     title?: SortOrder
     goldsvetData?: SortOrder
     description?: SortOrder
-    provider?: SortOrder
+    supportedProviders?: SortOrder
     category?: SortOrder
     tags?: SortOrder
     isActive?: SortOrder
@@ -50423,6 +59549,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     featured?: SortOrder
+    providerName?: SortOrder
+    gameProviderId?: SortOrder
     operatorId?: SortOrder
   }
 
@@ -50431,7 +59559,6 @@ export namespace Prisma {
     name?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    provider?: SortOrder
     category?: SortOrder
     isActive?: SortOrder
     thumbnailUrl?: SortOrder
@@ -50439,6 +59566,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     featured?: SortOrder
+    providerName?: SortOrder
+    gameProviderId?: SortOrder
     operatorId?: SortOrder
   }
 
@@ -50447,7 +59576,6 @@ export namespace Prisma {
     name?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    provider?: SortOrder
     category?: SortOrder
     isActive?: SortOrder
     thumbnailUrl?: SortOrder
@@ -50455,17 +59583,9 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     featured?: SortOrder
+    providerName?: SortOrder
+    gameProviderId?: SortOrder
     operatorId?: SortOrder
-  }
-
-  export type EnumGameProviderWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.GameProvider | EnumGameProviderFieldRefInput<$PrismaModel>
-    in?: $Enums.GameProvider[] | ListEnumGameProviderFieldRefInput<$PrismaModel>
-    notIn?: $Enums.GameProvider[] | ListEnumGameProviderFieldRefInput<$PrismaModel>
-    not?: NestedEnumGameProviderWithAggregatesFilter<$PrismaModel> | $Enums.GameProvider
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumGameProviderFilter<$PrismaModel>
-    _max?: NestedEnumGameProviderFilter<$PrismaModel>
   }
 
   export type EnumGameCategoryWithAggregatesFilter<$PrismaModel = never> = {
@@ -50607,6 +59727,84 @@ export namespace Prisma {
     wagerAmount?: SortOrder
   }
 
+  export type EnumProviderAuthTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProviderAuthType | EnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProviderAuthType[] | ListEnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProviderAuthType[] | ListEnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProviderAuthTypeFilter<$PrismaModel> | $Enums.ProviderAuthType
+  }
+
+  export type GameProviderCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    rgsBaseUrl?: SortOrder
+    settingsPath?: SortOrder
+    spinPath?: SortOrder
+    resolveBetPath?: SortOrder
+    providerRoundId?: SortOrder
+    authType?: SortOrder
+    apiKey?: SortOrder
+    apiSecret?: SortOrder
+    publicKey?: SortOrder
+    privateKeyRef?: SortOrder
+    configJson?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GameProviderMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    rgsBaseUrl?: SortOrder
+    settingsPath?: SortOrder
+    spinPath?: SortOrder
+    resolveBetPath?: SortOrder
+    providerRoundId?: SortOrder
+    authType?: SortOrder
+    apiKey?: SortOrder
+    apiSecret?: SortOrder
+    publicKey?: SortOrder
+    privateKeyRef?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GameProviderMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    rgsBaseUrl?: SortOrder
+    settingsPath?: SortOrder
+    spinPath?: SortOrder
+    resolveBetPath?: SortOrder
+    providerRoundId?: SortOrder
+    authType?: SortOrder
+    apiKey?: SortOrder
+    apiSecret?: SortOrder
+    publicKey?: SortOrder
+    privateKeyRef?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumProviderAuthTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProviderAuthType | EnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProviderAuthType[] | ListEnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProviderAuthType[] | ListEnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProviderAuthTypeWithAggregatesFilter<$PrismaModel> | $Enums.ProviderAuthType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProviderAuthTypeFilter<$PrismaModel>
+    _max?: NestedEnumProviderAuthTypeFilter<$PrismaModel>
+  }
+
   export type GameSpinListRelationFilter = {
     every?: GameSpinWhereInput
     some?: GameSpinWhereInput
@@ -50626,13 +59824,14 @@ export namespace Prisma {
     id?: SortOrder
     isActive?: SortOrder
     sessionData?: SortOrder
-    sessionId?: SortOrder
+    authSessionId?: SortOrder
     currencyId?: SortOrder
     startedAt?: SortOrder
     endTime?: SortOrder
     startTime?: SortOrder
     ipAddress?: SortOrder
     startingBalance?: SortOrder
+    startingTotalXp?: SortOrder
     userAgent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -50640,11 +59839,14 @@ export namespace Prisma {
     totalWon?: SortOrder
     userId?: SortOrder
     gameId?: SortOrder
+    rtgToken?: SortOrder
+    rtgFingerPrint?: SortOrder
     profileId?: SortOrder
   }
 
   export type GameSessionAvgOrderByAggregateInput = {
     startingBalance?: SortOrder
+    startingTotalXp?: SortOrder
     totalWagered?: SortOrder
     totalWon?: SortOrder
   }
@@ -50652,13 +59854,14 @@ export namespace Prisma {
   export type GameSessionMaxOrderByAggregateInput = {
     id?: SortOrder
     isActive?: SortOrder
-    sessionId?: SortOrder
+    authSessionId?: SortOrder
     currencyId?: SortOrder
     startedAt?: SortOrder
     endTime?: SortOrder
     startTime?: SortOrder
     ipAddress?: SortOrder
     startingBalance?: SortOrder
+    startingTotalXp?: SortOrder
     userAgent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -50666,19 +59869,22 @@ export namespace Prisma {
     totalWon?: SortOrder
     userId?: SortOrder
     gameId?: SortOrder
+    rtgToken?: SortOrder
+    rtgFingerPrint?: SortOrder
     profileId?: SortOrder
   }
 
   export type GameSessionMinOrderByAggregateInput = {
     id?: SortOrder
     isActive?: SortOrder
-    sessionId?: SortOrder
+    authSessionId?: SortOrder
     currencyId?: SortOrder
     startedAt?: SortOrder
     endTime?: SortOrder
     startTime?: SortOrder
     ipAddress?: SortOrder
     startingBalance?: SortOrder
+    startingTotalXp?: SortOrder
     userAgent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -50686,11 +59892,14 @@ export namespace Prisma {
     totalWon?: SortOrder
     userId?: SortOrder
     gameId?: SortOrder
+    rtgToken?: SortOrder
+    rtgFingerPrint?: SortOrder
     profileId?: SortOrder
   }
 
   export type GameSessionSumOrderByAggregateInput = {
     startingBalance?: SortOrder
+    startingTotalXp?: SortOrder
     totalWagered?: SortOrder
     totalWon?: SortOrder
   }
@@ -50944,6 +60153,7 @@ export namespace Prisma {
     id?: SortOrder
     originatorUserId?: SortOrder
     processedAt?: SortOrder
+    gameId?: SortOrder
     receiverUserId?: SortOrder
     walletId?: SortOrder
     type?: SortOrder
@@ -50987,6 +60197,7 @@ export namespace Prisma {
     id?: SortOrder
     originatorUserId?: SortOrder
     processedAt?: SortOrder
+    gameId?: SortOrder
     receiverUserId?: SortOrder
     walletId?: SortOrder
     type?: SortOrder
@@ -51016,6 +60227,7 @@ export namespace Prisma {
     id?: SortOrder
     originatorUserId?: SortOrder
     processedAt?: SortOrder
+    gameId?: SortOrder
     receiverUserId?: SortOrder
     walletId?: SortOrder
     type?: SortOrder
@@ -51673,6 +60885,236 @@ export namespace Prisma {
     rebatePercentage?: SortOrder
   }
 
+  export type EnumTournamentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TournamentStatus | EnumTournamentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTournamentStatusFilter<$PrismaModel> | $Enums.TournamentStatus
+  }
+
+  export type TournamentCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    targetScore?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdByid?: SortOrder
+  }
+
+  export type TournamentAvgOrderByAggregateInput = {
+    targetScore?: SortOrder
+  }
+
+  export type TournamentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    targetScore?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdByid?: SortOrder
+  }
+
+  export type TournamentMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    targetScore?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdByid?: SortOrder
+  }
+
+  export type TournamentSumOrderByAggregateInput = {
+    targetScore?: SortOrder
+  }
+
+  export type EnumTournamentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TournamentStatus | EnumTournamentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTournamentStatusWithAggregatesFilter<$PrismaModel> | $Enums.TournamentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTournamentStatusFilter<$PrismaModel>
+    _max?: NestedEnumTournamentStatusFilter<$PrismaModel>
+  }
+
+  export type TournamentScalarRelationFilter = {
+    is?: TournamentWhereInput
+    isNot?: TournamentWhereInput
+  }
+
+  export type TournamentGameTournamentIdGameIdCompoundUniqueInput = {
+    tournamentId: string
+    gameId: string
+  }
+
+  export type TournamentGameCountOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    gameId?: SortOrder
+    pointMultiplier?: SortOrder
+  }
+
+  export type TournamentGameAvgOrderByAggregateInput = {
+    pointMultiplier?: SortOrder
+  }
+
+  export type TournamentGameMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    gameId?: SortOrder
+    pointMultiplier?: SortOrder
+  }
+
+  export type TournamentGameMinOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    gameId?: SortOrder
+    pointMultiplier?: SortOrder
+  }
+
+  export type TournamentGameSumOrderByAggregateInput = {
+    pointMultiplier?: SortOrder
+  }
+
+  export type TournamentGamePlayListRelationFilter = {
+    every?: TournamentGamePlayWhereInput
+    some?: TournamentGamePlayWhereInput
+    none?: TournamentGamePlayWhereInput
+  }
+
+  export type TournamentGamePlayOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TournamentParticipantTournamentIdUserIdCompoundUniqueInput = {
+    tournamentId: string
+    userId: string
+  }
+
+  export type TournamentParticipantCountOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    rank?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type TournamentParticipantAvgOrderByAggregateInput = {
+    score?: SortOrder
+    rank?: SortOrder
+  }
+
+  export type TournamentParticipantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    rank?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type TournamentParticipantMinOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    rank?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type TournamentParticipantSumOrderByAggregateInput = {
+    score?: SortOrder
+    rank?: SortOrder
+  }
+
+  export type TournamentParticipantScalarRelationFilter = {
+    is?: TournamentParticipantWhereInput
+    isNot?: TournamentParticipantWhereInput
+  }
+
+  export type TournamentGamePlayCountOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentParticipantId?: SortOrder
+    gameId?: SortOrder
+    pointsEarned?: SortOrder
+    playedAt?: SortOrder
+    gameSessionId?: SortOrder
+  }
+
+  export type TournamentGamePlayAvgOrderByAggregateInput = {
+    pointsEarned?: SortOrder
+  }
+
+  export type TournamentGamePlayMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentParticipantId?: SortOrder
+    gameId?: SortOrder
+    pointsEarned?: SortOrder
+    playedAt?: SortOrder
+    gameSessionId?: SortOrder
+  }
+
+  export type TournamentGamePlayMinOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentParticipantId?: SortOrder
+    gameId?: SortOrder
+    pointsEarned?: SortOrder
+    playedAt?: SortOrder
+    gameSessionId?: SortOrder
+  }
+
+  export type TournamentGamePlaySumOrderByAggregateInput = {
+    pointsEarned?: SortOrder
+  }
+
+  export type TournamentRewardCountOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    rank?: SortOrder
+    description?: SortOrder
+    isClaimed?: SortOrder
+    winnerId?: SortOrder
+  }
+
+  export type TournamentRewardAvgOrderByAggregateInput = {
+    rank?: SortOrder
+  }
+
+  export type TournamentRewardMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    rank?: SortOrder
+    description?: SortOrder
+    isClaimed?: SortOrder
+    winnerId?: SortOrder
+  }
+
+  export type TournamentRewardMinOrderByAggregateInput = {
+    id?: SortOrder
+    tournamentId?: SortOrder
+    rank?: SortOrder
+    description?: SortOrder
+    isClaimed?: SortOrder
+    winnerId?: SortOrder
+  }
+
+  export type TournamentRewardSumOrderByAggregateInput = {
+    rank?: SortOrder
+  }
+
   export type UserCreatetwoFactorRecoveryCodesInput = {
     set: string[]
   }
@@ -51881,6 +61323,27 @@ export namespace Prisma {
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
+  export type TournamentParticipantCreateNestedManyWithoutUserInput = {
+    create?: XOR<TournamentParticipantCreateWithoutUserInput, TournamentParticipantUncheckedCreateWithoutUserInput> | TournamentParticipantCreateWithoutUserInput[] | TournamentParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutUserInput | TournamentParticipantCreateOrConnectWithoutUserInput[]
+    createMany?: TournamentParticipantCreateManyUserInputEnvelope
+    connect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+  }
+
+  export type TournamentRewardCreateNestedManyWithoutWinnerInput = {
+    create?: XOR<TournamentRewardCreateWithoutWinnerInput, TournamentRewardUncheckedCreateWithoutWinnerInput> | TournamentRewardCreateWithoutWinnerInput[] | TournamentRewardUncheckedCreateWithoutWinnerInput[]
+    connectOrCreate?: TournamentRewardCreateOrConnectWithoutWinnerInput | TournamentRewardCreateOrConnectWithoutWinnerInput[]
+    createMany?: TournamentRewardCreateManyWinnerInputEnvelope
+    connect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+  }
+
+  export type TournamentCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TournamentCreateWithoutCreatedByInput, TournamentUncheckedCreateWithoutCreatedByInput> | TournamentCreateWithoutCreatedByInput[] | TournamentUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCreatedByInput | TournamentCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TournamentCreateManyCreatedByInputEnvelope
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+  }
+
   export type ProfileUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
@@ -52071,6 +61534,27 @@ export namespace Prisma {
     connectOrCreate?: TransactionCreateOrConnectWithoutReceiverInput | TransactionCreateOrConnectWithoutReceiverInput[]
     createMany?: TransactionCreateManyReceiverInputEnvelope
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type TournamentParticipantUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TournamentParticipantCreateWithoutUserInput, TournamentParticipantUncheckedCreateWithoutUserInput> | TournamentParticipantCreateWithoutUserInput[] | TournamentParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutUserInput | TournamentParticipantCreateOrConnectWithoutUserInput[]
+    createMany?: TournamentParticipantCreateManyUserInputEnvelope
+    connect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+  }
+
+  export type TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput = {
+    create?: XOR<TournamentRewardCreateWithoutWinnerInput, TournamentRewardUncheckedCreateWithoutWinnerInput> | TournamentRewardCreateWithoutWinnerInput[] | TournamentRewardUncheckedCreateWithoutWinnerInput[]
+    connectOrCreate?: TournamentRewardCreateOrConnectWithoutWinnerInput | TournamentRewardCreateOrConnectWithoutWinnerInput[]
+    createMany?: TournamentRewardCreateManyWinnerInputEnvelope
+    connect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+  }
+
+  export type TournamentUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TournamentCreateWithoutCreatedByInput, TournamentUncheckedCreateWithoutCreatedByInput> | TournamentCreateWithoutCreatedByInput[] | TournamentUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCreatedByInput | TournamentCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TournamentCreateManyCreatedByInputEnvelope
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -52529,6 +62013,48 @@ export namespace Prisma {
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
+  export type TournamentParticipantUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TournamentParticipantCreateWithoutUserInput, TournamentParticipantUncheckedCreateWithoutUserInput> | TournamentParticipantCreateWithoutUserInput[] | TournamentParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutUserInput | TournamentParticipantCreateOrConnectWithoutUserInput[]
+    upsert?: TournamentParticipantUpsertWithWhereUniqueWithoutUserInput | TournamentParticipantUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TournamentParticipantCreateManyUserInputEnvelope
+    set?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    disconnect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    delete?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    connect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    update?: TournamentParticipantUpdateWithWhereUniqueWithoutUserInput | TournamentParticipantUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TournamentParticipantUpdateManyWithWhereWithoutUserInput | TournamentParticipantUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TournamentParticipantScalarWhereInput | TournamentParticipantScalarWhereInput[]
+  }
+
+  export type TournamentRewardUpdateManyWithoutWinnerNestedInput = {
+    create?: XOR<TournamentRewardCreateWithoutWinnerInput, TournamentRewardUncheckedCreateWithoutWinnerInput> | TournamentRewardCreateWithoutWinnerInput[] | TournamentRewardUncheckedCreateWithoutWinnerInput[]
+    connectOrCreate?: TournamentRewardCreateOrConnectWithoutWinnerInput | TournamentRewardCreateOrConnectWithoutWinnerInput[]
+    upsert?: TournamentRewardUpsertWithWhereUniqueWithoutWinnerInput | TournamentRewardUpsertWithWhereUniqueWithoutWinnerInput[]
+    createMany?: TournamentRewardCreateManyWinnerInputEnvelope
+    set?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    disconnect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    delete?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    connect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    update?: TournamentRewardUpdateWithWhereUniqueWithoutWinnerInput | TournamentRewardUpdateWithWhereUniqueWithoutWinnerInput[]
+    updateMany?: TournamentRewardUpdateManyWithWhereWithoutWinnerInput | TournamentRewardUpdateManyWithWhereWithoutWinnerInput[]
+    deleteMany?: TournamentRewardScalarWhereInput | TournamentRewardScalarWhereInput[]
+  }
+
+  export type TournamentUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TournamentCreateWithoutCreatedByInput, TournamentUncheckedCreateWithoutCreatedByInput> | TournamentCreateWithoutCreatedByInput[] | TournamentUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCreatedByInput | TournamentCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TournamentUpsertWithWhereUniqueWithoutCreatedByInput | TournamentUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TournamentCreateManyCreatedByInputEnvelope
+    set?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    disconnect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    delete?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    update?: TournamentUpdateWithWhereUniqueWithoutCreatedByInput | TournamentUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TournamentUpdateManyWithWhereWithoutCreatedByInput | TournamentUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+  }
+
   export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
@@ -52906,6 +62432,48 @@ export namespace Prisma {
     update?: TransactionUpdateWithWhereUniqueWithoutReceiverInput | TransactionUpdateWithWhereUniqueWithoutReceiverInput[]
     updateMany?: TransactionUpdateManyWithWhereWithoutReceiverInput | TransactionUpdateManyWithWhereWithoutReceiverInput[]
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TournamentParticipantCreateWithoutUserInput, TournamentParticipantUncheckedCreateWithoutUserInput> | TournamentParticipantCreateWithoutUserInput[] | TournamentParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutUserInput | TournamentParticipantCreateOrConnectWithoutUserInput[]
+    upsert?: TournamentParticipantUpsertWithWhereUniqueWithoutUserInput | TournamentParticipantUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TournamentParticipantCreateManyUserInputEnvelope
+    set?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    disconnect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    delete?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    connect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    update?: TournamentParticipantUpdateWithWhereUniqueWithoutUserInput | TournamentParticipantUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TournamentParticipantUpdateManyWithWhereWithoutUserInput | TournamentParticipantUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TournamentParticipantScalarWhereInput | TournamentParticipantScalarWhereInput[]
+  }
+
+  export type TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput = {
+    create?: XOR<TournamentRewardCreateWithoutWinnerInput, TournamentRewardUncheckedCreateWithoutWinnerInput> | TournamentRewardCreateWithoutWinnerInput[] | TournamentRewardUncheckedCreateWithoutWinnerInput[]
+    connectOrCreate?: TournamentRewardCreateOrConnectWithoutWinnerInput | TournamentRewardCreateOrConnectWithoutWinnerInput[]
+    upsert?: TournamentRewardUpsertWithWhereUniqueWithoutWinnerInput | TournamentRewardUpsertWithWhereUniqueWithoutWinnerInput[]
+    createMany?: TournamentRewardCreateManyWinnerInputEnvelope
+    set?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    disconnect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    delete?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    connect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    update?: TournamentRewardUpdateWithWhereUniqueWithoutWinnerInput | TournamentRewardUpdateWithWhereUniqueWithoutWinnerInput[]
+    updateMany?: TournamentRewardUpdateManyWithWhereWithoutWinnerInput | TournamentRewardUpdateManyWithWhereWithoutWinnerInput[]
+    deleteMany?: TournamentRewardScalarWhereInput | TournamentRewardScalarWhereInput[]
+  }
+
+  export type TournamentUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TournamentCreateWithoutCreatedByInput, TournamentUncheckedCreateWithoutCreatedByInput> | TournamentCreateWithoutCreatedByInput[] | TournamentUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCreatedByInput | TournamentCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TournamentUpsertWithWhereUniqueWithoutCreatedByInput | TournamentUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TournamentCreateManyCreatedByInputEnvelope
+    set?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    disconnect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    delete?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    update?: TournamentUpdateWithWhereUniqueWithoutCreatedByInput | TournamentUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TournamentUpdateManyWithWhereWithoutCreatedByInput | TournamentUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
   }
 
   export type UserCreateNestedManyWithoutPreferredCurrencyInput = {
@@ -53565,8 +63133,18 @@ export namespace Prisma {
     deleteMany?: UserAchievementScalarWhereInput | UserAchievementScalarWhereInput[]
   }
 
+  export type GameCreatesupportedProvidersInput = {
+    set: $Enums.GameProviderName[]
+  }
+
   export type GameCreatetagsInput = {
     set: string[]
+  }
+
+  export type GameProviderCreateNestedOneWithoutGamesInput = {
+    create?: XOR<GameProviderCreateWithoutGamesInput, GameProviderUncheckedCreateWithoutGamesInput>
+    connectOrCreate?: GameProviderCreateOrConnectWithoutGamesInput
+    connect?: GameProviderWhereUniqueInput
   }
 
   export type GameSessionCreateNestedManyWithoutGameInput = {
@@ -53589,6 +63167,13 @@ export namespace Prisma {
     connect?: OperatorAccessWhereUniqueInput
   }
 
+  export type TournamentGameCreateNestedManyWithoutGameInput = {
+    create?: XOR<TournamentGameCreateWithoutGameInput, TournamentGameUncheckedCreateWithoutGameInput> | TournamentGameCreateWithoutGameInput[] | TournamentGameUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: TournamentGameCreateOrConnectWithoutGameInput | TournamentGameCreateOrConnectWithoutGameInput[]
+    createMany?: TournamentGameCreateManyGameInputEnvelope
+    connect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+  }
+
   export type GameSessionUncheckedCreateNestedManyWithoutGameInput = {
     create?: XOR<GameSessionCreateWithoutGameInput, GameSessionUncheckedCreateWithoutGameInput> | GameSessionCreateWithoutGameInput[] | GameSessionUncheckedCreateWithoutGameInput[]
     connectOrCreate?: GameSessionCreateOrConnectWithoutGameInput | GameSessionCreateOrConnectWithoutGameInput[]
@@ -53603,8 +63188,16 @@ export namespace Prisma {
     connect?: GameLaunchLinkWhereUniqueInput | GameLaunchLinkWhereUniqueInput[]
   }
 
-  export type EnumGameProviderFieldUpdateOperationsInput = {
-    set?: $Enums.GameProvider
+  export type TournamentGameUncheckedCreateNestedManyWithoutGameInput = {
+    create?: XOR<TournamentGameCreateWithoutGameInput, TournamentGameUncheckedCreateWithoutGameInput> | TournamentGameCreateWithoutGameInput[] | TournamentGameUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: TournamentGameCreateOrConnectWithoutGameInput | TournamentGameCreateOrConnectWithoutGameInput[]
+    createMany?: TournamentGameCreateManyGameInputEnvelope
+    connect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+  }
+
+  export type GameUpdatesupportedProvidersInput = {
+    set?: $Enums.GameProviderName[]
+    push?: $Enums.GameProviderName | $Enums.GameProviderName[]
   }
 
   export type EnumGameCategoryFieldUpdateOperationsInput = {
@@ -53614,6 +63207,16 @@ export namespace Prisma {
   export type GameUpdatetagsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type GameProviderUpdateOneWithoutGamesNestedInput = {
+    create?: XOR<GameProviderCreateWithoutGamesInput, GameProviderUncheckedCreateWithoutGamesInput>
+    connectOrCreate?: GameProviderCreateOrConnectWithoutGamesInput
+    upsert?: GameProviderUpsertWithoutGamesInput
+    disconnect?: GameProviderWhereInput | boolean
+    delete?: GameProviderWhereInput | boolean
+    connect?: GameProviderWhereUniqueInput
+    update?: XOR<XOR<GameProviderUpdateToOneWithWhereWithoutGamesInput, GameProviderUpdateWithoutGamesInput>, GameProviderUncheckedUpdateWithoutGamesInput>
   }
 
   export type GameSessionUpdateManyWithoutGameNestedInput = {
@@ -53654,6 +63257,20 @@ export namespace Prisma {
     update?: XOR<XOR<OperatorAccessUpdateToOneWithWhereWithoutGamesInput, OperatorAccessUpdateWithoutGamesInput>, OperatorAccessUncheckedUpdateWithoutGamesInput>
   }
 
+  export type TournamentGameUpdateManyWithoutGameNestedInput = {
+    create?: XOR<TournamentGameCreateWithoutGameInput, TournamentGameUncheckedCreateWithoutGameInput> | TournamentGameCreateWithoutGameInput[] | TournamentGameUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: TournamentGameCreateOrConnectWithoutGameInput | TournamentGameCreateOrConnectWithoutGameInput[]
+    upsert?: TournamentGameUpsertWithWhereUniqueWithoutGameInput | TournamentGameUpsertWithWhereUniqueWithoutGameInput[]
+    createMany?: TournamentGameCreateManyGameInputEnvelope
+    set?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    disconnect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    delete?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    connect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    update?: TournamentGameUpdateWithWhereUniqueWithoutGameInput | TournamentGameUpdateWithWhereUniqueWithoutGameInput[]
+    updateMany?: TournamentGameUpdateManyWithWhereWithoutGameInput | TournamentGameUpdateManyWithWhereWithoutGameInput[]
+    deleteMany?: TournamentGameScalarWhereInput | TournamentGameScalarWhereInput[]
+  }
+
   export type GameSessionUncheckedUpdateManyWithoutGameNestedInput = {
     create?: XOR<GameSessionCreateWithoutGameInput, GameSessionUncheckedCreateWithoutGameInput> | GameSessionCreateWithoutGameInput[] | GameSessionUncheckedCreateWithoutGameInput[]
     connectOrCreate?: GameSessionCreateOrConnectWithoutGameInput | GameSessionCreateOrConnectWithoutGameInput[]
@@ -53680,6 +63297,20 @@ export namespace Prisma {
     update?: GameLaunchLinkUpdateWithWhereUniqueWithoutGameInput | GameLaunchLinkUpdateWithWhereUniqueWithoutGameInput[]
     updateMany?: GameLaunchLinkUpdateManyWithWhereWithoutGameInput | GameLaunchLinkUpdateManyWithWhereWithoutGameInput[]
     deleteMany?: GameLaunchLinkScalarWhereInput | GameLaunchLinkScalarWhereInput[]
+  }
+
+  export type TournamentGameUncheckedUpdateManyWithoutGameNestedInput = {
+    create?: XOR<TournamentGameCreateWithoutGameInput, TournamentGameUncheckedCreateWithoutGameInput> | TournamentGameCreateWithoutGameInput[] | TournamentGameUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: TournamentGameCreateOrConnectWithoutGameInput | TournamentGameCreateOrConnectWithoutGameInput[]
+    upsert?: TournamentGameUpsertWithWhereUniqueWithoutGameInput | TournamentGameUpsertWithWhereUniqueWithoutGameInput[]
+    createMany?: TournamentGameCreateManyGameInputEnvelope
+    set?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    disconnect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    delete?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    connect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    update?: TournamentGameUpdateWithWhereUniqueWithoutGameInput | TournamentGameUpdateWithWhereUniqueWithoutGameInput[]
+    updateMany?: TournamentGameUpdateManyWithWhereWithoutGameInput | TournamentGameUpdateManyWithWhereWithoutGameInput[]
+    deleteMany?: TournamentGameScalarWhereInput | TournamentGameScalarWhereInput[]
   }
 
   export type PostCreatetagsInput = {
@@ -53787,6 +63418,52 @@ export namespace Prisma {
     upsert?: GameSessionUpsertWithoutSpinsInput
     connect?: GameSessionWhereUniqueInput
     update?: XOR<XOR<GameSessionUpdateToOneWithWhereWithoutSpinsInput, GameSessionUpdateWithoutSpinsInput>, GameSessionUncheckedUpdateWithoutSpinsInput>
+  }
+
+  export type GameCreateNestedManyWithoutGameProviderInput = {
+    create?: XOR<GameCreateWithoutGameProviderInput, GameUncheckedCreateWithoutGameProviderInput> | GameCreateWithoutGameProviderInput[] | GameUncheckedCreateWithoutGameProviderInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutGameProviderInput | GameCreateOrConnectWithoutGameProviderInput[]
+    createMany?: GameCreateManyGameProviderInputEnvelope
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+  }
+
+  export type GameUncheckedCreateNestedManyWithoutGameProviderInput = {
+    create?: XOR<GameCreateWithoutGameProviderInput, GameUncheckedCreateWithoutGameProviderInput> | GameCreateWithoutGameProviderInput[] | GameUncheckedCreateWithoutGameProviderInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutGameProviderInput | GameCreateOrConnectWithoutGameProviderInput[]
+    createMany?: GameCreateManyGameProviderInputEnvelope
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+  }
+
+  export type EnumProviderAuthTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ProviderAuthType
+  }
+
+  export type GameUpdateManyWithoutGameProviderNestedInput = {
+    create?: XOR<GameCreateWithoutGameProviderInput, GameUncheckedCreateWithoutGameProviderInput> | GameCreateWithoutGameProviderInput[] | GameUncheckedCreateWithoutGameProviderInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutGameProviderInput | GameCreateOrConnectWithoutGameProviderInput[]
+    upsert?: GameUpsertWithWhereUniqueWithoutGameProviderInput | GameUpsertWithWhereUniqueWithoutGameProviderInput[]
+    createMany?: GameCreateManyGameProviderInputEnvelope
+    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    update?: GameUpdateWithWhereUniqueWithoutGameProviderInput | GameUpdateWithWhereUniqueWithoutGameProviderInput[]
+    updateMany?: GameUpdateManyWithWhereWithoutGameProviderInput | GameUpdateManyWithWhereWithoutGameProviderInput[]
+    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
+  }
+
+  export type GameUncheckedUpdateManyWithoutGameProviderNestedInput = {
+    create?: XOR<GameCreateWithoutGameProviderInput, GameUncheckedCreateWithoutGameProviderInput> | GameCreateWithoutGameProviderInput[] | GameUncheckedCreateWithoutGameProviderInput[]
+    connectOrCreate?: GameCreateOrConnectWithoutGameProviderInput | GameCreateOrConnectWithoutGameProviderInput[]
+    upsert?: GameUpsertWithWhereUniqueWithoutGameProviderInput | GameUpsertWithWhereUniqueWithoutGameProviderInput[]
+    createMany?: GameCreateManyGameProviderInputEnvelope
+    set?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    disconnect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    delete?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    connect?: GameWhereUniqueInput | GameWhereUniqueInput[]
+    update?: GameUpdateWithWhereUniqueWithoutGameProviderInput | GameUpdateWithWhereUniqueWithoutGameProviderInput[]
+    updateMany?: GameUpdateManyWithWhereWithoutGameProviderInput | GameUpdateManyWithWhereWithoutGameProviderInput[]
+    deleteMany?: GameScalarWhereInput | GameScalarWhereInput[]
   }
 
   export type GameSpinCreateNestedManyWithoutGameSessionInput = {
@@ -54529,6 +64206,294 @@ export namespace Prisma {
     update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutRebateGeneratedInput, TransactionUpdateWithoutRebateGeneratedInput>, TransactionUncheckedUpdateWithoutRebateGeneratedInput>
   }
 
+  export type TournamentGameCreateNestedManyWithoutTournamentInput = {
+    create?: XOR<TournamentGameCreateWithoutTournamentInput, TournamentGameUncheckedCreateWithoutTournamentInput> | TournamentGameCreateWithoutTournamentInput[] | TournamentGameUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentGameCreateOrConnectWithoutTournamentInput | TournamentGameCreateOrConnectWithoutTournamentInput[]
+    createMany?: TournamentGameCreateManyTournamentInputEnvelope
+    connect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+  }
+
+  export type TournamentParticipantCreateNestedManyWithoutTournamentInput = {
+    create?: XOR<TournamentParticipantCreateWithoutTournamentInput, TournamentParticipantUncheckedCreateWithoutTournamentInput> | TournamentParticipantCreateWithoutTournamentInput[] | TournamentParticipantUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutTournamentInput | TournamentParticipantCreateOrConnectWithoutTournamentInput[]
+    createMany?: TournamentParticipantCreateManyTournamentInputEnvelope
+    connect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+  }
+
+  export type TournamentRewardCreateNestedManyWithoutTournamentInput = {
+    create?: XOR<TournamentRewardCreateWithoutTournamentInput, TournamentRewardUncheckedCreateWithoutTournamentInput> | TournamentRewardCreateWithoutTournamentInput[] | TournamentRewardUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentRewardCreateOrConnectWithoutTournamentInput | TournamentRewardCreateOrConnectWithoutTournamentInput[]
+    createMany?: TournamentRewardCreateManyTournamentInputEnvelope
+    connect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutTournamentInput = {
+    create?: XOR<UserCreateWithoutTournamentInput, UserUncheckedCreateWithoutTournamentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTournamentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TournamentGameUncheckedCreateNestedManyWithoutTournamentInput = {
+    create?: XOR<TournamentGameCreateWithoutTournamentInput, TournamentGameUncheckedCreateWithoutTournamentInput> | TournamentGameCreateWithoutTournamentInput[] | TournamentGameUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentGameCreateOrConnectWithoutTournamentInput | TournamentGameCreateOrConnectWithoutTournamentInput[]
+    createMany?: TournamentGameCreateManyTournamentInputEnvelope
+    connect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+  }
+
+  export type TournamentParticipantUncheckedCreateNestedManyWithoutTournamentInput = {
+    create?: XOR<TournamentParticipantCreateWithoutTournamentInput, TournamentParticipantUncheckedCreateWithoutTournamentInput> | TournamentParticipantCreateWithoutTournamentInput[] | TournamentParticipantUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutTournamentInput | TournamentParticipantCreateOrConnectWithoutTournamentInput[]
+    createMany?: TournamentParticipantCreateManyTournamentInputEnvelope
+    connect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+  }
+
+  export type TournamentRewardUncheckedCreateNestedManyWithoutTournamentInput = {
+    create?: XOR<TournamentRewardCreateWithoutTournamentInput, TournamentRewardUncheckedCreateWithoutTournamentInput> | TournamentRewardCreateWithoutTournamentInput[] | TournamentRewardUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentRewardCreateOrConnectWithoutTournamentInput | TournamentRewardCreateOrConnectWithoutTournamentInput[]
+    createMany?: TournamentRewardCreateManyTournamentInputEnvelope
+    connect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+  }
+
+  export type EnumTournamentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.TournamentStatus
+  }
+
+  export type TournamentGameUpdateManyWithoutTournamentNestedInput = {
+    create?: XOR<TournamentGameCreateWithoutTournamentInput, TournamentGameUncheckedCreateWithoutTournamentInput> | TournamentGameCreateWithoutTournamentInput[] | TournamentGameUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentGameCreateOrConnectWithoutTournamentInput | TournamentGameCreateOrConnectWithoutTournamentInput[]
+    upsert?: TournamentGameUpsertWithWhereUniqueWithoutTournamentInput | TournamentGameUpsertWithWhereUniqueWithoutTournamentInput[]
+    createMany?: TournamentGameCreateManyTournamentInputEnvelope
+    set?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    disconnect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    delete?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    connect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    update?: TournamentGameUpdateWithWhereUniqueWithoutTournamentInput | TournamentGameUpdateWithWhereUniqueWithoutTournamentInput[]
+    updateMany?: TournamentGameUpdateManyWithWhereWithoutTournamentInput | TournamentGameUpdateManyWithWhereWithoutTournamentInput[]
+    deleteMany?: TournamentGameScalarWhereInput | TournamentGameScalarWhereInput[]
+  }
+
+  export type TournamentParticipantUpdateManyWithoutTournamentNestedInput = {
+    create?: XOR<TournamentParticipantCreateWithoutTournamentInput, TournamentParticipantUncheckedCreateWithoutTournamentInput> | TournamentParticipantCreateWithoutTournamentInput[] | TournamentParticipantUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutTournamentInput | TournamentParticipantCreateOrConnectWithoutTournamentInput[]
+    upsert?: TournamentParticipantUpsertWithWhereUniqueWithoutTournamentInput | TournamentParticipantUpsertWithWhereUniqueWithoutTournamentInput[]
+    createMany?: TournamentParticipantCreateManyTournamentInputEnvelope
+    set?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    disconnect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    delete?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    connect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    update?: TournamentParticipantUpdateWithWhereUniqueWithoutTournamentInput | TournamentParticipantUpdateWithWhereUniqueWithoutTournamentInput[]
+    updateMany?: TournamentParticipantUpdateManyWithWhereWithoutTournamentInput | TournamentParticipantUpdateManyWithWhereWithoutTournamentInput[]
+    deleteMany?: TournamentParticipantScalarWhereInput | TournamentParticipantScalarWhereInput[]
+  }
+
+  export type TournamentRewardUpdateManyWithoutTournamentNestedInput = {
+    create?: XOR<TournamentRewardCreateWithoutTournamentInput, TournamentRewardUncheckedCreateWithoutTournamentInput> | TournamentRewardCreateWithoutTournamentInput[] | TournamentRewardUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentRewardCreateOrConnectWithoutTournamentInput | TournamentRewardCreateOrConnectWithoutTournamentInput[]
+    upsert?: TournamentRewardUpsertWithWhereUniqueWithoutTournamentInput | TournamentRewardUpsertWithWhereUniqueWithoutTournamentInput[]
+    createMany?: TournamentRewardCreateManyTournamentInputEnvelope
+    set?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    disconnect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    delete?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    connect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    update?: TournamentRewardUpdateWithWhereUniqueWithoutTournamentInput | TournamentRewardUpdateWithWhereUniqueWithoutTournamentInput[]
+    updateMany?: TournamentRewardUpdateManyWithWhereWithoutTournamentInput | TournamentRewardUpdateManyWithWhereWithoutTournamentInput[]
+    deleteMany?: TournamentRewardScalarWhereInput | TournamentRewardScalarWhereInput[]
+  }
+
+  export type UserUpdateOneWithoutTournamentNestedInput = {
+    create?: XOR<UserCreateWithoutTournamentInput, UserUncheckedCreateWithoutTournamentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTournamentInput
+    upsert?: UserUpsertWithoutTournamentInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTournamentInput, UserUpdateWithoutTournamentInput>, UserUncheckedUpdateWithoutTournamentInput>
+  }
+
+  export type TournamentGameUncheckedUpdateManyWithoutTournamentNestedInput = {
+    create?: XOR<TournamentGameCreateWithoutTournamentInput, TournamentGameUncheckedCreateWithoutTournamentInput> | TournamentGameCreateWithoutTournamentInput[] | TournamentGameUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentGameCreateOrConnectWithoutTournamentInput | TournamentGameCreateOrConnectWithoutTournamentInput[]
+    upsert?: TournamentGameUpsertWithWhereUniqueWithoutTournamentInput | TournamentGameUpsertWithWhereUniqueWithoutTournamentInput[]
+    createMany?: TournamentGameCreateManyTournamentInputEnvelope
+    set?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    disconnect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    delete?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    connect?: TournamentGameWhereUniqueInput | TournamentGameWhereUniqueInput[]
+    update?: TournamentGameUpdateWithWhereUniqueWithoutTournamentInput | TournamentGameUpdateWithWhereUniqueWithoutTournamentInput[]
+    updateMany?: TournamentGameUpdateManyWithWhereWithoutTournamentInput | TournamentGameUpdateManyWithWhereWithoutTournamentInput[]
+    deleteMany?: TournamentGameScalarWhereInput | TournamentGameScalarWhereInput[]
+  }
+
+  export type TournamentParticipantUncheckedUpdateManyWithoutTournamentNestedInput = {
+    create?: XOR<TournamentParticipantCreateWithoutTournamentInput, TournamentParticipantUncheckedCreateWithoutTournamentInput> | TournamentParticipantCreateWithoutTournamentInput[] | TournamentParticipantUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutTournamentInput | TournamentParticipantCreateOrConnectWithoutTournamentInput[]
+    upsert?: TournamentParticipantUpsertWithWhereUniqueWithoutTournamentInput | TournamentParticipantUpsertWithWhereUniqueWithoutTournamentInput[]
+    createMany?: TournamentParticipantCreateManyTournamentInputEnvelope
+    set?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    disconnect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    delete?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    connect?: TournamentParticipantWhereUniqueInput | TournamentParticipantWhereUniqueInput[]
+    update?: TournamentParticipantUpdateWithWhereUniqueWithoutTournamentInput | TournamentParticipantUpdateWithWhereUniqueWithoutTournamentInput[]
+    updateMany?: TournamentParticipantUpdateManyWithWhereWithoutTournamentInput | TournamentParticipantUpdateManyWithWhereWithoutTournamentInput[]
+    deleteMany?: TournamentParticipantScalarWhereInput | TournamentParticipantScalarWhereInput[]
+  }
+
+  export type TournamentRewardUncheckedUpdateManyWithoutTournamentNestedInput = {
+    create?: XOR<TournamentRewardCreateWithoutTournamentInput, TournamentRewardUncheckedCreateWithoutTournamentInput> | TournamentRewardCreateWithoutTournamentInput[] | TournamentRewardUncheckedCreateWithoutTournamentInput[]
+    connectOrCreate?: TournamentRewardCreateOrConnectWithoutTournamentInput | TournamentRewardCreateOrConnectWithoutTournamentInput[]
+    upsert?: TournamentRewardUpsertWithWhereUniqueWithoutTournamentInput | TournamentRewardUpsertWithWhereUniqueWithoutTournamentInput[]
+    createMany?: TournamentRewardCreateManyTournamentInputEnvelope
+    set?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    disconnect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    delete?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    connect?: TournamentRewardWhereUniqueInput | TournamentRewardWhereUniqueInput[]
+    update?: TournamentRewardUpdateWithWhereUniqueWithoutTournamentInput | TournamentRewardUpdateWithWhereUniqueWithoutTournamentInput[]
+    updateMany?: TournamentRewardUpdateManyWithWhereWithoutTournamentInput | TournamentRewardUpdateManyWithWhereWithoutTournamentInput[]
+    deleteMany?: TournamentRewardScalarWhereInput | TournamentRewardScalarWhereInput[]
+  }
+
+  export type TournamentCreateNestedOneWithoutEligibleGamesInput = {
+    create?: XOR<TournamentCreateWithoutEligibleGamesInput, TournamentUncheckedCreateWithoutEligibleGamesInput>
+    connectOrCreate?: TournamentCreateOrConnectWithoutEligibleGamesInput
+    connect?: TournamentWhereUniqueInput
+  }
+
+  export type GameCreateNestedOneWithoutTournamentGameInput = {
+    create?: XOR<GameCreateWithoutTournamentGameInput, GameUncheckedCreateWithoutTournamentGameInput>
+    connectOrCreate?: GameCreateOrConnectWithoutTournamentGameInput
+    connect?: GameWhereUniqueInput
+  }
+
+  export type TournamentUpdateOneRequiredWithoutEligibleGamesNestedInput = {
+    create?: XOR<TournamentCreateWithoutEligibleGamesInput, TournamentUncheckedCreateWithoutEligibleGamesInput>
+    connectOrCreate?: TournamentCreateOrConnectWithoutEligibleGamesInput
+    upsert?: TournamentUpsertWithoutEligibleGamesInput
+    connect?: TournamentWhereUniqueInput
+    update?: XOR<XOR<TournamentUpdateToOneWithWhereWithoutEligibleGamesInput, TournamentUpdateWithoutEligibleGamesInput>, TournamentUncheckedUpdateWithoutEligibleGamesInput>
+  }
+
+  export type GameUpdateOneRequiredWithoutTournamentGameNestedInput = {
+    create?: XOR<GameCreateWithoutTournamentGameInput, GameUncheckedCreateWithoutTournamentGameInput>
+    connectOrCreate?: GameCreateOrConnectWithoutTournamentGameInput
+    upsert?: GameUpsertWithoutTournamentGameInput
+    connect?: GameWhereUniqueInput
+    update?: XOR<XOR<GameUpdateToOneWithWhereWithoutTournamentGameInput, GameUpdateWithoutTournamentGameInput>, GameUncheckedUpdateWithoutTournamentGameInput>
+  }
+
+  export type TournamentCreateNestedOneWithoutParticipantsInput = {
+    create?: XOR<TournamentCreateWithoutParticipantsInput, TournamentUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: TournamentCreateOrConnectWithoutParticipantsInput
+    connect?: TournamentWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTournamentParticipantInput = {
+    create?: XOR<UserCreateWithoutTournamentParticipantInput, UserUncheckedCreateWithoutTournamentParticipantInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTournamentParticipantInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TournamentGamePlayCreateNestedManyWithoutTournamentParticipantInput = {
+    create?: XOR<TournamentGamePlayCreateWithoutTournamentParticipantInput, TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput> | TournamentGamePlayCreateWithoutTournamentParticipantInput[] | TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput[]
+    connectOrCreate?: TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput | TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput[]
+    createMany?: TournamentGamePlayCreateManyTournamentParticipantInputEnvelope
+    connect?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+  }
+
+  export type TournamentGamePlayUncheckedCreateNestedManyWithoutTournamentParticipantInput = {
+    create?: XOR<TournamentGamePlayCreateWithoutTournamentParticipantInput, TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput> | TournamentGamePlayCreateWithoutTournamentParticipantInput[] | TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput[]
+    connectOrCreate?: TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput | TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput[]
+    createMany?: TournamentGamePlayCreateManyTournamentParticipantInputEnvelope
+    connect?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+  }
+
+  export type TournamentUpdateOneRequiredWithoutParticipantsNestedInput = {
+    create?: XOR<TournamentCreateWithoutParticipantsInput, TournamentUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: TournamentCreateOrConnectWithoutParticipantsInput
+    upsert?: TournamentUpsertWithoutParticipantsInput
+    connect?: TournamentWhereUniqueInput
+    update?: XOR<XOR<TournamentUpdateToOneWithWhereWithoutParticipantsInput, TournamentUpdateWithoutParticipantsInput>, TournamentUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutTournamentParticipantNestedInput = {
+    create?: XOR<UserCreateWithoutTournamentParticipantInput, UserUncheckedCreateWithoutTournamentParticipantInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTournamentParticipantInput
+    upsert?: UserUpsertWithoutTournamentParticipantInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTournamentParticipantInput, UserUpdateWithoutTournamentParticipantInput>, UserUncheckedUpdateWithoutTournamentParticipantInput>
+  }
+
+  export type TournamentGamePlayUpdateManyWithoutTournamentParticipantNestedInput = {
+    create?: XOR<TournamentGamePlayCreateWithoutTournamentParticipantInput, TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput> | TournamentGamePlayCreateWithoutTournamentParticipantInput[] | TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput[]
+    connectOrCreate?: TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput | TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput[]
+    upsert?: TournamentGamePlayUpsertWithWhereUniqueWithoutTournamentParticipantInput | TournamentGamePlayUpsertWithWhereUniqueWithoutTournamentParticipantInput[]
+    createMany?: TournamentGamePlayCreateManyTournamentParticipantInputEnvelope
+    set?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+    disconnect?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+    delete?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+    connect?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+    update?: TournamentGamePlayUpdateWithWhereUniqueWithoutTournamentParticipantInput | TournamentGamePlayUpdateWithWhereUniqueWithoutTournamentParticipantInput[]
+    updateMany?: TournamentGamePlayUpdateManyWithWhereWithoutTournamentParticipantInput | TournamentGamePlayUpdateManyWithWhereWithoutTournamentParticipantInput[]
+    deleteMany?: TournamentGamePlayScalarWhereInput | TournamentGamePlayScalarWhereInput[]
+  }
+
+  export type TournamentGamePlayUncheckedUpdateManyWithoutTournamentParticipantNestedInput = {
+    create?: XOR<TournamentGamePlayCreateWithoutTournamentParticipantInput, TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput> | TournamentGamePlayCreateWithoutTournamentParticipantInput[] | TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput[]
+    connectOrCreate?: TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput | TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput[]
+    upsert?: TournamentGamePlayUpsertWithWhereUniqueWithoutTournamentParticipantInput | TournamentGamePlayUpsertWithWhereUniqueWithoutTournamentParticipantInput[]
+    createMany?: TournamentGamePlayCreateManyTournamentParticipantInputEnvelope
+    set?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+    disconnect?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+    delete?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+    connect?: TournamentGamePlayWhereUniqueInput | TournamentGamePlayWhereUniqueInput[]
+    update?: TournamentGamePlayUpdateWithWhereUniqueWithoutTournamentParticipantInput | TournamentGamePlayUpdateWithWhereUniqueWithoutTournamentParticipantInput[]
+    updateMany?: TournamentGamePlayUpdateManyWithWhereWithoutTournamentParticipantInput | TournamentGamePlayUpdateManyWithWhereWithoutTournamentParticipantInput[]
+    deleteMany?: TournamentGamePlayScalarWhereInput | TournamentGamePlayScalarWhereInput[]
+  }
+
+  export type TournamentParticipantCreateNestedOneWithoutGamePlaysInput = {
+    create?: XOR<TournamentParticipantCreateWithoutGamePlaysInput, TournamentParticipantUncheckedCreateWithoutGamePlaysInput>
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutGamePlaysInput
+    connect?: TournamentParticipantWhereUniqueInput
+  }
+
+  export type TournamentParticipantUpdateOneRequiredWithoutGamePlaysNestedInput = {
+    create?: XOR<TournamentParticipantCreateWithoutGamePlaysInput, TournamentParticipantUncheckedCreateWithoutGamePlaysInput>
+    connectOrCreate?: TournamentParticipantCreateOrConnectWithoutGamePlaysInput
+    upsert?: TournamentParticipantUpsertWithoutGamePlaysInput
+    connect?: TournamentParticipantWhereUniqueInput
+    update?: XOR<XOR<TournamentParticipantUpdateToOneWithWhereWithoutGamePlaysInput, TournamentParticipantUpdateWithoutGamePlaysInput>, TournamentParticipantUncheckedUpdateWithoutGamePlaysInput>
+  }
+
+  export type TournamentCreateNestedOneWithoutRewardsInput = {
+    create?: XOR<TournamentCreateWithoutRewardsInput, TournamentUncheckedCreateWithoutRewardsInput>
+    connectOrCreate?: TournamentCreateOrConnectWithoutRewardsInput
+    connect?: TournamentWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTournamentRewardInput = {
+    create?: XOR<UserCreateWithoutTournamentRewardInput, UserUncheckedCreateWithoutTournamentRewardInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTournamentRewardInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TournamentUpdateOneRequiredWithoutRewardsNestedInput = {
+    create?: XOR<TournamentCreateWithoutRewardsInput, TournamentUncheckedCreateWithoutRewardsInput>
+    connectOrCreate?: TournamentCreateOrConnectWithoutRewardsInput
+    upsert?: TournamentUpsertWithoutRewardsInput
+    connect?: TournamentWhereUniqueInput
+    update?: XOR<XOR<TournamentUpdateToOneWithWhereWithoutRewardsInput, TournamentUpdateWithoutRewardsInput>, TournamentUncheckedUpdateWithoutRewardsInput>
+  }
+
+  export type UserUpdateOneWithoutTournamentRewardNestedInput = {
+    create?: XOR<UserCreateWithoutTournamentRewardInput, UserUncheckedCreateWithoutTournamentRewardInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTournamentRewardInput
+    upsert?: UserUpsertWithoutTournamentRewardInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTournamentRewardInput, UserUpdateWithoutTournamentRewardInput>, UserUncheckedUpdateWithoutTournamentRewardInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -54866,28 +64831,11 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type NestedEnumGameProviderFilter<$PrismaModel = never> = {
-    equals?: $Enums.GameProvider | EnumGameProviderFieldRefInput<$PrismaModel>
-    in?: $Enums.GameProvider[] | ListEnumGameProviderFieldRefInput<$PrismaModel>
-    notIn?: $Enums.GameProvider[] | ListEnumGameProviderFieldRefInput<$PrismaModel>
-    not?: NestedEnumGameProviderFilter<$PrismaModel> | $Enums.GameProvider
-  }
-
   export type NestedEnumGameCategoryFilter<$PrismaModel = never> = {
     equals?: $Enums.GameCategory | EnumGameCategoryFieldRefInput<$PrismaModel>
     in?: $Enums.GameCategory[] | ListEnumGameCategoryFieldRefInput<$PrismaModel>
     notIn?: $Enums.GameCategory[] | ListEnumGameCategoryFieldRefInput<$PrismaModel>
     not?: NestedEnumGameCategoryFilter<$PrismaModel> | $Enums.GameCategory
-  }
-
-  export type NestedEnumGameProviderWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.GameProvider | EnumGameProviderFieldRefInput<$PrismaModel>
-    in?: $Enums.GameProvider[] | ListEnumGameProviderFieldRefInput<$PrismaModel>
-    notIn?: $Enums.GameProvider[] | ListEnumGameProviderFieldRefInput<$PrismaModel>
-    not?: NestedEnumGameProviderWithAggregatesFilter<$PrismaModel> | $Enums.GameProvider
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumGameProviderFilter<$PrismaModel>
-    _max?: NestedEnumGameProviderFilter<$PrismaModel>
   }
 
   export type NestedEnumGameCategoryWithAggregatesFilter<$PrismaModel = never> = {
@@ -54898,6 +64846,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumGameCategoryFilter<$PrismaModel>
     _max?: NestedEnumGameCategoryFilter<$PrismaModel>
+  }
+
+  export type NestedEnumProviderAuthTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProviderAuthType | EnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProviderAuthType[] | ListEnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProviderAuthType[] | ListEnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProviderAuthTypeFilter<$PrismaModel> | $Enums.ProviderAuthType
+  }
+
+  export type NestedEnumProviderAuthTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProviderAuthType | EnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProviderAuthType[] | ListEnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProviderAuthType[] | ListEnumProviderAuthTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProviderAuthTypeWithAggregatesFilter<$PrismaModel> | $Enums.ProviderAuthType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProviderAuthTypeFilter<$PrismaModel>
+    _max?: NestedEnumProviderAuthTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {
@@ -55017,6 +64982,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumVipTaskTypeFilter<$PrismaModel>
     _max?: NestedEnumVipTaskTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTournamentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TournamentStatus | EnumTournamentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTournamentStatusFilter<$PrismaModel> | $Enums.TournamentStatus
+  }
+
+  export type NestedEnumTournamentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TournamentStatus | EnumTournamentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TournamentStatus[] | ListEnumTournamentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTournamentStatusWithAggregatesFilter<$PrismaModel> | $Enums.TournamentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTournamentStatusFilter<$PrismaModel>
+    _max?: NestedEnumTournamentStatusFilter<$PrismaModel>
   }
 
   export type ProfileCreateWithoutUserInput = {
@@ -55217,44 +65199,50 @@ export namespace Prisma {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     spins?: GameSpinCreateNestedManyWithoutGameSessionInput
     game: GameCreateNestedOneWithoutGameSessionsInput
-    Profile?: ProfileCreateNestedManyWithoutCurrentGameSessionInput
+    profile?: ProfileCreateNestedManyWithoutCurrentGameSessionInput
   }
 
   export type GameSessionUncheckedCreateWithoutUserInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
     gameId: string
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     spins?: GameSpinUncheckedCreateNestedManyWithoutGameSessionInput
-    Profile?: ProfileUncheckedCreateNestedManyWithoutCurrentGameSessionInput
+    profile?: ProfileUncheckedCreateNestedManyWithoutCurrentGameSessionInput
   }
 
   export type GameSessionCreateOrConnectWithoutUserInput = {
@@ -55672,6 +65660,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutReferralsInput = {
@@ -55740,6 +65731,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutReferralsInput = {
@@ -55813,6 +65807,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutReferrerInput = {
@@ -55881,6 +65878,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutReferrerInput = {
@@ -56250,6 +66250,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutOriginatorInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
     amount: number
@@ -56281,6 +66282,7 @@ export namespace Prisma {
   export type TransactionUncheckedCreateWithoutOriginatorInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -56322,6 +66324,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutReceiverInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
     amount: number
@@ -56354,6 +66357,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
@@ -56388,6 +66392,100 @@ export namespace Prisma {
 
   export type TransactionCreateManyReceiverInputEnvelope = {
     data: TransactionCreateManyReceiverInput | TransactionCreateManyReceiverInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TournamentParticipantCreateWithoutUserInput = {
+    id?: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+    tournament: TournamentCreateNestedOneWithoutParticipantsInput
+    gamePlays?: TournamentGamePlayCreateNestedManyWithoutTournamentParticipantInput
+  }
+
+  export type TournamentParticipantUncheckedCreateWithoutUserInput = {
+    id?: string
+    tournamentId: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+    gamePlays?: TournamentGamePlayUncheckedCreateNestedManyWithoutTournamentParticipantInput
+  }
+
+  export type TournamentParticipantCreateOrConnectWithoutUserInput = {
+    where: TournamentParticipantWhereUniqueInput
+    create: XOR<TournamentParticipantCreateWithoutUserInput, TournamentParticipantUncheckedCreateWithoutUserInput>
+  }
+
+  export type TournamentParticipantCreateManyUserInputEnvelope = {
+    data: TournamentParticipantCreateManyUserInput | TournamentParticipantCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TournamentRewardCreateWithoutWinnerInput = {
+    id?: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+    tournament: TournamentCreateNestedOneWithoutRewardsInput
+  }
+
+  export type TournamentRewardUncheckedCreateWithoutWinnerInput = {
+    id?: string
+    tournamentId: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+  }
+
+  export type TournamentRewardCreateOrConnectWithoutWinnerInput = {
+    where: TournamentRewardWhereUniqueInput
+    create: XOR<TournamentRewardCreateWithoutWinnerInput, TournamentRewardUncheckedCreateWithoutWinnerInput>
+  }
+
+  export type TournamentRewardCreateManyWinnerInputEnvelope = {
+    data: TournamentRewardCreateManyWinnerInput | TournamentRewardCreateManyWinnerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TournamentCreateWithoutCreatedByInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eligibleGames?: TournamentGameCreateNestedManyWithoutTournamentInput
+    participants?: TournamentParticipantCreateNestedManyWithoutTournamentInput
+    rewards?: TournamentRewardCreateNestedManyWithoutTournamentInput
+  }
+
+  export type TournamentUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eligibleGames?: TournamentGameUncheckedCreateNestedManyWithoutTournamentInput
+    participants?: TournamentParticipantUncheckedCreateNestedManyWithoutTournamentInput
+    rewards?: TournamentRewardUncheckedCreateNestedManyWithoutTournamentInput
+  }
+
+  export type TournamentCreateOrConnectWithoutCreatedByInput = {
+    where: TournamentWhereUniqueInput
+    create: XOR<TournamentCreateWithoutCreatedByInput, TournamentUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TournamentCreateManyCreatedByInputEnvelope = {
+    data: TournamentCreateManyCreatedByInput | TournamentCreateManyCreatedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -56611,13 +66709,14 @@ export namespace Prisma {
     id?: StringFilter<"GameSession"> | string
     isActive?: BoolFilter<"GameSession"> | boolean
     sessionData?: JsonNullableFilter<"GameSession">
-    sessionId?: StringNullableFilter<"GameSession"> | string | null
+    authSessionId?: StringNullableFilter<"GameSession"> | string | null
     currencyId?: StringNullableFilter<"GameSession"> | string | null
     startedAt?: DateTimeFilter<"GameSession"> | Date | string
     endTime?: DateTimeNullableFilter<"GameSession"> | Date | string | null
     startTime?: DateTimeNullableFilter<"GameSession"> | Date | string | null
     ipAddress?: StringNullableFilter<"GameSession"> | string | null
     startingBalance?: IntNullableFilter<"GameSession"> | number | null
+    startingTotalXp?: IntNullableFilter<"GameSession"> | number | null
     userAgent?: StringNullableFilter<"GameSession"> | string | null
     createdAt?: DateTimeFilter<"GameSession"> | Date | string
     updatedAt?: DateTimeFilter<"GameSession"> | Date | string
@@ -56625,6 +66724,8 @@ export namespace Prisma {
     totalWon?: IntFilter<"GameSession"> | number
     userId?: StringFilter<"GameSession"> | string
     gameId?: StringFilter<"GameSession"> | string
+    rtgToken?: StringNullableFilter<"GameSession"> | string | null
+    rtgFingerPrint?: StringNullableFilter<"GameSession"> | string | null
     profileId?: StringNullableFilter<"GameSession"> | string | null
   }
 
@@ -56994,6 +67095,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsInput = {
@@ -57062,6 +67166,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutReferrerInput = {
@@ -57462,6 +67569,7 @@ export namespace Prisma {
     id?: StringFilter<"Transaction"> | string
     originatorUserId?: StringFilter<"Transaction"> | string
     processedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
+    gameId?: StringNullableFilter<"Transaction"> | string | null
     receiverUserId?: StringNullableFilter<"Transaction"> | string | null
     walletId?: StringNullableFilter<"Transaction"> | string | null
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
@@ -57502,6 +67610,94 @@ export namespace Prisma {
   export type TransactionUpdateManyWithWhereWithoutReceiverInput = {
     where: TransactionScalarWhereInput
     data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutReceiverInput>
+  }
+
+  export type TournamentParticipantUpsertWithWhereUniqueWithoutUserInput = {
+    where: TournamentParticipantWhereUniqueInput
+    update: XOR<TournamentParticipantUpdateWithoutUserInput, TournamentParticipantUncheckedUpdateWithoutUserInput>
+    create: XOR<TournamentParticipantCreateWithoutUserInput, TournamentParticipantUncheckedCreateWithoutUserInput>
+  }
+
+  export type TournamentParticipantUpdateWithWhereUniqueWithoutUserInput = {
+    where: TournamentParticipantWhereUniqueInput
+    data: XOR<TournamentParticipantUpdateWithoutUserInput, TournamentParticipantUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TournamentParticipantUpdateManyWithWhereWithoutUserInput = {
+    where: TournamentParticipantScalarWhereInput
+    data: XOR<TournamentParticipantUpdateManyMutationInput, TournamentParticipantUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TournamentParticipantScalarWhereInput = {
+    AND?: TournamentParticipantScalarWhereInput | TournamentParticipantScalarWhereInput[]
+    OR?: TournamentParticipantScalarWhereInput[]
+    NOT?: TournamentParticipantScalarWhereInput | TournamentParticipantScalarWhereInput[]
+    id?: StringFilter<"TournamentParticipant"> | string
+    tournamentId?: StringFilter<"TournamentParticipant"> | string
+    userId?: StringFilter<"TournamentParticipant"> | string
+    score?: IntFilter<"TournamentParticipant"> | number
+    rank?: IntNullableFilter<"TournamentParticipant"> | number | null
+    joinedAt?: DateTimeFilter<"TournamentParticipant"> | Date | string
+  }
+
+  export type TournamentRewardUpsertWithWhereUniqueWithoutWinnerInput = {
+    where: TournamentRewardWhereUniqueInput
+    update: XOR<TournamentRewardUpdateWithoutWinnerInput, TournamentRewardUncheckedUpdateWithoutWinnerInput>
+    create: XOR<TournamentRewardCreateWithoutWinnerInput, TournamentRewardUncheckedCreateWithoutWinnerInput>
+  }
+
+  export type TournamentRewardUpdateWithWhereUniqueWithoutWinnerInput = {
+    where: TournamentRewardWhereUniqueInput
+    data: XOR<TournamentRewardUpdateWithoutWinnerInput, TournamentRewardUncheckedUpdateWithoutWinnerInput>
+  }
+
+  export type TournamentRewardUpdateManyWithWhereWithoutWinnerInput = {
+    where: TournamentRewardScalarWhereInput
+    data: XOR<TournamentRewardUpdateManyMutationInput, TournamentRewardUncheckedUpdateManyWithoutWinnerInput>
+  }
+
+  export type TournamentRewardScalarWhereInput = {
+    AND?: TournamentRewardScalarWhereInput | TournamentRewardScalarWhereInput[]
+    OR?: TournamentRewardScalarWhereInput[]
+    NOT?: TournamentRewardScalarWhereInput | TournamentRewardScalarWhereInput[]
+    id?: StringFilter<"TournamentReward"> | string
+    tournamentId?: StringFilter<"TournamentReward"> | string
+    rank?: IntFilter<"TournamentReward"> | number
+    description?: StringFilter<"TournamentReward"> | string
+    isClaimed?: BoolFilter<"TournamentReward"> | boolean
+    winnerId?: StringNullableFilter<"TournamentReward"> | string | null
+  }
+
+  export type TournamentUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: TournamentWhereUniqueInput
+    update: XOR<TournamentUpdateWithoutCreatedByInput, TournamentUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<TournamentCreateWithoutCreatedByInput, TournamentUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TournamentUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: TournamentWhereUniqueInput
+    data: XOR<TournamentUpdateWithoutCreatedByInput, TournamentUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type TournamentUpdateManyWithWhereWithoutCreatedByInput = {
+    where: TournamentScalarWhereInput
+    data: XOR<TournamentUpdateManyMutationInput, TournamentUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type TournamentScalarWhereInput = {
+    AND?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+    OR?: TournamentScalarWhereInput[]
+    NOT?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+    id?: StringFilter<"Tournament"> | string
+    name?: StringFilter<"Tournament"> | string
+    description?: StringNullableFilter<"Tournament"> | string | null
+    startTime?: DateTimeFilter<"Tournament"> | Date | string
+    endTime?: DateTimeNullableFilter<"Tournament"> | Date | string | null
+    targetScore?: IntNullableFilter<"Tournament"> | number | null
+    status?: EnumTournamentStatusFilter<"Tournament"> | $Enums.TournamentStatus
+    createdAt?: DateTimeFilter<"Tournament"> | Date | string
+    updatedAt?: DateTimeFilter<"Tournament"> | Date | string
+    createdByid?: StringNullableFilter<"Tournament"> | string | null
   }
 
   export type UserCreateWithoutPreferredCurrencyInput = {
@@ -57570,6 +67766,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutPreferredCurrencyInput = {
@@ -57638,6 +67837,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutPreferredCurrencyInput = {
@@ -57689,6 +67891,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutCurrencyInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
     amount: number
@@ -57721,6 +67924,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -57973,6 +68177,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSessionInput = {
@@ -58041,6 +68248,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSessionInput = {
@@ -58125,6 +68335,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionInput = {
@@ -58193,6 +68406,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutAccountInput = {
@@ -58261,6 +68477,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutAccountInput = {
@@ -58329,6 +68548,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutAccountInput = {
@@ -58413,6 +68635,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountInput = {
@@ -58481,24 +68706,30 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type GameSessionCreateWithoutProfileInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     spins?: GameSpinCreateNestedManyWithoutGameSessionInput
     user: UserCreateNestedOneWithoutGameSessionsInput
@@ -58509,13 +68740,14 @@ export namespace Prisma {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -58523,6 +68755,8 @@ export namespace Prisma {
     totalWon?: number
     userId: string
     gameId: string
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     spins?: GameSpinUncheckedCreateNestedManyWithoutGameSessionInput
   }
@@ -58598,6 +68832,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutProfileInput = {
@@ -58666,6 +68903,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutProfileInput = {
@@ -58739,6 +68979,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutOtherProfilesInput = {
@@ -58807,6 +69050,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutOtherProfilesInput = {
@@ -58878,18 +69124,21 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     spins?: GameSpinUpdateManyWithoutGameSessionNestedInput
     user?: UserUpdateOneRequiredWithoutGameSessionsNestedInput
@@ -58900,13 +69149,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58914,6 +69164,8 @@ export namespace Prisma {
     totalWon?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     gameId?: StringFieldUpdateOperationsInput | string
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     spins?: GameSpinUncheckedUpdateManyWithoutGameSessionNestedInput
   }
@@ -58995,6 +69247,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileInput = {
@@ -59063,6 +69318,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUpsertWithoutOtherProfilesInput = {
@@ -59142,6 +69400,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOtherProfilesInput = {
@@ -59210,6 +69471,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type OperatorAccessUpsertWithoutProfilesInput = {
@@ -59333,6 +69597,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSettingsInput = {
@@ -59401,6 +69668,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSettingsInput = {
@@ -59485,6 +69755,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSettingsInput = {
@@ -59553,6 +69826,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutWalletsInput = {
@@ -59621,6 +69897,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutWalletsInput = {
@@ -59689,6 +69968,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutWalletsInput = {
@@ -59742,6 +70024,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutWalletInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
     amount: number
@@ -59774,6 +70057,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
@@ -59888,6 +70172,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWalletsInput = {
@@ -59956,6 +70243,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type CurrencyUpsertWithoutWalletsInput = {
@@ -60121,6 +70411,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedOperatorsInput = {
@@ -60189,6 +70482,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedOperatorsInput = {
@@ -60312,7 +70608,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -60322,8 +70618,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProvider?: GameProviderCreateNestedOneWithoutGamesInput
     gameSessions?: GameSessionCreateNestedManyWithoutGameInput
     gameLaunchLinks?: GameLaunchLinkCreateNestedManyWithoutGameInput
+    TournamentGame?: TournamentGameCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateWithoutOperatorInput = {
@@ -60332,7 +70631,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -60342,8 +70641,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProviderId?: string | null
     gameSessions?: GameSessionUncheckedCreateNestedManyWithoutGameInput
     gameLaunchLinks?: GameLaunchLinkUncheckedCreateNestedManyWithoutGameInput
+    TournamentGame?: TournamentGameUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameCreateOrConnectWithoutOperatorInput = {
@@ -60485,6 +70787,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedOperatorsInput = {
@@ -60553,6 +70858,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type GameLaunchLinkUpsertWithWhereUniqueWithoutOperatorInput = {
@@ -60612,7 +70920,7 @@ export namespace Prisma {
     title?: StringFilter<"Game"> | string
     goldsvetData?: JsonNullableFilter<"Game">
     description?: StringNullableFilter<"Game"> | string | null
-    provider?: EnumGameProviderFilter<"Game"> | $Enums.GameProvider
+    supportedProviders?: EnumGameProviderNameNullableListFilter<"Game">
     category?: EnumGameCategoryFilter<"Game"> | $Enums.GameCategory
     tags?: StringNullableListFilter<"Game">
     isActive?: BoolFilter<"Game"> | boolean
@@ -60622,6 +70930,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Game"> | Date | string
     updatedAt?: DateTimeFilter<"Game"> | Date | string
     featured?: BoolFilter<"Game"> | boolean
+    providerName?: StringNullableFilter<"Game"> | string | null
+    gameProviderId?: StringNullableFilter<"Game"> | string | null
     operatorId?: StringNullableFilter<"Game"> | string | null
   }
 
@@ -60685,48 +70995,101 @@ export namespace Prisma {
     data: XOR<UserAchievementUpdateManyMutationInput, UserAchievementUncheckedUpdateManyWithoutAchievementInput>
   }
 
+  export type GameProviderCreateWithoutGamesInput = {
+    id?: string
+    name: string
+    displayName?: string | null
+    rgsBaseUrl: string
+    settingsPath?: string | null
+    spinPath?: string | null
+    resolveBetPath?: string | null
+    providerRoundId?: string | null
+    authType?: $Enums.ProviderAuthType
+    apiKey?: string | null
+    apiSecret?: string | null
+    publicKey?: string | null
+    privateKeyRef?: string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GameProviderUncheckedCreateWithoutGamesInput = {
+    id?: string
+    name: string
+    displayName?: string | null
+    rgsBaseUrl: string
+    settingsPath?: string | null
+    spinPath?: string | null
+    resolveBetPath?: string | null
+    providerRoundId?: string | null
+    authType?: $Enums.ProviderAuthType
+    apiKey?: string | null
+    apiSecret?: string | null
+    publicKey?: string | null
+    privateKeyRef?: string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GameProviderCreateOrConnectWithoutGamesInput = {
+    where: GameProviderWhereUniqueInput
+    create: XOR<GameProviderCreateWithoutGamesInput, GameProviderUncheckedCreateWithoutGamesInput>
+  }
+
   export type GameSessionCreateWithoutGameInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     spins?: GameSpinCreateNestedManyWithoutGameSessionInput
     user: UserCreateNestedOneWithoutGameSessionsInput
-    Profile?: ProfileCreateNestedManyWithoutCurrentGameSessionInput
+    profile?: ProfileCreateNestedManyWithoutCurrentGameSessionInput
   }
 
   export type GameSessionUncheckedCreateWithoutGameInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
     userId: string
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     spins?: GameSpinUncheckedCreateNestedManyWithoutGameSessionInput
-    Profile?: ProfileUncheckedCreateNestedManyWithoutCurrentGameSessionInput
+    profile?: ProfileUncheckedCreateNestedManyWithoutCurrentGameSessionInput
   }
 
   export type GameSessionCreateOrConnectWithoutGameInput = {
@@ -60840,6 +71203,81 @@ export namespace Prisma {
     create: XOR<OperatorAccessCreateWithoutGamesInput, OperatorAccessUncheckedCreateWithoutGamesInput>
   }
 
+  export type TournamentGameCreateWithoutGameInput = {
+    id?: string
+    pointMultiplier?: number
+    tournament: TournamentCreateNestedOneWithoutEligibleGamesInput
+  }
+
+  export type TournamentGameUncheckedCreateWithoutGameInput = {
+    id?: string
+    tournamentId: string
+    pointMultiplier?: number
+  }
+
+  export type TournamentGameCreateOrConnectWithoutGameInput = {
+    where: TournamentGameWhereUniqueInput
+    create: XOR<TournamentGameCreateWithoutGameInput, TournamentGameUncheckedCreateWithoutGameInput>
+  }
+
+  export type TournamentGameCreateManyGameInputEnvelope = {
+    data: TournamentGameCreateManyGameInput | TournamentGameCreateManyGameInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GameProviderUpsertWithoutGamesInput = {
+    update: XOR<GameProviderUpdateWithoutGamesInput, GameProviderUncheckedUpdateWithoutGamesInput>
+    create: XOR<GameProviderCreateWithoutGamesInput, GameProviderUncheckedCreateWithoutGamesInput>
+    where?: GameProviderWhereInput
+  }
+
+  export type GameProviderUpdateToOneWithWhereWithoutGamesInput = {
+    where?: GameProviderWhereInput
+    data: XOR<GameProviderUpdateWithoutGamesInput, GameProviderUncheckedUpdateWithoutGamesInput>
+  }
+
+  export type GameProviderUpdateWithoutGamesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    rgsBaseUrl?: StringFieldUpdateOperationsInput | string
+    settingsPath?: NullableStringFieldUpdateOperationsInput | string | null
+    spinPath?: NullableStringFieldUpdateOperationsInput | string | null
+    resolveBetPath?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRoundId?: NullableStringFieldUpdateOperationsInput | string | null
+    authType?: EnumProviderAuthTypeFieldUpdateOperationsInput | $Enums.ProviderAuthType
+    apiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    apiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    publicKey?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKeyRef?: NullableStringFieldUpdateOperationsInput | string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GameProviderUncheckedUpdateWithoutGamesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    rgsBaseUrl?: StringFieldUpdateOperationsInput | string
+    settingsPath?: NullableStringFieldUpdateOperationsInput | string | null
+    spinPath?: NullableStringFieldUpdateOperationsInput | string | null
+    resolveBetPath?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRoundId?: NullableStringFieldUpdateOperationsInput | string | null
+    authType?: EnumProviderAuthTypeFieldUpdateOperationsInput | $Enums.ProviderAuthType
+    apiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    apiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    publicKey?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKeyRef?: NullableStringFieldUpdateOperationsInput | string | null
+    configJson?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GameSessionUpsertWithWhereUniqueWithoutGameInput = {
     where: GameSessionWhereUniqueInput
     update: XOR<GameSessionUpdateWithoutGameInput, GameSessionUncheckedUpdateWithoutGameInput>
@@ -60927,6 +71365,32 @@ export namespace Prisma {
     profiles?: ProfileUncheckedUpdateManyWithoutOperatorNestedInput
   }
 
+  export type TournamentGameUpsertWithWhereUniqueWithoutGameInput = {
+    where: TournamentGameWhereUniqueInput
+    update: XOR<TournamentGameUpdateWithoutGameInput, TournamentGameUncheckedUpdateWithoutGameInput>
+    create: XOR<TournamentGameCreateWithoutGameInput, TournamentGameUncheckedCreateWithoutGameInput>
+  }
+
+  export type TournamentGameUpdateWithWhereUniqueWithoutGameInput = {
+    where: TournamentGameWhereUniqueInput
+    data: XOR<TournamentGameUpdateWithoutGameInput, TournamentGameUncheckedUpdateWithoutGameInput>
+  }
+
+  export type TournamentGameUpdateManyWithWhereWithoutGameInput = {
+    where: TournamentGameScalarWhereInput
+    data: XOR<TournamentGameUpdateManyMutationInput, TournamentGameUncheckedUpdateManyWithoutGameInput>
+  }
+
+  export type TournamentGameScalarWhereInput = {
+    AND?: TournamentGameScalarWhereInput | TournamentGameScalarWhereInput[]
+    OR?: TournamentGameScalarWhereInput[]
+    NOT?: TournamentGameScalarWhereInput | TournamentGameScalarWhereInput[]
+    id?: StringFilter<"TournamentGame"> | string
+    tournamentId?: StringFilter<"TournamentGame"> | string
+    gameId?: StringFilter<"TournamentGame"> | string
+    pointMultiplier?: FloatFilter<"TournamentGame"> | number
+  }
+
   export type UserCreateWithoutPostsInput = {
     id?: string
     username?: string | null
@@ -60993,6 +71457,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -61061,6 +71528,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -61171,6 +71641,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -61239,6 +71712,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type CommentUpsertWithWhereUniqueWithoutPostInput = {
@@ -61354,6 +71830,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -61422,6 +71901,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -61543,6 +72025,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -61611,41 +72096,48 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type GameSessionCreateWithoutSpinsInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
     user: UserCreateNestedOneWithoutGameSessionsInput
     game: GameCreateNestedOneWithoutGameSessionsInput
-    Profile?: ProfileCreateNestedManyWithoutCurrentGameSessionInput
+    profile?: ProfileCreateNestedManyWithoutCurrentGameSessionInput
   }
 
   export type GameSessionUncheckedCreateWithoutSpinsInput = {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -61653,8 +72145,10 @@ export namespace Prisma {
     totalWon?: number
     userId: string
     gameId: string
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
-    Profile?: ProfileUncheckedCreateNestedManyWithoutCurrentGameSessionInput
+    profile?: ProfileUncheckedCreateNestedManyWithoutCurrentGameSessionInput
   }
 
   export type GameSessionCreateOrConnectWithoutSpinsInput = {
@@ -61677,35 +72171,39 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutGameSessionsNestedInput
     game?: GameUpdateOneRequiredWithoutGameSessionsNestedInput
-    Profile?: ProfileUpdateManyWithoutCurrentGameSessionNestedInput
+    profile?: ProfileUpdateManyWithoutCurrentGameSessionNestedInput
   }
 
   export type GameSessionUncheckedUpdateWithoutSpinsInput = {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61713,8 +72211,82 @@ export namespace Prisma {
     totalWon?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     gameId?: StringFieldUpdateOperationsInput | string
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
-    Profile?: ProfileUncheckedUpdateManyWithoutCurrentGameSessionNestedInput
+    profile?: ProfileUncheckedUpdateManyWithoutCurrentGameSessionNestedInput
+  }
+
+  export type GameCreateWithoutGameProviderInput = {
+    id?: string
+    name: string
+    title: string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: string | null
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
+    category: $Enums.GameCategory
+    tags?: GameCreatetagsInput | string[]
+    isActive?: boolean
+    thumbnailUrl?: string | null
+    bannerUrl?: string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    featured?: boolean
+    providerName?: string | null
+    gameSessions?: GameSessionCreateNestedManyWithoutGameInput
+    gameLaunchLinks?: GameLaunchLinkCreateNestedManyWithoutGameInput
+    operator?: OperatorAccessCreateNestedOneWithoutGamesInput
+    TournamentGame?: TournamentGameCreateNestedManyWithoutGameInput
+  }
+
+  export type GameUncheckedCreateWithoutGameProviderInput = {
+    id?: string
+    name: string
+    title: string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: string | null
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
+    category: $Enums.GameCategory
+    tags?: GameCreatetagsInput | string[]
+    isActive?: boolean
+    thumbnailUrl?: string | null
+    bannerUrl?: string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    featured?: boolean
+    providerName?: string | null
+    operatorId?: string | null
+    gameSessions?: GameSessionUncheckedCreateNestedManyWithoutGameInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedCreateNestedManyWithoutGameInput
+    TournamentGame?: TournamentGameUncheckedCreateNestedManyWithoutGameInput
+  }
+
+  export type GameCreateOrConnectWithoutGameProviderInput = {
+    where: GameWhereUniqueInput
+    create: XOR<GameCreateWithoutGameProviderInput, GameUncheckedCreateWithoutGameProviderInput>
+  }
+
+  export type GameCreateManyGameProviderInputEnvelope = {
+    data: GameCreateManyGameProviderInput | GameCreateManyGameProviderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GameUpsertWithWhereUniqueWithoutGameProviderInput = {
+    where: GameWhereUniqueInput
+    update: XOR<GameUpdateWithoutGameProviderInput, GameUncheckedUpdateWithoutGameProviderInput>
+    create: XOR<GameCreateWithoutGameProviderInput, GameUncheckedCreateWithoutGameProviderInput>
+  }
+
+  export type GameUpdateWithWhereUniqueWithoutGameProviderInput = {
+    where: GameWhereUniqueInput
+    data: XOR<GameUpdateWithoutGameProviderInput, GameUncheckedUpdateWithoutGameProviderInput>
+  }
+
+  export type GameUpdateManyWithWhereWithoutGameProviderInput = {
+    where: GameScalarWhereInput
+    data: XOR<GameUpdateManyMutationInput, GameUncheckedUpdateManyWithoutGameProviderInput>
   }
 
   export type GameSpinCreateWithoutGameSessionInput = {
@@ -61817,6 +72389,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutGameSessionsInput = {
@@ -61885,6 +72460,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutGameSessionsInput = {
@@ -61898,7 +72476,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -61908,8 +72486,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProvider?: GameProviderCreateNestedOneWithoutGamesInput
     gameLaunchLinks?: GameLaunchLinkCreateNestedManyWithoutGameInput
     operator?: OperatorAccessCreateNestedOneWithoutGamesInput
+    TournamentGame?: TournamentGameCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateWithoutGameSessionsInput = {
@@ -61918,7 +72499,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -61928,8 +72509,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProviderId?: string | null
     operatorId?: string | null
     gameLaunchLinks?: GameLaunchLinkUncheckedCreateNestedManyWithoutGameInput
+    TournamentGame?: TournamentGameUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameCreateOrConnectWithoutGameSessionsInput = {
@@ -62082,6 +72666,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGameSessionsInput = {
@@ -62150,6 +72737,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type GameUpsertWithoutGameSessionsInput = {
@@ -62169,7 +72759,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -62179,8 +72769,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProvider?: GameProviderUpdateOneWithoutGamesNestedInput
     gameLaunchLinks?: GameLaunchLinkUpdateManyWithoutGameNestedInput
     operator?: OperatorAccessUpdateOneWithoutGamesNestedInput
+    TournamentGame?: TournamentGameUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateWithoutGameSessionsInput = {
@@ -62189,7 +72782,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -62199,8 +72792,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProviderId?: NullableStringFieldUpdateOperationsInput | string | null
     operatorId?: NullableStringFieldUpdateOperationsInput | string | null
     gameLaunchLinks?: GameLaunchLinkUncheckedUpdateManyWithoutGameNestedInput
+    TournamentGame?: TournamentGameUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type ProfileUpsertWithWhereUniqueWithoutCurrentGameSessionInput = {
@@ -62285,6 +72881,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserAchievementsInput = {
@@ -62353,6 +72952,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserAchievementsInput = {
@@ -62466,6 +73068,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserAchievementsInput = {
@@ -62534,6 +73139,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type AchievementUpsertWithoutUserAchievementsInput = {
@@ -62637,6 +73245,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutXpEventsInput = {
@@ -62705,6 +73316,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutXpEventsInput = {
@@ -62789,6 +73403,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutXpEventsInput = {
@@ -62857,6 +73474,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutSentNotificationsInput = {
@@ -62925,6 +73545,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSentNotificationsInput = {
@@ -62993,6 +73616,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSentNotificationsInput = {
@@ -63066,6 +73692,9 @@ export namespace Prisma {
     sentNotifications?: NotificationCreateNestedManyWithoutSenderInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutReceivedNotificationsInput = {
@@ -63134,6 +73763,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUncheckedCreateNestedManyWithoutSenderInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutReceivedNotificationsInput = {
@@ -63218,6 +73850,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentNotificationsInput = {
@@ -63286,6 +73921,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUpsertWithoutReceivedNotificationsInput = {
@@ -63365,6 +74003,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUpdateManyWithoutSenderNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedNotificationsInput = {
@@ -63433,6 +74074,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUncheckedUpdateManyWithoutSenderNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutSentMessagesInput = {
@@ -63501,6 +74145,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -63569,6 +74216,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -63653,6 +74303,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -63721,6 +74374,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutFriendshipsSentInput = {
@@ -63789,6 +74445,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFriendshipsSentInput = {
@@ -63857,6 +74516,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFriendshipsSentInput = {
@@ -63930,6 +74592,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
@@ -63998,6 +74663,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFriendshipsReceivedInput = {
@@ -64082,6 +74750,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
@@ -64150,6 +74821,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUpsertWithoutFriendshipsReceivedInput = {
@@ -64229,6 +74903,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
@@ -64297,6 +74974,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutOriginatedTransactionsInput = {
@@ -64365,6 +75045,9 @@ export namespace Prisma {
     sentNotifications?: NotificationCreateNestedManyWithoutSenderInput
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutOriginatedTransactionsInput = {
@@ -64433,6 +75116,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUncheckedCreateNestedManyWithoutSenderInput
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutOriginatedTransactionsInput = {
@@ -64506,6 +75192,9 @@ export namespace Prisma {
     sentNotifications?: NotificationCreateNestedManyWithoutSenderInput
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutReceivedTransactionsInput = {
@@ -64574,6 +75263,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUncheckedCreateNestedManyWithoutSenderInput
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutReceivedTransactionsInput = {
@@ -64874,6 +75566,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUpdateManyWithoutSenderNestedInput
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOriginatedTransactionsInput = {
@@ -64942,6 +75637,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUncheckedUpdateManyWithoutSenderNestedInput
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUpsertWithoutReceivedTransactionsInput = {
@@ -65021,6 +75719,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUpdateManyWithoutSenderNestedInput
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedTransactionsInput = {
@@ -65089,6 +75790,9 @@ export namespace Prisma {
     sentNotifications?: NotificationUncheckedUpdateManyWithoutSenderNestedInput
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type WalletUpsertWithoutTransactionsInput = {
@@ -65355,6 +76059,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutGameLaunchLinksInput = {
@@ -65423,6 +76130,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutGameLaunchLinksInput = {
@@ -65436,7 +76146,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -65446,8 +76156,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProvider?: GameProviderCreateNestedOneWithoutGamesInput
     gameSessions?: GameSessionCreateNestedManyWithoutGameInput
     operator?: OperatorAccessCreateNestedOneWithoutGamesInput
+    TournamentGame?: TournamentGameCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateWithoutGameLaunchLinksInput = {
@@ -65456,7 +76169,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -65466,8 +76179,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProviderId?: string | null
     operatorId?: string | null
     gameSessions?: GameSessionUncheckedCreateNestedManyWithoutGameInput
+    TournamentGame?: TournamentGameUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameCreateOrConnectWithoutGameLaunchLinksInput = {
@@ -65601,6 +76317,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGameLaunchLinksInput = {
@@ -65669,6 +76388,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type GameUpsertWithoutGameLaunchLinksInput = {
@@ -65688,7 +76410,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -65698,8 +76420,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProvider?: GameProviderUpdateOneWithoutGamesNestedInput
     gameSessions?: GameSessionUpdateManyWithoutGameNestedInput
     operator?: OperatorAccessUpdateOneWithoutGamesNestedInput
+    TournamentGame?: TournamentGameUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateWithoutGameLaunchLinksInput = {
@@ -65708,7 +76433,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -65718,8 +76443,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProviderId?: NullableStringFieldUpdateOperationsInput | string | null
     operatorId?: NullableStringFieldUpdateOperationsInput | string | null
     gameSessions?: GameSessionUncheckedUpdateManyWithoutGameNestedInput
+    TournamentGame?: TournamentGameUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type OperatorAccessUpsertWithoutGameLaunchLinksInput = {
@@ -65872,6 +76600,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutProductInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
     amount: number
@@ -65904,6 +76633,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -65944,6 +76674,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutProductInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
     amount: number
@@ -65976,6 +76707,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -66137,6 +76869,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -66169,6 +76902,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -66262,6 +76996,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutEventLogsAsActorInput = {
@@ -66330,6 +77067,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutEventLogsAsActorInput = {
@@ -66414,6 +77154,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEventLogsAsActorInput = {
@@ -66482,6 +77225,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type OperatorAccessCreateWithoutInvitationsInput = {
@@ -66599,6 +77345,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutInvitationsSentInput = {
@@ -66667,6 +77416,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutInvitationsSentInput = {
@@ -66740,6 +77492,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutInvitationsReceivedInput = {
@@ -66808,6 +77563,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutInvitationsReceivedInput = {
@@ -66947,6 +77705,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitationsSentInput = {
@@ -67015,6 +77776,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutInvitationsReceivedInput = {
@@ -67099,6 +77863,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutVipInfoInput = {
@@ -67167,6 +77934,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutVipInfoInput = {
@@ -67251,6 +78021,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVipInfoInput = {
@@ -67319,6 +78092,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutUserRewardsInput = {
@@ -67387,6 +78163,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserRewardsInput = {
@@ -67455,6 +78234,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserRewardsInput = {
@@ -67539,6 +78321,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserRewardsInput = {
@@ -67607,6 +78392,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserVipTaskProgressCreateWithoutTaskInput = {
@@ -67723,6 +78511,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserVipTaskProgressInput = {
@@ -67791,6 +78582,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserVipTaskProgressInput = {
@@ -67916,6 +78710,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserVipTaskProgressInput = {
@@ -67984,6 +78781,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type VipTaskUpsertWithoutUserTaskProgressInput = {
@@ -68099,6 +78899,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutRebateTransactionInput = {
@@ -68167,6 +78970,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
     originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
     receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutRebateTransactionInput = {
@@ -68177,6 +78983,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutRebateGeneratedInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
     amount: number
@@ -68209,6 +79016,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -68318,6 +79126,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRebateTransactionInput = {
@@ -68386,6 +79197,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TransactionUpsertWithoutRebateGeneratedInput = {
@@ -68402,6 +79216,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutRebateGeneratedInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -68434,6 +79249,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -68459,6 +79275,1472 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Product?: ProductUncheckedUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type TournamentGameCreateWithoutTournamentInput = {
+    id?: string
+    pointMultiplier?: number
+    game: GameCreateNestedOneWithoutTournamentGameInput
+  }
+
+  export type TournamentGameUncheckedCreateWithoutTournamentInput = {
+    id?: string
+    gameId: string
+    pointMultiplier?: number
+  }
+
+  export type TournamentGameCreateOrConnectWithoutTournamentInput = {
+    where: TournamentGameWhereUniqueInput
+    create: XOR<TournamentGameCreateWithoutTournamentInput, TournamentGameUncheckedCreateWithoutTournamentInput>
+  }
+
+  export type TournamentGameCreateManyTournamentInputEnvelope = {
+    data: TournamentGameCreateManyTournamentInput | TournamentGameCreateManyTournamentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TournamentParticipantCreateWithoutTournamentInput = {
+    id?: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+    user: UserCreateNestedOneWithoutTournamentParticipantInput
+    gamePlays?: TournamentGamePlayCreateNestedManyWithoutTournamentParticipantInput
+  }
+
+  export type TournamentParticipantUncheckedCreateWithoutTournamentInput = {
+    id?: string
+    userId: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+    gamePlays?: TournamentGamePlayUncheckedCreateNestedManyWithoutTournamentParticipantInput
+  }
+
+  export type TournamentParticipantCreateOrConnectWithoutTournamentInput = {
+    where: TournamentParticipantWhereUniqueInput
+    create: XOR<TournamentParticipantCreateWithoutTournamentInput, TournamentParticipantUncheckedCreateWithoutTournamentInput>
+  }
+
+  export type TournamentParticipantCreateManyTournamentInputEnvelope = {
+    data: TournamentParticipantCreateManyTournamentInput | TournamentParticipantCreateManyTournamentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TournamentRewardCreateWithoutTournamentInput = {
+    id?: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+    winner?: UserCreateNestedOneWithoutTournamentRewardInput
+  }
+
+  export type TournamentRewardUncheckedCreateWithoutTournamentInput = {
+    id?: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+    winnerId?: string | null
+  }
+
+  export type TournamentRewardCreateOrConnectWithoutTournamentInput = {
+    where: TournamentRewardWhereUniqueInput
+    create: XOR<TournamentRewardCreateWithoutTournamentInput, TournamentRewardUncheckedCreateWithoutTournamentInput>
+  }
+
+  export type TournamentRewardCreateManyTournamentInputEnvelope = {
+    data: TournamentRewardCreateManyTournamentInput | TournamentRewardCreateManyTournamentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutTournamentInput = {
+    id?: string
+    username?: string | null
+    name: string
+    email: string
+    emailVerified?: boolean | null
+    displayUsername?: string | null
+    phone?: string | null
+    cashtag?: string | null
+    phoneVerified?: Date | string | null
+    isVerified?: boolean
+    passwordHash?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    totalXp?: number
+    currentLevel?: number
+    referralCode?: string | null
+    commissionRate?: number | null
+    twoFactorEnabled?: boolean | null
+    isOnline?: boolean | null
+    twoFactorSecret?: string | null
+    image?: string | null
+    twoFactorRecoveryCodes?: UserCreatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: Date | string | null
+    lastIp?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activeWalletId?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    dob?: Date | string | null
+    gender?: $Enums.Gender | null
+    timezone?: string | null
+    locale?: string | null
+    mfaEnabled?: boolean
+    mfaSecret?: string | null
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    otherProfiles?: ProfileCreateNestedManyWithoutOtherUserInput
+    settings?: SettingsCreateNestedOneWithoutUserInput
+    wallets?: WalletCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    comments?: CommentCreateNestedManyWithoutAuthorInput
+    gameSessions?: GameSessionCreateNestedManyWithoutUserInput
+    xpEvents?: XpEventCreateNestedManyWithoutUserInput
+    userAchievements?: UserAchievementCreateNestedManyWithoutUserInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutAuthorInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutReceiverInput
+    gameLaunchLinks?: GameLaunchLinkCreateNestedManyWithoutUserInput
+    eventLogsAsActor?: EventLogCreateNestedManyWithoutActorInput
+    createdOperators?: OperatorAccessCreateNestedManyWithoutOwnerInput
+    invitationsSent?: OperatorInvitationCreateNestedManyWithoutInvitedByInput
+    invitationsReceived?: OperatorInvitationCreateNestedManyWithoutUserInput
+    referrer?: UserCreateNestedOneWithoutReferralsInput
+    referrals?: UserCreateNestedManyWithoutReferrerInput
+    account?: AccountCreateNestedManyWithoutUserInput
+    Session?: SessionCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
+    rebateTransaction?: RebateTransactionCreateNestedManyWithoutUserInput
+    preferredCurrency?: CurrencyCreateNestedOneWithoutUsersPreferringThisCurrencyInput
+    userRewards?: UserRewardCreateNestedManyWithoutUserInput
+    userVipTaskProgress?: UserVipTaskProgressCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationCreateNestedManyWithoutSenderInput
+    receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
+    originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
+    receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+  }
+
+  export type UserUncheckedCreateWithoutTournamentInput = {
+    id?: string
+    username?: string | null
+    name: string
+    email: string
+    emailVerified?: boolean | null
+    displayUsername?: string | null
+    phone?: string | null
+    cashtag?: string | null
+    phoneVerified?: Date | string | null
+    isVerified?: boolean
+    passwordHash?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    totalXp?: number
+    currentLevel?: number
+    referralCode?: string | null
+    commissionRate?: number | null
+    twoFactorEnabled?: boolean | null
+    isOnline?: boolean | null
+    twoFactorSecret?: string | null
+    image?: string | null
+    twoFactorRecoveryCodes?: UserCreatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: Date | string | null
+    lastIp?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activeWalletId?: string | null
+    referrerId?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    dob?: Date | string | null
+    gender?: $Enums.Gender | null
+    preferredCurrencyId?: string | null
+    timezone?: string | null
+    locale?: string | null
+    mfaEnabled?: boolean
+    mfaSecret?: string | null
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    otherProfiles?: ProfileUncheckedCreateNestedManyWithoutOtherUserInput
+    settings?: SettingsUncheckedCreateNestedOneWithoutUserInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutAuthorInput
+    gameSessions?: GameSessionUncheckedCreateNestedManyWithoutUserInput
+    xpEvents?: XpEventUncheckedCreateNestedManyWithoutUserInput
+    userAchievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedCreateNestedManyWithoutUserInput
+    eventLogsAsActor?: EventLogUncheckedCreateNestedManyWithoutActorInput
+    createdOperators?: OperatorAccessUncheckedCreateNestedManyWithoutOwnerInput
+    invitationsSent?: OperatorInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    invitationsReceived?: OperatorInvitationUncheckedCreateNestedManyWithoutUserInput
+    referrals?: UserUncheckedCreateNestedManyWithoutReferrerInput
+    account?: AccountUncheckedCreateNestedManyWithoutUserInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
+    rebateTransaction?: RebateTransactionUncheckedCreateNestedManyWithoutUserInput
+    userRewards?: UserRewardUncheckedCreateNestedManyWithoutUserInput
+    userVipTaskProgress?: UserVipTaskProgressUncheckedCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationUncheckedCreateNestedManyWithoutSenderInput
+    receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
+    originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
+    receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+  }
+
+  export type UserCreateOrConnectWithoutTournamentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTournamentInput, UserUncheckedCreateWithoutTournamentInput>
+  }
+
+  export type TournamentGameUpsertWithWhereUniqueWithoutTournamentInput = {
+    where: TournamentGameWhereUniqueInput
+    update: XOR<TournamentGameUpdateWithoutTournamentInput, TournamentGameUncheckedUpdateWithoutTournamentInput>
+    create: XOR<TournamentGameCreateWithoutTournamentInput, TournamentGameUncheckedCreateWithoutTournamentInput>
+  }
+
+  export type TournamentGameUpdateWithWhereUniqueWithoutTournamentInput = {
+    where: TournamentGameWhereUniqueInput
+    data: XOR<TournamentGameUpdateWithoutTournamentInput, TournamentGameUncheckedUpdateWithoutTournamentInput>
+  }
+
+  export type TournamentGameUpdateManyWithWhereWithoutTournamentInput = {
+    where: TournamentGameScalarWhereInput
+    data: XOR<TournamentGameUpdateManyMutationInput, TournamentGameUncheckedUpdateManyWithoutTournamentInput>
+  }
+
+  export type TournamentParticipantUpsertWithWhereUniqueWithoutTournamentInput = {
+    where: TournamentParticipantWhereUniqueInput
+    update: XOR<TournamentParticipantUpdateWithoutTournamentInput, TournamentParticipantUncheckedUpdateWithoutTournamentInput>
+    create: XOR<TournamentParticipantCreateWithoutTournamentInput, TournamentParticipantUncheckedCreateWithoutTournamentInput>
+  }
+
+  export type TournamentParticipantUpdateWithWhereUniqueWithoutTournamentInput = {
+    where: TournamentParticipantWhereUniqueInput
+    data: XOR<TournamentParticipantUpdateWithoutTournamentInput, TournamentParticipantUncheckedUpdateWithoutTournamentInput>
+  }
+
+  export type TournamentParticipantUpdateManyWithWhereWithoutTournamentInput = {
+    where: TournamentParticipantScalarWhereInput
+    data: XOR<TournamentParticipantUpdateManyMutationInput, TournamentParticipantUncheckedUpdateManyWithoutTournamentInput>
+  }
+
+  export type TournamentRewardUpsertWithWhereUniqueWithoutTournamentInput = {
+    where: TournamentRewardWhereUniqueInput
+    update: XOR<TournamentRewardUpdateWithoutTournamentInput, TournamentRewardUncheckedUpdateWithoutTournamentInput>
+    create: XOR<TournamentRewardCreateWithoutTournamentInput, TournamentRewardUncheckedCreateWithoutTournamentInput>
+  }
+
+  export type TournamentRewardUpdateWithWhereUniqueWithoutTournamentInput = {
+    where: TournamentRewardWhereUniqueInput
+    data: XOR<TournamentRewardUpdateWithoutTournamentInput, TournamentRewardUncheckedUpdateWithoutTournamentInput>
+  }
+
+  export type TournamentRewardUpdateManyWithWhereWithoutTournamentInput = {
+    where: TournamentRewardScalarWhereInput
+    data: XOR<TournamentRewardUpdateManyMutationInput, TournamentRewardUncheckedUpdateManyWithoutTournamentInput>
+  }
+
+  export type UserUpsertWithoutTournamentInput = {
+    update: XOR<UserUpdateWithoutTournamentInput, UserUncheckedUpdateWithoutTournamentInput>
+    create: XOR<UserCreateWithoutTournamentInput, UserUncheckedCreateWithoutTournamentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTournamentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTournamentInput, UserUncheckedUpdateWithoutTournamentInput>
+  }
+
+  export type UserUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    displayUsername?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    totalXp?: IntFieldUpdateOperationsInput | number
+    currentLevel?: IntFieldUpdateOperationsInput | number
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    twoFactorEnabled?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isOnline?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorRecoveryCodes?: UserUpdatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastIp?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeWalletId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    locale?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaEnabled?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    otherProfiles?: ProfileUpdateManyWithoutOtherUserNestedInput
+    settings?: SettingsUpdateOneWithoutUserNestedInput
+    wallets?: WalletUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    comments?: CommentUpdateManyWithoutAuthorNestedInput
+    gameSessions?: GameSessionUpdateManyWithoutUserNestedInput
+    xpEvents?: XpEventUpdateManyWithoutUserNestedInput
+    userAchievements?: UserAchievementUpdateManyWithoutUserNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutAuthorNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutReceiverNestedInput
+    gameLaunchLinks?: GameLaunchLinkUpdateManyWithoutUserNestedInput
+    eventLogsAsActor?: EventLogUpdateManyWithoutActorNestedInput
+    createdOperators?: OperatorAccessUpdateManyWithoutOwnerNestedInput
+    invitationsSent?: OperatorInvitationUpdateManyWithoutInvitedByNestedInput
+    invitationsReceived?: OperatorInvitationUpdateManyWithoutUserNestedInput
+    referrer?: UserUpdateOneWithoutReferralsNestedInput
+    referrals?: UserUpdateManyWithoutReferrerNestedInput
+    account?: AccountUpdateManyWithoutUserNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
+    rebateTransaction?: RebateTransactionUpdateManyWithoutUserNestedInput
+    preferredCurrency?: CurrencyUpdateOneWithoutUsersPreferringThisCurrencyNestedInput
+    userRewards?: UserRewardUpdateManyWithoutUserNestedInput
+    userVipTaskProgress?: UserVipTaskProgressUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
+    originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
+    receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    displayUsername?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    totalXp?: IntFieldUpdateOperationsInput | number
+    currentLevel?: IntFieldUpdateOperationsInput | number
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    twoFactorEnabled?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isOnline?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorRecoveryCodes?: UserUpdatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastIp?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeWalletId?: NullableStringFieldUpdateOperationsInput | string | null
+    referrerId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    preferredCurrencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    locale?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaEnabled?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    otherProfiles?: ProfileUncheckedUpdateManyWithoutOtherUserNestedInput
+    settings?: SettingsUncheckedUpdateOneWithoutUserNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
+    gameSessions?: GameSessionUncheckedUpdateManyWithoutUserNestedInput
+    xpEvents?: XpEventUncheckedUpdateManyWithoutUserNestedInput
+    userAchievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedUpdateManyWithoutUserNestedInput
+    eventLogsAsActor?: EventLogUncheckedUpdateManyWithoutActorNestedInput
+    createdOperators?: OperatorAccessUncheckedUpdateManyWithoutOwnerNestedInput
+    invitationsSent?: OperatorInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    invitationsReceived?: OperatorInvitationUncheckedUpdateManyWithoutUserNestedInput
+    referrals?: UserUncheckedUpdateManyWithoutReferrerNestedInput
+    account?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
+    rebateTransaction?: RebateTransactionUncheckedUpdateManyWithoutUserNestedInput
+    userRewards?: UserRewardUncheckedUpdateManyWithoutUserNestedInput
+    userVipTaskProgress?: UserVipTaskProgressUncheckedUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUncheckedUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
+    originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
+    receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+  }
+
+  export type TournamentCreateWithoutEligibleGamesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: TournamentParticipantCreateNestedManyWithoutTournamentInput
+    rewards?: TournamentRewardCreateNestedManyWithoutTournamentInput
+    createdBy?: UserCreateNestedOneWithoutTournamentInput
+  }
+
+  export type TournamentUncheckedCreateWithoutEligibleGamesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByid?: string | null
+    participants?: TournamentParticipantUncheckedCreateNestedManyWithoutTournamentInput
+    rewards?: TournamentRewardUncheckedCreateNestedManyWithoutTournamentInput
+  }
+
+  export type TournamentCreateOrConnectWithoutEligibleGamesInput = {
+    where: TournamentWhereUniqueInput
+    create: XOR<TournamentCreateWithoutEligibleGamesInput, TournamentUncheckedCreateWithoutEligibleGamesInput>
+  }
+
+  export type GameCreateWithoutTournamentGameInput = {
+    id?: string
+    name: string
+    title: string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: string | null
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
+    category: $Enums.GameCategory
+    tags?: GameCreatetagsInput | string[]
+    isActive?: boolean
+    thumbnailUrl?: string | null
+    bannerUrl?: string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    featured?: boolean
+    providerName?: string | null
+    gameProvider?: GameProviderCreateNestedOneWithoutGamesInput
+    gameSessions?: GameSessionCreateNestedManyWithoutGameInput
+    gameLaunchLinks?: GameLaunchLinkCreateNestedManyWithoutGameInput
+    operator?: OperatorAccessCreateNestedOneWithoutGamesInput
+  }
+
+  export type GameUncheckedCreateWithoutTournamentGameInput = {
+    id?: string
+    name: string
+    title: string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: string | null
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
+    category: $Enums.GameCategory
+    tags?: GameCreatetagsInput | string[]
+    isActive?: boolean
+    thumbnailUrl?: string | null
+    bannerUrl?: string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    featured?: boolean
+    providerName?: string | null
+    gameProviderId?: string | null
+    operatorId?: string | null
+    gameSessions?: GameSessionUncheckedCreateNestedManyWithoutGameInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedCreateNestedManyWithoutGameInput
+  }
+
+  export type GameCreateOrConnectWithoutTournamentGameInput = {
+    where: GameWhereUniqueInput
+    create: XOR<GameCreateWithoutTournamentGameInput, GameUncheckedCreateWithoutTournamentGameInput>
+  }
+
+  export type TournamentUpsertWithoutEligibleGamesInput = {
+    update: XOR<TournamentUpdateWithoutEligibleGamesInput, TournamentUncheckedUpdateWithoutEligibleGamesInput>
+    create: XOR<TournamentCreateWithoutEligibleGamesInput, TournamentUncheckedCreateWithoutEligibleGamesInput>
+    where?: TournamentWhereInput
+  }
+
+  export type TournamentUpdateToOneWithWhereWithoutEligibleGamesInput = {
+    where?: TournamentWhereInput
+    data: XOR<TournamentUpdateWithoutEligibleGamesInput, TournamentUncheckedUpdateWithoutEligibleGamesInput>
+  }
+
+  export type TournamentUpdateWithoutEligibleGamesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: TournamentParticipantUpdateManyWithoutTournamentNestedInput
+    rewards?: TournamentRewardUpdateManyWithoutTournamentNestedInput
+    createdBy?: UserUpdateOneWithoutTournamentNestedInput
+  }
+
+  export type TournamentUncheckedUpdateWithoutEligibleGamesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByid?: NullableStringFieldUpdateOperationsInput | string | null
+    participants?: TournamentParticipantUncheckedUpdateManyWithoutTournamentNestedInput
+    rewards?: TournamentRewardUncheckedUpdateManyWithoutTournamentNestedInput
+  }
+
+  export type GameUpsertWithoutTournamentGameInput = {
+    update: XOR<GameUpdateWithoutTournamentGameInput, GameUncheckedUpdateWithoutTournamentGameInput>
+    create: XOR<GameCreateWithoutTournamentGameInput, GameUncheckedCreateWithoutTournamentGameInput>
+    where?: GameWhereInput
+  }
+
+  export type GameUpdateToOneWithWhereWithoutTournamentGameInput = {
+    where?: GameWhereInput
+    data: XOR<GameUpdateWithoutTournamentGameInput, GameUncheckedUpdateWithoutTournamentGameInput>
+  }
+
+  export type GameUpdateWithoutTournamentGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
+    tags?: GameUpdatetagsInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProvider?: GameProviderUpdateOneWithoutGamesNestedInput
+    gameSessions?: GameSessionUpdateManyWithoutGameNestedInput
+    gameLaunchLinks?: GameLaunchLinkUpdateManyWithoutGameNestedInput
+    operator?: OperatorAccessUpdateOneWithoutGamesNestedInput
+  }
+
+  export type GameUncheckedUpdateWithoutTournamentGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
+    tags?: GameUpdatetagsInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProviderId?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    gameSessions?: GameSessionUncheckedUpdateManyWithoutGameNestedInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedUpdateManyWithoutGameNestedInput
+  }
+
+  export type TournamentCreateWithoutParticipantsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eligibleGames?: TournamentGameCreateNestedManyWithoutTournamentInput
+    rewards?: TournamentRewardCreateNestedManyWithoutTournamentInput
+    createdBy?: UserCreateNestedOneWithoutTournamentInput
+  }
+
+  export type TournamentUncheckedCreateWithoutParticipantsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByid?: string | null
+    eligibleGames?: TournamentGameUncheckedCreateNestedManyWithoutTournamentInput
+    rewards?: TournamentRewardUncheckedCreateNestedManyWithoutTournamentInput
+  }
+
+  export type TournamentCreateOrConnectWithoutParticipantsInput = {
+    where: TournamentWhereUniqueInput
+    create: XOR<TournamentCreateWithoutParticipantsInput, TournamentUncheckedCreateWithoutParticipantsInput>
+  }
+
+  export type UserCreateWithoutTournamentParticipantInput = {
+    id?: string
+    username?: string | null
+    name: string
+    email: string
+    emailVerified?: boolean | null
+    displayUsername?: string | null
+    phone?: string | null
+    cashtag?: string | null
+    phoneVerified?: Date | string | null
+    isVerified?: boolean
+    passwordHash?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    totalXp?: number
+    currentLevel?: number
+    referralCode?: string | null
+    commissionRate?: number | null
+    twoFactorEnabled?: boolean | null
+    isOnline?: boolean | null
+    twoFactorSecret?: string | null
+    image?: string | null
+    twoFactorRecoveryCodes?: UserCreatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: Date | string | null
+    lastIp?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activeWalletId?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    dob?: Date | string | null
+    gender?: $Enums.Gender | null
+    timezone?: string | null
+    locale?: string | null
+    mfaEnabled?: boolean
+    mfaSecret?: string | null
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    otherProfiles?: ProfileCreateNestedManyWithoutOtherUserInput
+    settings?: SettingsCreateNestedOneWithoutUserInput
+    wallets?: WalletCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    comments?: CommentCreateNestedManyWithoutAuthorInput
+    gameSessions?: GameSessionCreateNestedManyWithoutUserInput
+    xpEvents?: XpEventCreateNestedManyWithoutUserInput
+    userAchievements?: UserAchievementCreateNestedManyWithoutUserInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutAuthorInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutReceiverInput
+    gameLaunchLinks?: GameLaunchLinkCreateNestedManyWithoutUserInput
+    eventLogsAsActor?: EventLogCreateNestedManyWithoutActorInput
+    createdOperators?: OperatorAccessCreateNestedManyWithoutOwnerInput
+    invitationsSent?: OperatorInvitationCreateNestedManyWithoutInvitedByInput
+    invitationsReceived?: OperatorInvitationCreateNestedManyWithoutUserInput
+    referrer?: UserCreateNestedOneWithoutReferralsInput
+    referrals?: UserCreateNestedManyWithoutReferrerInput
+    account?: AccountCreateNestedManyWithoutUserInput
+    Session?: SessionCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
+    rebateTransaction?: RebateTransactionCreateNestedManyWithoutUserInput
+    preferredCurrency?: CurrencyCreateNestedOneWithoutUsersPreferringThisCurrencyInput
+    userRewards?: UserRewardCreateNestedManyWithoutUserInput
+    userVipTaskProgress?: UserVipTaskProgressCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationCreateNestedManyWithoutSenderInput
+    receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
+    originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
+    receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentReward?: TournamentRewardCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutTournamentParticipantInput = {
+    id?: string
+    username?: string | null
+    name: string
+    email: string
+    emailVerified?: boolean | null
+    displayUsername?: string | null
+    phone?: string | null
+    cashtag?: string | null
+    phoneVerified?: Date | string | null
+    isVerified?: boolean
+    passwordHash?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    totalXp?: number
+    currentLevel?: number
+    referralCode?: string | null
+    commissionRate?: number | null
+    twoFactorEnabled?: boolean | null
+    isOnline?: boolean | null
+    twoFactorSecret?: string | null
+    image?: string | null
+    twoFactorRecoveryCodes?: UserCreatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: Date | string | null
+    lastIp?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activeWalletId?: string | null
+    referrerId?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    dob?: Date | string | null
+    gender?: $Enums.Gender | null
+    preferredCurrencyId?: string | null
+    timezone?: string | null
+    locale?: string | null
+    mfaEnabled?: boolean
+    mfaSecret?: string | null
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    otherProfiles?: ProfileUncheckedCreateNestedManyWithoutOtherUserInput
+    settings?: SettingsUncheckedCreateNestedOneWithoutUserInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutAuthorInput
+    gameSessions?: GameSessionUncheckedCreateNestedManyWithoutUserInput
+    xpEvents?: XpEventUncheckedCreateNestedManyWithoutUserInput
+    userAchievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedCreateNestedManyWithoutUserInput
+    eventLogsAsActor?: EventLogUncheckedCreateNestedManyWithoutActorInput
+    createdOperators?: OperatorAccessUncheckedCreateNestedManyWithoutOwnerInput
+    invitationsSent?: OperatorInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    invitationsReceived?: OperatorInvitationUncheckedCreateNestedManyWithoutUserInput
+    referrals?: UserUncheckedCreateNestedManyWithoutReferrerInput
+    account?: AccountUncheckedCreateNestedManyWithoutUserInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
+    rebateTransaction?: RebateTransactionUncheckedCreateNestedManyWithoutUserInput
+    userRewards?: UserRewardUncheckedCreateNestedManyWithoutUserInput
+    userVipTaskProgress?: UserVipTaskProgressUncheckedCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationUncheckedCreateNestedManyWithoutSenderInput
+    receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
+    originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
+    receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentReward?: TournamentRewardUncheckedCreateNestedManyWithoutWinnerInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutTournamentParticipantInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTournamentParticipantInput, UserUncheckedCreateWithoutTournamentParticipantInput>
+  }
+
+  export type TournamentGamePlayCreateWithoutTournamentParticipantInput = {
+    id?: string
+    gameId: string
+    pointsEarned: number
+    playedAt?: Date | string
+    gameSessionId?: string | null
+  }
+
+  export type TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput = {
+    id?: string
+    gameId: string
+    pointsEarned: number
+    playedAt?: Date | string
+    gameSessionId?: string | null
+  }
+
+  export type TournamentGamePlayCreateOrConnectWithoutTournamentParticipantInput = {
+    where: TournamentGamePlayWhereUniqueInput
+    create: XOR<TournamentGamePlayCreateWithoutTournamentParticipantInput, TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput>
+  }
+
+  export type TournamentGamePlayCreateManyTournamentParticipantInputEnvelope = {
+    data: TournamentGamePlayCreateManyTournamentParticipantInput | TournamentGamePlayCreateManyTournamentParticipantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TournamentUpsertWithoutParticipantsInput = {
+    update: XOR<TournamentUpdateWithoutParticipantsInput, TournamentUncheckedUpdateWithoutParticipantsInput>
+    create: XOR<TournamentCreateWithoutParticipantsInput, TournamentUncheckedCreateWithoutParticipantsInput>
+    where?: TournamentWhereInput
+  }
+
+  export type TournamentUpdateToOneWithWhereWithoutParticipantsInput = {
+    where?: TournamentWhereInput
+    data: XOR<TournamentUpdateWithoutParticipantsInput, TournamentUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type TournamentUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eligibleGames?: TournamentGameUpdateManyWithoutTournamentNestedInput
+    rewards?: TournamentRewardUpdateManyWithoutTournamentNestedInput
+    createdBy?: UserUpdateOneWithoutTournamentNestedInput
+  }
+
+  export type TournamentUncheckedUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByid?: NullableStringFieldUpdateOperationsInput | string | null
+    eligibleGames?: TournamentGameUncheckedUpdateManyWithoutTournamentNestedInput
+    rewards?: TournamentRewardUncheckedUpdateManyWithoutTournamentNestedInput
+  }
+
+  export type UserUpsertWithoutTournamentParticipantInput = {
+    update: XOR<UserUpdateWithoutTournamentParticipantInput, UserUncheckedUpdateWithoutTournamentParticipantInput>
+    create: XOR<UserCreateWithoutTournamentParticipantInput, UserUncheckedCreateWithoutTournamentParticipantInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTournamentParticipantInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTournamentParticipantInput, UserUncheckedUpdateWithoutTournamentParticipantInput>
+  }
+
+  export type UserUpdateWithoutTournamentParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    displayUsername?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    totalXp?: IntFieldUpdateOperationsInput | number
+    currentLevel?: IntFieldUpdateOperationsInput | number
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    twoFactorEnabled?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isOnline?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorRecoveryCodes?: UserUpdatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastIp?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeWalletId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    locale?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaEnabled?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    otherProfiles?: ProfileUpdateManyWithoutOtherUserNestedInput
+    settings?: SettingsUpdateOneWithoutUserNestedInput
+    wallets?: WalletUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    comments?: CommentUpdateManyWithoutAuthorNestedInput
+    gameSessions?: GameSessionUpdateManyWithoutUserNestedInput
+    xpEvents?: XpEventUpdateManyWithoutUserNestedInput
+    userAchievements?: UserAchievementUpdateManyWithoutUserNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutAuthorNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutReceiverNestedInput
+    gameLaunchLinks?: GameLaunchLinkUpdateManyWithoutUserNestedInput
+    eventLogsAsActor?: EventLogUpdateManyWithoutActorNestedInput
+    createdOperators?: OperatorAccessUpdateManyWithoutOwnerNestedInput
+    invitationsSent?: OperatorInvitationUpdateManyWithoutInvitedByNestedInput
+    invitationsReceived?: OperatorInvitationUpdateManyWithoutUserNestedInput
+    referrer?: UserUpdateOneWithoutReferralsNestedInput
+    referrals?: UserUpdateManyWithoutReferrerNestedInput
+    account?: AccountUpdateManyWithoutUserNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
+    rebateTransaction?: RebateTransactionUpdateManyWithoutUserNestedInput
+    preferredCurrency?: CurrencyUpdateOneWithoutUsersPreferringThisCurrencyNestedInput
+    userRewards?: UserRewardUpdateManyWithoutUserNestedInput
+    userVipTaskProgress?: UserVipTaskProgressUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
+    originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
+    receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTournamentParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    displayUsername?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    totalXp?: IntFieldUpdateOperationsInput | number
+    currentLevel?: IntFieldUpdateOperationsInput | number
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    twoFactorEnabled?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isOnline?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorRecoveryCodes?: UserUpdatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastIp?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeWalletId?: NullableStringFieldUpdateOperationsInput | string | null
+    referrerId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    preferredCurrencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    locale?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaEnabled?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    otherProfiles?: ProfileUncheckedUpdateManyWithoutOtherUserNestedInput
+    settings?: SettingsUncheckedUpdateOneWithoutUserNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
+    gameSessions?: GameSessionUncheckedUpdateManyWithoutUserNestedInput
+    xpEvents?: XpEventUncheckedUpdateManyWithoutUserNestedInput
+    userAchievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedUpdateManyWithoutUserNestedInput
+    eventLogsAsActor?: EventLogUncheckedUpdateManyWithoutActorNestedInput
+    createdOperators?: OperatorAccessUncheckedUpdateManyWithoutOwnerNestedInput
+    invitationsSent?: OperatorInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    invitationsReceived?: OperatorInvitationUncheckedUpdateManyWithoutUserNestedInput
+    referrals?: UserUncheckedUpdateManyWithoutReferrerNestedInput
+    account?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
+    rebateTransaction?: RebateTransactionUncheckedUpdateManyWithoutUserNestedInput
+    userRewards?: UserRewardUncheckedUpdateManyWithoutUserNestedInput
+    userVipTaskProgress?: UserVipTaskProgressUncheckedUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUncheckedUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
+    originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
+    receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type TournamentGamePlayUpsertWithWhereUniqueWithoutTournamentParticipantInput = {
+    where: TournamentGamePlayWhereUniqueInput
+    update: XOR<TournamentGamePlayUpdateWithoutTournamentParticipantInput, TournamentGamePlayUncheckedUpdateWithoutTournamentParticipantInput>
+    create: XOR<TournamentGamePlayCreateWithoutTournamentParticipantInput, TournamentGamePlayUncheckedCreateWithoutTournamentParticipantInput>
+  }
+
+  export type TournamentGamePlayUpdateWithWhereUniqueWithoutTournamentParticipantInput = {
+    where: TournamentGamePlayWhereUniqueInput
+    data: XOR<TournamentGamePlayUpdateWithoutTournamentParticipantInput, TournamentGamePlayUncheckedUpdateWithoutTournamentParticipantInput>
+  }
+
+  export type TournamentGamePlayUpdateManyWithWhereWithoutTournamentParticipantInput = {
+    where: TournamentGamePlayScalarWhereInput
+    data: XOR<TournamentGamePlayUpdateManyMutationInput, TournamentGamePlayUncheckedUpdateManyWithoutTournamentParticipantInput>
+  }
+
+  export type TournamentGamePlayScalarWhereInput = {
+    AND?: TournamentGamePlayScalarWhereInput | TournamentGamePlayScalarWhereInput[]
+    OR?: TournamentGamePlayScalarWhereInput[]
+    NOT?: TournamentGamePlayScalarWhereInput | TournamentGamePlayScalarWhereInput[]
+    id?: StringFilter<"TournamentGamePlay"> | string
+    tournamentParticipantId?: StringFilter<"TournamentGamePlay"> | string
+    gameId?: StringFilter<"TournamentGamePlay"> | string
+    pointsEarned?: IntFilter<"TournamentGamePlay"> | number
+    playedAt?: DateTimeFilter<"TournamentGamePlay"> | Date | string
+    gameSessionId?: StringNullableFilter<"TournamentGamePlay"> | string | null
+  }
+
+  export type TournamentParticipantCreateWithoutGamePlaysInput = {
+    id?: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+    tournament: TournamentCreateNestedOneWithoutParticipantsInput
+    user: UserCreateNestedOneWithoutTournamentParticipantInput
+  }
+
+  export type TournamentParticipantUncheckedCreateWithoutGamePlaysInput = {
+    id?: string
+    tournamentId: string
+    userId: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+  }
+
+  export type TournamentParticipantCreateOrConnectWithoutGamePlaysInput = {
+    where: TournamentParticipantWhereUniqueInput
+    create: XOR<TournamentParticipantCreateWithoutGamePlaysInput, TournamentParticipantUncheckedCreateWithoutGamePlaysInput>
+  }
+
+  export type TournamentParticipantUpsertWithoutGamePlaysInput = {
+    update: XOR<TournamentParticipantUpdateWithoutGamePlaysInput, TournamentParticipantUncheckedUpdateWithoutGamePlaysInput>
+    create: XOR<TournamentParticipantCreateWithoutGamePlaysInput, TournamentParticipantUncheckedCreateWithoutGamePlaysInput>
+    where?: TournamentParticipantWhereInput
+  }
+
+  export type TournamentParticipantUpdateToOneWithWhereWithoutGamePlaysInput = {
+    where?: TournamentParticipantWhereInput
+    data: XOR<TournamentParticipantUpdateWithoutGamePlaysInput, TournamentParticipantUncheckedUpdateWithoutGamePlaysInput>
+  }
+
+  export type TournamentParticipantUpdateWithoutGamePlaysInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournament?: TournamentUpdateOneRequiredWithoutParticipantsNestedInput
+    user?: UserUpdateOneRequiredWithoutTournamentParticipantNestedInput
+  }
+
+  export type TournamentParticipantUncheckedUpdateWithoutGamePlaysInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentCreateWithoutRewardsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eligibleGames?: TournamentGameCreateNestedManyWithoutTournamentInput
+    participants?: TournamentParticipantCreateNestedManyWithoutTournamentInput
+    createdBy?: UserCreateNestedOneWithoutTournamentInput
+  }
+
+  export type TournamentUncheckedCreateWithoutRewardsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByid?: string | null
+    eligibleGames?: TournamentGameUncheckedCreateNestedManyWithoutTournamentInput
+    participants?: TournamentParticipantUncheckedCreateNestedManyWithoutTournamentInput
+  }
+
+  export type TournamentCreateOrConnectWithoutRewardsInput = {
+    where: TournamentWhereUniqueInput
+    create: XOR<TournamentCreateWithoutRewardsInput, TournamentUncheckedCreateWithoutRewardsInput>
+  }
+
+  export type UserCreateWithoutTournamentRewardInput = {
+    id?: string
+    username?: string | null
+    name: string
+    email: string
+    emailVerified?: boolean | null
+    displayUsername?: string | null
+    phone?: string | null
+    cashtag?: string | null
+    phoneVerified?: Date | string | null
+    isVerified?: boolean
+    passwordHash?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    totalXp?: number
+    currentLevel?: number
+    referralCode?: string | null
+    commissionRate?: number | null
+    twoFactorEnabled?: boolean | null
+    isOnline?: boolean | null
+    twoFactorSecret?: string | null
+    image?: string | null
+    twoFactorRecoveryCodes?: UserCreatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: Date | string | null
+    lastIp?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activeWalletId?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    dob?: Date | string | null
+    gender?: $Enums.Gender | null
+    timezone?: string | null
+    locale?: string | null
+    mfaEnabled?: boolean
+    mfaSecret?: string | null
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    otherProfiles?: ProfileCreateNestedManyWithoutOtherUserInput
+    settings?: SettingsCreateNestedOneWithoutUserInput
+    wallets?: WalletCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    comments?: CommentCreateNestedManyWithoutAuthorInput
+    gameSessions?: GameSessionCreateNestedManyWithoutUserInput
+    xpEvents?: XpEventCreateNestedManyWithoutUserInput
+    userAchievements?: UserAchievementCreateNestedManyWithoutUserInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutAuthorInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutReceiverInput
+    gameLaunchLinks?: GameLaunchLinkCreateNestedManyWithoutUserInput
+    eventLogsAsActor?: EventLogCreateNestedManyWithoutActorInput
+    createdOperators?: OperatorAccessCreateNestedManyWithoutOwnerInput
+    invitationsSent?: OperatorInvitationCreateNestedManyWithoutInvitedByInput
+    invitationsReceived?: OperatorInvitationCreateNestedManyWithoutUserInput
+    referrer?: UserCreateNestedOneWithoutReferralsInput
+    referrals?: UserCreateNestedManyWithoutReferrerInput
+    account?: AccountCreateNestedManyWithoutUserInput
+    Session?: SessionCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoCreateNestedOneWithoutUserInput
+    rebateTransaction?: RebateTransactionCreateNestedManyWithoutUserInput
+    preferredCurrency?: CurrencyCreateNestedOneWithoutUsersPreferringThisCurrencyInput
+    userRewards?: UserRewardCreateNestedManyWithoutUserInput
+    userVipTaskProgress?: UserVipTaskProgressCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationCreateNestedManyWithoutSenderInput
+    receivedNotifications?: NotificationCreateNestedManyWithoutOriginatorInput
+    originatedTransactions?: TransactionCreateNestedManyWithoutOriginatorInput
+    receivedTransactions?: TransactionCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantCreateNestedManyWithoutUserInput
+    Tournament?: TournamentCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutTournamentRewardInput = {
+    id?: string
+    username?: string | null
+    name: string
+    email: string
+    emailVerified?: boolean | null
+    displayUsername?: string | null
+    phone?: string | null
+    cashtag?: string | null
+    phoneVerified?: Date | string | null
+    isVerified?: boolean
+    passwordHash?: string | null
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    totalXp?: number
+    currentLevel?: number
+    referralCode?: string | null
+    commissionRate?: number | null
+    twoFactorEnabled?: boolean | null
+    isOnline?: boolean | null
+    twoFactorSecret?: string | null
+    image?: string | null
+    twoFactorRecoveryCodes?: UserCreatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: Date | string | null
+    lastIp?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activeWalletId?: string | null
+    referrerId?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    dob?: Date | string | null
+    gender?: $Enums.Gender | null
+    preferredCurrencyId?: string | null
+    timezone?: string | null
+    locale?: string | null
+    mfaEnabled?: boolean
+    mfaSecret?: string | null
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    otherProfiles?: ProfileUncheckedCreateNestedManyWithoutOtherUserInput
+    settings?: SettingsUncheckedCreateNestedOneWithoutUserInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutAuthorInput
+    gameSessions?: GameSessionUncheckedCreateNestedManyWithoutUserInput
+    xpEvents?: XpEventUncheckedCreateNestedManyWithoutUserInput
+    userAchievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedCreateNestedManyWithoutUserInput
+    eventLogsAsActor?: EventLogUncheckedCreateNestedManyWithoutActorInput
+    createdOperators?: OperatorAccessUncheckedCreateNestedManyWithoutOwnerInput
+    invitationsSent?: OperatorInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    invitationsReceived?: OperatorInvitationUncheckedCreateNestedManyWithoutUserInput
+    referrals?: UserUncheckedCreateNestedManyWithoutReferrerInput
+    account?: AccountUncheckedCreateNestedManyWithoutUserInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    vipInfo?: VipInfoUncheckedCreateNestedOneWithoutUserInput
+    rebateTransaction?: RebateTransactionUncheckedCreateNestedManyWithoutUserInput
+    userRewards?: UserRewardUncheckedCreateNestedManyWithoutUserInput
+    userVipTaskProgress?: UserVipTaskProgressUncheckedCreateNestedManyWithoutUserInput
+    sentNotifications?: NotificationUncheckedCreateNestedManyWithoutSenderInput
+    receivedNotifications?: NotificationUncheckedCreateNestedManyWithoutOriginatorInput
+    originatedTransactions?: TransactionUncheckedCreateNestedManyWithoutOriginatorInput
+    receivedTransactions?: TransactionUncheckedCreateNestedManyWithoutReceiverInput
+    TournamentParticipant?: TournamentParticipantUncheckedCreateNestedManyWithoutUserInput
+    Tournament?: TournamentUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutTournamentRewardInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTournamentRewardInput, UserUncheckedCreateWithoutTournamentRewardInput>
+  }
+
+  export type TournamentUpsertWithoutRewardsInput = {
+    update: XOR<TournamentUpdateWithoutRewardsInput, TournamentUncheckedUpdateWithoutRewardsInput>
+    create: XOR<TournamentCreateWithoutRewardsInput, TournamentUncheckedCreateWithoutRewardsInput>
+    where?: TournamentWhereInput
+  }
+
+  export type TournamentUpdateToOneWithWhereWithoutRewardsInput = {
+    where?: TournamentWhereInput
+    data: XOR<TournamentUpdateWithoutRewardsInput, TournamentUncheckedUpdateWithoutRewardsInput>
+  }
+
+  export type TournamentUpdateWithoutRewardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eligibleGames?: TournamentGameUpdateManyWithoutTournamentNestedInput
+    participants?: TournamentParticipantUpdateManyWithoutTournamentNestedInput
+    createdBy?: UserUpdateOneWithoutTournamentNestedInput
+  }
+
+  export type TournamentUncheckedUpdateWithoutRewardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByid?: NullableStringFieldUpdateOperationsInput | string | null
+    eligibleGames?: TournamentGameUncheckedUpdateManyWithoutTournamentNestedInput
+    participants?: TournamentParticipantUncheckedUpdateManyWithoutTournamentNestedInput
+  }
+
+  export type UserUpsertWithoutTournamentRewardInput = {
+    update: XOR<UserUpdateWithoutTournamentRewardInput, UserUncheckedUpdateWithoutTournamentRewardInput>
+    create: XOR<UserCreateWithoutTournamentRewardInput, UserUncheckedCreateWithoutTournamentRewardInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTournamentRewardInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTournamentRewardInput, UserUncheckedUpdateWithoutTournamentRewardInput>
+  }
+
+  export type UserUpdateWithoutTournamentRewardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    displayUsername?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    totalXp?: IntFieldUpdateOperationsInput | number
+    currentLevel?: IntFieldUpdateOperationsInput | number
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    twoFactorEnabled?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isOnline?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorRecoveryCodes?: UserUpdatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastIp?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeWalletId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    locale?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaEnabled?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    otherProfiles?: ProfileUpdateManyWithoutOtherUserNestedInput
+    settings?: SettingsUpdateOneWithoutUserNestedInput
+    wallets?: WalletUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    comments?: CommentUpdateManyWithoutAuthorNestedInput
+    gameSessions?: GameSessionUpdateManyWithoutUserNestedInput
+    xpEvents?: XpEventUpdateManyWithoutUserNestedInput
+    userAchievements?: UserAchievementUpdateManyWithoutUserNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutAuthorNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutReceiverNestedInput
+    gameLaunchLinks?: GameLaunchLinkUpdateManyWithoutUserNestedInput
+    eventLogsAsActor?: EventLogUpdateManyWithoutActorNestedInput
+    createdOperators?: OperatorAccessUpdateManyWithoutOwnerNestedInput
+    invitationsSent?: OperatorInvitationUpdateManyWithoutInvitedByNestedInput
+    invitationsReceived?: OperatorInvitationUpdateManyWithoutUserNestedInput
+    referrer?: UserUpdateOneWithoutReferralsNestedInput
+    referrals?: UserUpdateManyWithoutReferrerNestedInput
+    account?: AccountUpdateManyWithoutUserNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUpdateOneWithoutUserNestedInput
+    rebateTransaction?: RebateTransactionUpdateManyWithoutUserNestedInput
+    preferredCurrency?: CurrencyUpdateOneWithoutUsersPreferringThisCurrencyNestedInput
+    userRewards?: UserRewardUpdateManyWithoutUserNestedInput
+    userVipTaskProgress?: UserVipTaskProgressUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
+    originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
+    receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTournamentRewardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    displayUsername?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    cashtag?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    totalXp?: IntFieldUpdateOperationsInput | number
+    currentLevel?: IntFieldUpdateOperationsInput | number
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    twoFactorEnabled?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isOnline?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorRecoveryCodes?: UserUpdatetwoFactorRecoveryCodesInput | string[]
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastIp?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeWalletId?: NullableStringFieldUpdateOperationsInput | string | null
+    referrerId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    preferredCurrencyId?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: NullableStringFieldUpdateOperationsInput | string | null
+    locale?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaEnabled?: BoolFieldUpdateOperationsInput | boolean
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    otherProfiles?: ProfileUncheckedUpdateManyWithoutOtherUserNestedInput
+    settings?: SettingsUncheckedUpdateOneWithoutUserNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
+    gameSessions?: GameSessionUncheckedUpdateManyWithoutUserNestedInput
+    xpEvents?: XpEventUncheckedUpdateManyWithoutUserNestedInput
+    userAchievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedUpdateManyWithoutUserNestedInput
+    eventLogsAsActor?: EventLogUncheckedUpdateManyWithoutActorNestedInput
+    createdOperators?: OperatorAccessUncheckedUpdateManyWithoutOwnerNestedInput
+    invitationsSent?: OperatorInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    invitationsReceived?: OperatorInvitationUncheckedUpdateManyWithoutUserNestedInput
+    referrals?: UserUncheckedUpdateManyWithoutReferrerNestedInput
+    account?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    vipInfo?: VipInfoUncheckedUpdateOneWithoutUserNestedInput
+    rebateTransaction?: RebateTransactionUncheckedUpdateManyWithoutUserNestedInput
+    userRewards?: UserRewardUncheckedUpdateManyWithoutUserNestedInput
+    userVipTaskProgress?: UserVipTaskProgressUncheckedUpdateManyWithoutUserNestedInput
+    sentNotifications?: NotificationUncheckedUpdateManyWithoutSenderNestedInput
+    receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
+    originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
+    receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ProfileCreateManyOtherUserInput = {
@@ -68510,19 +80792,22 @@ export namespace Prisma {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
     gameId: string
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
   }
 
@@ -68775,6 +81060,7 @@ export namespace Prisma {
   export type TransactionCreateManyOriginatorInput = {
     id?: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -68805,6 +81091,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
@@ -68826,6 +81113,34 @@ export namespace Prisma {
     relatedGameId?: string | null
     relatedRoundId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TournamentParticipantCreateManyUserInput = {
+    id?: string
+    tournamentId: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+  }
+
+  export type TournamentRewardCreateManyWinnerInput = {
+    id?: string
+    tournamentId: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+  }
+
+  export type TournamentCreateManyCreatedByInput = {
+    id?: string
+    name: string
+    description?: string | null
+    startTime: Date | string
+    endTime?: Date | string | null
+    targetScore?: number | null
+    status?: $Enums.TournamentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -68973,63 +81288,72 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     spins?: GameSpinUpdateManyWithoutGameSessionNestedInput
     game?: GameUpdateOneRequiredWithoutGameSessionsNestedInput
-    Profile?: ProfileUpdateManyWithoutCurrentGameSessionNestedInput
+    profile?: ProfileUpdateManyWithoutCurrentGameSessionNestedInput
   }
 
   export type GameSessionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
     gameId?: StringFieldUpdateOperationsInput | string
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     spins?: GameSpinUncheckedUpdateManyWithoutGameSessionNestedInput
-    Profile?: ProfileUncheckedUpdateManyWithoutCurrentGameSessionNestedInput
+    profile?: ProfileUncheckedUpdateManyWithoutCurrentGameSessionNestedInput
   }
 
   export type GameSessionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
     gameId?: StringFieldUpdateOperationsInput | string
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -69459,6 +81783,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferrerInput = {
@@ -69527,6 +81854,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutReferrerInput = {
@@ -69877,6 +82207,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutOriginatorInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -69908,6 +82239,7 @@ export namespace Prisma {
   export type TransactionUncheckedUpdateWithoutOriginatorInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -69939,6 +82271,7 @@ export namespace Prisma {
   export type TransactionUncheckedUpdateManyWithoutOriginatorInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -69968,6 +82301,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutReceiverInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -70000,6 +82334,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -70031,6 +82366,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -70052,6 +82388,98 @@ export namespace Prisma {
     relatedGameId?: NullableStringFieldUpdateOperationsInput | string | null
     relatedRoundId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentParticipantUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tournament?: TournamentUpdateOneRequiredWithoutParticipantsNestedInput
+    gamePlays?: TournamentGamePlayUpdateManyWithoutTournamentParticipantNestedInput
+  }
+
+  export type TournamentParticipantUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gamePlays?: TournamentGamePlayUncheckedUpdateManyWithoutTournamentParticipantNestedInput
+  }
+
+  export type TournamentParticipantUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentRewardUpdateWithoutWinnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    tournament?: TournamentUpdateOneRequiredWithoutRewardsNestedInput
+  }
+
+  export type TournamentRewardUncheckedUpdateWithoutWinnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TournamentRewardUncheckedUpdateManyWithoutWinnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TournamentUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eligibleGames?: TournamentGameUpdateManyWithoutTournamentNestedInput
+    participants?: TournamentParticipantUpdateManyWithoutTournamentNestedInput
+    rewards?: TournamentRewardUpdateManyWithoutTournamentNestedInput
+  }
+
+  export type TournamentUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eligibleGames?: TournamentGameUncheckedUpdateManyWithoutTournamentNestedInput
+    participants?: TournamentParticipantUncheckedUpdateManyWithoutTournamentNestedInput
+    rewards?: TournamentRewardUncheckedUpdateManyWithoutTournamentNestedInput
+  }
+
+  export type TournamentUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetScore?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTournamentStatusFieldUpdateOperationsInput | $Enums.TournamentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -70112,6 +82540,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -70226,6 +82655,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPreferredCurrencyInput = {
@@ -70294,6 +82726,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutPreferredCurrencyInput = {
@@ -70377,6 +82812,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutCurrencyInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -70409,6 +82845,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -70440,6 +82877,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -70540,6 +82978,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     type: $Enums.TransactionType
     status?: $Enums.TransactionStatus
@@ -70568,6 +83007,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutWalletInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -70600,6 +83040,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -70631,6 +83072,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -70716,7 +83158,7 @@ export namespace Prisma {
     title: string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: string | null
-    provider: $Enums.GameProvider
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
     category: $Enums.GameCategory
     tags?: GameCreatetagsInput | string[]
     isActive?: boolean
@@ -70726,6 +83168,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     featured?: boolean
+    providerName?: string | null
+    gameProviderId?: string | null
   }
 
   export type ProfileCreateManyOperatorInput = {
@@ -70913,7 +83357,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -70923,8 +83367,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProvider?: GameProviderUpdateOneWithoutGamesNestedInput
     gameSessions?: GameSessionUpdateManyWithoutGameNestedInput
     gameLaunchLinks?: GameLaunchLinkUpdateManyWithoutGameNestedInput
+    TournamentGame?: TournamentGameUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateWithoutOperatorInput = {
@@ -70933,7 +83380,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -70943,8 +83390,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProviderId?: NullableStringFieldUpdateOperationsInput | string | null
     gameSessions?: GameSessionUncheckedUpdateManyWithoutGameNestedInput
     gameLaunchLinks?: GameLaunchLinkUncheckedUpdateManyWithoutGameNestedInput
+    TournamentGame?: TournamentGameUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateManyWithoutOperatorInput = {
@@ -70953,7 +83403,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     goldsvetData?: NullableJsonNullValueInput | InputJsonValue
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    provider?: EnumGameProviderFieldUpdateOperationsInput | $Enums.GameProvider
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
     category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
     tags?: GameUpdatetagsInput | string[]
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -70963,6 +83413,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameProviderId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfileUpdateWithoutOperatorInput = {
@@ -71044,19 +83496,22 @@ export namespace Prisma {
     id?: string
     isActive?: boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: string | null
+    authSessionId?: string | null
     currencyId?: string | null
     startedAt?: Date | string
     endTime?: Date | string | null
     startTime?: Date | string | null
     ipAddress?: string | null
     startingBalance?: number | null
+    startingTotalXp?: number | null
     userAgent?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     totalWagered?: number
     totalWon?: number
     userId: string
+    rtgToken?: string | null
+    rtgFingerPrint?: string | null
     profileId?: string | null
   }
 
@@ -71081,67 +83536,82 @@ export namespace Prisma {
     operatorId: string
   }
 
+  export type TournamentGameCreateManyGameInput = {
+    id?: string
+    tournamentId: string
+    pointMultiplier?: number
+  }
+
   export type GameSessionUpdateWithoutGameInput = {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     spins?: GameSpinUpdateManyWithoutGameSessionNestedInput
     user?: UserUpdateOneRequiredWithoutGameSessionsNestedInput
-    Profile?: ProfileUpdateManyWithoutCurrentGameSessionNestedInput
+    profile?: ProfileUpdateManyWithoutCurrentGameSessionNestedInput
   }
 
   export type GameSessionUncheckedUpdateWithoutGameInput = {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
     spins?: GameSpinUncheckedUpdateManyWithoutGameSessionNestedInput
-    Profile?: ProfileUncheckedUpdateManyWithoutCurrentGameSessionNestedInput
+    profile?: ProfileUncheckedUpdateManyWithoutCurrentGameSessionNestedInput
   }
 
   export type GameSessionUncheckedUpdateManyWithoutGameInput = {
     id?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sessionData?: NullableJsonNullValueInput | InputJsonValue
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    authSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     currencyId?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     startingBalance?: NullableIntFieldUpdateOperationsInput | number | null
+    startingTotalXp?: NullableIntFieldUpdateOperationsInput | number | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalWagered?: IntFieldUpdateOperationsInput | number
     totalWon?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
+    rtgToken?: NullableStringFieldUpdateOperationsInput | string | null
+    rtgFingerPrint?: NullableStringFieldUpdateOperationsInput | string | null
     profileId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -71208,6 +83678,24 @@ export namespace Prisma {
     operatorId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type TournamentGameUpdateWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+    tournament?: TournamentUpdateOneRequiredWithoutEligibleGamesNestedInput
+  }
+
+  export type TournamentGameUncheckedUpdateWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type TournamentGameUncheckedUpdateManyWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tournamentId?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+  }
+
   export type CommentCreateManyPostInput = {
     id?: string
     content: string
@@ -71238,6 +83726,92 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type GameCreateManyGameProviderInput = {
+    id?: string
+    name: string
+    title: string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: string | null
+    supportedProviders?: GameCreatesupportedProvidersInput | $Enums.GameProviderName[]
+    category: $Enums.GameCategory
+    tags?: GameCreatetagsInput | string[]
+    isActive?: boolean
+    thumbnailUrl?: string | null
+    bannerUrl?: string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    featured?: boolean
+    providerName?: string | null
+    operatorId?: string | null
+  }
+
+  export type GameUpdateWithoutGameProviderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
+    tags?: GameUpdatetagsInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    gameSessions?: GameSessionUpdateManyWithoutGameNestedInput
+    gameLaunchLinks?: GameLaunchLinkUpdateManyWithoutGameNestedInput
+    operator?: OperatorAccessUpdateOneWithoutGamesNestedInput
+    TournamentGame?: TournamentGameUpdateManyWithoutGameNestedInput
+  }
+
+  export type GameUncheckedUpdateWithoutGameProviderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
+    tags?: GameUpdatetagsInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    gameSessions?: GameSessionUncheckedUpdateManyWithoutGameNestedInput
+    gameLaunchLinks?: GameLaunchLinkUncheckedUpdateManyWithoutGameNestedInput
+    TournamentGame?: TournamentGameUncheckedUpdateManyWithoutGameNestedInput
+  }
+
+  export type GameUncheckedUpdateManyWithoutGameProviderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    goldsvetData?: NullableJsonNullValueInput | InputJsonValue
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    supportedProviders?: GameUpdatesupportedProvidersInput | $Enums.GameProviderName[]
+    category?: EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory
+    tags?: GameUpdatetagsInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type GameSpinCreateManyGameSessionInput = {
@@ -71438,6 +84012,7 @@ export namespace Prisma {
     id?: string
     originatorUserId: string
     processedAt?: Date | string | null
+    gameId?: string | null
     receiverUserId?: string | null
     walletId?: string | null
     type: $Enums.TransactionType
@@ -71466,6 +84041,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     amount?: IntFieldUpdateOperationsInput | number
@@ -71498,6 +84074,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -71529,6 +84106,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     originatorUserId?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverUserId?: NullableStringFieldUpdateOperationsInput | string | null
     walletId?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -71620,6 +84198,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitationsReceivedInput = {
@@ -71688,6 +84269,9 @@ export namespace Prisma {
     receivedNotifications?: NotificationUncheckedUpdateManyWithoutOriginatorNestedInput
     originatedTransactions?: TransactionUncheckedUpdateManyWithoutOriginatorNestedInput
     receivedTransactions?: TransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    TournamentParticipant?: TournamentParticipantUncheckedUpdateManyWithoutUserNestedInput
+    TournamentReward?: TournamentRewardUncheckedUpdateManyWithoutWinnerNestedInput
+    Tournament?: TournamentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutInvitationsReceivedInput = {
@@ -71773,6 +84357,128 @@ export namespace Prisma {
     lastProgressAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentGameCreateManyTournamentInput = {
+    id?: string
+    gameId: string
+    pointMultiplier?: number
+  }
+
+  export type TournamentParticipantCreateManyTournamentInput = {
+    id?: string
+    userId: string
+    score?: number
+    rank?: number | null
+    joinedAt?: Date | string
+  }
+
+  export type TournamentRewardCreateManyTournamentInput = {
+    id?: string
+    rank: number
+    description: string
+    isClaimed?: boolean
+    winnerId?: string | null
+  }
+
+  export type TournamentGameUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+    game?: GameUpdateOneRequiredWithoutTournamentGameNestedInput
+  }
+
+  export type TournamentGameUncheckedUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type TournamentGameUncheckedUpdateManyWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointMultiplier?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type TournamentParticipantUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTournamentParticipantNestedInput
+    gamePlays?: TournamentGamePlayUpdateManyWithoutTournamentParticipantNestedInput
+  }
+
+  export type TournamentParticipantUncheckedUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gamePlays?: TournamentGamePlayUncheckedUpdateManyWithoutTournamentParticipantNestedInput
+  }
+
+  export type TournamentParticipantUncheckedUpdateManyWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    rank?: NullableIntFieldUpdateOperationsInput | number | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TournamentRewardUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    winner?: UserUpdateOneWithoutTournamentRewardNestedInput
+  }
+
+  export type TournamentRewardUncheckedUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentRewardUncheckedUpdateManyWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rank?: IntFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentGamePlayCreateManyTournamentParticipantInput = {
+    id?: string
+    gameId: string
+    pointsEarned: number
+    playedAt?: Date | string
+    gameSessionId?: string | null
+  }
+
+  export type TournamentGamePlayUpdateWithoutTournamentParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointsEarned?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentGamePlayUncheckedUpdateWithoutTournamentParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointsEarned?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentGamePlayUncheckedUpdateManyWithoutTournamentParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    pointsEarned?: IntFieldUpdateOperationsInput | number
+    playedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameSessionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 
